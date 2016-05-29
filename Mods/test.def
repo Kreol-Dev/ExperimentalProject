@@ -1,0 +1,26 @@
+coremod.name_generator = 
+{
+	scope = has(name)
+	generation = 
+	{
+		set_name = CONCAT = random_from(names_scope, most_weight(fallback_names, new_name(culture_names, "Error name"))), 
+							" ", 
+							single_from(second_name, "Error second name")
+		names_scope = 
+		{
+			UNION = faction_names, traits_names
+			INTERSECT = culture_names
+		}
+		fallback_names = 
+		{
+			UNION = faction_names, traits_names
+			weight = similar_traits(traits_names)
+		}
+		second_name =
+		{
+			husband_name = AND = is(female), is(married)
+			family_name = AND = has_family, NOT = husband_name 
+			new_name(culture_second_names) = AND = NOT = husband_name, NOT = family_name
+		}
+	} 
+}
