@@ -54,6 +54,9 @@ namespace InternalDSL {
             case (int) DefConstants.STRING:
                 EnterString((Token) node);
                 break;
+            case (int) DefConstants.DECLARATION:
+                EnterDeclaration((Token) node);
+                break;
             case (int) DefConstants.ROOT:
                 EnterRoot((Production) node);
                 break;
@@ -111,6 +114,8 @@ namespace InternalDSL {
                 return ExitIdentifier((Token) node);
             case (int) DefConstants.STRING:
                 return ExitString((Token) node);
+            case (int) DefConstants.DECLARATION:
+                return ExitDeclaration((Token) node);
             case (int) DefConstants.ROOT:
                 return ExitRoot((Production) node);
             case (int) DefConstants.SPECIFIC_ID:
@@ -422,6 +427,32 @@ namespace InternalDSL {
          * discovered errors</exception>
          */
         public virtual Node ExitString(Token node) {
+            return node;
+        }
+
+        /**
+         * <summary>Called when entering a parse tree node.</summary>
+         *
+         * <param name='node'>the node being entered</param>
+         *
+         * <exception cref='ParseException'>if the node analysis
+         * discovered errors</exception>
+         */
+        public virtual void EnterDeclaration(Token node) {
+        }
+
+        /**
+         * <summary>Called when exiting a parse tree node.</summary>
+         *
+         * <param name='node'>the node being exited</param>
+         *
+         * <returns>the node to add to the parse tree, or
+         *          null if no parse tree should be created</returns>
+         *
+         * <exception cref='ParseException'>if the node analysis
+         * discovered errors</exception>
+         */
+        public virtual Node ExitDeclaration(Token node) {
             return node;
         }
 

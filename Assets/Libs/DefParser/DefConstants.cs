@@ -22,6 +22,7 @@ namespace InternalDSL {
         NUMBER = 1009,
         IDENTIFIER = 1010,
         STRING = 1011,
+        DECLARATION = 1012,
         ROOT = 2001,
         SPECIFIC_ID = 2002,
         TABLE = 2003,

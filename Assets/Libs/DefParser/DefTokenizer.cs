@@ -106,6 +106,12 @@ namespace InternalDSL {
                                        TokenPattern.PatternType.REGEXP,
                                        "[\\\"]([^\"\\\\]|\\\\.)*[\\\"]");
             AddPattern(pattern);
+
+            pattern = new TokenPattern((int) DefConstants.DECLARATION,
+                                       "DECLARATION",
+                                       TokenPattern.PatternType.STRING,
+                                       "as");
+            AddPattern(pattern);
         }
     }
 }
