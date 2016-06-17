@@ -59,12 +59,6 @@ namespace InternalDSL {
                                        "}");
             AddPattern(pattern);
 
-            pattern = new TokenPattern((int) DefConstants.ASSIGN,
-                                       "ASSIGN",
-                                       TokenPattern.PatternType.STRING,
-                                       "=");
-            AddPattern(pattern);
-
             pattern = new TokenPattern((int) DefConstants.DOT,
                                        "DOT",
                                        TokenPattern.PatternType.STRING,
@@ -77,16 +71,112 @@ namespace InternalDSL {
                                        ",");
             AddPattern(pattern);
 
-            pattern = new TokenPattern((int) DefConstants.OPEN_FUNCTION,
-                                       "OPEN_FUNCTION",
+            pattern = new TokenPattern((int) DefConstants.OPEN_PARENT,
+                                       "OPEN_PARENT",
                                        TokenPattern.PatternType.STRING,
                                        "(");
             AddPattern(pattern);
 
-            pattern = new TokenPattern((int) DefConstants.CLOSE_FUNCTION,
-                                       "CLOSE_FUNCTION",
+            pattern = new TokenPattern((int) DefConstants.CLOSE_PARENT,
+                                       "CLOSE_PARENT",
                                        TokenPattern.PatternType.STRING,
                                        ")");
+            AddPattern(pattern);
+
+            pattern = new TokenPattern((int) DefConstants.AND,
+                                       "AND",
+                                       TokenPattern.PatternType.STRING,
+                                       "and");
+            AddPattern(pattern);
+
+            pattern = new TokenPattern((int) DefConstants.OR,
+                                       "OR",
+                                       TokenPattern.PatternType.STRING,
+                                       "or");
+            AddPattern(pattern);
+
+            pattern = new TokenPattern((int) DefConstants.NOT,
+                                       "NOT",
+                                       TokenPattern.PatternType.STRING,
+                                       "not");
+            AddPattern(pattern);
+
+            pattern = new TokenPattern((int) DefConstants.EQUALS,
+                                       "EQUALS",
+                                       TokenPattern.PatternType.STRING,
+                                       "=");
+            AddPattern(pattern);
+
+            pattern = new TokenPattern((int) DefConstants.NOTEQUALS,
+                                       "NOTEQUALS",
+                                       TokenPattern.PatternType.STRING,
+                                       "/=");
+            AddPattern(pattern);
+
+            pattern = new TokenPattern((int) DefConstants.ADD,
+                                       "ADD",
+                                       TokenPattern.PatternType.STRING,
+                                       "+");
+            AddPattern(pattern);
+
+            pattern = new TokenPattern((int) DefConstants.SUB,
+                                       "SUB",
+                                       TokenPattern.PatternType.STRING,
+                                       "-");
+            AddPattern(pattern);
+
+            pattern = new TokenPattern((int) DefConstants.DIV,
+                                       "DIV",
+                                       TokenPattern.PatternType.STRING,
+                                       "/");
+            AddPattern(pattern);
+
+            pattern = new TokenPattern((int) DefConstants.MUL,
+                                       "MUL",
+                                       TokenPattern.PatternType.STRING,
+                                       "*");
+            AddPattern(pattern);
+
+            pattern = new TokenPattern((int) DefConstants.MORE,
+                                       "MORE",
+                                       TokenPattern.PatternType.STRING,
+                                       ">");
+            AddPattern(pattern);
+
+            pattern = new TokenPattern((int) DefConstants.LESS,
+                                       "LESS",
+                                       TokenPattern.PatternType.STRING,
+                                       "<");
+            AddPattern(pattern);
+
+            pattern = new TokenPattern((int) DefConstants.MOREOREQUALS,
+                                       "MOREOREQUALS",
+                                       TokenPattern.PatternType.STRING,
+                                       ">=");
+            AddPattern(pattern);
+
+            pattern = new TokenPattern((int) DefConstants.LESSOREQUALS,
+                                       "LESSOREQUALS",
+                                       TokenPattern.PatternType.STRING,
+                                       "<=");
+            AddPattern(pattern);
+
+            pattern = new TokenPattern((int) DefConstants.TRUE,
+                                       "TRUE",
+                                       TokenPattern.PatternType.STRING,
+                                       "yes");
+            AddPattern(pattern);
+
+            pattern = new TokenPattern((int) DefConstants.FALSE,
+                                       "FALSE",
+                                       TokenPattern.PatternType.STRING,
+                                       "no");
+            AddPattern(pattern);
+
+            pattern = new TokenPattern((int) DefConstants.IDENTIFIER,
+                                       "IDENTIFIER",
+                                       TokenPattern.PatternType.REGEXP,
+                                       "([a-z]|_)+");
             AddPattern(pattern);
 
             pattern = new TokenPattern((int) DefConstants.NUMBER,
@@ -95,22 +185,10 @@ namespace InternalDSL {
                                        "[0-9]+");
             AddPattern(pattern);
 
-            pattern = new TokenPattern((int) DefConstants.IDENTIFIER,
-                                       "IDENTIFIER",
-                                       TokenPattern.PatternType.REGEXP,
-                                       "([a-z]|[A-Z]|_)+");
-            AddPattern(pattern);
-
             pattern = new TokenPattern((int) DefConstants.STRING,
                                        "STRING",
                                        TokenPattern.PatternType.REGEXP,
                                        "[\\\"]([^\"\\\\]|\\\\.)*[\\\"]");
-            AddPattern(pattern);
-
-            pattern = new TokenPattern((int) DefConstants.DECLARATION,
-                                       "DECLARATION",
-                                       TokenPattern.PatternType.STRING,
-                                       "as");
             AddPattern(pattern);
         }
     }
