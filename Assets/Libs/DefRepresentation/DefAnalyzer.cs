@@ -112,7 +112,7 @@ namespace InternalDSL
 		{
 			if (Op == UnaryOp.None)
 				return string.Format ("({0})", Content);
-			return string.Format ("({0}{1})", Op, Content);
+			return string.Format ("({0} {1})", Op, Content);
 		}
 	}
 
@@ -134,6 +134,8 @@ namespace InternalDSL
 			NotEquals,
 			MoreOrEquals,
 			LessOrEquals,
+			And,
+			Or,
 			Undefined
 		}
 
@@ -153,6 +155,10 @@ namespace InternalDSL
 				return BinaryOp.Equals;
 			case (int)DefConstants.NOTEQUALS:
 				return BinaryOp.NotEquals;
+			case (int)DefConstants.AND:
+				return BinaryOp.And;
+			case (int)DefConstants.OR:
+				return BinaryOp.Or;
 			case (int)DefConstants.MORE:
 				return BinaryOp.More;
 			case (int)DefConstants.LESS:
@@ -234,29 +240,24 @@ namespace InternalDSL
 						return (n.GetChildAt (0) as Token).Image;
 					}
 				}
-				break;
 			case (int)DefConstants.NUMBER:
 				{
 					var data = (n as Token).Image;
 					return int.Parse (data);
 				}
-				break;
 			case (int)DefConstants.STRING:
 				{
 					var data = (n as Token).Image;
 					return data;
 				}
-				break;
 			case (int)DefConstants.TRUE:
 				{
 					return true;
 				}
-				break;
 			case (int)DefConstants.FALSE:
 				{
 					return false;
 				}
-				break;
 			}
 			Debug.Log (n);
 			return n;

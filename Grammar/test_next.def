@@ -1,228 +1,68 @@
-trade_for_item_type =
-{
-	scope = can_do(trade)
-	scopes = 
-	{
-		traders = find_traders(item_type)
-		probable_traders = traders.not(failed_traders)
-		failed_traders = empty_scope
-	}
-	action = 
-	{
-		if not target_trader do 
-		{
-			target_trader = probable_traders.single
-			if not target_trader and failed_traders do
-			{
-				failed_traders.clear()
-				can = no
-			}
-		}
-		if not target_item do 
-		{
-			target_item = select_items(target_trader, item_type).less_price
-		}
-		if target_item and target_trader do
-		{
-			tj = trade(target_trader, target_item)
-			if not tj do 
-			{
-				failed_traders.add(target_trader)
-			}
-		}
-	}	
-}
-
-trade = 
-{
-	scope = has_inventory.can_do(move_to)
-
-	action =
-	{
-		if not near(trader) do
-		{
-			mv = move_to(trader)
-			if not mv do
-			{
-				can = no
-			}
-		}
-		if near(trader) do
-		{
-			price = price_of(item, trader)
-			if not can_pay(price) do
-			{
-				if not has_job do
-				{
-					if can_do(find_job).can_do(work_job) do
-					{
-						job = find_job()
-						if job do 
-						{
-							work_job(job)
-						}		
-						if not job do
-						{
-							can = no	
-						}
-					}
-
-					if not can_do(find_job).can_do(work_job) do
-					{
-						can = no
-					}
-				}
-				if has_job do
-				{
-					work_job(job)	
-				}
-			}
-
-			if can_pay(price) do
-			{
-				pay(price, trader)
-				get_item(item, trader)
-			}
-		}
-
-	}
-
-}
-
-move_to =
-{
-	scope = can_move
-	vars = 
-	{
-		tries = 0
-	}
-	action =
-	{
-		way = find_way(target.position)
-		if not way do
-		{
-			can = no
-		}
-		if way do
-		{
-			mv = move_along(way)
-			if not mv do
-			{
-				repeat = yes
-				tries = tries + 1
-				if tries > 5 do
-				{
-					can = no
-				}
-			}
-		}
-
-	}
-}
-
+--Всё начинается с того, что нужен генератор для объекта в целом. Что это - действие, событие, генератор, класс который получает тип
+--и формирует его DOM.
 name_generator = 
 {
-
+	--Он может обращаться к элементам напрямую. Например ActionGenerator точно знает, что должен быть элемент scope и
+	--элемент action
+	--При этом сами они будут генерироваться уже другими классами. Какие-то общими, какие-то нет.
+	--Таким образом нужно будет проводить уже семантический анализ, где узлами будут генераторы и тд. 
+	--В принципе это должно быть сравнительно несложно в связи с устоявшимся деревом без абстракций и исключений.
+	--Нужно снова написать примерный код
+	--И написать несколько новых скриптов, для событий и ИИ.
 	scope = has_name
-	scopes = 
+	action = 
 	{
-		main_names = 
+		set_name = concat(random_from(names_scope, most_weight(fallback_names, new_name(culture_names, "Error name"))), 
+							" ", 
+							single_from(second_name, "Error second name"))
+		names_scope = 
 		{
-			union = faction_names
-			union = traits_names
+			union = {faction_names traits_names} 
 			intersect = culture_names
 		}
 		fallback_names = 
 		{
-			union = faction_names
-			union = traits_names
-			weight = similar_traits
+			union = {faction_names traits_names}
+			weight = similar_traits(traits_names)
 		}
-		second_name = 
+		xyz(1 - 1 + 2 * 2 * (2 - (-1)) + 2) = { z = val }
+		second_name =
 		{
-			if sex = female and family_status = married do
-			{
-				union = husband_name
-			}
-
-			if has_family and not second_name do
-			{
-				union = family_name
-			}
-
-			if not second_name do
-			{
-				union = new_name(culture_second_names)
-			}
+			if(sex = female and family_status = married, h_name) = {union = husband_name}
+			if(has_family and not h_name, f_name) = {union = family_name}
+			if(not h_name and not f_name) = {union = new_name(culture_second_names)}
 		}
-	}
-	action = 
-	{
-		if names_scope and second_name do 
-		{
-			set_name(concat(names_scope.random, " ", second_name.single))	
-		}
-
-		if fallback_names and second_name do
-		{
-			set_name(concat(fallback_names.most_weight, " ", second_name.single))	
-		}
-
-		if not second_name or not (names_scope and fallback_names and culture_names) do
-		{
-			set_name("Error name")
-		}
-
-		
+		set(generated) = true
 	} 
 }
-
-planets_event = 
+--По идее - высокоуровневый контроллер рабочего - объекта у которого может быть работа на которую можно ходить
+worker_cycle =
 {
-	scope = has_state
-	scopes = 
-	{
-		affected_planets = owned_objects.has_planet.has_health.fit( health < 20 ).has_traits
-		not_robots = affected_planets.population.has_traits.fit( not has_trait("robot") )
-	}
-	action = 
-	{
 
-		ev = event(shown_event)
-		shown_event = 
-		{
-			name = localization("PLANETS_EVENT_01")
-			image = localization("PLANETS_EVENT_01")
-			options = 
-			{
-				option_1 = 
-				{
-					name = localization("PLANETS_EVENT_01_OPTION_1")
-					if chosen do 
-					{
-						add_trait(affected_planets.has_trait("infected"), "cleansed")
-						remove(not_robots)
-					}
+}
+--Действие, при котором рабочий должен выйти из дома и пойти на работу. Может быть не у всех, у кого есть worker_cycle
+--Посещать работу можно несколькими способами в общем
+work_at =
+{
 
-				}
-				option_2 = 
-				{
-					name = localization("PLANETS_EVENT_01_OPTION_2")
-					if chosen do
-					{
-						add_trait(not_robots, "immunity")
-					}
-				}
-				option_3 = 
-				{
-					name = localization("PLANETS_EVENT_01_OPTION_3")
-					if chosen do 
-					{
-						add_trait(not_robots, "disease")
-					}
-					show_scope = has_trait("careless")
-				}
-			}
-		}
-	}
+
+}
+
+--Событие на что-то
+enter_ruin =
+{
+
+}
+
+continue_ruin = 
+{
+
+}
+continue_ruin = 
+{
+	
+}
+continue_ruin = 
+{
+	
 }
