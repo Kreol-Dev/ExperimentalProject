@@ -48,7 +48,7 @@ namespace InternalDSL
 				for (int i = 0; i < argsCount; i++)
 				{
 					var argNode = callNode.GetChildAt (i * 2);
-					Debug.Log (argNode);
+					//Debug.Log (argNode);
 					Expression expr = new Expression (argNode);
 					Args [i] = expr;
 				}
@@ -112,7 +112,10 @@ namespace InternalDSL
 		{
 			if (Op == UnaryOp.None)
 				return string.Format ("({0})", Content);
-			return string.Format ("({0} {1})", Op, Content);
+			else if (Op == UnaryOp.Inverse)
+				return string.Format ("(!{0})", Content);
+			else
+				return string.Format ("(-{0}", Content);
 		}
 	}
 
@@ -137,6 +140,40 @@ namespace InternalDSL
 			And,
 			Or,
 			Undefined
+		}
+
+		public string OpToString (BinaryOp op)
+		{
+			switch (op)
+			{
+			case BinaryOp.Add:
+				return " + ";
+			case BinaryOp.Sub:
+				return " - ";
+			case BinaryOp.Div:
+				return " / ";
+			case BinaryOp.Mul:
+				return " * ";
+			case BinaryOp.Equals:
+				return " == ";
+			case BinaryOp.More:
+				return " > ";
+			case BinaryOp.Less:
+				return " < ";
+			case BinaryOp.NotEquals:
+				return " != ";
+			case BinaryOp.MoreOrEquals:
+				return " >= ";
+			case BinaryOp.LessOrEquals:
+				return " <=+> ";
+			case BinaryOp.And:
+				return " && ";
+			case BinaryOp.Or:
+				return " || ";
+			case BinaryOp.Undefined:
+				return " undefined_operator ";
+			}
+			return null;
 		}
 
 		BinaryOp BinaryOpFromCode (Node n)
@@ -215,9 +252,22 @@ namespace InternalDSL
 			StringBuilder builder = new StringBuilder (100);
 			for (int i = 0; i < Operands.Length; i++)
 			{
-				builder.Append (Operands [i]).Append (" ");
+				if (i % 2 == 0)
+					builder.Append (Operands [i]).Append (" ");
+				else
+					builder.Append (OpToString ((BinaryOp)Operands [i])).Append (" ");
 			}
 			return builder.ToString ();
+		}
+	}
+
+	public struct IdWrapper
+	{
+		public string Id;
+
+		public override string ToString ()
+		{
+			return Id;
 		}
 	}
 
@@ -237,7 +287,7 @@ namespace InternalDSL
 						return new FunctionCall (n);
 					} else
 					{
-						return (n.GetChildAt (0) as Token).Image;
+						return new IdWrapper (){ Id = (n.GetChildAt (0) as Token).Image };
 					}
 				}
 			case (int)DefConstants.NUMBER:
@@ -282,7 +332,7 @@ namespace InternalDSL
 				for (int i = 0; i < argsCount; i++)
 				{
 					var argNode = argsNode.GetChildAt (i * 2);
-					Debug.LogFormat ("Context arg: {0} in {1}", argNode, argsNode);
+					//Debug.LogFormat ("Context arg: {0} in {1}", argNode, argsNode);
 					Expression expr = new Expression (argNode);
 					Entries.Add (expr);
 				}
@@ -302,34 +352,41 @@ namespace InternalDSL
 				{
 
 					var listNode = n.GetChildAt (1);
-					int childrenCount = listNode.Count / 3;
-					if (listNode.Count > 1 && listNode.GetChildAt (1).Id == (int)DefConstants.EQUALS)
+					if (listNode.GetChildAt (0).Id == (int)DefConstants.OPEN_TABLE)
 					{
-						//It's about operators
-						for (int i = 0; i < childrenCount; i++)
-						{
-							var idNode = listNode.GetChildAt (i * 3);
-							var contextNode = listNode.GetChildAt (i * 3 + 2);
-							//Debug.LogFormat ("{0} {1} {2} {3}", idNode, contextNode, i * 3, i * 3 + 2);
-							Operator op = new Operator (idNode, contextNode);
-							Entries.Add (op);
-						}
+						//it's a list of structs
 					} else
 					{
-						//It's about atoms
-//						Operator op = new Operator ();
-//						op.Identifier = "list";
-//						op.Context = new Context ();
-						//						var context = op.Context as Context;
-						childrenCount = listNode.Count;
-						for (int i = 0; i < childrenCount; i++)
+						int childrenCount = listNode.Count / 3;
+						if (listNode.Count > 1 && listNode.GetChildAt (1).Id == (int)DefConstants.EQUALS)
 						{
-							var atom = Atom.FromNode (listNode.GetChildAt (i));
-							//Debug.Log (atom);
-							Entries.Add (atom);
+							//It's about operators
+							for (int i = 0; i < childrenCount; i++)
+							{
+								var idNode = listNode.GetChildAt (i * 3);
+								var contextNode = listNode.GetChildAt (i * 3 + 2);
+								//Debug.LogFormat ("{0} {1} {2} {3}", idNode, contextNode, i * 3, i * 3 + 2);
+								Operator op = new Operator (idNode, contextNode);
+								Entries.Add (op);
+							}
+						} else
+						{
+							//It's about atoms
+							//						Operator op = new Operator ();
+							//						op.Identifier = "list";
+							//						op.Context = new Context ();
+							//						var context = op.Context as Context;
+							childrenCount = listNode.Count;
+							for (int i = 0; i < childrenCount; i++)
+							{
+								var atom = Atom.FromNode (listNode.GetChildAt (i));
+								//Debug.Log (atom);
+								Entries.Add (atom);
+							}
+							//						Entries.Add (op);
 						}
-//						Entries.Add (op);
 					}
+
 
 				}
 			} else if (firstChild.Id == (int)DefConstants.EXPRESSION)
@@ -375,19 +432,39 @@ namespace InternalDSL
 		public object Identifier;
 		public object Context;
 
+		public enum OpType
+		{
+			FunctionOperator,
+			CommonOperator
+		}
+
+		public OpType Type;
+
+		public enum ContextType
+		{
+			Table,
+			Expression,
+			ArgTable
+		}
+
+		public ContextType ConType;
+
 		public Operator (Node idNode, Node n)
 		{
 			var idOrCall = idNode.GetChildAt (0);
 			//Debug.Log (idOrCall);
 			if (idNode.Count == 1)
 			{
+				//It's a simple operator
 				Identifier = (idOrCall as Token).Image;
 				Context = new Context (null, n);
+				Type = OpType.CommonOperator;
 			} else
 			{
-				
+				//It's a function-operator
 				Identifier = (idOrCall as Token).Image;
 				Context = new Context (idNode.GetChildAt (2), n);
+				Type = OpType.FunctionOperator;
 			}
 		}
 
@@ -398,12 +475,16 @@ namespace InternalDSL
 			var idOrCall = idNode.GetChildAt (0);
 			if (idNode.Count == 1)
 			{
+				//It's a simple operator
 				Identifier = (idOrCall as Token).Image;
 				Context = new Context (null, n);
+				Type = OpType.CommonOperator;
 			} else
 			{
+				//It's a function-operator
 				Identifier = (idOrCall.GetChildAt (0) as Token).Image;
 				Context = new Context (idOrCall.GetChildAt (2), n);
+				Type = OpType.FunctionOperator;
 			}
 		}
 
@@ -422,6 +503,14 @@ namespace InternalDSL
 	{
 		public object[] Parts;
 
+		public enum ScopeType
+		{
+			FunctionScope,
+			CommonScope
+		}
+
+		public ScopeType Type;
+
 		public Scope (Node n)
 		{
 			int childCount = (n.Count - 1) / 2 + 1;
@@ -433,6 +522,7 @@ namespace InternalDSL
 					var argNode = n.GetChildAt (i * 2);
 					Parts [i] = (argNode as Token).Image;
 				}
+				Type = ScopeType.FunctionScope;
 			} else if (n.Id == (int)DefConstants.SCOPE)
 			{
 				for (int i = 0; i < childCount; i++)
@@ -448,6 +538,7 @@ namespace InternalDSL
 					} else
 						Parts [i] = (idNode as Token).Image;
 				}
+				Type = ScopeType.CommonScope;
 			}
 		}
 

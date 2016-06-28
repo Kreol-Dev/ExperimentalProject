@@ -59,12 +59,6 @@ namespace InternalDSL {
                                        "}");
             AddPattern(pattern);
 
-            pattern = new TokenPattern((int) DefConstants.DOT,
-                                       "DOT",
-                                       TokenPattern.PatternType.STRING,
-                                       ".");
-            AddPattern(pattern);
-
             pattern = new TokenPattern((int) DefConstants.DELIMITER,
                                        "DELIMITER",
                                        TokenPattern.PatternType.STRING,
@@ -176,19 +170,25 @@ namespace InternalDSL {
             pattern = new TokenPattern((int) DefConstants.IDENTIFIER,
                                        "IDENTIFIER",
                                        TokenPattern.PatternType.REGEXP,
-                                       "([a-z]|_)+");
+                                       "([a-z]|[A-Z]|_)+");
             AddPattern(pattern);
 
             pattern = new TokenPattern((int) DefConstants.NUMBER,
                                        "NUMBER",
                                        TokenPattern.PatternType.REGEXP,
-                                       "[0-9]+");
+                                       "0|[1-9]|[1-9][0-9]*");
             AddPattern(pattern);
 
             pattern = new TokenPattern((int) DefConstants.STRING,
                                        "STRING",
                                        TokenPattern.PatternType.REGEXP,
                                        "[\\\"]([^\"\\\\]|\\\\.)*[\\\"]");
+            AddPattern(pattern);
+
+            pattern = new TokenPattern((int) DefConstants.DOT,
+                                       "DOT",
+                                       TokenPattern.PatternType.STRING,
+                                       ".");
             AddPattern(pattern);
         }
     }

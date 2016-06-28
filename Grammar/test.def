@@ -1,29 +1,45 @@
-name_generator = 
+new_person_portrait_gen = 
 {
 
-	scope = has_name
+	scope = has_portrait.has_person
 	action = 
 	{
-		set_name = concat(random_from(names_scope, most_weight(fallback_names, new_name(culture_names, "Error name"))), 
-							" ", 
-							single_from(second_name, "Error second name"))
-		names_scope = 
+		if(person.age = 0 and person.father and person.mother, not_original) =
 		{
-			union = {faction_names traits_names} 
-			intersect = culture_names
+			skin_colour = colour_deviate(colour_mix(person.father.appearance.skin_colour, person.mother.appearance.skin_colour, 50), 10)
+			mother_phenotype = person.mother.appearance.phenotype
+			father_phenotype = person.father.appearance.phenotype
+			traits = combine(mother_phenotype.traits, father_phenotype.traits)
+			available_phenotypes = mask(mask(resources.appearance.phenotypes, traits, traits, at_least_one), sex, person.sex)
+			
+			
+			available_dresses = mask(resources.appearance.dresses, any(traits) = person.culture.traits and age < 5 and sex = person.sex)
+			portrait =
+			{
+				background = person.father.appearance.background
+				dress = random_from(available_dresses)
+			}
+			
+
+			
 		}
-		fallback_names = 
+		if(not not_original) = 
 		{
-			union = {faction_names traits_names}
-			weight = similar_traits(traits_names)
+			skin_colour = colour_deviate(culture.skin_colour, 10)
+			available_phenotypes = mask(mask(resources.appearance.phenotypes, traits, person.culture.traits, at_least_one), sex, person.sex)
+			back = most_weight(weighted(resources.appearance.backgrouds, traits, combine(person.culture.traits, person.class.traits), 1, 0))
+
+			available_dresses = mask(resources.appearance.dresses, any(traits) = person.culture.traits and (age > person.age - 10 and age < person.age + 10) and sex = person.sex)
+			portrait = 
+			{
+				skin = skin_colour
+				phenotype = random_from(available_phenotypes)
+				background = back
+				dress = random_from(available_dresses)
+			}
+			
 		}
-		xyz(1 - 1 + 2 * 2 * (2 - (-1)) + 2) = { z = val }
-		second_name =
-		{
-			if(sex = female and family_status = married, h_name) = {union = husband_name}
-			if(has_family and not h_name, f_name) = {union = family_name}
-			if(not h_name and not f_name) = {union = new_name(culture_second_names)}
-		}
-		set(generated) = true
+		
+
 	} 
 }

@@ -295,6 +295,11 @@ namespace InternalDSL {
             alt = new ProductionPatternAlternative();
             alt.AddProduction((int) DefConstants.ATOM, 1, 1);
             pattern.AddAlternative(alt);
+            alt = new ProductionPatternAlternative();
+            alt.AddToken((int) DefConstants.OPEN_TABLE, 1, 1);
+            alt.AddProduction((int) DefConstants.LIST, 1, 1);
+            alt.AddToken((int) DefConstants.CLOSE_TABLE, 1, 1);
+            pattern.AddAlternative(alt);
             AddPattern(pattern);
 
             pattern = new ProductionPattern((int) SynteticPatterns.SUBPRODUCTION_7,
@@ -327,7 +332,7 @@ namespace InternalDSL {
             pattern.AddAlternative(alt);
             alt = new ProductionPatternAlternative();
             alt.AddToken((int) DefConstants.OPEN_PARENT, 1, 1);
-            alt.AddProduction((int) DefConstants.OR_TERM, 1, 1);
+            alt.AddProduction((int) DefConstants.EXPRESSION, 1, 1);
             alt.AddToken((int) DefConstants.CLOSE_PARENT, 1, 1);
             pattern.AddAlternative(alt);
             AddPattern(pattern);

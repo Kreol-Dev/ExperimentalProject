@@ -30,9 +30,6 @@ namespace InternalDSL {
             case (int) DefConstants.CLOSE_TABLE:
                 EnterCloseTable((Token) node);
                 break;
-            case (int) DefConstants.DOT:
-                EnterDot((Token) node);
-                break;
             case (int) DefConstants.DELIMITER:
                 EnterDelimiter((Token) node);
                 break;
@@ -95,6 +92,9 @@ namespace InternalDSL {
                 break;
             case (int) DefConstants.STRING:
                 EnterString((Token) node);
+                break;
+            case (int) DefConstants.DOT:
+                EnterDot((Token) node);
                 break;
             case (int) DefConstants.ROOT:
                 EnterRoot((Production) node);
@@ -167,8 +167,6 @@ namespace InternalDSL {
                 return ExitOpenTable((Token) node);
             case (int) DefConstants.CLOSE_TABLE:
                 return ExitCloseTable((Token) node);
-            case (int) DefConstants.DOT:
-                return ExitDot((Token) node);
             case (int) DefConstants.DELIMITER:
                 return ExitDelimiter((Token) node);
             case (int) DefConstants.OPEN_PARENT:
@@ -211,6 +209,8 @@ namespace InternalDSL {
                 return ExitNumber((Token) node);
             case (int) DefConstants.STRING:
                 return ExitString((Token) node);
+            case (int) DefConstants.DOT:
+                return ExitDot((Token) node);
             case (int) DefConstants.ROOT:
                 return ExitRoot((Production) node);
             case (int) DefConstants.SCOPE:
@@ -364,32 +364,6 @@ namespace InternalDSL {
          * discovered errors</exception>
          */
         public virtual Node ExitCloseTable(Token node) {
-            return node;
-        }
-
-        /**
-         * <summary>Called when entering a parse tree node.</summary>
-         *
-         * <param name='node'>the node being entered</param>
-         *
-         * <exception cref='ParseException'>if the node analysis
-         * discovered errors</exception>
-         */
-        public virtual void EnterDot(Token node) {
-        }
-
-        /**
-         * <summary>Called when exiting a parse tree node.</summary>
-         *
-         * <param name='node'>the node being exited</param>
-         *
-         * <returns>the node to add to the parse tree, or
-         *          null if no parse tree should be created</returns>
-         *
-         * <exception cref='ParseException'>if the node analysis
-         * discovered errors</exception>
-         */
-        public virtual Node ExitDot(Token node) {
             return node;
         }
 
@@ -936,6 +910,32 @@ namespace InternalDSL {
          * discovered errors</exception>
          */
         public virtual Node ExitString(Token node) {
+            return node;
+        }
+
+        /**
+         * <summary>Called when entering a parse tree node.</summary>
+         *
+         * <param name='node'>the node being entered</param>
+         *
+         * <exception cref='ParseException'>if the node analysis
+         * discovered errors</exception>
+         */
+        public virtual void EnterDot(Token node) {
+        }
+
+        /**
+         * <summary>Called when exiting a parse tree node.</summary>
+         *
+         * <param name='node'>the node being exited</param>
+         *
+         * <returns>the node to add to the parse tree, or
+         *          null if no parse tree should be created</returns>
+         *
+         * <exception cref='ParseException'>if the node analysis
+         * discovered errors</exception>
+         */
+        public virtual Node ExitDot(Token node) {
             return node;
         }
 

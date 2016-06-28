@@ -25,9 +25,12 @@ name_generator =
 			union = {faction_names traits_names}
 			weight = similar_traits(traits_names)
 		}
+
+		
 		xyz(1 - 1 + 2 * 2 * (2 - (-1)) + 2) = { z = val }
 		second_name =
 		{
+			--С помощью генератора кода для оператора сгенерится if (h_name = (sex(context) == female && family_status(context) == married)) {} 
 			if(sex = female and family_status = married, h_name) = {union = husband_name}
 			if(has_family and not h_name, f_name) = {union = family_name}
 			if(not h_name and not f_name) = {union = new_name(culture_second_names)}
