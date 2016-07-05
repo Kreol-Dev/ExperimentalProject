@@ -1,19 +1,18 @@
 new_person_portrait_gen = 
 {
-
 	scope = has_portrait.has_person
-	action = 
+	act = 
 	{
 		if(person.age = 0 and person.father and person.mother, not_original) =
 		{
-			skin_colour = colour_deviate(colour_mix(person.father.appearance.skin_colour, person.mother.appearance.skin_colour, 50), 10)
+			skin_colour = colour_deviate(colour_mix(person.father.appearance.skin_colour, person.mother.appearance.skin_colour, 0.5), 10)
 			mother_phenotype = person.mother.appearance.phenotype
 			father_phenotype = person.father.appearance.phenotype
 			traits = combine(mother_phenotype.traits, father_phenotype.traits)
 			available_phenotypes = mask(mask(resources.appearance.phenotypes, traits, traits, at_least_one), sex, person.sex)
 			
 			
-			available_dresses = mask(resources.appearance.dresses, any(traits) = person.culture.traits and age < 5 and sex = person.sex)
+			available_dresses = mask(resources.appearance.dresses, any(traits) = root.person.culture.traits and age < 5 and sex = root.person.sex)
 			portrait =
 			{
 				background = person.father.appearance.background
@@ -25,7 +24,7 @@ new_person_portrait_gen =
 		}
 		if(not not_original) = 
 		{
-			skin_colour = colour_deviate(culture.skin_colour, 10)
+			skin_colour = colour_deviate(culture.skin_colour, 0.1)
 			available_phenotypes = mask(mask(resources.appearance.phenotypes, traits, person.culture.traits, at_least_one), sex, person.sex)
 			back = most_weight(weighted(resources.appearance.backgrouds, traits, combine(person.culture.traits, person.class.traits), 1, 0))
 

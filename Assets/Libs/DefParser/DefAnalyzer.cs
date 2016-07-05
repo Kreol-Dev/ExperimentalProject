@@ -90,6 +90,9 @@ namespace InternalDSL {
             case (int) DefConstants.NUMBER:
                 EnterNumber((Token) node);
                 break;
+            case (int) DefConstants.NUMBEREND:
+                EnterNumberend((Token) node);
+                break;
             case (int) DefConstants.STRING:
                 EnterString((Token) node);
                 break;
@@ -119,6 +122,9 @@ namespace InternalDSL {
                 break;
             case (int) DefConstants.LIST:
                 EnterList((Production) node);
+                break;
+            case (int) DefConstants.DECIMAL:
+                EnterDecimal((Production) node);
                 break;
             case (int) DefConstants.ATOM:
                 EnterAtom((Production) node);
@@ -207,6 +213,8 @@ namespace InternalDSL {
                 return ExitIdentifier((Token) node);
             case (int) DefConstants.NUMBER:
                 return ExitNumber((Token) node);
+            case (int) DefConstants.NUMBEREND:
+                return ExitNumberend((Token) node);
             case (int) DefConstants.STRING:
                 return ExitString((Token) node);
             case (int) DefConstants.DOT:
@@ -227,6 +235,8 @@ namespace InternalDSL {
                 return ExitContext((Production) node);
             case (int) DefConstants.LIST:
                 return ExitList((Production) node);
+            case (int) DefConstants.DECIMAL:
+                return ExitDecimal((Production) node);
             case (int) DefConstants.ATOM:
                 return ExitAtom((Production) node);
             case (int) DefConstants.FACTOR:
@@ -284,6 +294,9 @@ namespace InternalDSL {
                 break;
             case (int) DefConstants.LIST:
                 ChildList(node, child);
+                break;
+            case (int) DefConstants.DECIMAL:
+                ChildDecimal(node, child);
                 break;
             case (int) DefConstants.ATOM:
                 ChildAtom(node, child);
@@ -895,6 +908,32 @@ namespace InternalDSL {
          * <exception cref='ParseException'>if the node analysis
          * discovered errors</exception>
          */
+        public virtual void EnterNumberend(Token node) {
+        }
+
+        /**
+         * <summary>Called when exiting a parse tree node.</summary>
+         *
+         * <param name='node'>the node being exited</param>
+         *
+         * <returns>the node to add to the parse tree, or
+         *          null if no parse tree should be created</returns>
+         *
+         * <exception cref='ParseException'>if the node analysis
+         * discovered errors</exception>
+         */
+        public virtual Node ExitNumberend(Token node) {
+            return node;
+        }
+
+        /**
+         * <summary>Called when entering a parse tree node.</summary>
+         *
+         * <param name='node'>the node being entered</param>
+         *
+         * <exception cref='ParseException'>if the node analysis
+         * discovered errors</exception>
+         */
         public virtual void EnterString(Token node) {
         }
 
@@ -1256,6 +1295,46 @@ namespace InternalDSL {
          * discovered errors</exception>
          */
         public virtual void ChildList(Production node, Node child) {
+            node.AddChild(child);
+        }
+
+        /**
+         * <summary>Called when entering a parse tree node.</summary>
+         *
+         * <param name='node'>the node being entered</param>
+         *
+         * <exception cref='ParseException'>if the node analysis
+         * discovered errors</exception>
+         */
+        public virtual void EnterDecimal(Production node) {
+        }
+
+        /**
+         * <summary>Called when exiting a parse tree node.</summary>
+         *
+         * <param name='node'>the node being exited</param>
+         *
+         * <returns>the node to add to the parse tree, or
+         *          null if no parse tree should be created</returns>
+         *
+         * <exception cref='ParseException'>if the node analysis
+         * discovered errors</exception>
+         */
+        public virtual Node ExitDecimal(Production node) {
+            return node;
+        }
+
+        /**
+         * <summary>Called when adding a child to a parse tree
+         * node.</summary>
+         *
+         * <param name='node'>the parent node</param>
+         * <param name='child'>the child node, or null</param>
+         *
+         * <exception cref='ParseException'>if the node analysis
+         * discovered errors</exception>
+         */
+        public virtual void ChildDecimal(Production node, Node child) {
             node.AddChild(child);
         }
 

@@ -28,6 +28,7 @@ TRUE = "yes"
 FALSE = "no"
 IDENTIFIER = <<([a-z]|[A-Z]|_)+>>
 NUMBER = <<0|[1-9]|[1-9][0-9]*>>
+NUMBEREND = <<[0-9]*[1-9]>>
 STRING = <<[\"]([^"\\]|\\.)*[\"]>>
 DOT = "."
 
@@ -43,7 +44,8 @@ Operator = IdentifierOrCall EQUALS Context;
 Context = OPEN_TABLE List CLOSE_TABLE | Expression;
 List = (IdentifierOrCall (EQUALS Context)? | Atom | OPEN_TABLE List CLOSE_TABLE)+;
 
-Atom = NUMBER | TRUE | FALSE | STRING;
+Decimal = NUMBER (DOT (NUMBEREND | NUMBER))?;
+Atom = Decimal | TRUE | FALSE | STRING;
 Factor = (SUB | NOT)? ((Atom | Scope) | OPEN_PARENT Expression CLOSE_PARENT);
 MulTerm = Factor (MUL Factor | DIV Factor)*;
 

@@ -11,18 +11,18 @@ Root(2001)
           IDENTIFIER(1022): "scope", line: 4, col: 2
         EQUALS(1010): "=", line: 4, col: 8
         Context(2007)
-          Expression(2017)
-            OrTerm(2016)
-              AndTerm(2015)
-                EqTerm(2014)
-                  RelateTerm(2013)
-                    AddTerm(2012)
-                      MulTerm(2011)
-                        Factor(2010)
+          Expression(2018)
+            OrTerm(2017)
+              AndTerm(2016)
+                EqTerm(2015)
+                  RelateTerm(2014)
+                    AddTerm(2013)
+                      MulTerm(2012)
+                        Factor(2011)
                           Scope(2002)
                             IdentifierOrCall(2004)
                               IDENTIFIER(1022): "has_portrait", line: 4, col: 10
-                            DOT(1025): ".", line: 4, col: 22
+                            DOT(1026): ".", line: 4, col: 22
                             IdentifierOrCall(2004)
                               IDENTIFIER(1022): "has_person", line: 4, col: 23
         IdentifierOrCall(2004)
@@ -35,60 +35,61 @@ Root(2001)
               IDENTIFIER(1022): "if", line: 7, col: 3
               OPEN_PARENT(1005): "(", line: 7, col: 5
               CallArgs(2005)
-                Expression(2017)
-                  OrTerm(2016)
-                    AndTerm(2015)
-                      EqTerm(2014)
-                        RelateTerm(2013)
-                          AddTerm(2012)
-                            MulTerm(2011)
-                              Factor(2010)
+                Expression(2018)
+                  OrTerm(2017)
+                    AndTerm(2016)
+                      EqTerm(2015)
+                        RelateTerm(2014)
+                          AddTerm(2013)
+                            MulTerm(2012)
+                              Factor(2011)
                                 Scope(2002)
                                   IdentifierOrCall(2004)
                                     IDENTIFIER(1022): "person", line: 7, col: 6
-                                  DOT(1025): ".", line: 7, col: 12
+                                  DOT(1026): ".", line: 7, col: 12
                                   IdentifierOrCall(2004)
                                     IDENTIFIER(1022): "age", line: 7, col: 13
                         EQUALS(1010): "=", line: 7, col: 17
-                        RelateTerm(2013)
-                          AddTerm(2012)
-                            MulTerm(2011)
-                              Factor(2010)
-                                Atom(2009)
-                                  NUMBER(1023): "0", line: 7, col: 19
+                        RelateTerm(2014)
+                          AddTerm(2013)
+                            MulTerm(2012)
+                              Factor(2011)
+                                Atom(2010)
+                                  Decimal(2009)
+                                    NUMBER(1023): "0", line: 7, col: 19
                       AND(1007): "and", line: 7, col: 21
-                      EqTerm(2014)
-                        RelateTerm(2013)
-                          AddTerm(2012)
-                            MulTerm(2011)
-                              Factor(2010)
+                      EqTerm(2015)
+                        RelateTerm(2014)
+                          AddTerm(2013)
+                            MulTerm(2012)
+                              Factor(2011)
                                 Scope(2002)
                                   IdentifierOrCall(2004)
                                     IDENTIFIER(1022): "person", line: 7, col: 25
-                                  DOT(1025): ".", line: 7, col: 31
+                                  DOT(1026): ".", line: 7, col: 31
                                   IdentifierOrCall(2004)
                                     IDENTIFIER(1022): "father", line: 7, col: 32
                       AND(1007): "and", line: 7, col: 39
-                      EqTerm(2014)
-                        RelateTerm(2013)
-                          AddTerm(2012)
-                            MulTerm(2011)
-                              Factor(2010)
+                      EqTerm(2015)
+                        RelateTerm(2014)
+                          AddTerm(2013)
+                            MulTerm(2012)
+                              Factor(2011)
                                 Scope(2002)
                                   IdentifierOrCall(2004)
                                     IDENTIFIER(1022): "person", line: 7, col: 43
-                                  DOT(1025): ".", line: 7, col: 49
+                                  DOT(1026): ".", line: 7, col: 49
                                   IdentifierOrCall(2004)
                                     IDENTIFIER(1022): "mother", line: 7, col: 50
                 DELIMITER(1004): ",", line: 7, col: 56
-                Expression(2017)
-                  OrTerm(2016)
-                    AndTerm(2015)
-                      EqTerm(2014)
-                        RelateTerm(2013)
-                          AddTerm(2012)
-                            MulTerm(2011)
-                              Factor(2010)
+                Expression(2018)
+                  OrTerm(2017)
+                    AndTerm(2016)
+                      EqTerm(2015)
+                        RelateTerm(2014)
+                          AddTerm(2013)
+                            MulTerm(2012)
+                              Factor(2011)
                                 Scope(2002)
                                   IdentifierOrCall(2004)
                                     IDENTIFIER(1022): "not_original", line: 7, col: 58
@@ -101,189 +102,193 @@ Root(2001)
                   IDENTIFIER(1022): "skin_colour", line: 9, col: 4
                 EQUALS(1010): "=", line: 9, col: 16
                 Context(2007)
-                  Expression(2017)
-                    OrTerm(2016)
-                      AndTerm(2015)
-                        EqTerm(2014)
-                          RelateTerm(2013)
-                            AddTerm(2012)
-                              MulTerm(2011)
-                                Factor(2010)
+                  Expression(2018)
+                    OrTerm(2017)
+                      AndTerm(2016)
+                        EqTerm(2015)
+                          RelateTerm(2014)
+                            AddTerm(2013)
+                              MulTerm(2012)
+                                Factor(2011)
                                   Scope(2002)
                                     IdentifierOrCall(2004)
                                       IDENTIFIER(1022): "colour_deviate", line: 9, col: 18
                                       OPEN_PARENT(1005): "(", line: 9, col: 32
                                       CallArgs(2005)
-                                        Expression(2017)
-                                          OrTerm(2016)
-                                            AndTerm(2015)
-                                              EqTerm(2014)
-                                                RelateTerm(2013)
-                                                  AddTerm(2012)
-                                                    MulTerm(2011)
-                                                      Factor(2010)
+                                        Expression(2018)
+                                          OrTerm(2017)
+                                            AndTerm(2016)
+                                              EqTerm(2015)
+                                                RelateTerm(2014)
+                                                  AddTerm(2013)
+                                                    MulTerm(2012)
+                                                      Factor(2011)
                                                         Scope(2002)
                                                           IdentifierOrCall(2004)
                                                             IDENTIFIER(1022): "colour_mix", line: 9, col: 33
                                                             OPEN_PARENT(1005): "(", line: 9, col: 43
                                                             CallArgs(2005)
-                                                              Expression(2017)
-                                                                OrTerm(2016)
-                                                                  AndTerm(2015)
-                                                                    EqTerm(2014)
-                                                                      RelateTerm(2013)
-                                                                        AddTerm(2012)
-                                                                          MulTerm(2011)
-                                                                            Factor(2010)
+                                                              Expression(2018)
+                                                                OrTerm(2017)
+                                                                  AndTerm(2016)
+                                                                    EqTerm(2015)
+                                                                      RelateTerm(2014)
+                                                                        AddTerm(2013)
+                                                                          MulTerm(2012)
+                                                                            Factor(2011)
                                                                               Scope(2002)
                                                                                 IdentifierOrCall(2004)
                                                                                   IDENTIFIER(1022): "person", line: 9, col: 44
-                                                                                DOT(1025): ".", line: 9, col: 50
+                                                                                DOT(1026): ".", line: 9, col: 50
                                                                                 IdentifierOrCall(2004)
                                                                                   IDENTIFIER(1022): "father", line: 9, col: 51
-                                                                                DOT(1025): ".", line: 9, col: 57
+                                                                                DOT(1026): ".", line: 9, col: 57
                                                                                 IdentifierOrCall(2004)
                                                                                   IDENTIFIER(1022): "appearance", line: 9, col: 58
-                                                                                DOT(1025): ".", line: 9, col: 68
+                                                                                DOT(1026): ".", line: 9, col: 68
                                                                                 IdentifierOrCall(2004)
                                                                                   IDENTIFIER(1022): "skin_colour", line: 9, col: 69
                                                               DELIMITER(1004): ",", line: 9, col: 80
-                                                              Expression(2017)
-                                                                OrTerm(2016)
-                                                                  AndTerm(2015)
-                                                                    EqTerm(2014)
-                                                                      RelateTerm(2013)
-                                                                        AddTerm(2012)
-                                                                          MulTerm(2011)
-                                                                            Factor(2010)
+                                                              Expression(2018)
+                                                                OrTerm(2017)
+                                                                  AndTerm(2016)
+                                                                    EqTerm(2015)
+                                                                      RelateTerm(2014)
+                                                                        AddTerm(2013)
+                                                                          MulTerm(2012)
+                                                                            Factor(2011)
                                                                               Scope(2002)
                                                                                 IdentifierOrCall(2004)
                                                                                   IDENTIFIER(1022): "person", line: 9, col: 82
-                                                                                DOT(1025): ".", line: 9, col: 88
+                                                                                DOT(1026): ".", line: 9, col: 88
                                                                                 IdentifierOrCall(2004)
                                                                                   IDENTIFIER(1022): "mother", line: 9, col: 89
-                                                                                DOT(1025): ".", line: 9, col: 95
+                                                                                DOT(1026): ".", line: 9, col: 95
                                                                                 IdentifierOrCall(2004)
                                                                                   IDENTIFIER(1022): "appearance", line: 9, col: 96
-                                                                                DOT(1025): ".", line: 9, col: 106
+                                                                                DOT(1026): ".", line: 9, col: 106
                                                                                 IdentifierOrCall(2004)
                                                                                   IDENTIFIER(1022): "skin_colour", line: 9, col: 107
                                                               DELIMITER(1004): ",", line: 9, col: 118
-                                                              Expression(2017)
-                                                                OrTerm(2016)
-                                                                  AndTerm(2015)
-                                                                    EqTerm(2014)
-                                                                      RelateTerm(2013)
-                                                                        AddTerm(2012)
-                                                                          MulTerm(2011)
-                                                                            Factor(2010)
-                                                                              Atom(2009)
-                                                                                NUMBER(1023): "50", line: 9, col: 120
-                                                            CLOSE_PARENT(1006): ")", line: 9, col: 122
-                                        DELIMITER(1004): ",", line: 9, col: 123
-                                        Expression(2017)
-                                          OrTerm(2016)
-                                            AndTerm(2015)
-                                              EqTerm(2014)
-                                                RelateTerm(2013)
-                                                  AddTerm(2012)
-                                                    MulTerm(2011)
-                                                      Factor(2010)
-                                                        Atom(2009)
-                                                          NUMBER(1023): "10", line: 9, col: 125
-                                      CLOSE_PARENT(1006): ")", line: 9, col: 127
+                                                              Expression(2018)
+                                                                OrTerm(2017)
+                                                                  AndTerm(2016)
+                                                                    EqTerm(2015)
+                                                                      RelateTerm(2014)
+                                                                        AddTerm(2013)
+                                                                          MulTerm(2012)
+                                                                            Factor(2011)
+                                                                              Atom(2010)
+                                                                                Decimal(2009)
+                                                                                  NUMBER(1023): "0", line: 9, col: 120
+                                                                                  DOT(1026): ".", line: 9, col: 121
+                                                                                  NUMBER(1023): "5", line: 9, col: 122
+                                                            CLOSE_PARENT(1006): ")", line: 9, col: 123
+                                        DELIMITER(1004): ",", line: 9, col: 124
+                                        Expression(2018)
+                                          OrTerm(2017)
+                                            AndTerm(2016)
+                                              EqTerm(2015)
+                                                RelateTerm(2014)
+                                                  AddTerm(2013)
+                                                    MulTerm(2012)
+                                                      Factor(2011)
+                                                        Atom(2010)
+                                                          Decimal(2009)
+                                                            NUMBER(1023): "10", line: 9, col: 126
+                                      CLOSE_PARENT(1006): ")", line: 9, col: 128
                 IdentifierOrCall(2004)
                   IDENTIFIER(1022): "mother_phenotype", line: 10, col: 4
                 EQUALS(1010): "=", line: 10, col: 21
                 Context(2007)
-                  Expression(2017)
-                    OrTerm(2016)
-                      AndTerm(2015)
-                        EqTerm(2014)
-                          RelateTerm(2013)
-                            AddTerm(2012)
-                              MulTerm(2011)
-                                Factor(2010)
+                  Expression(2018)
+                    OrTerm(2017)
+                      AndTerm(2016)
+                        EqTerm(2015)
+                          RelateTerm(2014)
+                            AddTerm(2013)
+                              MulTerm(2012)
+                                Factor(2011)
                                   Scope(2002)
                                     IdentifierOrCall(2004)
                                       IDENTIFIER(1022): "person", line: 10, col: 23
-                                    DOT(1025): ".", line: 10, col: 29
+                                    DOT(1026): ".", line: 10, col: 29
                                     IdentifierOrCall(2004)
                                       IDENTIFIER(1022): "mother", line: 10, col: 30
-                                    DOT(1025): ".", line: 10, col: 36
+                                    DOT(1026): ".", line: 10, col: 36
                                     IdentifierOrCall(2004)
                                       IDENTIFIER(1022): "appearance", line: 10, col: 37
-                                    DOT(1025): ".", line: 10, col: 47
+                                    DOT(1026): ".", line: 10, col: 47
                                     IdentifierOrCall(2004)
                                       IDENTIFIER(1022): "phenotype", line: 10, col: 48
                 IdentifierOrCall(2004)
                   IDENTIFIER(1022): "father_phenotype", line: 11, col: 4
                 EQUALS(1010): "=", line: 11, col: 21
                 Context(2007)
-                  Expression(2017)
-                    OrTerm(2016)
-                      AndTerm(2015)
-                        EqTerm(2014)
-                          RelateTerm(2013)
-                            AddTerm(2012)
-                              MulTerm(2011)
-                                Factor(2010)
+                  Expression(2018)
+                    OrTerm(2017)
+                      AndTerm(2016)
+                        EqTerm(2015)
+                          RelateTerm(2014)
+                            AddTerm(2013)
+                              MulTerm(2012)
+                                Factor(2011)
                                   Scope(2002)
                                     IdentifierOrCall(2004)
                                       IDENTIFIER(1022): "person", line: 11, col: 23
-                                    DOT(1025): ".", line: 11, col: 29
+                                    DOT(1026): ".", line: 11, col: 29
                                     IdentifierOrCall(2004)
                                       IDENTIFIER(1022): "father", line: 11, col: 30
-                                    DOT(1025): ".", line: 11, col: 36
+                                    DOT(1026): ".", line: 11, col: 36
                                     IdentifierOrCall(2004)
                                       IDENTIFIER(1022): "appearance", line: 11, col: 37
-                                    DOT(1025): ".", line: 11, col: 47
+                                    DOT(1026): ".", line: 11, col: 47
                                     IdentifierOrCall(2004)
                                       IDENTIFIER(1022): "phenotype", line: 11, col: 48
                 IdentifierOrCall(2004)
                   IDENTIFIER(1022): "traits", line: 12, col: 4
                 EQUALS(1010): "=", line: 12, col: 11
                 Context(2007)
-                  Expression(2017)
-                    OrTerm(2016)
-                      AndTerm(2015)
-                        EqTerm(2014)
-                          RelateTerm(2013)
-                            AddTerm(2012)
-                              MulTerm(2011)
-                                Factor(2010)
+                  Expression(2018)
+                    OrTerm(2017)
+                      AndTerm(2016)
+                        EqTerm(2015)
+                          RelateTerm(2014)
+                            AddTerm(2013)
+                              MulTerm(2012)
+                                Factor(2011)
                                   Scope(2002)
                                     IdentifierOrCall(2004)
                                       IDENTIFIER(1022): "combine", line: 12, col: 13
                                       OPEN_PARENT(1005): "(", line: 12, col: 20
                                       CallArgs(2005)
-                                        Expression(2017)
-                                          OrTerm(2016)
-                                            AndTerm(2015)
-                                              EqTerm(2014)
-                                                RelateTerm(2013)
-                                                  AddTerm(2012)
-                                                    MulTerm(2011)
-                                                      Factor(2010)
+                                        Expression(2018)
+                                          OrTerm(2017)
+                                            AndTerm(2016)
+                                              EqTerm(2015)
+                                                RelateTerm(2014)
+                                                  AddTerm(2013)
+                                                    MulTerm(2012)
+                                                      Factor(2011)
                                                         Scope(2002)
                                                           IdentifierOrCall(2004)
                                                             IDENTIFIER(1022): "mother_phenotype", line: 12, col: 21
-                                                          DOT(1025): ".", line: 12, col: 37
+                                                          DOT(1026): ".", line: 12, col: 37
                                                           IdentifierOrCall(2004)
                                                             IDENTIFIER(1022): "traits", line: 12, col: 38
                                         DELIMITER(1004): ",", line: 12, col: 44
-                                        Expression(2017)
-                                          OrTerm(2016)
-                                            AndTerm(2015)
-                                              EqTerm(2014)
-                                                RelateTerm(2013)
-                                                  AddTerm(2012)
-                                                    MulTerm(2011)
-                                                      Factor(2010)
+                                        Expression(2018)
+                                          OrTerm(2017)
+                                            AndTerm(2016)
+                                              EqTerm(2015)
+                                                RelateTerm(2014)
+                                                  AddTerm(2013)
+                                                    MulTerm(2012)
+                                                      Factor(2011)
                                                         Scope(2002)
                                                           IdentifierOrCall(2004)
                                                             IDENTIFIER(1022): "father_phenotype", line: 12, col: 46
-                                                          DOT(1025): ".", line: 12, col: 62
+                                                          DOT(1026): ".", line: 12, col: 62
                                                           IdentifierOrCall(2004)
                                                             IDENTIFIER(1022): "traits", line: 12, col: 63
                                       CLOSE_PARENT(1006): ")", line: 12, col: 69
@@ -291,111 +296,111 @@ Root(2001)
                   IDENTIFIER(1022): "available_phenotypes", line: 13, col: 4
                 EQUALS(1010): "=", line: 13, col: 25
                 Context(2007)
-                  Expression(2017)
-                    OrTerm(2016)
-                      AndTerm(2015)
-                        EqTerm(2014)
-                          RelateTerm(2013)
-                            AddTerm(2012)
-                              MulTerm(2011)
-                                Factor(2010)
+                  Expression(2018)
+                    OrTerm(2017)
+                      AndTerm(2016)
+                        EqTerm(2015)
+                          RelateTerm(2014)
+                            AddTerm(2013)
+                              MulTerm(2012)
+                                Factor(2011)
                                   Scope(2002)
                                     IdentifierOrCall(2004)
                                       IDENTIFIER(1022): "mask", line: 13, col: 27
                                       OPEN_PARENT(1005): "(", line: 13, col: 31
                                       CallArgs(2005)
-                                        Expression(2017)
-                                          OrTerm(2016)
-                                            AndTerm(2015)
-                                              EqTerm(2014)
-                                                RelateTerm(2013)
-                                                  AddTerm(2012)
-                                                    MulTerm(2011)
-                                                      Factor(2010)
+                                        Expression(2018)
+                                          OrTerm(2017)
+                                            AndTerm(2016)
+                                              EqTerm(2015)
+                                                RelateTerm(2014)
+                                                  AddTerm(2013)
+                                                    MulTerm(2012)
+                                                      Factor(2011)
                                                         Scope(2002)
                                                           IdentifierOrCall(2004)
                                                             IDENTIFIER(1022): "mask", line: 13, col: 32
                                                             OPEN_PARENT(1005): "(", line: 13, col: 36
                                                             CallArgs(2005)
-                                                              Expression(2017)
-                                                                OrTerm(2016)
-                                                                  AndTerm(2015)
-                                                                    EqTerm(2014)
-                                                                      RelateTerm(2013)
-                                                                        AddTerm(2012)
-                                                                          MulTerm(2011)
-                                                                            Factor(2010)
+                                                              Expression(2018)
+                                                                OrTerm(2017)
+                                                                  AndTerm(2016)
+                                                                    EqTerm(2015)
+                                                                      RelateTerm(2014)
+                                                                        AddTerm(2013)
+                                                                          MulTerm(2012)
+                                                                            Factor(2011)
                                                                               Scope(2002)
                                                                                 IdentifierOrCall(2004)
                                                                                   IDENTIFIER(1022): "resources", line: 13, col: 37
-                                                                                DOT(1025): ".", line: 13, col: 46
+                                                                                DOT(1026): ".", line: 13, col: 46
                                                                                 IdentifierOrCall(2004)
                                                                                   IDENTIFIER(1022): "appearance", line: 13, col: 47
-                                                                                DOT(1025): ".", line: 13, col: 57
+                                                                                DOT(1026): ".", line: 13, col: 57
                                                                                 IdentifierOrCall(2004)
                                                                                   IDENTIFIER(1022): "phenotypes", line: 13, col: 58
                                                               DELIMITER(1004): ",", line: 13, col: 68
-                                                              Expression(2017)
-                                                                OrTerm(2016)
-                                                                  AndTerm(2015)
-                                                                    EqTerm(2014)
-                                                                      RelateTerm(2013)
-                                                                        AddTerm(2012)
-                                                                          MulTerm(2011)
-                                                                            Factor(2010)
+                                                              Expression(2018)
+                                                                OrTerm(2017)
+                                                                  AndTerm(2016)
+                                                                    EqTerm(2015)
+                                                                      RelateTerm(2014)
+                                                                        AddTerm(2013)
+                                                                          MulTerm(2012)
+                                                                            Factor(2011)
                                                                               Scope(2002)
                                                                                 IdentifierOrCall(2004)
                                                                                   IDENTIFIER(1022): "traits", line: 13, col: 70
                                                               DELIMITER(1004): ",", line: 13, col: 76
-                                                              Expression(2017)
-                                                                OrTerm(2016)
-                                                                  AndTerm(2015)
-                                                                    EqTerm(2014)
-                                                                      RelateTerm(2013)
-                                                                        AddTerm(2012)
-                                                                          MulTerm(2011)
-                                                                            Factor(2010)
+                                                              Expression(2018)
+                                                                OrTerm(2017)
+                                                                  AndTerm(2016)
+                                                                    EqTerm(2015)
+                                                                      RelateTerm(2014)
+                                                                        AddTerm(2013)
+                                                                          MulTerm(2012)
+                                                                            Factor(2011)
                                                                               Scope(2002)
                                                                                 IdentifierOrCall(2004)
                                                                                   IDENTIFIER(1022): "traits", line: 13, col: 78
                                                               DELIMITER(1004): ",", line: 13, col: 84
-                                                              Expression(2017)
-                                                                OrTerm(2016)
-                                                                  AndTerm(2015)
-                                                                    EqTerm(2014)
-                                                                      RelateTerm(2013)
-                                                                        AddTerm(2012)
-                                                                          MulTerm(2011)
-                                                                            Factor(2010)
+                                                              Expression(2018)
+                                                                OrTerm(2017)
+                                                                  AndTerm(2016)
+                                                                    EqTerm(2015)
+                                                                      RelateTerm(2014)
+                                                                        AddTerm(2013)
+                                                                          MulTerm(2012)
+                                                                            Factor(2011)
                                                                               Scope(2002)
                                                                                 IdentifierOrCall(2004)
                                                                                   IDENTIFIER(1022): "at_least_one", line: 13, col: 86
                                                             CLOSE_PARENT(1006): ")", line: 13, col: 98
                                         DELIMITER(1004): ",", line: 13, col: 99
-                                        Expression(2017)
-                                          OrTerm(2016)
-                                            AndTerm(2015)
-                                              EqTerm(2014)
-                                                RelateTerm(2013)
-                                                  AddTerm(2012)
-                                                    MulTerm(2011)
-                                                      Factor(2010)
+                                        Expression(2018)
+                                          OrTerm(2017)
+                                            AndTerm(2016)
+                                              EqTerm(2015)
+                                                RelateTerm(2014)
+                                                  AddTerm(2013)
+                                                    MulTerm(2012)
+                                                      Factor(2011)
                                                         Scope(2002)
                                                           IdentifierOrCall(2004)
                                                             IDENTIFIER(1022): "sex", line: 13, col: 101
                                         DELIMITER(1004): ",", line: 13, col: 104
-                                        Expression(2017)
-                                          OrTerm(2016)
-                                            AndTerm(2015)
-                                              EqTerm(2014)
-                                                RelateTerm(2013)
-                                                  AddTerm(2012)
-                                                    MulTerm(2011)
-                                                      Factor(2010)
+                                        Expression(2018)
+                                          OrTerm(2017)
+                                            AndTerm(2016)
+                                              EqTerm(2015)
+                                                RelateTerm(2014)
+                                                  AddTerm(2013)
+                                                    MulTerm(2012)
+                                                      Factor(2011)
                                                         Scope(2002)
                                                           IdentifierOrCall(2004)
                                                             IDENTIFIER(1022): "person", line: 13, col: 106
-                                                          DOT(1025): ".", line: 13, col: 112
+                                                          DOT(1026): ".", line: 13, col: 112
                                                           IdentifierOrCall(2004)
                                                             IDENTIFIER(1022): "sex", line: 13, col: 113
                                       CLOSE_PARENT(1006): ")", line: 13, col: 116
@@ -403,109 +408,110 @@ Root(2001)
                   IDENTIFIER(1022): "available_dresses", line: 16, col: 4
                 EQUALS(1010): "=", line: 16, col: 22
                 Context(2007)
-                  Expression(2017)
-                    OrTerm(2016)
-                      AndTerm(2015)
-                        EqTerm(2014)
-                          RelateTerm(2013)
-                            AddTerm(2012)
-                              MulTerm(2011)
-                                Factor(2010)
+                  Expression(2018)
+                    OrTerm(2017)
+                      AndTerm(2016)
+                        EqTerm(2015)
+                          RelateTerm(2014)
+                            AddTerm(2013)
+                              MulTerm(2012)
+                                Factor(2011)
                                   Scope(2002)
                                     IdentifierOrCall(2004)
                                       IDENTIFIER(1022): "mask", line: 16, col: 24
                                       OPEN_PARENT(1005): "(", line: 16, col: 28
                                       CallArgs(2005)
-                                        Expression(2017)
-                                          OrTerm(2016)
-                                            AndTerm(2015)
-                                              EqTerm(2014)
-                                                RelateTerm(2013)
-                                                  AddTerm(2012)
-                                                    MulTerm(2011)
-                                                      Factor(2010)
+                                        Expression(2018)
+                                          OrTerm(2017)
+                                            AndTerm(2016)
+                                              EqTerm(2015)
+                                                RelateTerm(2014)
+                                                  AddTerm(2013)
+                                                    MulTerm(2012)
+                                                      Factor(2011)
                                                         Scope(2002)
                                                           IdentifierOrCall(2004)
                                                             IDENTIFIER(1022): "resources", line: 16, col: 29
-                                                          DOT(1025): ".", line: 16, col: 38
+                                                          DOT(1026): ".", line: 16, col: 38
                                                           IdentifierOrCall(2004)
                                                             IDENTIFIER(1022): "appearance", line: 16, col: 39
-                                                          DOT(1025): ".", line: 16, col: 49
+                                                          DOT(1026): ".", line: 16, col: 49
                                                           IdentifierOrCall(2004)
                                                             IDENTIFIER(1022): "dresses", line: 16, col: 50
                                         DELIMITER(1004): ",", line: 16, col: 57
-                                        Expression(2017)
-                                          OrTerm(2016)
-                                            AndTerm(2015)
-                                              EqTerm(2014)
-                                                RelateTerm(2013)
-                                                  AddTerm(2012)
-                                                    MulTerm(2011)
-                                                      Factor(2010)
+                                        Expression(2018)
+                                          OrTerm(2017)
+                                            AndTerm(2016)
+                                              EqTerm(2015)
+                                                RelateTerm(2014)
+                                                  AddTerm(2013)
+                                                    MulTerm(2012)
+                                                      Factor(2011)
                                                         Scope(2002)
                                                           IdentifierOrCall(2004)
                                                             IDENTIFIER(1022): "any", line: 16, col: 59
                                                             OPEN_PARENT(1005): "(", line: 16, col: 62
                                                             CallArgs(2005)
-                                                              Expression(2017)
-                                                                OrTerm(2016)
-                                                                  AndTerm(2015)
-                                                                    EqTerm(2014)
-                                                                      RelateTerm(2013)
-                                                                        AddTerm(2012)
-                                                                          MulTerm(2011)
-                                                                            Factor(2010)
+                                                              Expression(2018)
+                                                                OrTerm(2017)
+                                                                  AndTerm(2016)
+                                                                    EqTerm(2015)
+                                                                      RelateTerm(2014)
+                                                                        AddTerm(2013)
+                                                                          MulTerm(2012)
+                                                                            Factor(2011)
                                                                               Scope(2002)
                                                                                 IdentifierOrCall(2004)
                                                                                   IDENTIFIER(1022): "traits", line: 16, col: 63
                                                             CLOSE_PARENT(1006): ")", line: 16, col: 69
                                                 EQUALS(1010): "=", line: 16, col: 71
-                                                RelateTerm(2013)
-                                                  AddTerm(2012)
-                                                    MulTerm(2011)
-                                                      Factor(2010)
+                                                RelateTerm(2014)
+                                                  AddTerm(2013)
+                                                    MulTerm(2012)
+                                                      Factor(2011)
                                                         Scope(2002)
                                                           IdentifierOrCall(2004)
                                                             IDENTIFIER(1022): "person", line: 16, col: 73
-                                                          DOT(1025): ".", line: 16, col: 79
+                                                          DOT(1026): ".", line: 16, col: 79
                                                           IdentifierOrCall(2004)
                                                             IDENTIFIER(1022): "culture", line: 16, col: 80
-                                                          DOT(1025): ".", line: 16, col: 87
+                                                          DOT(1026): ".", line: 16, col: 87
                                                           IdentifierOrCall(2004)
                                                             IDENTIFIER(1022): "traits", line: 16, col: 88
                                               AND(1007): "and", line: 16, col: 95
-                                              EqTerm(2014)
-                                                RelateTerm(2013)
-                                                  AddTerm(2012)
-                                                    MulTerm(2011)
-                                                      Factor(2010)
+                                              EqTerm(2015)
+                                                RelateTerm(2014)
+                                                  AddTerm(2013)
+                                                    MulTerm(2012)
+                                                      Factor(2011)
                                                         Scope(2002)
                                                           IdentifierOrCall(2004)
                                                             IDENTIFIER(1022): "age", line: 16, col: 99
                                                   LESS(1017): "<", line: 16, col: 103
-                                                  AddTerm(2012)
-                                                    MulTerm(2011)
-                                                      Factor(2010)
-                                                        Atom(2009)
-                                                          NUMBER(1023): "5", line: 16, col: 105
+                                                  AddTerm(2013)
+                                                    MulTerm(2012)
+                                                      Factor(2011)
+                                                        Atom(2010)
+                                                          Decimal(2009)
+                                                            NUMBER(1023): "5", line: 16, col: 105
                                               AND(1007): "and", line: 16, col: 107
-                                              EqTerm(2014)
-                                                RelateTerm(2013)
-                                                  AddTerm(2012)
-                                                    MulTerm(2011)
-                                                      Factor(2010)
+                                              EqTerm(2015)
+                                                RelateTerm(2014)
+                                                  AddTerm(2013)
+                                                    MulTerm(2012)
+                                                      Factor(2011)
                                                         Scope(2002)
                                                           IdentifierOrCall(2004)
                                                             IDENTIFIER(1022): "sex", line: 16, col: 111
                                                 EQUALS(1010): "=", line: 16, col: 115
-                                                RelateTerm(2013)
-                                                  AddTerm(2012)
-                                                    MulTerm(2011)
-                                                      Factor(2010)
+                                                RelateTerm(2014)
+                                                  AddTerm(2013)
+                                                    MulTerm(2012)
+                                                      Factor(2011)
                                                         Scope(2002)
                                                           IdentifierOrCall(2004)
                                                             IDENTIFIER(1022): "person", line: 16, col: 117
-                                                          DOT(1025): ".", line: 16, col: 123
+                                                          DOT(1026): ".", line: 16, col: 123
                                                           IdentifierOrCall(2004)
                                                             IDENTIFIER(1022): "sex", line: 16, col: 124
                                       CLOSE_PARENT(1006): ")", line: 16, col: 127
@@ -519,51 +525,51 @@ Root(2001)
                       IDENTIFIER(1022): "background", line: 19, col: 5
                     EQUALS(1010): "=", line: 19, col: 16
                     Context(2007)
-                      Expression(2017)
-                        OrTerm(2016)
-                          AndTerm(2015)
-                            EqTerm(2014)
-                              RelateTerm(2013)
-                                AddTerm(2012)
-                                  MulTerm(2011)
-                                    Factor(2010)
+                      Expression(2018)
+                        OrTerm(2017)
+                          AndTerm(2016)
+                            EqTerm(2015)
+                              RelateTerm(2014)
+                                AddTerm(2013)
+                                  MulTerm(2012)
+                                    Factor(2011)
                                       Scope(2002)
                                         IdentifierOrCall(2004)
                                           IDENTIFIER(1022): "person", line: 19, col: 18
-                                        DOT(1025): ".", line: 19, col: 24
+                                        DOT(1026): ".", line: 19, col: 24
                                         IdentifierOrCall(2004)
                                           IDENTIFIER(1022): "father", line: 19, col: 25
-                                        DOT(1025): ".", line: 19, col: 31
+                                        DOT(1026): ".", line: 19, col: 31
                                         IdentifierOrCall(2004)
                                           IDENTIFIER(1022): "appearance", line: 19, col: 32
-                                        DOT(1025): ".", line: 19, col: 42
+                                        DOT(1026): ".", line: 19, col: 42
                                         IdentifierOrCall(2004)
                                           IDENTIFIER(1022): "background", line: 19, col: 43
                     IdentifierOrCall(2004)
                       IDENTIFIER(1022): "dress", line: 20, col: 5
                     EQUALS(1010): "=", line: 20, col: 11
                     Context(2007)
-                      Expression(2017)
-                        OrTerm(2016)
-                          AndTerm(2015)
-                            EqTerm(2014)
-                              RelateTerm(2013)
-                                AddTerm(2012)
-                                  MulTerm(2011)
-                                    Factor(2010)
+                      Expression(2018)
+                        OrTerm(2017)
+                          AndTerm(2016)
+                            EqTerm(2015)
+                              RelateTerm(2014)
+                                AddTerm(2013)
+                                  MulTerm(2012)
+                                    Factor(2011)
                                       Scope(2002)
                                         IdentifierOrCall(2004)
                                           IDENTIFIER(1022): "random_from", line: 20, col: 13
                                           OPEN_PARENT(1005): "(", line: 20, col: 24
                                           CallArgs(2005)
-                                            Expression(2017)
-                                              OrTerm(2016)
-                                                AndTerm(2015)
-                                                  EqTerm(2014)
-                                                    RelateTerm(2013)
-                                                      AddTerm(2012)
-                                                        MulTerm(2011)
-                                                          Factor(2010)
+                                            Expression(2018)
+                                              OrTerm(2017)
+                                                AndTerm(2016)
+                                                  EqTerm(2015)
+                                                    RelateTerm(2014)
+                                                      AddTerm(2013)
+                                                        MulTerm(2012)
+                                                          Factor(2011)
                                                             Scope(2002)
                                                               IdentifierOrCall(2004)
                                                                 IDENTIFIER(1022): "available_dresses", line: 20, col: 25
@@ -574,14 +580,14 @@ Root(2001)
               IDENTIFIER(1022): "if", line: 26, col: 3
               OPEN_PARENT(1005): "(", line: 26, col: 5
               CallArgs(2005)
-                Expression(2017)
-                  OrTerm(2016)
-                    AndTerm(2015)
-                      EqTerm(2014)
-                        RelateTerm(2013)
-                          AddTerm(2012)
-                            MulTerm(2011)
-                              Factor(2010)
+                Expression(2018)
+                  OrTerm(2017)
+                    AndTerm(2016)
+                      EqTerm(2015)
+                        RelateTerm(2014)
+                          AddTerm(2013)
+                            MulTerm(2012)
+                              Factor(2011)
                                 NOT(1009): "not", line: 26, col: 6
                                 Scope(2002)
                                   IdentifierOrCall(2004)
@@ -595,160 +601,163 @@ Root(2001)
                   IDENTIFIER(1022): "skin_colour", line: 28, col: 4
                 EQUALS(1010): "=", line: 28, col: 16
                 Context(2007)
-                  Expression(2017)
-                    OrTerm(2016)
-                      AndTerm(2015)
-                        EqTerm(2014)
-                          RelateTerm(2013)
-                            AddTerm(2012)
-                              MulTerm(2011)
-                                Factor(2010)
+                  Expression(2018)
+                    OrTerm(2017)
+                      AndTerm(2016)
+                        EqTerm(2015)
+                          RelateTerm(2014)
+                            AddTerm(2013)
+                              MulTerm(2012)
+                                Factor(2011)
                                   Scope(2002)
                                     IdentifierOrCall(2004)
                                       IDENTIFIER(1022): "colour_deviate", line: 28, col: 18
                                       OPEN_PARENT(1005): "(", line: 28, col: 32
                                       CallArgs(2005)
-                                        Expression(2017)
-                                          OrTerm(2016)
-                                            AndTerm(2015)
-                                              EqTerm(2014)
-                                                RelateTerm(2013)
-                                                  AddTerm(2012)
-                                                    MulTerm(2011)
-                                                      Factor(2010)
+                                        Expression(2018)
+                                          OrTerm(2017)
+                                            AndTerm(2016)
+                                              EqTerm(2015)
+                                                RelateTerm(2014)
+                                                  AddTerm(2013)
+                                                    MulTerm(2012)
+                                                      Factor(2011)
                                                         Scope(2002)
                                                           IdentifierOrCall(2004)
                                                             IDENTIFIER(1022): "culture", line: 28, col: 33
-                                                          DOT(1025): ".", line: 28, col: 40
+                                                          DOT(1026): ".", line: 28, col: 40
                                                           IdentifierOrCall(2004)
                                                             IDENTIFIER(1022): "skin_colour", line: 28, col: 41
                                         DELIMITER(1004): ",", line: 28, col: 52
-                                        Expression(2017)
-                                          OrTerm(2016)
-                                            AndTerm(2015)
-                                              EqTerm(2014)
-                                                RelateTerm(2013)
-                                                  AddTerm(2012)
-                                                    MulTerm(2011)
-                                                      Factor(2010)
-                                                        Atom(2009)
-                                                          NUMBER(1023): "10", line: 28, col: 54
-                                      CLOSE_PARENT(1006): ")", line: 28, col: 56
+                                        Expression(2018)
+                                          OrTerm(2017)
+                                            AndTerm(2016)
+                                              EqTerm(2015)
+                                                RelateTerm(2014)
+                                                  AddTerm(2013)
+                                                    MulTerm(2012)
+                                                      Factor(2011)
+                                                        Atom(2010)
+                                                          Decimal(2009)
+                                                            NUMBER(1023): "0", line: 28, col: 54
+                                                            DOT(1026): ".", line: 28, col: 55
+                                                            NUMBER(1023): "1", line: 28, col: 56
+                                      CLOSE_PARENT(1006): ")", line: 28, col: 57
                 IdentifierOrCall(2004)
                   IDENTIFIER(1022): "available_phenotypes", line: 29, col: 4
                 EQUALS(1010): "=", line: 29, col: 25
                 Context(2007)
-                  Expression(2017)
-                    OrTerm(2016)
-                      AndTerm(2015)
-                        EqTerm(2014)
-                          RelateTerm(2013)
-                            AddTerm(2012)
-                              MulTerm(2011)
-                                Factor(2010)
+                  Expression(2018)
+                    OrTerm(2017)
+                      AndTerm(2016)
+                        EqTerm(2015)
+                          RelateTerm(2014)
+                            AddTerm(2013)
+                              MulTerm(2012)
+                                Factor(2011)
                                   Scope(2002)
                                     IdentifierOrCall(2004)
                                       IDENTIFIER(1022): "mask", line: 29, col: 27
                                       OPEN_PARENT(1005): "(", line: 29, col: 31
                                       CallArgs(2005)
-                                        Expression(2017)
-                                          OrTerm(2016)
-                                            AndTerm(2015)
-                                              EqTerm(2014)
-                                                RelateTerm(2013)
-                                                  AddTerm(2012)
-                                                    MulTerm(2011)
-                                                      Factor(2010)
+                                        Expression(2018)
+                                          OrTerm(2017)
+                                            AndTerm(2016)
+                                              EqTerm(2015)
+                                                RelateTerm(2014)
+                                                  AddTerm(2013)
+                                                    MulTerm(2012)
+                                                      Factor(2011)
                                                         Scope(2002)
                                                           IdentifierOrCall(2004)
                                                             IDENTIFIER(1022): "mask", line: 29, col: 32
                                                             OPEN_PARENT(1005): "(", line: 29, col: 36
                                                             CallArgs(2005)
-                                                              Expression(2017)
-                                                                OrTerm(2016)
-                                                                  AndTerm(2015)
-                                                                    EqTerm(2014)
-                                                                      RelateTerm(2013)
-                                                                        AddTerm(2012)
-                                                                          MulTerm(2011)
-                                                                            Factor(2010)
+                                                              Expression(2018)
+                                                                OrTerm(2017)
+                                                                  AndTerm(2016)
+                                                                    EqTerm(2015)
+                                                                      RelateTerm(2014)
+                                                                        AddTerm(2013)
+                                                                          MulTerm(2012)
+                                                                            Factor(2011)
                                                                               Scope(2002)
                                                                                 IdentifierOrCall(2004)
                                                                                   IDENTIFIER(1022): "resources", line: 29, col: 37
-                                                                                DOT(1025): ".", line: 29, col: 46
+                                                                                DOT(1026): ".", line: 29, col: 46
                                                                                 IdentifierOrCall(2004)
                                                                                   IDENTIFIER(1022): "appearance", line: 29, col: 47
-                                                                                DOT(1025): ".", line: 29, col: 57
+                                                                                DOT(1026): ".", line: 29, col: 57
                                                                                 IdentifierOrCall(2004)
                                                                                   IDENTIFIER(1022): "phenotypes", line: 29, col: 58
                                                               DELIMITER(1004): ",", line: 29, col: 68
-                                                              Expression(2017)
-                                                                OrTerm(2016)
-                                                                  AndTerm(2015)
-                                                                    EqTerm(2014)
-                                                                      RelateTerm(2013)
-                                                                        AddTerm(2012)
-                                                                          MulTerm(2011)
-                                                                            Factor(2010)
+                                                              Expression(2018)
+                                                                OrTerm(2017)
+                                                                  AndTerm(2016)
+                                                                    EqTerm(2015)
+                                                                      RelateTerm(2014)
+                                                                        AddTerm(2013)
+                                                                          MulTerm(2012)
+                                                                            Factor(2011)
                                                                               Scope(2002)
                                                                                 IdentifierOrCall(2004)
                                                                                   IDENTIFIER(1022): "traits", line: 29, col: 70
                                                               DELIMITER(1004): ",", line: 29, col: 76
-                                                              Expression(2017)
-                                                                OrTerm(2016)
-                                                                  AndTerm(2015)
-                                                                    EqTerm(2014)
-                                                                      RelateTerm(2013)
-                                                                        AddTerm(2012)
-                                                                          MulTerm(2011)
-                                                                            Factor(2010)
+                                                              Expression(2018)
+                                                                OrTerm(2017)
+                                                                  AndTerm(2016)
+                                                                    EqTerm(2015)
+                                                                      RelateTerm(2014)
+                                                                        AddTerm(2013)
+                                                                          MulTerm(2012)
+                                                                            Factor(2011)
                                                                               Scope(2002)
                                                                                 IdentifierOrCall(2004)
                                                                                   IDENTIFIER(1022): "person", line: 29, col: 78
-                                                                                DOT(1025): ".", line: 29, col: 84
+                                                                                DOT(1026): ".", line: 29, col: 84
                                                                                 IdentifierOrCall(2004)
                                                                                   IDENTIFIER(1022): "culture", line: 29, col: 85
-                                                                                DOT(1025): ".", line: 29, col: 92
+                                                                                DOT(1026): ".", line: 29, col: 92
                                                                                 IdentifierOrCall(2004)
                                                                                   IDENTIFIER(1022): "traits", line: 29, col: 93
                                                               DELIMITER(1004): ",", line: 29, col: 99
-                                                              Expression(2017)
-                                                                OrTerm(2016)
-                                                                  AndTerm(2015)
-                                                                    EqTerm(2014)
-                                                                      RelateTerm(2013)
-                                                                        AddTerm(2012)
-                                                                          MulTerm(2011)
-                                                                            Factor(2010)
+                                                              Expression(2018)
+                                                                OrTerm(2017)
+                                                                  AndTerm(2016)
+                                                                    EqTerm(2015)
+                                                                      RelateTerm(2014)
+                                                                        AddTerm(2013)
+                                                                          MulTerm(2012)
+                                                                            Factor(2011)
                                                                               Scope(2002)
                                                                                 IdentifierOrCall(2004)
                                                                                   IDENTIFIER(1022): "at_least_one", line: 29, col: 101
                                                             CLOSE_PARENT(1006): ")", line: 29, col: 113
                                         DELIMITER(1004): ",", line: 29, col: 114
-                                        Expression(2017)
-                                          OrTerm(2016)
-                                            AndTerm(2015)
-                                              EqTerm(2014)
-                                                RelateTerm(2013)
-                                                  AddTerm(2012)
-                                                    MulTerm(2011)
-                                                      Factor(2010)
+                                        Expression(2018)
+                                          OrTerm(2017)
+                                            AndTerm(2016)
+                                              EqTerm(2015)
+                                                RelateTerm(2014)
+                                                  AddTerm(2013)
+                                                    MulTerm(2012)
+                                                      Factor(2011)
                                                         Scope(2002)
                                                           IdentifierOrCall(2004)
                                                             IDENTIFIER(1022): "sex", line: 29, col: 116
                                         DELIMITER(1004): ",", line: 29, col: 119
-                                        Expression(2017)
-                                          OrTerm(2016)
-                                            AndTerm(2015)
-                                              EqTerm(2014)
-                                                RelateTerm(2013)
-                                                  AddTerm(2012)
-                                                    MulTerm(2011)
-                                                      Factor(2010)
+                                        Expression(2018)
+                                          OrTerm(2017)
+                                            AndTerm(2016)
+                                              EqTerm(2015)
+                                                RelateTerm(2014)
+                                                  AddTerm(2013)
+                                                    MulTerm(2012)
+                                                      Factor(2011)
                                                         Scope(2002)
                                                           IdentifierOrCall(2004)
                                                             IDENTIFIER(1022): "person", line: 29, col: 121
-                                                          DOT(1025): ".", line: 29, col: 127
+                                                          DOT(1026): ".", line: 29, col: 127
                                                           IdentifierOrCall(2004)
                                                             IDENTIFIER(1022): "sex", line: 29, col: 128
                                       CLOSE_PARENT(1006): ")", line: 29, col: 131
@@ -756,285 +765,289 @@ Root(2001)
                   IDENTIFIER(1022): "back", line: 30, col: 4
                 EQUALS(1010): "=", line: 30, col: 9
                 Context(2007)
-                  Expression(2017)
-                    OrTerm(2016)
-                      AndTerm(2015)
-                        EqTerm(2014)
-                          RelateTerm(2013)
-                            AddTerm(2012)
-                              MulTerm(2011)
-                                Factor(2010)
+                  Expression(2018)
+                    OrTerm(2017)
+                      AndTerm(2016)
+                        EqTerm(2015)
+                          RelateTerm(2014)
+                            AddTerm(2013)
+                              MulTerm(2012)
+                                Factor(2011)
                                   Scope(2002)
                                     IdentifierOrCall(2004)
                                       IDENTIFIER(1022): "most_weight", line: 30, col: 11
                                       OPEN_PARENT(1005): "(", line: 30, col: 22
                                       CallArgs(2005)
-                                        Expression(2017)
-                                          OrTerm(2016)
-                                            AndTerm(2015)
-                                              EqTerm(2014)
-                                                RelateTerm(2013)
-                                                  AddTerm(2012)
-                                                    MulTerm(2011)
-                                                      Factor(2010)
+                                        Expression(2018)
+                                          OrTerm(2017)
+                                            AndTerm(2016)
+                                              EqTerm(2015)
+                                                RelateTerm(2014)
+                                                  AddTerm(2013)
+                                                    MulTerm(2012)
+                                                      Factor(2011)
                                                         Scope(2002)
                                                           IdentifierOrCall(2004)
                                                             IDENTIFIER(1022): "weighted", line: 30, col: 23
                                                             OPEN_PARENT(1005): "(", line: 30, col: 31
                                                             CallArgs(2005)
-                                                              Expression(2017)
-                                                                OrTerm(2016)
-                                                                  AndTerm(2015)
-                                                                    EqTerm(2014)
-                                                                      RelateTerm(2013)
-                                                                        AddTerm(2012)
-                                                                          MulTerm(2011)
-                                                                            Factor(2010)
+                                                              Expression(2018)
+                                                                OrTerm(2017)
+                                                                  AndTerm(2016)
+                                                                    EqTerm(2015)
+                                                                      RelateTerm(2014)
+                                                                        AddTerm(2013)
+                                                                          MulTerm(2012)
+                                                                            Factor(2011)
                                                                               Scope(2002)
                                                                                 IdentifierOrCall(2004)
                                                                                   IDENTIFIER(1022): "resources", line: 30, col: 32
-                                                                                DOT(1025): ".", line: 30, col: 41
+                                                                                DOT(1026): ".", line: 30, col: 41
                                                                                 IdentifierOrCall(2004)
                                                                                   IDENTIFIER(1022): "appearance", line: 30, col: 42
-                                                                                DOT(1025): ".", line: 30, col: 52
+                                                                                DOT(1026): ".", line: 30, col: 52
                                                                                 IdentifierOrCall(2004)
                                                                                   IDENTIFIER(1022): "backgrouds", line: 30, col: 53
                                                               DELIMITER(1004): ",", line: 30, col: 63
-                                                              Expression(2017)
-                                                                OrTerm(2016)
-                                                                  AndTerm(2015)
-                                                                    EqTerm(2014)
-                                                                      RelateTerm(2013)
-                                                                        AddTerm(2012)
-                                                                          MulTerm(2011)
-                                                                            Factor(2010)
+                                                              Expression(2018)
+                                                                OrTerm(2017)
+                                                                  AndTerm(2016)
+                                                                    EqTerm(2015)
+                                                                      RelateTerm(2014)
+                                                                        AddTerm(2013)
+                                                                          MulTerm(2012)
+                                                                            Factor(2011)
                                                                               Scope(2002)
                                                                                 IdentifierOrCall(2004)
                                                                                   IDENTIFIER(1022): "traits", line: 30, col: 65
                                                               DELIMITER(1004): ",", line: 30, col: 71
-                                                              Expression(2017)
-                                                                OrTerm(2016)
-                                                                  AndTerm(2015)
-                                                                    EqTerm(2014)
-                                                                      RelateTerm(2013)
-                                                                        AddTerm(2012)
-                                                                          MulTerm(2011)
-                                                                            Factor(2010)
+                                                              Expression(2018)
+                                                                OrTerm(2017)
+                                                                  AndTerm(2016)
+                                                                    EqTerm(2015)
+                                                                      RelateTerm(2014)
+                                                                        AddTerm(2013)
+                                                                          MulTerm(2012)
+                                                                            Factor(2011)
                                                                               Scope(2002)
                                                                                 IdentifierOrCall(2004)
                                                                                   IDENTIFIER(1022): "combine", line: 30, col: 73
                                                                                   OPEN_PARENT(1005): "(", line: 30, col: 80
                                                                                   CallArgs(2005)
-                                                                                    Expression(2017)
-                                                                                      OrTerm(2016)
-                                                                                        AndTerm(2015)
-                                                                                          EqTerm(2014)
-                                                                                            RelateTerm(2013)
-                                                                                              AddTerm(2012)
-                                                                                                MulTerm(2011)
-                                                                                                  Factor(2010)
+                                                                                    Expression(2018)
+                                                                                      OrTerm(2017)
+                                                                                        AndTerm(2016)
+                                                                                          EqTerm(2015)
+                                                                                            RelateTerm(2014)
+                                                                                              AddTerm(2013)
+                                                                                                MulTerm(2012)
+                                                                                                  Factor(2011)
                                                                                                     Scope(2002)
                                                                                                       IdentifierOrCall(2004)
                                                                                                         IDENTIFIER(1022): "person", line: 30, col: 81
-                                                                                                      DOT(1025): ".", line: 30, col: 87
+                                                                                                      DOT(1026): ".", line: 30, col: 87
                                                                                                       IdentifierOrCall(2004)
                                                                                                         IDENTIFIER(1022): "culture", line: 30, col: 88
-                                                                                                      DOT(1025): ".", line: 30, col: 95
+                                                                                                      DOT(1026): ".", line: 30, col: 95
                                                                                                       IdentifierOrCall(2004)
                                                                                                         IDENTIFIER(1022): "traits", line: 30, col: 96
                                                                                     DELIMITER(1004): ",", line: 30, col: 102
-                                                                                    Expression(2017)
-                                                                                      OrTerm(2016)
-                                                                                        AndTerm(2015)
-                                                                                          EqTerm(2014)
-                                                                                            RelateTerm(2013)
-                                                                                              AddTerm(2012)
-                                                                                                MulTerm(2011)
-                                                                                                  Factor(2010)
+                                                                                    Expression(2018)
+                                                                                      OrTerm(2017)
+                                                                                        AndTerm(2016)
+                                                                                          EqTerm(2015)
+                                                                                            RelateTerm(2014)
+                                                                                              AddTerm(2013)
+                                                                                                MulTerm(2012)
+                                                                                                  Factor(2011)
                                                                                                     Scope(2002)
                                                                                                       IdentifierOrCall(2004)
                                                                                                         IDENTIFIER(1022): "person", line: 30, col: 104
-                                                                                                      DOT(1025): ".", line: 30, col: 110
+                                                                                                      DOT(1026): ".", line: 30, col: 110
                                                                                                       IdentifierOrCall(2004)
                                                                                                         IDENTIFIER(1022): "class", line: 30, col: 111
-                                                                                                      DOT(1025): ".", line: 30, col: 116
+                                                                                                      DOT(1026): ".", line: 30, col: 116
                                                                                                       IdentifierOrCall(2004)
                                                                                                         IDENTIFIER(1022): "traits", line: 30, col: 117
                                                                                   CLOSE_PARENT(1006): ")", line: 30, col: 123
                                                               DELIMITER(1004): ",", line: 30, col: 124
-                                                              Expression(2017)
-                                                                OrTerm(2016)
-                                                                  AndTerm(2015)
-                                                                    EqTerm(2014)
-                                                                      RelateTerm(2013)
-                                                                        AddTerm(2012)
-                                                                          MulTerm(2011)
-                                                                            Factor(2010)
-                                                                              Atom(2009)
-                                                                                NUMBER(1023): "1", line: 30, col: 126
+                                                              Expression(2018)
+                                                                OrTerm(2017)
+                                                                  AndTerm(2016)
+                                                                    EqTerm(2015)
+                                                                      RelateTerm(2014)
+                                                                        AddTerm(2013)
+                                                                          MulTerm(2012)
+                                                                            Factor(2011)
+                                                                              Atom(2010)
+                                                                                Decimal(2009)
+                                                                                  NUMBER(1023): "1", line: 30, col: 126
                                                               DELIMITER(1004): ",", line: 30, col: 127
-                                                              Expression(2017)
-                                                                OrTerm(2016)
-                                                                  AndTerm(2015)
-                                                                    EqTerm(2014)
-                                                                      RelateTerm(2013)
-                                                                        AddTerm(2012)
-                                                                          MulTerm(2011)
-                                                                            Factor(2010)
-                                                                              Atom(2009)
-                                                                                NUMBER(1023): "0", line: 30, col: 129
+                                                              Expression(2018)
+                                                                OrTerm(2017)
+                                                                  AndTerm(2016)
+                                                                    EqTerm(2015)
+                                                                      RelateTerm(2014)
+                                                                        AddTerm(2013)
+                                                                          MulTerm(2012)
+                                                                            Factor(2011)
+                                                                              Atom(2010)
+                                                                                Decimal(2009)
+                                                                                  NUMBER(1023): "0", line: 30, col: 129
                                                             CLOSE_PARENT(1006): ")", line: 30, col: 130
                                       CLOSE_PARENT(1006): ")", line: 30, col: 131
                 IdentifierOrCall(2004)
                   IDENTIFIER(1022): "available_dresses", line: 32, col: 4
                 EQUALS(1010): "=", line: 32, col: 22
                 Context(2007)
-                  Expression(2017)
-                    OrTerm(2016)
-                      AndTerm(2015)
-                        EqTerm(2014)
-                          RelateTerm(2013)
-                            AddTerm(2012)
-                              MulTerm(2011)
-                                Factor(2010)
+                  Expression(2018)
+                    OrTerm(2017)
+                      AndTerm(2016)
+                        EqTerm(2015)
+                          RelateTerm(2014)
+                            AddTerm(2013)
+                              MulTerm(2012)
+                                Factor(2011)
                                   Scope(2002)
                                     IdentifierOrCall(2004)
                                       IDENTIFIER(1022): "mask", line: 32, col: 24
                                       OPEN_PARENT(1005): "(", line: 32, col: 28
                                       CallArgs(2005)
-                                        Expression(2017)
-                                          OrTerm(2016)
-                                            AndTerm(2015)
-                                              EqTerm(2014)
-                                                RelateTerm(2013)
-                                                  AddTerm(2012)
-                                                    MulTerm(2011)
-                                                      Factor(2010)
+                                        Expression(2018)
+                                          OrTerm(2017)
+                                            AndTerm(2016)
+                                              EqTerm(2015)
+                                                RelateTerm(2014)
+                                                  AddTerm(2013)
+                                                    MulTerm(2012)
+                                                      Factor(2011)
                                                         Scope(2002)
                                                           IdentifierOrCall(2004)
                                                             IDENTIFIER(1022): "resources", line: 32, col: 29
-                                                          DOT(1025): ".", line: 32, col: 38
+                                                          DOT(1026): ".", line: 32, col: 38
                                                           IdentifierOrCall(2004)
                                                             IDENTIFIER(1022): "appearance", line: 32, col: 39
-                                                          DOT(1025): ".", line: 32, col: 49
+                                                          DOT(1026): ".", line: 32, col: 49
                                                           IdentifierOrCall(2004)
                                                             IDENTIFIER(1022): "dresses", line: 32, col: 50
                                         DELIMITER(1004): ",", line: 32, col: 57
-                                        Expression(2017)
-                                          OrTerm(2016)
-                                            AndTerm(2015)
-                                              EqTerm(2014)
-                                                RelateTerm(2013)
-                                                  AddTerm(2012)
-                                                    MulTerm(2011)
-                                                      Factor(2010)
+                                        Expression(2018)
+                                          OrTerm(2017)
+                                            AndTerm(2016)
+                                              EqTerm(2015)
+                                                RelateTerm(2014)
+                                                  AddTerm(2013)
+                                                    MulTerm(2012)
+                                                      Factor(2011)
                                                         Scope(2002)
                                                           IdentifierOrCall(2004)
                                                             IDENTIFIER(1022): "any", line: 32, col: 59
                                                             OPEN_PARENT(1005): "(", line: 32, col: 62
                                                             CallArgs(2005)
-                                                              Expression(2017)
-                                                                OrTerm(2016)
-                                                                  AndTerm(2015)
-                                                                    EqTerm(2014)
-                                                                      RelateTerm(2013)
-                                                                        AddTerm(2012)
-                                                                          MulTerm(2011)
-                                                                            Factor(2010)
+                                                              Expression(2018)
+                                                                OrTerm(2017)
+                                                                  AndTerm(2016)
+                                                                    EqTerm(2015)
+                                                                      RelateTerm(2014)
+                                                                        AddTerm(2013)
+                                                                          MulTerm(2012)
+                                                                            Factor(2011)
                                                                               Scope(2002)
                                                                                 IdentifierOrCall(2004)
                                                                                   IDENTIFIER(1022): "traits", line: 32, col: 63
                                                             CLOSE_PARENT(1006): ")", line: 32, col: 69
                                                 EQUALS(1010): "=", line: 32, col: 71
-                                                RelateTerm(2013)
-                                                  AddTerm(2012)
-                                                    MulTerm(2011)
-                                                      Factor(2010)
+                                                RelateTerm(2014)
+                                                  AddTerm(2013)
+                                                    MulTerm(2012)
+                                                      Factor(2011)
                                                         Scope(2002)
                                                           IdentifierOrCall(2004)
                                                             IDENTIFIER(1022): "person", line: 32, col: 73
-                                                          DOT(1025): ".", line: 32, col: 79
+                                                          DOT(1026): ".", line: 32, col: 79
                                                           IdentifierOrCall(2004)
                                                             IDENTIFIER(1022): "culture", line: 32, col: 80
-                                                          DOT(1025): ".", line: 32, col: 87
+                                                          DOT(1026): ".", line: 32, col: 87
                                                           IdentifierOrCall(2004)
                                                             IDENTIFIER(1022): "traits", line: 32, col: 88
                                               AND(1007): "and", line: 32, col: 95
-                                              EqTerm(2014)
-                                                RelateTerm(2013)
-                                                  AddTerm(2012)
-                                                    MulTerm(2011)
-                                                      Factor(2010)
+                                              EqTerm(2015)
+                                                RelateTerm(2014)
+                                                  AddTerm(2013)
+                                                    MulTerm(2012)
+                                                      Factor(2011)
                                                         OPEN_PARENT(1005): "(", line: 32, col: 99
-                                                        Expression(2017)
-                                                          OrTerm(2016)
-                                                            AndTerm(2015)
-                                                              EqTerm(2014)
-                                                                RelateTerm(2013)
-                                                                  AddTerm(2012)
-                                                                    MulTerm(2011)
-                                                                      Factor(2010)
+                                                        Expression(2018)
+                                                          OrTerm(2017)
+                                                            AndTerm(2016)
+                                                              EqTerm(2015)
+                                                                RelateTerm(2014)
+                                                                  AddTerm(2013)
+                                                                    MulTerm(2012)
+                                                                      Factor(2011)
                                                                         Scope(2002)
                                                                           IdentifierOrCall(2004)
                                                                             IDENTIFIER(1022): "age", line: 32, col: 100
                                                                   MORE(1016): ">", line: 32, col: 104
-                                                                  AddTerm(2012)
-                                                                    MulTerm(2011)
-                                                                      Factor(2010)
+                                                                  AddTerm(2013)
+                                                                    MulTerm(2012)
+                                                                      Factor(2011)
                                                                         Scope(2002)
                                                                           IdentifierOrCall(2004)
                                                                             IDENTIFIER(1022): "person", line: 32, col: 106
-                                                                          DOT(1025): ".", line: 32, col: 112
+                                                                          DOT(1026): ".", line: 32, col: 112
                                                                           IdentifierOrCall(2004)
                                                                             IDENTIFIER(1022): "age", line: 32, col: 113
                                                                     SUB(1013): "-", line: 32, col: 117
-                                                                    MulTerm(2011)
-                                                                      Factor(2010)
-                                                                        Atom(2009)
-                                                                          NUMBER(1023): "10", line: 32, col: 119
+                                                                    MulTerm(2012)
+                                                                      Factor(2011)
+                                                                        Atom(2010)
+                                                                          Decimal(2009)
+                                                                            NUMBER(1023): "10", line: 32, col: 119
                                                               AND(1007): "and", line: 32, col: 122
-                                                              EqTerm(2014)
-                                                                RelateTerm(2013)
-                                                                  AddTerm(2012)
-                                                                    MulTerm(2011)
-                                                                      Factor(2010)
+                                                              EqTerm(2015)
+                                                                RelateTerm(2014)
+                                                                  AddTerm(2013)
+                                                                    MulTerm(2012)
+                                                                      Factor(2011)
                                                                         Scope(2002)
                                                                           IdentifierOrCall(2004)
                                                                             IDENTIFIER(1022): "age", line: 32, col: 126
                                                                   LESS(1017): "<", line: 32, col: 130
-                                                                  AddTerm(2012)
-                                                                    MulTerm(2011)
-                                                                      Factor(2010)
+                                                                  AddTerm(2013)
+                                                                    MulTerm(2012)
+                                                                      Factor(2011)
                                                                         Scope(2002)
                                                                           IdentifierOrCall(2004)
                                                                             IDENTIFIER(1022): "person", line: 32, col: 132
-                                                                          DOT(1025): ".", line: 32, col: 138
+                                                                          DOT(1026): ".", line: 32, col: 138
                                                                           IdentifierOrCall(2004)
                                                                             IDENTIFIER(1022): "age", line: 32, col: 139
                                                                     ADD(1012): "+", line: 32, col: 143
-                                                                    MulTerm(2011)
-                                                                      Factor(2010)
-                                                                        Atom(2009)
-                                                                          NUMBER(1023): "10", line: 32, col: 145
+                                                                    MulTerm(2012)
+                                                                      Factor(2011)
+                                                                        Atom(2010)
+                                                                          Decimal(2009)
+                                                                            NUMBER(1023): "10", line: 32, col: 145
                                                         CLOSE_PARENT(1006): ")", line: 32, col: 147
                                               AND(1007): "and", line: 32, col: 149
-                                              EqTerm(2014)
-                                                RelateTerm(2013)
-                                                  AddTerm(2012)
-                                                    MulTerm(2011)
-                                                      Factor(2010)
+                                              EqTerm(2015)
+                                                RelateTerm(2014)
+                                                  AddTerm(2013)
+                                                    MulTerm(2012)
+                                                      Factor(2011)
                                                         Scope(2002)
                                                           IdentifierOrCall(2004)
                                                             IDENTIFIER(1022): "sex", line: 32, col: 153
                                                 EQUALS(1010): "=", line: 32, col: 157
-                                                RelateTerm(2013)
-                                                  AddTerm(2012)
-                                                    MulTerm(2011)
-                                                      Factor(2010)
+                                                RelateTerm(2014)
+                                                  AddTerm(2013)
+                                                    MulTerm(2012)
+                                                      Factor(2011)
                                                         Scope(2002)
                                                           IdentifierOrCall(2004)
                                                             IDENTIFIER(1022): "person", line: 32, col: 159
-                                                          DOT(1025): ".", line: 32, col: 165
+                                                          DOT(1026): ".", line: 32, col: 165
                                                           IdentifierOrCall(2004)
                                                             IDENTIFIER(1022): "sex", line: 32, col: 166
                                       CLOSE_PARENT(1006): ")", line: 32, col: 169
@@ -1048,14 +1061,14 @@ Root(2001)
                       IDENTIFIER(1022): "skin", line: 35, col: 5
                     EQUALS(1010): "=", line: 35, col: 10
                     Context(2007)
-                      Expression(2017)
-                        OrTerm(2016)
-                          AndTerm(2015)
-                            EqTerm(2014)
-                              RelateTerm(2013)
-                                AddTerm(2012)
-                                  MulTerm(2011)
-                                    Factor(2010)
+                      Expression(2018)
+                        OrTerm(2017)
+                          AndTerm(2016)
+                            EqTerm(2015)
+                              RelateTerm(2014)
+                                AddTerm(2013)
+                                  MulTerm(2012)
+                                    Factor(2011)
                                       Scope(2002)
                                         IdentifierOrCall(2004)
                                           IDENTIFIER(1022): "skin_colour", line: 35, col: 12
@@ -1063,27 +1076,27 @@ Root(2001)
                       IDENTIFIER(1022): "phenotype", line: 36, col: 5
                     EQUALS(1010): "=", line: 36, col: 15
                     Context(2007)
-                      Expression(2017)
-                        OrTerm(2016)
-                          AndTerm(2015)
-                            EqTerm(2014)
-                              RelateTerm(2013)
-                                AddTerm(2012)
-                                  MulTerm(2011)
-                                    Factor(2010)
+                      Expression(2018)
+                        OrTerm(2017)
+                          AndTerm(2016)
+                            EqTerm(2015)
+                              RelateTerm(2014)
+                                AddTerm(2013)
+                                  MulTerm(2012)
+                                    Factor(2011)
                                       Scope(2002)
                                         IdentifierOrCall(2004)
                                           IDENTIFIER(1022): "random_from", line: 36, col: 17
                                           OPEN_PARENT(1005): "(", line: 36, col: 28
                                           CallArgs(2005)
-                                            Expression(2017)
-                                              OrTerm(2016)
-                                                AndTerm(2015)
-                                                  EqTerm(2014)
-                                                    RelateTerm(2013)
-                                                      AddTerm(2012)
-                                                        MulTerm(2011)
-                                                          Factor(2010)
+                                            Expression(2018)
+                                              OrTerm(2017)
+                                                AndTerm(2016)
+                                                  EqTerm(2015)
+                                                    RelateTerm(2014)
+                                                      AddTerm(2013)
+                                                        MulTerm(2012)
+                                                          Factor(2011)
                                                             Scope(2002)
                                                               IdentifierOrCall(2004)
                                                                 IDENTIFIER(1022): "available_phenotypes", line: 36, col: 29
@@ -1092,14 +1105,14 @@ Root(2001)
                       IDENTIFIER(1022): "background", line: 37, col: 5
                     EQUALS(1010): "=", line: 37, col: 16
                     Context(2007)
-                      Expression(2017)
-                        OrTerm(2016)
-                          AndTerm(2015)
-                            EqTerm(2014)
-                              RelateTerm(2013)
-                                AddTerm(2012)
-                                  MulTerm(2011)
-                                    Factor(2010)
+                      Expression(2018)
+                        OrTerm(2017)
+                          AndTerm(2016)
+                            EqTerm(2015)
+                              RelateTerm(2014)
+                                AddTerm(2013)
+                                  MulTerm(2012)
+                                    Factor(2011)
                                       Scope(2002)
                                         IdentifierOrCall(2004)
                                           IDENTIFIER(1022): "back", line: 37, col: 18
@@ -1107,27 +1120,27 @@ Root(2001)
                       IDENTIFIER(1022): "dress", line: 38, col: 5
                     EQUALS(1010): "=", line: 38, col: 11
                     Context(2007)
-                      Expression(2017)
-                        OrTerm(2016)
-                          AndTerm(2015)
-                            EqTerm(2014)
-                              RelateTerm(2013)
-                                AddTerm(2012)
-                                  MulTerm(2011)
-                                    Factor(2010)
+                      Expression(2018)
+                        OrTerm(2017)
+                          AndTerm(2016)
+                            EqTerm(2015)
+                              RelateTerm(2014)
+                                AddTerm(2013)
+                                  MulTerm(2012)
+                                    Factor(2011)
                                       Scope(2002)
                                         IdentifierOrCall(2004)
                                           IDENTIFIER(1022): "random_from", line: 38, col: 13
                                           OPEN_PARENT(1005): "(", line: 38, col: 24
                                           CallArgs(2005)
-                                            Expression(2017)
-                                              OrTerm(2016)
-                                                AndTerm(2015)
-                                                  EqTerm(2014)
-                                                    RelateTerm(2013)
-                                                      AddTerm(2012)
-                                                        MulTerm(2011)
-                                                          Factor(2010)
+                                            Expression(2018)
+                                              OrTerm(2017)
+                                                AndTerm(2016)
+                                                  EqTerm(2015)
+                                                    RelateTerm(2014)
+                                                      AddTerm(2013)
+                                                        MulTerm(2012)
+                                                          Factor(2011)
                                                             Scope(2002)
                                                               IdentifierOrCall(2004)
                                                                 IDENTIFIER(1022): "available_dresses", line: 38, col: 25

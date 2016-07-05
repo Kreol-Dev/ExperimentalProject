@@ -14,23 +14,49 @@ public class BasicLoader : MonoBehaviour
 {
 
 	// Use this for initialization
+	ScriptEngine engine;
+
 	void Start ()
 	{
 
-		ScriptBundle mainBundle = new ScriptBundle ("Core");
-		Script genScript = new Script ("generators", null);
-		mainBundle.AddScript (genScript);
+
+		List<Assembly> addons = new List<Assembly> ();
+		engine = new ScriptEngine (addons);
+//		AbstractClassChildren actionsList = new AbstractClassChildren ("Generators", engine){ BaseType = typeof(EventAction) };
+		EventActionsLoader loader = new EventActionsLoader ("generators", engine);
+		Script genScript = new Script ("generators", loader);
 		genScript.LoadFile ("Mods/test.def");
 		foreach (var entry in genScript.Entries)
 			Debug.Log (entry);
-		List<object> translators = new List<object> ();
-		List<Assembly> addons = new List<Assembly> ();
-		ScriptEngine engine = new ScriptEngine (addons);
+		genScript.Interpret ();
+		var compiler = engine.GetPlugin<ScriptCompiler> ();
+		compiler.Compile (OnAssemblyCompiled);
 	}
-	
+
+	void OnAssemblyCompiled (Assembly asm)
+	{
+		Debug.Log ("Success");
+		engine.AddAssembly (asm);
+//		var asmtypes = asm.GetTypes ();
+//		foreach (var type in asmtypes)
+//		{
+//			Debug.Log (type);
+//		}
+		var types = engine.FindTypesCastableTo<EventAction> ();
+		foreach (var type in types)
+		{
+			Debug.Log (type);
+		}
+		//AppDomain.CurrentDomain.Load (asm.Location);
+	}
 	// Update is called once per frame
 	void Update ()
 	{
 	
 	}
+}
+
+public abstract class BaseAction
+{
+	
 }

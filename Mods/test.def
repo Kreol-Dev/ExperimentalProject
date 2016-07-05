@@ -1,29 +1,10 @@
-name_generator = 
+new_person_portrait_gen = 
 {
-
-	scope = has_name
+	scope = has_portrait.has_person
 	action = 
 	{
-		set_name = concat(random_from(names_scope, most_weight(fallback_names, new_name(culture_names, "Error name"))), 
-							" ", 
-							single_from(second_name, "Error second name"))
-		names_scope = 
-		{
-			union = {faction_names traits_names} 
-			intersect = culture_names
-		}
-		fallback_names = 
-		{
-			union = {faction_names traits_names}
-			weight = similar_traits(traits_names)
-		}
-		xyz(1 - 1 + 2 * 2 * (2 - (-1)) + 2) = { z = val }
-		second_name =
-		{
-			if(sex = female and family_status = married, h_name) = {union = husband_name}
-			if(has_family and not h_name, f_name) = {union = family_name}
-			if(not h_name and not f_name) = {union = new_name(culture_second_names)}
-		}
-		set(generated) = true
+		something = yes
+		
+
 	} 
 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System;
 using System.CodeDom.Compiler;
+using System.Text;
 
 public class ScriptEngine
 {
@@ -32,8 +33,13 @@ public class ScriptEngine
 		for (int i = 0; i < enginePlugins.Count; i++)
 		{
 			var pluginInstance = Activator.CreateInstance (enginePlugins [i]) as ScriptEnginePlugin;
-			pluginInstance.Init (this);
+			pluginInstance.SetEngine (this);
 			plugins.Add (enginePlugins [i], pluginInstance);
+		}
+
+		foreach (var pluginPair in plugins)
+		{
+			pluginPair.Value.Init ();
 		}
 	}
 
@@ -79,46 +85,32 @@ public class ScriptEngine
 		for (int i = 0; i < allTypes.Count; i++)
 		{
 			Type curType = allTypes [i];
+//			Debug.LogFormat ("Test {0} {1} {2}", allTypes [i], castTo, castTo.IsAssignableFrom (curType));
 			if (castTo.IsAssignableFrom (curType) && curType != castTo && !curType.IsAbstract && !curType.IsGenericType)
 				types.Add (curType);
 		}
 		return types;
 	}
-}
 
-public abstract class ScriptEnginePlugin
-{
-	public abstract void Init (ScriptEngine engine);
-}
-
-public class ScriptCompiler : ScriptEnginePlugin
-{
-	List<string> csharpSources = new List<string> ();
-	ScriptEngine engine;
-
-	public override void Init (ScriptEngine engine)
+	public void AddAssembly (Assembly asm)
 	{
-		this.engine = engine;
-	}
-
-	public void AddSource (string source)
-	{
-		csharpSources.Add (source);
-	}
-
-	public void Compile ()
-	{
-		CompilerParameters cParams = new CompilerParameters ();
-		foreach (var plugin in engine.Addons)
-			cParams.ReferencedAssemblies.Add (plugin.Location);
-		var compiler = new CSharpCompiler.CodeCompiler ();
-		var result = compiler.CompileAssemblyFromSourceBatch (cParams, csharpSources.ToArray ());
-		if (result.Errors.Count == 0)
+		try
 		{
-		} else
+
+			AppDomain.CurrentDomain.Load (asm.Location);
+		} catch
 		{
-			for (int i = 0; i < result.Errors.Count; i++)
-				Debug.Log (result.Errors [i]);
+			
+		}
+		var types = asm.GetTypes ();
+		for (int i = 0; i < types.Length; i++)
+		{
+//			Debug.Log (types [i]);
+
+			allTypes.Add (types [i]);
 		}
 	}
+
+
 }
+

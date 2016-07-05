@@ -123,7 +123,27 @@ namespace InternalDSL
 	{
 		public object[] Operands;
 
+		Type type = null;
 
+		public Type ExpressionType ()
+		{
+			if (type != null)
+				return type;
+
+			if (Operands.Length > 1)
+			{
+				var firstOperator = (BinaryOp)Operands [1];
+				switch (firstOperator)
+				{
+				case BinaryOp.Add:
+				case BinaryOp.Div:
+				case BinaryOp.Mul:
+				case BinaryOp.Sub:
+					return typeof(int);
+				}
+			}
+			return typeof(string);
+		}
 
 		public enum BinaryOp
 		{
@@ -250,6 +270,7 @@ namespace InternalDSL
 		public override string ToString ()
 		{
 			StringBuilder builder = new StringBuilder (100);
+			builder.Append ("EXPR:");
 			for (int i = 0; i < Operands.Length; i++)
 			{
 				if (i % 2 == 0)
@@ -268,6 +289,11 @@ namespace InternalDSL
 		public override string ToString ()
 		{
 			return Id;
+		}
+
+		static public implicit operator string (IdWrapper wrapper)
+		{
+			return wrapper.Id;
 		}
 	}
 
@@ -290,10 +316,15 @@ namespace InternalDSL
 						return new IdWrapper (){ Id = (n.GetChildAt (0) as Token).Image };
 					}
 				}
-			case (int)DefConstants.NUMBER:
+			case (int)DefConstants.DECIMAL:
 				{
-					var data = (n as Token).Image;
-					return int.Parse (data);
+					var child = n.GetChildCount ();
+					if (child == 1)
+						return float.Parse ((n.GetChildAt (0) as Token).Image);
+					else
+						return float.Parse (String.Concat ((n.GetChildAt (0) as Token).Image, '.', (n.GetChildAt (2) as Token).Image));
+					//var data = (n as Token).Image;
+					//return int.Parse (data);
 				}
 			case (int)DefConstants.STRING:
 				{
@@ -318,6 +349,8 @@ namespace InternalDSL
 	{
 		public List<object> Entries = new List<object> ();
 
+		public List<Expression> Args = new List<Expression> ();
+
 		public Context ()
 		{
 			
@@ -334,7 +367,7 @@ namespace InternalDSL
 					var argNode = argsNode.GetChildAt (i * 2);
 					//Debug.LogFormat ("Context arg: {0} in {1}", argNode, argsNode);
 					Expression expr = new Expression (argNode);
-					Entries.Add (expr);
+					Args.Add (expr);
 				}
 			}
 			var firstChild = n.GetChildAt (0);
@@ -392,15 +425,12 @@ namespace InternalDSL
 			} else if (firstChild.Id == (int)DefConstants.EXPRESSION)
 			{
 
-				if (argsNode == null)
-					Entries.Add (new Expression (firstChild));
-				else
-				{
-					var valOp = new Operator ();
-					valOp.Identifier = "value";
-					valOp.Context = new Expression (firstChild);
-					Entries.Add (valOp);
-				}
+//				if (argsNode == null)
+//					Entries.Add (new Expression (firstChild));
+//				else
+//				{
+				Entries.Add (new Expression (firstChild));
+//				}
 			}
 
 		}
@@ -408,6 +438,17 @@ namespace InternalDSL
 		public override string ToString ()
 		{
 			StringBuilder builder = new StringBuilder (100);
+			if (Args.Count > 0)
+			{
+				builder.Append ("ARGS<");
+				for (int i = 0; i < Args.Count; i++)
+				{
+					builder.Append (Args [i]);
+					builder.Append (", ");
+				}
+				builder.Append (">");
+
+			}
 			if (Entries.Count > 0)
 			{
 				if (Entries.Count > 1 || Entries [0] is Operator)
@@ -431,20 +472,13 @@ namespace InternalDSL
 	{
 		public object Identifier;
 		public object Context;
+		public List<Expression> Args;
 
-		public enum OpType
-		{
-			FunctionOperator,
-			CommonOperator
-		}
-
-		public OpType Type;
 
 		public enum ContextType
 		{
 			Table,
-			Expression,
-			ArgTable
+			Expression
 		}
 
 		public ContextType ConType;
@@ -458,14 +492,18 @@ namespace InternalDSL
 				//It's a simple operator
 				Identifier = (idOrCall as Token).Image;
 				Context = new Context (null, n);
-				Type = OpType.CommonOperator;
 			} else
 			{
 				//It's a function-operator
 				Identifier = (idOrCall as Token).Image;
 				Context = new Context (idNode.GetChildAt (2), n);
-				Type = OpType.FunctionOperator;
 			}
+
+			var ctx = (Context as Context);
+			Args = ctx.Args;
+			if (ctx.Entries.Count == 1 && ctx.Entries [0] is Expression)
+				Context = ctx.Entries [0];
+
 		}
 
 		public Operator (Node n)
@@ -478,19 +516,26 @@ namespace InternalDSL
 				//It's a simple operator
 				Identifier = (idOrCall as Token).Image;
 				Context = new Context (null, n);
-				Type = OpType.CommonOperator;
 			} else
 			{
 				//It's a function-operator
 				Identifier = (idOrCall.GetChildAt (0) as Token).Image;
 				Context = new Context (idOrCall.GetChildAt (2), n);
-				Type = OpType.FunctionOperator;
 			}
+			var ctx = (Context as Context);
+			Args = ctx.Args;
+			if (ctx.Entries.Count == 1 && ctx.Entries [0] is Expression)
+				Context = ctx.Entries [0];
+
+			//ctx.Entries = (valueOp.Context as Context).
 		}
 
 		public Operator ()
 		{
-			
+			var ctx = (Context as Context);
+			Args = ctx.Args;
+			if (ctx.Entries.Count == 1 && ctx.Entries [0] is Expression)
+				Context = ctx.Entries [0];
 		}
 
 		public override string ToString ()
@@ -545,10 +590,12 @@ namespace InternalDSL
 		public override string ToString ()
 		{
 			StringBuilder builder = new StringBuilder (100);
+			builder.Append ("SCOPE<");
 			for (int i = 0; i < Parts.Length; i++)
 				builder.Append (Parts [i]).Append (".");
 			if (builder.Length > 0)
 				builder.Length -= 1;
+			builder.Append (">");
 			return builder.ToString ();
 		}
 	}

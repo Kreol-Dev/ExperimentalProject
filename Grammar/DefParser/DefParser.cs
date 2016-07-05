@@ -34,7 +34,9 @@ namespace InternalDSL {
             SUBPRODUCTION_12 = 3012,
             SUBPRODUCTION_13 = 3013,
             SUBPRODUCTION_14 = 3014,
-            SUBPRODUCTION_15 = 3015
+            SUBPRODUCTION_15 = 3015,
+            SUBPRODUCTION_16 = 3016,
+            SUBPRODUCTION_17 = 3017
         }
 
         /**
@@ -160,10 +162,18 @@ namespace InternalDSL {
             pattern.AddAlternative(alt);
             AddPattern(pattern);
 
+            pattern = new ProductionPattern((int) DefConstants.DECIMAL,
+                                            "Decimal");
+            alt = new ProductionPatternAlternative();
+            alt.AddToken((int) DefConstants.NUMBER, 1, 1);
+            alt.AddProduction((int) SynteticPatterns.SUBPRODUCTION_8, 0, 1);
+            pattern.AddAlternative(alt);
+            AddPattern(pattern);
+
             pattern = new ProductionPattern((int) DefConstants.ATOM,
                                             "Atom");
             alt = new ProductionPatternAlternative();
-            alt.AddToken((int) DefConstants.NUMBER, 1, 1);
+            alt.AddProduction((int) DefConstants.DECIMAL, 1, 1);
             pattern.AddAlternative(alt);
             alt = new ProductionPatternAlternative();
             alt.AddToken((int) DefConstants.TRUE, 1, 1);
@@ -179,8 +189,8 @@ namespace InternalDSL {
             pattern = new ProductionPattern((int) DefConstants.FACTOR,
                                             "Factor");
             alt = new ProductionPatternAlternative();
-            alt.AddProduction((int) SynteticPatterns.SUBPRODUCTION_7, 0, 1);
-            alt.AddProduction((int) SynteticPatterns.SUBPRODUCTION_9, 1, 1);
+            alt.AddProduction((int) SynteticPatterns.SUBPRODUCTION_9, 0, 1);
+            alt.AddProduction((int) SynteticPatterns.SUBPRODUCTION_11, 1, 1);
             pattern.AddAlternative(alt);
             AddPattern(pattern);
 
@@ -188,7 +198,7 @@ namespace InternalDSL {
                                             "MulTerm");
             alt = new ProductionPatternAlternative();
             alt.AddProduction((int) DefConstants.FACTOR, 1, 1);
-            alt.AddProduction((int) SynteticPatterns.SUBPRODUCTION_10, 0, -1);
+            alt.AddProduction((int) SynteticPatterns.SUBPRODUCTION_12, 0, -1);
             pattern.AddAlternative(alt);
             AddPattern(pattern);
 
@@ -196,7 +206,7 @@ namespace InternalDSL {
                                             "AddTerm");
             alt = new ProductionPatternAlternative();
             alt.AddProduction((int) DefConstants.MUL_TERM, 1, 1);
-            alt.AddProduction((int) SynteticPatterns.SUBPRODUCTION_11, 0, -1);
+            alt.AddProduction((int) SynteticPatterns.SUBPRODUCTION_13, 0, -1);
             pattern.AddAlternative(alt);
             AddPattern(pattern);
 
@@ -204,7 +214,7 @@ namespace InternalDSL {
                                             "RelateTerm");
             alt = new ProductionPatternAlternative();
             alt.AddProduction((int) DefConstants.ADD_TERM, 1, 1);
-            alt.AddProduction((int) SynteticPatterns.SUBPRODUCTION_12, 0, -1);
+            alt.AddProduction((int) SynteticPatterns.SUBPRODUCTION_14, 0, -1);
             pattern.AddAlternative(alt);
             AddPattern(pattern);
 
@@ -212,7 +222,7 @@ namespace InternalDSL {
                                             "EqTerm");
             alt = new ProductionPatternAlternative();
             alt.AddProduction((int) DefConstants.RELATE_TERM, 1, 1);
-            alt.AddProduction((int) SynteticPatterns.SUBPRODUCTION_13, 0, -1);
+            alt.AddProduction((int) SynteticPatterns.SUBPRODUCTION_15, 0, -1);
             pattern.AddAlternative(alt);
             AddPattern(pattern);
 
@@ -220,7 +230,7 @@ namespace InternalDSL {
                                             "AndTerm");
             alt = new ProductionPatternAlternative();
             alt.AddProduction((int) DefConstants.EQ_TERM, 1, 1);
-            alt.AddProduction((int) SynteticPatterns.SUBPRODUCTION_14, 0, -1);
+            alt.AddProduction((int) SynteticPatterns.SUBPRODUCTION_16, 0, -1);
             pattern.AddAlternative(alt);
             AddPattern(pattern);
 
@@ -228,7 +238,7 @@ namespace InternalDSL {
                                             "OrTerm");
             alt = new ProductionPatternAlternative();
             alt.AddProduction((int) DefConstants.AND_TERM, 1, 1);
-            alt.AddProduction((int) SynteticPatterns.SUBPRODUCTION_15, 0, -1);
+            alt.AddProduction((int) SynteticPatterns.SUBPRODUCTION_17, 0, -1);
             pattern.AddAlternative(alt);
             AddPattern(pattern);
 
@@ -306,6 +316,26 @@ namespace InternalDSL {
                                             "Subproduction7");
             pattern.Synthetic = true;
             alt = new ProductionPatternAlternative();
+            alt.AddToken((int) DefConstants.NUMBEREND, 1, 1);
+            pattern.AddAlternative(alt);
+            alt = new ProductionPatternAlternative();
+            alt.AddToken((int) DefConstants.NUMBER, 1, 1);
+            pattern.AddAlternative(alt);
+            AddPattern(pattern);
+
+            pattern = new ProductionPattern((int) SynteticPatterns.SUBPRODUCTION_8,
+                                            "Subproduction8");
+            pattern.Synthetic = true;
+            alt = new ProductionPatternAlternative();
+            alt.AddToken((int) DefConstants.DOT, 1, 1);
+            alt.AddProduction((int) SynteticPatterns.SUBPRODUCTION_7, 1, 1);
+            pattern.AddAlternative(alt);
+            AddPattern(pattern);
+
+            pattern = new ProductionPattern((int) SynteticPatterns.SUBPRODUCTION_9,
+                                            "Subproduction9");
+            pattern.Synthetic = true;
+            alt = new ProductionPatternAlternative();
             alt.AddToken((int) DefConstants.SUB, 1, 1);
             pattern.AddAlternative(alt);
             alt = new ProductionPatternAlternative();
@@ -313,8 +343,8 @@ namespace InternalDSL {
             pattern.AddAlternative(alt);
             AddPattern(pattern);
 
-            pattern = new ProductionPattern((int) SynteticPatterns.SUBPRODUCTION_8,
-                                            "Subproduction8");
+            pattern = new ProductionPattern((int) SynteticPatterns.SUBPRODUCTION_10,
+                                            "Subproduction10");
             pattern.Synthetic = true;
             alt = new ProductionPatternAlternative();
             alt.AddProduction((int) DefConstants.ATOM, 1, 1);
@@ -324,11 +354,11 @@ namespace InternalDSL {
             pattern.AddAlternative(alt);
             AddPattern(pattern);
 
-            pattern = new ProductionPattern((int) SynteticPatterns.SUBPRODUCTION_9,
-                                            "Subproduction9");
+            pattern = new ProductionPattern((int) SynteticPatterns.SUBPRODUCTION_11,
+                                            "Subproduction11");
             pattern.Synthetic = true;
             alt = new ProductionPatternAlternative();
-            alt.AddProduction((int) SynteticPatterns.SUBPRODUCTION_8, 1, 1);
+            alt.AddProduction((int) SynteticPatterns.SUBPRODUCTION_10, 1, 1);
             pattern.AddAlternative(alt);
             alt = new ProductionPatternAlternative();
             alt.AddToken((int) DefConstants.OPEN_PARENT, 1, 1);
@@ -337,8 +367,8 @@ namespace InternalDSL {
             pattern.AddAlternative(alt);
             AddPattern(pattern);
 
-            pattern = new ProductionPattern((int) SynteticPatterns.SUBPRODUCTION_10,
-                                            "Subproduction10");
+            pattern = new ProductionPattern((int) SynteticPatterns.SUBPRODUCTION_12,
+                                            "Subproduction12");
             pattern.Synthetic = true;
             alt = new ProductionPatternAlternative();
             alt.AddToken((int) DefConstants.MUL, 1, 1);
@@ -350,8 +380,8 @@ namespace InternalDSL {
             pattern.AddAlternative(alt);
             AddPattern(pattern);
 
-            pattern = new ProductionPattern((int) SynteticPatterns.SUBPRODUCTION_11,
-                                            "Subproduction11");
+            pattern = new ProductionPattern((int) SynteticPatterns.SUBPRODUCTION_13,
+                                            "Subproduction13");
             pattern.Synthetic = true;
             alt = new ProductionPatternAlternative();
             alt.AddToken((int) DefConstants.ADD, 1, 1);
@@ -363,8 +393,8 @@ namespace InternalDSL {
             pattern.AddAlternative(alt);
             AddPattern(pattern);
 
-            pattern = new ProductionPattern((int) SynteticPatterns.SUBPRODUCTION_12,
-                                            "Subproduction12");
+            pattern = new ProductionPattern((int) SynteticPatterns.SUBPRODUCTION_14,
+                                            "Subproduction14");
             pattern.Synthetic = true;
             alt = new ProductionPatternAlternative();
             alt.AddToken((int) DefConstants.MORE, 1, 1);
@@ -384,8 +414,8 @@ namespace InternalDSL {
             pattern.AddAlternative(alt);
             AddPattern(pattern);
 
-            pattern = new ProductionPattern((int) SynteticPatterns.SUBPRODUCTION_13,
-                                            "Subproduction13");
+            pattern = new ProductionPattern((int) SynteticPatterns.SUBPRODUCTION_15,
+                                            "Subproduction15");
             pattern.Synthetic = true;
             alt = new ProductionPatternAlternative();
             alt.AddToken((int) DefConstants.EQUALS, 1, 1);
@@ -393,8 +423,8 @@ namespace InternalDSL {
             pattern.AddAlternative(alt);
             AddPattern(pattern);
 
-            pattern = new ProductionPattern((int) SynteticPatterns.SUBPRODUCTION_14,
-                                            "Subproduction14");
+            pattern = new ProductionPattern((int) SynteticPatterns.SUBPRODUCTION_16,
+                                            "Subproduction16");
             pattern.Synthetic = true;
             alt = new ProductionPatternAlternative();
             alt.AddToken((int) DefConstants.AND, 1, 1);
@@ -402,8 +432,8 @@ namespace InternalDSL {
             pattern.AddAlternative(alt);
             AddPattern(pattern);
 
-            pattern = new ProductionPattern((int) SynteticPatterns.SUBPRODUCTION_15,
-                                            "Subproduction15");
+            pattern = new ProductionPattern((int) SynteticPatterns.SUBPRODUCTION_17,
+                                            "Subproduction17");
             pattern.Synthetic = true;
             alt = new ProductionPatternAlternative();
             alt.AddToken((int) DefConstants.OR, 1, 1);
