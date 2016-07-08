@@ -381,6 +381,7 @@ namespace InternalDSL
 					op.Identifier = "value";
 					op.Context = new Context (null, n);
 					Entries.Add (op);
+					op.Init ();
 				} else
 				{
 
@@ -438,17 +439,7 @@ namespace InternalDSL
 		public override string ToString ()
 		{
 			StringBuilder builder = new StringBuilder (100);
-			if (Args.Count > 0)
-			{
-				builder.Append ("ARGS<");
-				for (int i = 0; i < Args.Count; i++)
-				{
-					builder.Append (Args [i]);
-					builder.Append (", ");
-				}
-				builder.Append (">");
 
-			}
 			if (Entries.Count > 0)
 			{
 				if (Entries.Count > 1 || Entries [0] is Operator)
@@ -473,7 +464,7 @@ namespace InternalDSL
 		public object Identifier;
 		public object Context;
 		public List<Expression> Args;
-
+		bool init = false;
 
 		public enum ContextType
 		{
@@ -499,11 +490,7 @@ namespace InternalDSL
 				Context = new Context (idNode.GetChildAt (2), n);
 			}
 
-			var ctx = (Context as Context);
-			Args = ctx.Args;
-			if (ctx.Entries.Count == 1 && ctx.Entries [0] is Expression)
-				Context = ctx.Entries [0];
-
+			Init ();
 		}
 
 		public Operator (Node n)
@@ -522,25 +509,51 @@ namespace InternalDSL
 				Identifier = (idOrCall.GetChildAt (0) as Token).Image;
 				Context = new Context (idOrCall.GetChildAt (2), n);
 			}
-			var ctx = (Context as Context);
-			Args = ctx.Args;
-			if (ctx.Entries.Count == 1 && ctx.Entries [0] is Expression)
-				Context = ctx.Entries [0];
 
+			Init ();
 			//ctx.Entries = (valueOp.Context as Context).
 		}
 
 		public Operator ()
 		{
+			
+
+		}
+
+		public void Init ()
+		{
+			if (init)
+				return;
+			init = true;
 			var ctx = (Context as Context);
-			Args = ctx.Args;
-			if (ctx.Entries.Count == 1 && ctx.Entries [0] is Expression)
-				Context = ctx.Entries [0];
+			if (ctx != null)
+			{
+				Args = ctx.Args;
+				if (ctx.Entries.Count == 1 && ctx.Entries [0] is Expression)
+					Context = ctx.Entries [0];
+				else if (ctx.Entries.Count == 1 && ctx.Entries [0] is Operator && (ctx.Entries [0] as Operator).Identifier as string == "value")
+				{
+					Context = (ctx.Entries [0] as Operator).Context;
+				}
+			}
 		}
 
 		public override string ToString ()
 		{
-			return String.Format ("{0} = {1}", Identifier, Context);
+			StringBuilder argsBuilder = new StringBuilder ();
+			if (Args.Count > 0)
+			{
+				argsBuilder.Append ("ARGS<");
+				for (int i = 0; i < Args.Count; i++)
+				{
+					argsBuilder.Append (Args [i]);
+					argsBuilder.Append (", ");
+				}
+				argsBuilder.Length -= 2;
+				argsBuilder.Append (">");
+
+			}
+			return String.Format ("{0} {2} = {1}", Identifier, Context, argsBuilder.ToString ());
 		}
 	}
 

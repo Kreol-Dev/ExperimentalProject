@@ -1,10 +1,23 @@
-new_person_portrait_gen = 
+camps_filler = 
 {
-	scope = has_portrait.has_person
+	scope = has_camp
 	action = 
 	{
-		something = yes
+		if(people.count = 0 and not entity.dead) = 
+		{
+			repeat(5) = 
+			{
+				generate(party_member) =
+				{
+					person = yes
+					named = yes
+				}
+				camp = 
+				{
+					add_to(people) = party_member.person
+				}
+			}
+		}
 		
-
 	} 
 }

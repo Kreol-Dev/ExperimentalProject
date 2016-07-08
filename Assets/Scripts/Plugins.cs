@@ -81,6 +81,8 @@ public class ScriptCompiler : ScriptEnginePlugin
 	public void Compile (Action<Assembly> onAssemblyCompiled)
 	{
 		var loader = UnityEngine.Object.FindObjectOfType<ScriptsLoader> ();
+		string sourceCode = string.Concat (csharpSources.ToArray ());
+		UnityEngine.Object.FindObjectOfType<UnityEngine.UI.Text> ().text = sourceCode;
 		loader.Load (csharpSources.ToArray (), onAssemblyCompiled);
 	}
 }

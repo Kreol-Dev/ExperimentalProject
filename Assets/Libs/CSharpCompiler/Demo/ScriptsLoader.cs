@@ -16,7 +16,7 @@ namespace CSharpCompiler
 		DeferredSynchronizeInvoke synchronizedInvoke;
 		CSharpCompiler.ScriptBundleLoader loader;
 
-		void Start ()
+		void Awake ()
 		{
 			synchronizedInvoke = new DeferredSynchronizeInvoke ();
 
@@ -28,6 +28,7 @@ namespace CSharpCompiler
 		void Update ()
 		{
 			synchronizedInvoke.ProcessQueue ();
+			if (bundle != null)
 			if (bundle.assembly != null)
 			{
 				onAssemblyCompiled (bundle.assembly);

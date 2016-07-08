@@ -56,7 +56,4 @@ public class BasicLoader : MonoBehaviour
 	}
 }
 
-public abstract class BaseAction
-{
-	
-}
+
