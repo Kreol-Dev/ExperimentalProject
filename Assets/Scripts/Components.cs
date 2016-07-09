@@ -40,6 +40,8 @@ public class Camp : MonoBehaviour
 {
 	public List<Person> People { get; set; }
 
+	public int Size { get; set; }
+
 	void Awake ()
 	{
 		People = new List<Person> ();

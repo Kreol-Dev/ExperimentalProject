@@ -288,7 +288,7 @@ namespace InternalDSL
 
 		public override string ToString ()
 		{
-			return Id;
+			return "IDWRAPPER: " + Id;
 		}
 
 		static public implicit operator string (IdWrapper wrapper)

@@ -5,17 +5,19 @@ camps_filler =
 	{
 		if(people.count = 0 and not entity.dead) = 
 		{
-			repeat(5) = 
+			camp = 
 			{
-				generate(party_member) =
+				size = 5
+				repeat(size) = 
 				{
-					person = yes
-					named = yes
-				}
-				camp = 
-				{
+					generate(party_member) =
+					{
+						person = yes
+						named = yes
+					}
 					add_to(people) = party_member.person
 				}
+
 			}
 		}
 		
