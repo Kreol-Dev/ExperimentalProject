@@ -25,7 +25,8 @@ public class AddToListOperator : FunctionOperatorInterpreter
 				return;
 			}
 			var listName = NameTranslator.CSharpNameFromScript (part as string);
-			DeclareVariableStatement declareVar = block.FindStatement<DeclareVariableStatement> ();
+			DeclareVariableStatement declareVar = block.FindStatement<DeclareVariableStatement> (v => v.IsContext);
+			//Debug.Log (declareVar.DebugString ());
 			if (declareVar == null)
 			{
 				Debug.Log ("add_to operator can't find context variable");

@@ -3,37 +3,44 @@ using System.Collections;
 using InternalDSL;
 using System;
 using System.Text;
+using System.Collections.Generic;
 
 
 public class ExpressionInterpreter : ScriptEnginePlugin
 {
+	Dictionary<string, Type> components = new Dictionary<string, Type> ();
+
 	public override void Init ()
 	{
-
+		var cmpTypes = Engine.FindTypesCastableTo<MonoBehaviour> ();
+		foreach (var cmp in cmpTypes)
+		{
+			string scriptName = NameTranslator.ScriptNameFromCSharp (cmp.Name);
+			components.Add (scriptName, cmp);
+		}
 	}
 
 	public struct Expr
 	{
 		public string ExprString;
-		public string Type;
+		public Type Type;
 	}
 
-	StringBuilder builder = new StringBuilder ();
 
 	public Expr InterpretClosure (Expression expression, FunctionBlock block, Type closureType)
 	{
 
-		return new Expr (){ ExprString = "10", Type = "int" };
+		return new Expr (){ ExprString = "10", Type = typeof(int) };
 	}
 
 	public Expr InterpretExpression (Expression expression, FunctionBlock block)
 	{
+		StringBuilder builder = new StringBuilder ();
 		builder.Length = 0;
 		if (expression.Operands.Length == 1)
 		{
-			ProcessOperand (expression.Operands [0], builder);
-			var type = DetermineOperandType (expression.Operands [0]);
-			return new Expr (){ ExprString = "10", Type = type };
+			//ProcessOperand (expression.Operands [0], builder);
+			return ProcessOperand (expression.Operands [0], block);
 		} else
 		{
 			Expression.BinaryOp binOp = (Expression.BinaryOp)expression.Operands [1];
@@ -61,29 +68,150 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 			default:
 				throw new ArgumentOutOfRangeException ();
 			}
+			Debug.Log (expression);
 			for (int i = 0; i < expression.Operands.Length; i += 2)
 			{
+				Debug.Log ("OPERAND " + expression.Operands [i]);
 				builder.Append ("(");
-				ProcessOperand (expression.Operands [i], builder);
+				builder.Append (ProcessOperand (expression.Operands [i], block).ExprString);
 				builder.Append (")");
 				if (i + 1 < expression.Operands.Length)
 					builder.Append (expression.OpToString ((Expression.BinaryOp)expression.Operands [i + 1]));
 			}
-			return new Expr (){ ExprString = builder.ToString (), Type = exprType.ToString () };
+			return new Expr (){ ExprString = builder.ToString (), Type = exprType };
 		}
 	}
 
-	public void ProcessOperand (object operand, StringBuilder exprBuilder)
+
+
+	public Expr ProcessOperand (object operand, FunctionBlock block)
 	{
-		exprBuilder.Append ("true");
-		return;
-		if (operand is string || operand is float || operand is bool)
+		Expr returnExpr = new Expr ();
+		StringBuilder exprBuilder = new StringBuilder ();
+		bool hasSign = false;
+		if (operand is ExprAtom)
+		{
+			if ((operand as ExprAtom).Op == ExprAtom.UnaryOp.Inverse)
+			{
+
+				exprBuilder.Append ("!");
+				hasSign = true;
+			} else if ((operand as ExprAtom).Op == ExprAtom.UnaryOp.Not)
+			{
+				hasSign = true;
+				exprBuilder.Append ("-");
+			}
+			operand = (operand as ExprAtom).Content;
+		}
+
+
+		if (operand is Scope)
+		{
+			var scope = (operand as Scope).Parts;
+			bool contextVariable = true;
+			var contextVar = block.FindStatement<DeclareVariableStatement> (v => v.Name == scope [0] as string);
+			if (contextVariable = (contextVar == null))
+				contextVar = block.FindStatement<DeclareVariableStatement> (v => v.IsContext);
+			string contextName = null; //!contextVariable ? "root" : contextVar.Name;
+			Type contextType = null; //!contextVariable ? typeof(GameObject) : contextVar.Type;
+			if (contextVar == null)
+			{
+				contextName = "root";
+				contextType = typeof(GameObject);
+			} else
+			{
+				contextName = contextVar.Name;
+				contextType = contextVar.Type;
+			}
+
+			exprBuilder.Append (contextName).Append (".");
+			for (int i = contextVariable ? 0 : 1; i < scope.Length; i++)
+			{
+				if (scope [i] is FunctionCall)
+				{
+//					var callOp = ProcessOperand (scope [i], block);
+					var call = scope [i] as FunctionCall;
+					var method = contextType.GetMethod (NameTranslator.CSharpNameFromScript (call.Name));
+					if (method == null)
+					{
+						Debug.LogFormat ("Can't find {0} in {1}", method.Name, contextType);
+						break;
+					}
+					var argsDef = method.GetParameters ();
+					for (int j = 0; j < call.Args.Length; j++)
+					{
+						if (argsDef [j].ParameterType.IsSubclassOf (typeof(Delegate)))
+							exprBuilder.Append (InterpretClosure (call.Args [j], block, argsDef [j].ParameterType).ExprString).Append (",");
+						else
+							exprBuilder.Append (InterpretExpression (call.Args [j], block).ExprString).Append (",");
+					}
+					contextType = method.ReturnType;
+				} else
+				{
+					var propName = NameTranslator.CSharpNameFromScript (scope [i] as string);
+
+					if (components.ContainsKey (scope [i] as string))
+					{
+						var type = components [scope [i] as string];
+						var storedVar = new DeclareVariableStatement ();
+						block.Statements.Add (storedVar);//block.FindStatement<DeclareVariableStatement> (v => !v.IsContext && v.Type == type);
+						storedVar.Name = "StoredVariable" + DeclareVariableStatement.VariableId++;
+						storedVar.Type = type;
+						contextType = type;
+						exprBuilder.Append (String.Format ("GetComponent<{0}>()", type));
+						if (hasSign)
+						{
+							storedVar.InitExpression = exprBuilder.ToString (1, exprBuilder.Length - 1);
+							exprBuilder.Length = 1;
+							exprBuilder.Append (storedVar.Name).Append ('.');
+						} else
+						{
+
+							storedVar.InitExpression = exprBuilder.ToString ();
+							exprBuilder.Length = 0;
+							exprBuilder.Append (storedVar.Name).Append ('.');
+						}
+
+					} else
+					{
+						var prop = contextType.GetProperty (propName);
+
+						if (prop != null)
+							contextType = prop.PropertyType;
+						else
+						{
+							Debug.LogFormat ("Can't find {0} in {1}", propName, contextType);
+							break;
+						}
+						exprBuilder.Append (propName).Append ('.');
+					}
+				}
+			}
+			if (exprBuilder [exprBuilder.Length - 1] == '.')
+				exprBuilder.Length -= 1;
+			
+		} else if (operand is FunctionCall)
+		{
+
+//			var call = operand as FunctionCall;
+//			for (int i = 0; i < call.Args.Length; i++)
+//			{
+//				
+//			}
+
+		} else if (operand is Expression)
+		{
+			var ex = InterpretExpression (operand as Expression, block);
+			exprBuilder.Append (ex.ExprString);
+			returnExpr.Type = ex.Type;
+		} else
+		{
+			returnExpr.Type = operand.GetType ();
 			exprBuilder.Append (operand);
-		//if(operand is float)
+		}
+		returnExpr.ExprString = exprBuilder.ToString ();
+		return returnExpr;
 	}
 
-	public string DetermineOperandType (object operand)
-	{
-		return null;
-	}
 }
+				

@@ -3,9 +3,9 @@ camps_filler =
 	scope = has_camp
 	action = 
 	{
-		if(people.count = 0 and not entity.dead) = 
+		camp = 
 		{
-			camp = 
+			if(people.count = 0 and not root.entity.dead) = 
 			{
 				size = 5
 				repeat(size) = 
@@ -17,9 +17,9 @@ camps_filler =
 					}
 					add_to(people) = party_member.person
 				}
-
 			}
 		}
+		
 		
 	} 
 }

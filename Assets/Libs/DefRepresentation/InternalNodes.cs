@@ -104,7 +104,8 @@ namespace InternalDSL
 				Content = Atom.FromNode (firstChild);
 			} else
 			{
-				Content = new Expression (firstChild, false);
+				Debug.Log (exprNode);
+				Content = new Expression (exprNode, false);
 			}
 		}
 
@@ -246,6 +247,7 @@ namespace InternalDSL
 				Operands = new object[]{ atom };
 			} else
 			{
+				Debug.Log ("EXPR PARSE: " + exprNode);
 				int childrenCount = exprNode.Count;
 				Operands = new object[childrenCount];
 				bool op = false;
@@ -260,6 +262,7 @@ namespace InternalDSL
 					} else
 					{
 						Operands [i] = new ExprAtom (childNode);
+						Debug.Log ((Operands [i] as ExprAtom).Content);
 						op = true;
 					}
 				}

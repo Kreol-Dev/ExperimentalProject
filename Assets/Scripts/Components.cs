@@ -47,3 +47,14 @@ public class Camp : MonoBehaviour
 		People = new List<Person> ();
 	}
 }
+
+public class Entity : MonoBehaviour
+{
+	public bool Dead { get; internal set; }
+
+	public void Destroy ()
+	{
+		Dead = true;
+		Destroy (gameObject);
+	}
+}

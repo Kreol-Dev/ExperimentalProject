@@ -10,7 +10,7 @@ public class IfStatement
 
 	public override string ToString ()
 	{
-		return String.Format ("if({0})\r\n{{\r\n{1}\r\n}}", CheckExpression, TrueBlock);
+		return String.Format ("if({0}){1}", CheckExpression, TrueBlock);
 	}
 }
 
@@ -21,10 +21,18 @@ public class DeclareVariableStatement
 	public string Name;
 	public string InitExpression;
 	public bool IsContext = false;
+	public bool IsArg = false;
 
 	public override string ToString ()
 	{
+		if (IsArg)
+			return "";
 		return string.Format ("{0} {1} = {2};", Type, Name, InitExpression);
+	}
+
+	public string DebugString ()
+	{
+		return string.Format ("DeclVarStmt: {0} {1} = {2}, IsContext = {3}", Type, Name, InitExpression, IsContext);
 	}
 }
 
@@ -35,7 +43,7 @@ public class ForStatement
 
 	public override string ToString ()
 	{
-		return string.Format ("for ({0}) {{ {1} }}", InsideExpr, RepeatBlock);
+		return string.Format ("for ({0}){1}", InsideExpr, RepeatBlock);
 	}
 }
 

@@ -136,6 +136,11 @@ public class EventActionsLoader : ScriptInterpreter
 			if (arg.Name == "root")
 				hasRoot = true;
 			method.Parameters.Add (new CodeParameterDeclarationExpression (arg.ParameterType, arg.Name));
+			var paramVar = new DeclareVariableStatement ();
+			paramVar.Name = arg.Name;
+			paramVar.Type = arg.ParameterType;
+			paramVar.IsArg = true;
+			block.Statements.Add (paramVar);
 		}
 		if (!hasRoot)
 		{

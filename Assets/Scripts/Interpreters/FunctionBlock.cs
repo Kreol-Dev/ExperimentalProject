@@ -13,8 +13,14 @@ public class FunctionBlock
 
 	public CodeMemberMethod Method { get; internal set; }
 
+	public int Ident { get; internal set; }
+
 	public FunctionBlock (FunctionBlock parent, CodeMemberMethod method)
 	{
+		if (parent == null)
+			Ident = 3;
+		else
+			Ident = parent.Ident + 1;
 		Parent = parent;
 		Method = method;
 	}
@@ -22,10 +28,10 @@ public class FunctionBlock
 	public override string ToString ()
 	{
 		StringBuilder builder = new StringBuilder (Statements.Count * 100);
-		builder.Append ("{");
+		builder.Append (Environment.NewLine).Append ('\t', Ident - 1).Append ("{").Append (Environment.NewLine);
 		foreach (var st in Statements)
-			builder.Append (st.ToString ());
-		builder.Append ("}");
+			builder.Append ('\t', Ident).Append (st.ToString ()).Append (Environment.NewLine);
+		builder.Append ('\t', Ident - 1).Append ("}");
 		return builder.ToString ();
 	}
 
@@ -53,14 +59,20 @@ public class FunctionBlock
 		FunctionBlock curBlock = this;
 		while (curBlock != null && statement == null)
 		{
+			bool found = false;
 			foreach (var stmt in curBlock.Statements)
 			{
 				statement = stmt as T;
 				if (statement == null)
 					continue;
 				if (predicate (statement))
+				{
+					found = true;
 					break;
+				}
 			}
+			if (!found)
+				statement = null;
 			curBlock = curBlock.Parent;
 		}
 		return statement;
