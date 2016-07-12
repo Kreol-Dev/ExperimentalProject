@@ -4,11 +4,13 @@ using InternalDSL;
 using System;
 using System.Text;
 using System.Collections.Generic;
+using System.Reflection;
 
 
 public class ExpressionInterpreter : ScriptEnginePlugin
 {
 	Dictionary<string, Type> components = new Dictionary<string, Type> ();
+
 
 	public override void Init ()
 	{
@@ -18,6 +20,7 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 			string scriptName = NameTranslator.ScriptNameFromCSharp (cmp.Name);
 			components.Add (scriptName, cmp);
 		}
+		//string closure = InterpretClosure ();
 	}
 
 	public struct Expr
@@ -27,10 +30,39 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 	}
 
 
+
 	public Expr InterpretClosure (Expression expression, FunctionBlock block, Type closureType)
 	{
+		StringBuilder closureBuilder = new StringBuilder ();
+		var methodInfo = closureType.GetMethod ("Invoke");
+		var args = methodInfo.GetParameters ();
+		FunctionBlock lambdaBlock = new FunctionBlock (block, block.Method, block.Type);
+		lambdaBlock.DefaultScope = args [0].Name;
 
-		return new Expr (){ ExprString = "10", Type = typeof(int) };
+		closureBuilder.Append ("(");
+		foreach (var param in args)
+		{
+			var argVar = new DeclareVariableStatement ();
+			argVar.Name = param.Name;
+			argVar.IsArg = true;
+			argVar.Type = param.ParameterType;
+			lambdaBlock.Statements.Add (argVar);
+			closureBuilder.Append (param.ParameterType).Append (" ").Append (param.Name).Append (",");
+		}
+		if (closureBuilder [closureBuilder.Length - 1] == ',')
+			closureBuilder.Length -= 1;
+		closureBuilder.Append (")=>{");
+		foreach (var statement in lambdaBlock.Statements)
+			closureBuilder.Append (statement).Append (";");
+		if (methodInfo.ReturnType != null)
+			closureBuilder.Append ("return ");
+		var internals = InterpretExpression (expression, lambdaBlock);
+		closureBuilder.Append (internals.ExprString).Append (";");
+		closureBuilder.Append ("}");
+
+
+		return new Expr ();
+		//return InterpretExpression (expression, block);
 	}
 
 	public Expr InterpretExpression (Expression expression, FunctionBlock block)
@@ -116,7 +148,7 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 			Type contextType = null; //!contextVariable ? typeof(GameObject) : contextVar.Type;
 			if (contextVar == null)
 			{
-				contextName = "root";
+				contextName = block.DefaultScope;
 				contextType = typeof(GameObject);
 			} else
 			{
@@ -214,4 +246,5 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 	}
 
 }
-				
+
+

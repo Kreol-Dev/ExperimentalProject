@@ -26,7 +26,7 @@ public class RepeatOperator : FunctionOperatorInterpreter
 		if (op.Args.Count == 1)
 		{
 			ForStatement stmt = new ForStatement ();
-			stmt.RepeatBlock = new FunctionBlock (block, block.Method);
+			stmt.RepeatBlock = new FunctionBlock (block, block.Method, block.Type);
 			stmt.InsideExpr = String.Format ("int i = 0; i < {0}; i++", exprInterpreter.InterpretExpression (op.Args [0], block).ExprString);
 
 			block.Statements.Add (stmt);

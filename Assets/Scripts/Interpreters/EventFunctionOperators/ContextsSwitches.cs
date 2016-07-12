@@ -54,7 +54,7 @@ public class ContextSwitchInterpreter : FunctionOperatorInterpreter
 	{
 		if (ops == null)
 			ops = Engine.GetPlugin<EventFunctionOperators> ();
-		FunctionBlock contextBlock = new FunctionBlock (block, block.Method);
+		FunctionBlock contextBlock = new FunctionBlock (block, block.Method, block.Type);
 		block.Statements.Add (contextBlock);
 		DeclareVariableStatement declareVar = new DeclareVariableStatement ();
 		declareVar.Type = contextType;
@@ -341,7 +341,7 @@ public class ContextPropertySwitchInterpreter : FunctionOperatorInterpreter
 	{
 		if (ops == null)
 			ops = Engine.GetPlugin<EventFunctionOperators> ();
-		FunctionBlock contextBlock = new FunctionBlock (block, block.Method);
+		FunctionBlock contextBlock = new FunctionBlock (block, block.Method, block.Type);
 		block.Statements.Add (contextBlock);
 		DeclareVariableStatement declareVar = new DeclareVariableStatement ();
 		declareVar.Type = propType;

@@ -6,6 +6,8 @@ using System;
 [CommonFunctionOperator ("generate")]
 public class GenerateOperator : FunctionOperatorInterpreter
 {
+
+
 	public override void Interpret (Operator op, FunctionBlock block)
 	{
 		var varName = ((op.Args [0].Operands [0] as ExprAtom).Content as Scope).Parts [0] as string;

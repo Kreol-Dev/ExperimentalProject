@@ -27,7 +27,7 @@ public class IfOperator : FunctionOperatorInterpreter
 			//Shouldn't declare variable
 			IfStatement ifStatement = new IfStatement ();
 			ifStatement.CheckExpression = exprInterpreter.InterpretExpression (op.Args [0], block).ExprString;
-			ifStatement.TrueBlock = new FunctionBlock (block, block.Method);
+			ifStatement.TrueBlock = new FunctionBlock (block, block.Method, block.Type);
 
 			block.Statements.Add (ifStatement);
 			foreach (var entry in (op.Context as Context).Entries)

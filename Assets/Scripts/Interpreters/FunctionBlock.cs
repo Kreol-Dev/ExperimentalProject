@@ -13,9 +13,13 @@ public class FunctionBlock
 
 	public CodeMemberMethod Method { get; internal set; }
 
+	public CodeTypeDeclaration Type { get ; internal set; }
+
+	public string DefaultScope = "root";
+
 	public int Ident { get; internal set; }
 
-	public FunctionBlock (FunctionBlock parent, CodeMemberMethod method)
+	public FunctionBlock (FunctionBlock parent, CodeMemberMethod method, CodeTypeDeclaration type)
 	{
 		if (parent == null)
 			Ident = 3;
@@ -23,6 +27,7 @@ public class FunctionBlock
 			Ident = parent.Ident + 1;
 		Parent = parent;
 		Method = method;
+		Type = type;
 	}
 
 	public override string ToString ()

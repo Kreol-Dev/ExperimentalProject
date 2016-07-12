@@ -129,7 +129,7 @@ public class EventActionsLoader : ScriptInterpreter
 		method.Attributes = MemberAttributes.Override | MemberAttributes.Public;
 		method.ReturnType = new CodeTypeReference (typeof(void));
 		var args = baseMethod.GetParameters ();
-		FunctionBlock block = new FunctionBlock (null, method);
+		FunctionBlock block = new FunctionBlock (null, method, codeType);
 		bool hasRoot = false;
 		foreach (var arg in args)
 		{
