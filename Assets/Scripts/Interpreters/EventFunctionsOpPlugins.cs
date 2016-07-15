@@ -16,10 +16,11 @@ public abstract class FunctionOperatorInterpreter
 public class EventFunctionOperators : ScriptEnginePlugin
 {
 	Dictionary<string, FunctionOperatorInterpreter> interpreters = new Dictionary<string, FunctionOperatorInterpreter> ();
+	ExpressionInterpreter exprInter;
 
 	public override void Init ()
 	{
-
+		exprInter = Engine.GetPlugin<ExpressionInterpreter> ();
 	}
 
 	public void AddInterpreter (string name, FunctionOperatorInterpreter inter)
@@ -31,6 +32,11 @@ public class EventFunctionOperators : ScriptEnginePlugin
 	public FunctionOperatorInterpreter GetInterpreter (Operator op, FunctionBlock block)
 	{
 		FunctionOperatorInterpreter inter = null;
+		if (op.Identifier as string == null)
+		{
+			exprInter.TransformScopedOperator (op, block);
+			Debug.Log ("Transformed op " + op.ToString ());
+		}
 		interpreters.TryGetValue (op.Identifier as string, out inter);
 		if (inter == null)
 		{

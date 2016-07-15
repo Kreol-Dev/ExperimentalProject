@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System;
 using PerCederberg.Grammatica.Runtime;
+using System.IO;
 
 namespace InternalDSL
 {
@@ -361,25 +362,16 @@ namespace InternalDSL
 
 		public Context (Node argsNode, Node n)
 		{
-			if (argsNode != null)
-			{
-				//It's a function call with some arguments
-				int argsCount = (argsNode.Count - 1) / 2 + 1;
-				for (int i = 0; i < argsCount; i++)
-				{
-					var argNode = argsNode.GetChildAt (i * 2);
-					//Debug.LogFormat ("Context arg: {0} in {1}", argNode, argsNode);
-					Expression expr = new Expression (argNode);
-					Args.Add (expr);
-				}
-			}
+			
 			var firstChild = n.GetChildAt (0);
 			if (firstChild.Id == (int)DefConstants.OPEN_TABLE)
 			{
+				Debug.Log ("It's a table");
 				//It's a table
 				if (argsNode != null)
 				{
 					//Input context is a value, while others - args
+					Debug.Log ("Input context is a value, while others - args");
 					Operator op = new Operator ();
 					op.Identifier = "value";
 					op.Context = new Context (null, n);
@@ -392,22 +384,25 @@ namespace InternalDSL
 					if (listNode.GetChildAt (0).Id == (int)DefConstants.OPEN_TABLE)
 					{
 						//it's a list of structs
+						Debug.Log ("it's a list of structs");
 					} else
 					{
 						int childrenCount = listNode.Count / 3;
 						if (listNode.Count > 1 && listNode.GetChildAt (1).Id == (int)DefConstants.EQUALS)
 						{
+							Debug.Log ("It's about operators");
 							//It's about operators
 							for (int i = 0; i < childrenCount; i++)
 							{
 								var idNode = listNode.GetChildAt (i * 3);
 								var contextNode = listNode.GetChildAt (i * 3 + 2);
-								//Debug.LogFormat ("{0} {1} {2} {3}", idNode, contextNode, i * 3, i * 3 + 2);
+								Debug.LogFormat ("{0} {1} {2} {3}", idNode, contextNode, i * 3, i * 3 + 2);
 								Operator op = new Operator (idNode, contextNode);
 								Entries.Add (op);
 							}
 						} else
 						{
+							Debug.Log ("It's about atoms");
 							//It's about atoms
 							//						Operator op = new Operator ();
 							//						op.Identifier = "list";
@@ -429,14 +424,15 @@ namespace InternalDSL
 			} else if (firstChild.Id == (int)DefConstants.EXPRESSION)
 			{
 
+				Debug.Log ("It's an expressions");
 //				if (argsNode == null)
 //					Entries.Add (new Expression (firstChild));
 //				else
 //				{
 				Entries.Add (new Expression (firstChild));
 //				}
-			}
-
+			} else
+				Debug.LogWarning ("It's a bug: " + firstChild);
 		}
 
 		public override string ToString ()
@@ -479,40 +475,96 @@ namespace InternalDSL
 
 		public Operator (Node idNode, Node n)
 		{
-			var idOrCall = idNode.GetChildAt (0);
-			//Debug.Log (idOrCall);
-			if (idNode.Count == 1)
+			Debug.Log ("Enter operator node:" + idNode.ToString () + n);
+			Debug.Log (idNode);
+			var scopeSize = idNode.GetChildCount ();
+
+			if (scopeSize == 1)
 			{
-				//It's a simple operator
-				Identifier = (idOrCall as Token).Image;
-				Context = new Context (null, n);
+				var idOrCall = idNode.GetChildAt (0);
+				var stringWriter = new StringWriter ();
+				idOrCall.PrintTo (stringWriter);
+				Debug.Log (stringWriter);
+				if (idOrCall.Count == 0)
+				{
+					Debug.Log ("It's a simple operator:" + idOrCall);
+					//It's a simple operator
+					Identifier = (idOrCall as Token).Image;
+				} else
+				{
+					Debug.Log ("It's a function operator:" + idOrCall);
+					//It's a function-operator
+					Args = new List<Expression> ();
+					Identifier = (idOrCall.GetChildAt (0) as Token).Image;
+					var argsNode = idOrCall.GetChildAt (2);
+					if (argsNode != null)
+					{
+						Debug.Log ("Args: " + argsNode);
+						//It's a function call with some arguments
+						int argsCount = (argsNode.Count - 1) / 2 + 1;
+						for (int i = 0; i < argsCount; i++)
+						{
+							var argNode = argsNode.GetChildAt (i * 2);
+							//Debug.LogFormat ("Context arg: {0} in {1}", argNode, argsNode);
+							Expression expr = new Expression (argNode);
+							Args.Add (expr);
+						}
+					}
+				}
 			} else
 			{
-				//It's a function-operator
-				Identifier = (idOrCall as Token).Image;
-				Context = new Context (idNode.GetChildAt (2), n);
+				Debug.Log ("Parsing scope: " + idNode);
+				var idScope = new Scope (idNode);
+				Identifier = idScope;
 			}
-
+			Debug.Log ("Now creating context");
+			Context = new Context (null, n);
 			Init ();
 		}
 
 		public Operator (Node n)
 		{
+			Debug.Log ("Enter operator node:" + n);
 			var idNode = n.GetChildAt (0);
-			n = n.GetChildAt (2);
-			var idOrCall = idNode.GetChildAt (0);
-			if (idNode.Count == 1)
+			Debug.Log (idNode);
+			var scopeSize = idNode.GetChildCount ();
+			if (scopeSize == 1)
 			{
-				//It's a simple operator
-				Identifier = (idOrCall as Token).Image;
-				Context = new Context (null, n);
+				var idOrCall = idNode.GetChildAt (0);
+				//Debug.Log (idOrCall);
+				if (idOrCall.Count == 1)
+				{
+					Debug.Log ("It's a simple operator:" + idOrCall.GetChildAt (0));
+					//It's a simple operator
+					Identifier = (idOrCall.GetChildAt (0) as Token).Image;
+				} else
+				{
+					Debug.Log ("It's a function operator:" + idOrCall.GetChildAt (0));
+					//It's a function-operator
+					Identifier = (idOrCall.GetChildAt (0) as Token).Image;
+					var argsNode = idOrCall.GetChildAt (2);
+					if (argsNode != null)
+					{
+						//It's a function call with some arguments
+						int argsCount = (argsNode.Count - 1) / 2 + 1;
+						for (int i = 0; i < argsCount; i++)
+						{
+							var argNode = argsNode.GetChildAt (i * 2);
+							//Debug.LogFormat ("Context arg: {0} in {1}", argNode, argsNode);
+							Expression expr = new Expression (argNode);
+							Args.Add (expr);
+						}
+					}
+				}
 			} else
 			{
-				//It's a function-operator
-				Identifier = (idOrCall.GetChildAt (0) as Token).Image;
-				Context = new Context (idOrCall.GetChildAt (2), n);
+				Debug.Log ("Parsing scope: " + idNode);
+				var idScope = new Scope (idNode);
+				Identifier = idScope;
 			}
 
+			Debug.Log ("Now creating context");
+			Context = new Context (null, n.GetChildAt (2));
 			Init ();
 			//ctx.Entries = (valueOp.Context as Context).
 		}
@@ -531,7 +583,7 @@ namespace InternalDSL
 			var ctx = (Context as Context);
 			if (ctx != null)
 			{
-				Args = ctx.Args;
+				//Args = ctx.Args;
 				if (ctx.Entries.Count == 1 && ctx.Entries [0] is Expression)
 					Context = ctx.Entries [0];
 				else if (ctx.Entries.Count == 1 && ctx.Entries [0] is Operator && (ctx.Entries [0] as Operator).Identifier as string == "value")
@@ -544,7 +596,7 @@ namespace InternalDSL
 		public override string ToString ()
 		{
 			StringBuilder argsBuilder = new StringBuilder ();
-			if (Args.Count > 0)
+			if (Args != null && Args.Count > 0)
 			{
 				argsBuilder.Append ("ARGS<");
 				for (int i = 0; i < Args.Count; i++)

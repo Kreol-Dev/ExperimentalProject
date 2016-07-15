@@ -40,13 +40,13 @@ Scope = IdentifierOrCall (DOT IdentifierOrCall)*;
 FuncScope = IDENTIFIER (DOT IDENTIFIER)*;
 IdentifierOrCall = IDENTIFIER (OPEN_PARENT (CallArgs)? CLOSE_PARENT)?;
 CallArgs = Expression (DELIMITER Expression)*;
-Operator = IdentifierOrCall EQUALS Context;
+Operator = Scope EQUALS Context;
 Context = OPEN_TABLE List CLOSE_TABLE | Expression;
-List = (IdentifierOrCall (EQUALS Context)? | Atom | OPEN_TABLE List CLOSE_TABLE)+;
+List = (Scope (EQUALS Context)? | Atom | OPEN_TABLE List CLOSE_TABLE)+;
 
 Decimal = NUMBER (DOT (NUMBEREND | NUMBER))?;
 Atom = Decimal | TRUE | FALSE | STRING;
-Factor = (SUB | NOT)? ((Atom | Scope) | OPEN_PARENT Expression CLOSE_PARENT);
+Factor = (SUB | NOT)? ((Atom | Scope ) | OPEN_PARENT Expression CLOSE_PARENT);
 MulTerm = Factor (MUL Factor | DIV Factor)*;
 
 AddTerm = MulTerm (ADD MulTerm | SUB MulTerm)*;

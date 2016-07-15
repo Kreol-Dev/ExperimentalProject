@@ -3,11 +3,11 @@ camps_filler =
 	scope = has_camp
 	action = 
 	{
+		camp.size = 5
 		camp = 
 		{
 			if(people.count = 0 and not root.entity.dead) = 
 			{
-				size = 5
 				repeat(size) = 
 				{
 					generate(party_member) =

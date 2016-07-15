@@ -29,7 +29,55 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 		public Type Type;
 	}
 
+	public Expr InterpretScope (Scope scope, FunctionBlock block)
+	{
+		return new Expr ();
+		//var operand = expression.
+	}
 
+	public void TransformScopedOperator (Operator op, FunctionBlock block)
+	{
+		var scope = op.Identifier as Scope;
+		var endContext = op.Context;
+		Operator curOp = null;
+		for (int i = 0; i < scope.Parts.Length; i++)
+		{
+			var part = scope.Parts [i];
+			Operator subOp = new Operator ();
+			if (part is string)
+			{
+				var opId = part as string;
+				subOp.Identifier = opId;
+			} else
+			{
+				var call = part as FunctionCall;
+				subOp.Identifier = call.Name;
+				subOp.Args = new List<Expression> ();
+				for (int j = 0; j < call.Args.Length; j++)
+				{
+					subOp.Args.Add (call.Args [j]);
+				}
+			}
+			if (curOp == null)
+			{
+				op.Args = subOp.Args;
+				op.Context = subOp.Context;
+				op.Identifier = subOp.Identifier;
+				curOp = op;
+			} else
+			{
+				var ctx = new Context ();
+				curOp.Context = ctx;
+				ctx.Entries.Add (subOp);
+				curOp = subOp;
+			}
+
+				
+
+			subOp.Init ();
+		}
+		curOp.Context = endContext;
+	}
 
 	public Expr InterpretClosure (Expression expression, FunctionBlock block, Type closureType)
 	{
@@ -182,7 +230,8 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 				{
 					var propName = NameTranslator.CSharpNameFromScript (scope [i] as string);
 
-					if (components.ContainsKey (scope [i] as string))
+					var prop = contextType.GetProperty (propName);
+					if (prop == null && components.ContainsKey (scope [i] as string))
 					{
 						var type = components [scope [i] as string];
 						var storedVar = new DeclareVariableStatement ();
@@ -204,17 +253,13 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 							exprBuilder.Append (storedVar.Name).Append ('.');
 						}
 
+					} else if (prop == null)
+					{
+						Debug.LogFormat ("Can't find {0} in {1}", propName, contextType);
+						break;
 					} else
 					{
-						var prop = contextType.GetProperty (propName);
-
-						if (prop != null)
-							contextType = prop.PropertyType;
-						else
-						{
-							Debug.LogFormat ("Can't find {0} in {1}", propName, contextType);
-							break;
-						}
+						contextType = prop.PropertyType;
 						exprBuilder.Append (propName).Append ('.');
 					}
 				}

@@ -137,7 +137,7 @@ namespace InternalDSL {
             pattern = new ProductionPattern((int) DefConstants.OPERATOR,
                                             "Operator");
             alt = new ProductionPatternAlternative();
-            alt.AddProduction((int) DefConstants.IDENTIFIER_OR_CALL, 1, 1);
+            alt.AddProduction((int) DefConstants.SCOPE, 1, 1);
             alt.AddToken((int) DefConstants.EQUALS, 1, 1);
             alt.AddProduction((int) DefConstants.CONTEXT, 1, 1);
             pattern.AddAlternative(alt);
@@ -299,7 +299,7 @@ namespace InternalDSL {
                                             "Subproduction6");
             pattern.Synthetic = true;
             alt = new ProductionPatternAlternative();
-            alt.AddProduction((int) DefConstants.IDENTIFIER_OR_CALL, 1, 1);
+            alt.AddProduction((int) DefConstants.SCOPE, 1, 1);
             alt.AddProduction((int) SynteticPatterns.SUBPRODUCTION_5, 0, 1);
             pattern.AddAlternative(alt);
             alt = new ProductionPatternAlternative();

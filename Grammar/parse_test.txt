@@ -1,15 +1,17 @@
 Parse tree from test.def:
 Root(2001)
   Operator(2006)
-    IdentifierOrCall(2004)
-      IDENTIFIER(1022): "new_person_portrait_gen", line: 1, col: 1
+    Scope(2002)
+      IdentifierOrCall(2004)
+        IDENTIFIER(1022): "new_person_portrait_gen", line: 1, col: 1
     EQUALS(1010): "=", line: 1, col: 25
     Context(2007)
       OPEN_TABLE(1002): "{", line: 2, col: 1
       List(2008)
-        IdentifierOrCall(2004)
-          IDENTIFIER(1022): "scope", line: 4, col: 2
-        EQUALS(1010): "=", line: 4, col: 8
+        Scope(2002)
+          IdentifierOrCall(2004)
+            IDENTIFIER(1022): "scope", line: 3, col: 2
+        EQUALS(1010): "=", line: 3, col: 8
         Context(2007)
           Expression(2018)
             OrTerm(2017)
@@ -21,86 +23,89 @@ Root(2001)
                         Factor(2011)
                           Scope(2002)
                             IdentifierOrCall(2004)
-                              IDENTIFIER(1022): "has_portrait", line: 4, col: 10
-                            DOT(1026): ".", line: 4, col: 22
+                              IDENTIFIER(1022): "has_portrait", line: 3, col: 10
+                            DOT(1026): ".", line: 3, col: 22
                             IdentifierOrCall(2004)
-                              IDENTIFIER(1022): "has_person", line: 4, col: 23
-        IdentifierOrCall(2004)
-          IDENTIFIER(1022): "action", line: 5, col: 2
-        EQUALS(1010): "=", line: 5, col: 9
+                              IDENTIFIER(1022): "has_person", line: 3, col: 23
+        Scope(2002)
+          IdentifierOrCall(2004)
+            IDENTIFIER(1022): "act", line: 4, col: 2
+        EQUALS(1010): "=", line: 4, col: 6
         Context(2007)
-          OPEN_TABLE(1002): "{", line: 6, col: 2
+          OPEN_TABLE(1002): "{", line: 5, col: 2
           List(2008)
-            IdentifierOrCall(2004)
-              IDENTIFIER(1022): "if", line: 7, col: 3
-              OPEN_PARENT(1005): "(", line: 7, col: 5
-              CallArgs(2005)
-                Expression(2018)
-                  OrTerm(2017)
-                    AndTerm(2016)
-                      EqTerm(2015)
-                        RelateTerm(2014)
-                          AddTerm(2013)
-                            MulTerm(2012)
-                              Factor(2011)
-                                Scope(2002)
-                                  IdentifierOrCall(2004)
-                                    IDENTIFIER(1022): "person", line: 7, col: 6
-                                  DOT(1026): ".", line: 7, col: 12
-                                  IdentifierOrCall(2004)
-                                    IDENTIFIER(1022): "age", line: 7, col: 13
-                        EQUALS(1010): "=", line: 7, col: 17
-                        RelateTerm(2014)
-                          AddTerm(2013)
-                            MulTerm(2012)
-                              Factor(2011)
-                                Atom(2010)
-                                  Decimal(2009)
-                                    NUMBER(1023): "0", line: 7, col: 19
-                      AND(1007): "and", line: 7, col: 21
-                      EqTerm(2015)
-                        RelateTerm(2014)
-                          AddTerm(2013)
-                            MulTerm(2012)
-                              Factor(2011)
-                                Scope(2002)
-                                  IdentifierOrCall(2004)
-                                    IDENTIFIER(1022): "person", line: 7, col: 25
-                                  DOT(1026): ".", line: 7, col: 31
-                                  IdentifierOrCall(2004)
-                                    IDENTIFIER(1022): "father", line: 7, col: 32
-                      AND(1007): "and", line: 7, col: 39
-                      EqTerm(2015)
-                        RelateTerm(2014)
-                          AddTerm(2013)
-                            MulTerm(2012)
-                              Factor(2011)
-                                Scope(2002)
-                                  IdentifierOrCall(2004)
-                                    IDENTIFIER(1022): "person", line: 7, col: 43
-                                  DOT(1026): ".", line: 7, col: 49
-                                  IdentifierOrCall(2004)
-                                    IDENTIFIER(1022): "mother", line: 7, col: 50
-                DELIMITER(1004): ",", line: 7, col: 56
-                Expression(2018)
-                  OrTerm(2017)
-                    AndTerm(2016)
-                      EqTerm(2015)
-                        RelateTerm(2014)
-                          AddTerm(2013)
-                            MulTerm(2012)
-                              Factor(2011)
-                                Scope(2002)
-                                  IdentifierOrCall(2004)
-                                    IDENTIFIER(1022): "not_original", line: 7, col: 58
-              CLOSE_PARENT(1006): ")", line: 7, col: 70
-            EQUALS(1010): "=", line: 7, col: 72
+            Scope(2002)
+              IdentifierOrCall(2004)
+                IDENTIFIER(1022): "if", line: 6, col: 3
+                OPEN_PARENT(1005): "(", line: 6, col: 5
+                CallArgs(2005)
+                  Expression(2018)
+                    OrTerm(2017)
+                      AndTerm(2016)
+                        EqTerm(2015)
+                          RelateTerm(2014)
+                            AddTerm(2013)
+                              MulTerm(2012)
+                                Factor(2011)
+                                  Scope(2002)
+                                    IdentifierOrCall(2004)
+                                      IDENTIFIER(1022): "person", line: 6, col: 6
+                                    DOT(1026): ".", line: 6, col: 12
+                                    IdentifierOrCall(2004)
+                                      IDENTIFIER(1022): "age", line: 6, col: 13
+                          EQUALS(1010): "=", line: 6, col: 17
+                          RelateTerm(2014)
+                            AddTerm(2013)
+                              MulTerm(2012)
+                                Factor(2011)
+                                  Atom(2010)
+                                    Decimal(2009)
+                                      NUMBER(1023): "0", line: 6, col: 19
+                        AND(1007): "and", line: 6, col: 21
+                        EqTerm(2015)
+                          RelateTerm(2014)
+                            AddTerm(2013)
+                              MulTerm(2012)
+                                Factor(2011)
+                                  Scope(2002)
+                                    IdentifierOrCall(2004)
+                                      IDENTIFIER(1022): "person", line: 6, col: 25
+                                    DOT(1026): ".", line: 6, col: 31
+                                    IdentifierOrCall(2004)
+                                      IDENTIFIER(1022): "father", line: 6, col: 32
+                        AND(1007): "and", line: 6, col: 39
+                        EqTerm(2015)
+                          RelateTerm(2014)
+                            AddTerm(2013)
+                              MulTerm(2012)
+                                Factor(2011)
+                                  Scope(2002)
+                                    IdentifierOrCall(2004)
+                                      IDENTIFIER(1022): "person", line: 6, col: 43
+                                    DOT(1026): ".", line: 6, col: 49
+                                    IdentifierOrCall(2004)
+                                      IDENTIFIER(1022): "mother", line: 6, col: 50
+                  DELIMITER(1004): ",", line: 6, col: 56
+                  Expression(2018)
+                    OrTerm(2017)
+                      AndTerm(2016)
+                        EqTerm(2015)
+                          RelateTerm(2014)
+                            AddTerm(2013)
+                              MulTerm(2012)
+                                Factor(2011)
+                                  Scope(2002)
+                                    IdentifierOrCall(2004)
+                                      IDENTIFIER(1022): "not_original", line: 6, col: 58
+                CLOSE_PARENT(1006): ")", line: 6, col: 70
+            EQUALS(1010): "=", line: 6, col: 72
             Context(2007)
-              OPEN_TABLE(1002): "{", line: 8, col: 3
+              OPEN_TABLE(1002): "{", line: 7, col: 3
               List(2008)
-                IdentifierOrCall(2004)
-                  IDENTIFIER(1022): "skin_colour", line: 9, col: 4
-                EQUALS(1010): "=", line: 9, col: 16
+                Scope(2002)
+                  IdentifierOrCall(2004)
+                    IDENTIFIER(1022): "skin_colour", line: 8, col: 4
+                EQUALS(1010): "=", line: 8, col: 16
                 Context(2007)
                   Expression(2018)
                     OrTerm(2017)
@@ -112,8 +117,8 @@ Root(2001)
                                 Factor(2011)
                                   Scope(2002)
                                     IdentifierOrCall(2004)
-                                      IDENTIFIER(1022): "colour_deviate", line: 9, col: 18
-                                      OPEN_PARENT(1005): "(", line: 9, col: 32
+                                      IDENTIFIER(1022): "colour_deviate", line: 8, col: 18
+                                      OPEN_PARENT(1005): "(", line: 8, col: 32
                                       CallArgs(2005)
                                         Expression(2018)
                                           OrTerm(2017)
@@ -125,8 +130,8 @@ Root(2001)
                                                       Factor(2011)
                                                         Scope(2002)
                                                           IdentifierOrCall(2004)
-                                                            IDENTIFIER(1022): "colour_mix", line: 9, col: 33
-                                                            OPEN_PARENT(1005): "(", line: 9, col: 43
+                                                            IDENTIFIER(1022): "colour_mix", line: 8, col: 33
+                                                            OPEN_PARENT(1005): "(", line: 8, col: 43
                                                             CallArgs(2005)
                                                               Expression(2018)
                                                                 OrTerm(2017)
@@ -138,17 +143,17 @@ Root(2001)
                                                                             Factor(2011)
                                                                               Scope(2002)
                                                                                 IdentifierOrCall(2004)
-                                                                                  IDENTIFIER(1022): "person", line: 9, col: 44
-                                                                                DOT(1026): ".", line: 9, col: 50
+                                                                                  IDENTIFIER(1022): "person", line: 8, col: 44
+                                                                                DOT(1026): ".", line: 8, col: 50
                                                                                 IdentifierOrCall(2004)
-                                                                                  IDENTIFIER(1022): "father", line: 9, col: 51
-                                                                                DOT(1026): ".", line: 9, col: 57
+                                                                                  IDENTIFIER(1022): "father", line: 8, col: 51
+                                                                                DOT(1026): ".", line: 8, col: 57
                                                                                 IdentifierOrCall(2004)
-                                                                                  IDENTIFIER(1022): "appearance", line: 9, col: 58
-                                                                                DOT(1026): ".", line: 9, col: 68
+                                                                                  IDENTIFIER(1022): "appearance", line: 8, col: 58
+                                                                                DOT(1026): ".", line: 8, col: 68
                                                                                 IdentifierOrCall(2004)
-                                                                                  IDENTIFIER(1022): "skin_colour", line: 9, col: 69
-                                                              DELIMITER(1004): ",", line: 9, col: 80
+                                                                                  IDENTIFIER(1022): "skin_colour", line: 8, col: 69
+                                                              DELIMITER(1004): ",", line: 8, col: 80
                                                               Expression(2018)
                                                                 OrTerm(2017)
                                                                   AndTerm(2016)
@@ -159,17 +164,17 @@ Root(2001)
                                                                             Factor(2011)
                                                                               Scope(2002)
                                                                                 IdentifierOrCall(2004)
-                                                                                  IDENTIFIER(1022): "person", line: 9, col: 82
-                                                                                DOT(1026): ".", line: 9, col: 88
+                                                                                  IDENTIFIER(1022): "person", line: 8, col: 82
+                                                                                DOT(1026): ".", line: 8, col: 88
                                                                                 IdentifierOrCall(2004)
-                                                                                  IDENTIFIER(1022): "mother", line: 9, col: 89
-                                                                                DOT(1026): ".", line: 9, col: 95
+                                                                                  IDENTIFIER(1022): "mother", line: 8, col: 89
+                                                                                DOT(1026): ".", line: 8, col: 95
                                                                                 IdentifierOrCall(2004)
-                                                                                  IDENTIFIER(1022): "appearance", line: 9, col: 96
-                                                                                DOT(1026): ".", line: 9, col: 106
+                                                                                  IDENTIFIER(1022): "appearance", line: 8, col: 96
+                                                                                DOT(1026): ".", line: 8, col: 106
                                                                                 IdentifierOrCall(2004)
-                                                                                  IDENTIFIER(1022): "skin_colour", line: 9, col: 107
-                                                              DELIMITER(1004): ",", line: 9, col: 118
+                                                                                  IDENTIFIER(1022): "skin_colour", line: 8, col: 107
+                                                              DELIMITER(1004): ",", line: 8, col: 118
                                                               Expression(2018)
                                                                 OrTerm(2017)
                                                                   AndTerm(2016)
@@ -180,11 +185,11 @@ Root(2001)
                                                                             Factor(2011)
                                                                               Atom(2010)
                                                                                 Decimal(2009)
-                                                                                  NUMBER(1023): "0", line: 9, col: 120
-                                                                                  DOT(1026): ".", line: 9, col: 121
-                                                                                  NUMBER(1023): "5", line: 9, col: 122
-                                                            CLOSE_PARENT(1006): ")", line: 9, col: 123
-                                        DELIMITER(1004): ",", line: 9, col: 124
+                                                                                  NUMBER(1023): "0", line: 8, col: 120
+                                                                                  DOT(1026): ".", line: 8, col: 121
+                                                                                  NUMBER(1023): "5", line: 8, col: 122
+                                                            CLOSE_PARENT(1006): ")", line: 8, col: 123
+                                        DELIMITER(1004): ",", line: 8, col: 124
                                         Expression(2018)
                                           OrTerm(2017)
                                             AndTerm(2016)
@@ -195,10 +200,36 @@ Root(2001)
                                                       Factor(2011)
                                                         Atom(2010)
                                                           Decimal(2009)
-                                                            NUMBER(1023): "10", line: 9, col: 126
-                                      CLOSE_PARENT(1006): ")", line: 9, col: 128
-                IdentifierOrCall(2004)
-                  IDENTIFIER(1022): "mother_phenotype", line: 10, col: 4
+                                                            NUMBER(1023): "10", line: 8, col: 126
+                                      CLOSE_PARENT(1006): ")", line: 8, col: 128
+                Scope(2002)
+                  IdentifierOrCall(2004)
+                    IDENTIFIER(1022): "mother_phenotype", line: 9, col: 4
+                EQUALS(1010): "=", line: 9, col: 21
+                Context(2007)
+                  Expression(2018)
+                    OrTerm(2017)
+                      AndTerm(2016)
+                        EqTerm(2015)
+                          RelateTerm(2014)
+                            AddTerm(2013)
+                              MulTerm(2012)
+                                Factor(2011)
+                                  Scope(2002)
+                                    IdentifierOrCall(2004)
+                                      IDENTIFIER(1022): "person", line: 9, col: 23
+                                    DOT(1026): ".", line: 9, col: 29
+                                    IdentifierOrCall(2004)
+                                      IDENTIFIER(1022): "mother", line: 9, col: 30
+                                    DOT(1026): ".", line: 9, col: 36
+                                    IdentifierOrCall(2004)
+                                      IDENTIFIER(1022): "appearance", line: 9, col: 37
+                                    DOT(1026): ".", line: 9, col: 47
+                                    IdentifierOrCall(2004)
+                                      IDENTIFIER(1022): "phenotype", line: 9, col: 48
+                Scope(2002)
+                  IdentifierOrCall(2004)
+                    IDENTIFIER(1022): "father_phenotype", line: 10, col: 4
                 EQUALS(1010): "=", line: 10, col: 21
                 Context(2007)
                   Expression(2018)
@@ -214,16 +245,17 @@ Root(2001)
                                       IDENTIFIER(1022): "person", line: 10, col: 23
                                     DOT(1026): ".", line: 10, col: 29
                                     IdentifierOrCall(2004)
-                                      IDENTIFIER(1022): "mother", line: 10, col: 30
+                                      IDENTIFIER(1022): "father", line: 10, col: 30
                                     DOT(1026): ".", line: 10, col: 36
                                     IdentifierOrCall(2004)
                                       IDENTIFIER(1022): "appearance", line: 10, col: 37
                                     DOT(1026): ".", line: 10, col: 47
                                     IdentifierOrCall(2004)
                                       IDENTIFIER(1022): "phenotype", line: 10, col: 48
-                IdentifierOrCall(2004)
-                  IDENTIFIER(1022): "father_phenotype", line: 11, col: 4
-                EQUALS(1010): "=", line: 11, col: 21
+                Scope(2002)
+                  IdentifierOrCall(2004)
+                    IDENTIFIER(1022): "traits", line: 11, col: 4
+                EQUALS(1010): "=", line: 11, col: 11
                 Context(2007)
                   Expression(2018)
                     OrTerm(2017)
@@ -235,32 +267,8 @@ Root(2001)
                                 Factor(2011)
                                   Scope(2002)
                                     IdentifierOrCall(2004)
-                                      IDENTIFIER(1022): "person", line: 11, col: 23
-                                    DOT(1026): ".", line: 11, col: 29
-                                    IdentifierOrCall(2004)
-                                      IDENTIFIER(1022): "father", line: 11, col: 30
-                                    DOT(1026): ".", line: 11, col: 36
-                                    IdentifierOrCall(2004)
-                                      IDENTIFIER(1022): "appearance", line: 11, col: 37
-                                    DOT(1026): ".", line: 11, col: 47
-                                    IdentifierOrCall(2004)
-                                      IDENTIFIER(1022): "phenotype", line: 11, col: 48
-                IdentifierOrCall(2004)
-                  IDENTIFIER(1022): "traits", line: 12, col: 4
-                EQUALS(1010): "=", line: 12, col: 11
-                Context(2007)
-                  Expression(2018)
-                    OrTerm(2017)
-                      AndTerm(2016)
-                        EqTerm(2015)
-                          RelateTerm(2014)
-                            AddTerm(2013)
-                              MulTerm(2012)
-                                Factor(2011)
-                                  Scope(2002)
-                                    IdentifierOrCall(2004)
-                                      IDENTIFIER(1022): "combine", line: 12, col: 13
-                                      OPEN_PARENT(1005): "(", line: 12, col: 20
+                                      IDENTIFIER(1022): "combine", line: 11, col: 13
+                                      OPEN_PARENT(1005): "(", line: 11, col: 20
                                       CallArgs(2005)
                                         Expression(2018)
                                           OrTerm(2017)
@@ -272,11 +280,11 @@ Root(2001)
                                                       Factor(2011)
                                                         Scope(2002)
                                                           IdentifierOrCall(2004)
-                                                            IDENTIFIER(1022): "mother_phenotype", line: 12, col: 21
-                                                          DOT(1026): ".", line: 12, col: 37
+                                                            IDENTIFIER(1022): "mother_phenotype", line: 11, col: 21
+                                                          DOT(1026): ".", line: 11, col: 37
                                                           IdentifierOrCall(2004)
-                                                            IDENTIFIER(1022): "traits", line: 12, col: 38
-                                        DELIMITER(1004): ",", line: 12, col: 44
+                                                            IDENTIFIER(1022): "traits", line: 11, col: 38
+                                        DELIMITER(1004): ",", line: 11, col: 44
                                         Expression(2018)
                                           OrTerm(2017)
                                             AndTerm(2016)
@@ -287,14 +295,15 @@ Root(2001)
                                                       Factor(2011)
                                                         Scope(2002)
                                                           IdentifierOrCall(2004)
-                                                            IDENTIFIER(1022): "father_phenotype", line: 12, col: 46
-                                                          DOT(1026): ".", line: 12, col: 62
+                                                            IDENTIFIER(1022): "father_phenotype", line: 11, col: 46
+                                                          DOT(1026): ".", line: 11, col: 62
                                                           IdentifierOrCall(2004)
-                                                            IDENTIFIER(1022): "traits", line: 12, col: 63
-                                      CLOSE_PARENT(1006): ")", line: 12, col: 69
-                IdentifierOrCall(2004)
-                  IDENTIFIER(1022): "available_phenotypes", line: 13, col: 4
-                EQUALS(1010): "=", line: 13, col: 25
+                                                            IDENTIFIER(1022): "traits", line: 11, col: 63
+                                      CLOSE_PARENT(1006): ")", line: 11, col: 69
+                Scope(2002)
+                  IdentifierOrCall(2004)
+                    IDENTIFIER(1022): "available_phenotypes", line: 12, col: 4
+                EQUALS(1010): "=", line: 12, col: 25
                 Context(2007)
                   Expression(2018)
                     OrTerm(2017)
@@ -306,8 +315,8 @@ Root(2001)
                                 Factor(2011)
                                   Scope(2002)
                                     IdentifierOrCall(2004)
-                                      IDENTIFIER(1022): "mask", line: 13, col: 27
-                                      OPEN_PARENT(1005): "(", line: 13, col: 31
+                                      IDENTIFIER(1022): "mask", line: 12, col: 27
+                                      OPEN_PARENT(1005): "(", line: 12, col: 31
                                       CallArgs(2005)
                                         Expression(2018)
                                           OrTerm(2017)
@@ -319,8 +328,8 @@ Root(2001)
                                                       Factor(2011)
                                                         Scope(2002)
                                                           IdentifierOrCall(2004)
-                                                            IDENTIFIER(1022): "mask", line: 13, col: 32
-                                                            OPEN_PARENT(1005): "(", line: 13, col: 36
+                                                            IDENTIFIER(1022): "mask", line: 12, col: 32
+                                                            OPEN_PARENT(1005): "(", line: 12, col: 36
                                                             CallArgs(2005)
                                                               Expression(2018)
                                                                 OrTerm(2017)
@@ -332,14 +341,14 @@ Root(2001)
                                                                             Factor(2011)
                                                                               Scope(2002)
                                                                                 IdentifierOrCall(2004)
-                                                                                  IDENTIFIER(1022): "resources", line: 13, col: 37
-                                                                                DOT(1026): ".", line: 13, col: 46
+                                                                                  IDENTIFIER(1022): "resources", line: 12, col: 37
+                                                                                DOT(1026): ".", line: 12, col: 46
                                                                                 IdentifierOrCall(2004)
-                                                                                  IDENTIFIER(1022): "appearance", line: 13, col: 47
-                                                                                DOT(1026): ".", line: 13, col: 57
+                                                                                  IDENTIFIER(1022): "appearance", line: 12, col: 47
+                                                                                DOT(1026): ".", line: 12, col: 57
                                                                                 IdentifierOrCall(2004)
-                                                                                  IDENTIFIER(1022): "phenotypes", line: 13, col: 58
-                                                              DELIMITER(1004): ",", line: 13, col: 68
+                                                                                  IDENTIFIER(1022): "phenotypes", line: 12, col: 58
+                                                              DELIMITER(1004): ",", line: 12, col: 68
                                                               Expression(2018)
                                                                 OrTerm(2017)
                                                                   AndTerm(2016)
@@ -350,8 +359,8 @@ Root(2001)
                                                                             Factor(2011)
                                                                               Scope(2002)
                                                                                 IdentifierOrCall(2004)
-                                                                                  IDENTIFIER(1022): "traits", line: 13, col: 70
-                                                              DELIMITER(1004): ",", line: 13, col: 76
+                                                                                  IDENTIFIER(1022): "traits", line: 12, col: 70
+                                                              DELIMITER(1004): ",", line: 12, col: 76
                                                               Expression(2018)
                                                                 OrTerm(2017)
                                                                   AndTerm(2016)
@@ -362,8 +371,8 @@ Root(2001)
                                                                             Factor(2011)
                                                                               Scope(2002)
                                                                                 IdentifierOrCall(2004)
-                                                                                  IDENTIFIER(1022): "traits", line: 13, col: 78
-                                                              DELIMITER(1004): ",", line: 13, col: 84
+                                                                                  IDENTIFIER(1022): "traits", line: 12, col: 78
+                                                              DELIMITER(1004): ",", line: 12, col: 84
                                                               Expression(2018)
                                                                 OrTerm(2017)
                                                                   AndTerm(2016)
@@ -374,9 +383,9 @@ Root(2001)
                                                                             Factor(2011)
                                                                               Scope(2002)
                                                                                 IdentifierOrCall(2004)
-                                                                                  IDENTIFIER(1022): "at_least_one", line: 13, col: 86
-                                                            CLOSE_PARENT(1006): ")", line: 13, col: 98
-                                        DELIMITER(1004): ",", line: 13, col: 99
+                                                                                  IDENTIFIER(1022): "at_least_one", line: 12, col: 86
+                                                            CLOSE_PARENT(1006): ")", line: 12, col: 98
+                                        DELIMITER(1004): ",", line: 12, col: 99
                                         Expression(2018)
                                           OrTerm(2017)
                                             AndTerm(2016)
@@ -387,8 +396,8 @@ Root(2001)
                                                       Factor(2011)
                                                         Scope(2002)
                                                           IdentifierOrCall(2004)
-                                                            IDENTIFIER(1022): "sex", line: 13, col: 101
-                                        DELIMITER(1004): ",", line: 13, col: 104
+                                                            IDENTIFIER(1022): "sex", line: 12, col: 101
+                                        DELIMITER(1004): ",", line: 12, col: 104
                                         Expression(2018)
                                           OrTerm(2017)
                                             AndTerm(2016)
@@ -399,14 +408,15 @@ Root(2001)
                                                       Factor(2011)
                                                         Scope(2002)
                                                           IdentifierOrCall(2004)
-                                                            IDENTIFIER(1022): "person", line: 13, col: 106
-                                                          DOT(1026): ".", line: 13, col: 112
+                                                            IDENTIFIER(1022): "person", line: 12, col: 106
+                                                          DOT(1026): ".", line: 12, col: 112
                                                           IdentifierOrCall(2004)
-                                                            IDENTIFIER(1022): "sex", line: 13, col: 113
-                                      CLOSE_PARENT(1006): ")", line: 13, col: 116
-                IdentifierOrCall(2004)
-                  IDENTIFIER(1022): "available_dresses", line: 16, col: 4
-                EQUALS(1010): "=", line: 16, col: 22
+                                                            IDENTIFIER(1022): "sex", line: 12, col: 113
+                                      CLOSE_PARENT(1006): ")", line: 12, col: 116
+                Scope(2002)
+                  IdentifierOrCall(2004)
+                    IDENTIFIER(1022): "available_dresses", line: 15, col: 4
+                EQUALS(1010): "=", line: 15, col: 22
                 Context(2007)
                   Expression(2018)
                     OrTerm(2017)
@@ -418,8 +428,8 @@ Root(2001)
                                 Factor(2011)
                                   Scope(2002)
                                     IdentifierOrCall(2004)
-                                      IDENTIFIER(1022): "mask", line: 16, col: 24
-                                      OPEN_PARENT(1005): "(", line: 16, col: 28
+                                      IDENTIFIER(1022): "mask", line: 15, col: 24
+                                      OPEN_PARENT(1005): "(", line: 15, col: 28
                                       CallArgs(2005)
                                         Expression(2018)
                                           OrTerm(2017)
@@ -431,14 +441,14 @@ Root(2001)
                                                       Factor(2011)
                                                         Scope(2002)
                                                           IdentifierOrCall(2004)
-                                                            IDENTIFIER(1022): "resources", line: 16, col: 29
-                                                          DOT(1026): ".", line: 16, col: 38
+                                                            IDENTIFIER(1022): "resources", line: 15, col: 29
+                                                          DOT(1026): ".", line: 15, col: 38
                                                           IdentifierOrCall(2004)
-                                                            IDENTIFIER(1022): "appearance", line: 16, col: 39
-                                                          DOT(1026): ".", line: 16, col: 49
+                                                            IDENTIFIER(1022): "appearance", line: 15, col: 39
+                                                          DOT(1026): ".", line: 15, col: 49
                                                           IdentifierOrCall(2004)
-                                                            IDENTIFIER(1022): "dresses", line: 16, col: 50
-                                        DELIMITER(1004): ",", line: 16, col: 57
+                                                            IDENTIFIER(1022): "dresses", line: 15, col: 50
+                                        DELIMITER(1004): ",", line: 15, col: 57
                                         Expression(2018)
                                           OrTerm(2017)
                                             AndTerm(2016)
@@ -449,8 +459,8 @@ Root(2001)
                                                       Factor(2011)
                                                         Scope(2002)
                                                           IdentifierOrCall(2004)
-                                                            IDENTIFIER(1022): "any", line: 16, col: 59
-                                                            OPEN_PARENT(1005): "(", line: 16, col: 62
+                                                            IDENTIFIER(1022): "any", line: 15, col: 59
+                                                            OPEN_PARENT(1005): "(", line: 15, col: 62
                                                             CallArgs(2005)
                                                               Expression(2018)
                                                                 OrTerm(2017)
@@ -462,23 +472,26 @@ Root(2001)
                                                                             Factor(2011)
                                                                               Scope(2002)
                                                                                 IdentifierOrCall(2004)
-                                                                                  IDENTIFIER(1022): "traits", line: 16, col: 63
-                                                            CLOSE_PARENT(1006): ")", line: 16, col: 69
-                                                EQUALS(1010): "=", line: 16, col: 71
+                                                                                  IDENTIFIER(1022): "traits", line: 15, col: 63
+                                                            CLOSE_PARENT(1006): ")", line: 15, col: 69
+                                                EQUALS(1010): "=", line: 15, col: 71
                                                 RelateTerm(2014)
                                                   AddTerm(2013)
                                                     MulTerm(2012)
                                                       Factor(2011)
                                                         Scope(2002)
                                                           IdentifierOrCall(2004)
-                                                            IDENTIFIER(1022): "person", line: 16, col: 73
-                                                          DOT(1026): ".", line: 16, col: 79
+                                                            IDENTIFIER(1022): "root", line: 15, col: 73
+                                                          DOT(1026): ".", line: 15, col: 77
                                                           IdentifierOrCall(2004)
-                                                            IDENTIFIER(1022): "culture", line: 16, col: 80
-                                                          DOT(1026): ".", line: 16, col: 87
+                                                            IDENTIFIER(1022): "person", line: 15, col: 78
+                                                          DOT(1026): ".", line: 15, col: 84
                                                           IdentifierOrCall(2004)
-                                                            IDENTIFIER(1022): "traits", line: 16, col: 88
-                                              AND(1007): "and", line: 16, col: 95
+                                                            IDENTIFIER(1022): "culture", line: 15, col: 85
+                                                          DOT(1026): ".", line: 15, col: 92
+                                                          IdentifierOrCall(2004)
+                                                            IDENTIFIER(1022): "traits", line: 15, col: 93
+                                              AND(1007): "and", line: 15, col: 100
                                               EqTerm(2015)
                                                 RelateTerm(2014)
                                                   AddTerm(2013)
@@ -486,15 +499,15 @@ Root(2001)
                                                       Factor(2011)
                                                         Scope(2002)
                                                           IdentifierOrCall(2004)
-                                                            IDENTIFIER(1022): "age", line: 16, col: 99
-                                                  LESS(1017): "<", line: 16, col: 103
+                                                            IDENTIFIER(1022): "age", line: 15, col: 104
+                                                  LESS(1017): "<", line: 15, col: 108
                                                   AddTerm(2013)
                                                     MulTerm(2012)
                                                       Factor(2011)
                                                         Atom(2010)
                                                           Decimal(2009)
-                                                            NUMBER(1023): "5", line: 16, col: 105
-                                              AND(1007): "and", line: 16, col: 107
+                                                            NUMBER(1023): "5", line: 15, col: 110
+                                              AND(1007): "and", line: 15, col: 112
                                               EqTerm(2015)
                                                 RelateTerm(2014)
                                                   AddTerm(2013)
@@ -502,28 +515,33 @@ Root(2001)
                                                       Factor(2011)
                                                         Scope(2002)
                                                           IdentifierOrCall(2004)
-                                                            IDENTIFIER(1022): "sex", line: 16, col: 111
-                                                EQUALS(1010): "=", line: 16, col: 115
+                                                            IDENTIFIER(1022): "sex", line: 15, col: 116
+                                                EQUALS(1010): "=", line: 15, col: 120
                                                 RelateTerm(2014)
                                                   AddTerm(2013)
                                                     MulTerm(2012)
                                                       Factor(2011)
                                                         Scope(2002)
                                                           IdentifierOrCall(2004)
-                                                            IDENTIFIER(1022): "person", line: 16, col: 117
-                                                          DOT(1026): ".", line: 16, col: 123
+                                                            IDENTIFIER(1022): "root", line: 15, col: 122
+                                                          DOT(1026): ".", line: 15, col: 126
                                                           IdentifierOrCall(2004)
-                                                            IDENTIFIER(1022): "sex", line: 16, col: 124
-                                      CLOSE_PARENT(1006): ")", line: 16, col: 127
-                IdentifierOrCall(2004)
-                  IDENTIFIER(1022): "portrait", line: 17, col: 4
-                EQUALS(1010): "=", line: 17, col: 13
+                                                            IDENTIFIER(1022): "person", line: 15, col: 127
+                                                          DOT(1026): ".", line: 15, col: 133
+                                                          IdentifierOrCall(2004)
+                                                            IDENTIFIER(1022): "sex", line: 15, col: 134
+                                      CLOSE_PARENT(1006): ")", line: 15, col: 137
+                Scope(2002)
+                  IdentifierOrCall(2004)
+                    IDENTIFIER(1022): "portrait", line: 16, col: 4
+                EQUALS(1010): "=", line: 16, col: 13
                 Context(2007)
-                  OPEN_TABLE(1002): "{", line: 18, col: 4
+                  OPEN_TABLE(1002): "{", line: 17, col: 4
                   List(2008)
-                    IdentifierOrCall(2004)
-                      IDENTIFIER(1022): "background", line: 19, col: 5
-                    EQUALS(1010): "=", line: 19, col: 16
+                    Scope(2002)
+                      IdentifierOrCall(2004)
+                        IDENTIFIER(1022): "background", line: 18, col: 5
+                    EQUALS(1010): "=", line: 18, col: 16
                     Context(2007)
                       Expression(2018)
                         OrTerm(2017)
@@ -535,19 +553,20 @@ Root(2001)
                                     Factor(2011)
                                       Scope(2002)
                                         IdentifierOrCall(2004)
-                                          IDENTIFIER(1022): "person", line: 19, col: 18
-                                        DOT(1026): ".", line: 19, col: 24
+                                          IDENTIFIER(1022): "person", line: 18, col: 18
+                                        DOT(1026): ".", line: 18, col: 24
                                         IdentifierOrCall(2004)
-                                          IDENTIFIER(1022): "father", line: 19, col: 25
-                                        DOT(1026): ".", line: 19, col: 31
+                                          IDENTIFIER(1022): "father", line: 18, col: 25
+                                        DOT(1026): ".", line: 18, col: 31
                                         IdentifierOrCall(2004)
-                                          IDENTIFIER(1022): "appearance", line: 19, col: 32
-                                        DOT(1026): ".", line: 19, col: 42
+                                          IDENTIFIER(1022): "appearance", line: 18, col: 32
+                                        DOT(1026): ".", line: 18, col: 42
                                         IdentifierOrCall(2004)
-                                          IDENTIFIER(1022): "background", line: 19, col: 43
-                    IdentifierOrCall(2004)
-                      IDENTIFIER(1022): "dress", line: 20, col: 5
-                    EQUALS(1010): "=", line: 20, col: 11
+                                          IDENTIFIER(1022): "background", line: 18, col: 43
+                    Scope(2002)
+                      IdentifierOrCall(2004)
+                        IDENTIFIER(1022): "dress", line: 19, col: 5
+                    EQUALS(1010): "=", line: 19, col: 11
                     Context(2007)
                       Expression(2018)
                         OrTerm(2017)
@@ -559,8 +578,8 @@ Root(2001)
                                     Factor(2011)
                                       Scope(2002)
                                         IdentifierOrCall(2004)
-                                          IDENTIFIER(1022): "random_from", line: 20, col: 13
-                                          OPEN_PARENT(1005): "(", line: 20, col: 24
+                                          IDENTIFIER(1022): "random_from", line: 19, col: 13
+                                          OPEN_PARENT(1005): "(", line: 19, col: 24
                                           CallArgs(2005)
                                             Expression(2018)
                                               OrTerm(2017)
@@ -572,34 +591,36 @@ Root(2001)
                                                           Factor(2011)
                                                             Scope(2002)
                                                               IdentifierOrCall(2004)
-                                                                IDENTIFIER(1022): "available_dresses", line: 20, col: 25
-                                          CLOSE_PARENT(1006): ")", line: 20, col: 42
-                  CLOSE_TABLE(1003): "}", line: 21, col: 4
-              CLOSE_TABLE(1003): "}", line: 25, col: 3
-            IdentifierOrCall(2004)
-              IDENTIFIER(1022): "if", line: 26, col: 3
-              OPEN_PARENT(1005): "(", line: 26, col: 5
-              CallArgs(2005)
-                Expression(2018)
-                  OrTerm(2017)
-                    AndTerm(2016)
-                      EqTerm(2015)
-                        RelateTerm(2014)
-                          AddTerm(2013)
-                            MulTerm(2012)
-                              Factor(2011)
-                                NOT(1009): "not", line: 26, col: 6
-                                Scope(2002)
-                                  IdentifierOrCall(2004)
-                                    IDENTIFIER(1022): "not_original", line: 26, col: 10
-              CLOSE_PARENT(1006): ")", line: 26, col: 22
-            EQUALS(1010): "=", line: 26, col: 24
+                                                                IDENTIFIER(1022): "available_dresses", line: 19, col: 25
+                                          CLOSE_PARENT(1006): ")", line: 19, col: 42
+                  CLOSE_TABLE(1003): "}", line: 20, col: 4
+              CLOSE_TABLE(1003): "}", line: 24, col: 3
+            Scope(2002)
+              IdentifierOrCall(2004)
+                IDENTIFIER(1022): "if", line: 25, col: 3
+                OPEN_PARENT(1005): "(", line: 25, col: 5
+                CallArgs(2005)
+                  Expression(2018)
+                    OrTerm(2017)
+                      AndTerm(2016)
+                        EqTerm(2015)
+                          RelateTerm(2014)
+                            AddTerm(2013)
+                              MulTerm(2012)
+                                Factor(2011)
+                                  NOT(1009): "not", line: 25, col: 6
+                                  Scope(2002)
+                                    IdentifierOrCall(2004)
+                                      IDENTIFIER(1022): "not_original", line: 25, col: 10
+                CLOSE_PARENT(1006): ")", line: 25, col: 22
+            EQUALS(1010): "=", line: 25, col: 24
             Context(2007)
-              OPEN_TABLE(1002): "{", line: 27, col: 3
+              OPEN_TABLE(1002): "{", line: 26, col: 3
               List(2008)
-                IdentifierOrCall(2004)
-                  IDENTIFIER(1022): "skin_colour", line: 28, col: 4
-                EQUALS(1010): "=", line: 28, col: 16
+                Scope(2002)
+                  IdentifierOrCall(2004)
+                    IDENTIFIER(1022): "skin_colour", line: 27, col: 4
+                EQUALS(1010): "=", line: 27, col: 16
                 Context(2007)
                   Expression(2018)
                     OrTerm(2017)
@@ -611,8 +632,8 @@ Root(2001)
                                 Factor(2011)
                                   Scope(2002)
                                     IdentifierOrCall(2004)
-                                      IDENTIFIER(1022): "colour_deviate", line: 28, col: 18
-                                      OPEN_PARENT(1005): "(", line: 28, col: 32
+                                      IDENTIFIER(1022): "colour_deviate", line: 27, col: 18
+                                      OPEN_PARENT(1005): "(", line: 27, col: 32
                                       CallArgs(2005)
                                         Expression(2018)
                                           OrTerm(2017)
@@ -624,11 +645,11 @@ Root(2001)
                                                       Factor(2011)
                                                         Scope(2002)
                                                           IdentifierOrCall(2004)
-                                                            IDENTIFIER(1022): "culture", line: 28, col: 33
-                                                          DOT(1026): ".", line: 28, col: 40
+                                                            IDENTIFIER(1022): "culture", line: 27, col: 33
+                                                          DOT(1026): ".", line: 27, col: 40
                                                           IdentifierOrCall(2004)
-                                                            IDENTIFIER(1022): "skin_colour", line: 28, col: 41
-                                        DELIMITER(1004): ",", line: 28, col: 52
+                                                            IDENTIFIER(1022): "skin_colour", line: 27, col: 41
+                                        DELIMITER(1004): ",", line: 27, col: 52
                                         Expression(2018)
                                           OrTerm(2017)
                                             AndTerm(2016)
@@ -639,13 +660,14 @@ Root(2001)
                                                       Factor(2011)
                                                         Atom(2010)
                                                           Decimal(2009)
-                                                            NUMBER(1023): "0", line: 28, col: 54
-                                                            DOT(1026): ".", line: 28, col: 55
-                                                            NUMBER(1023): "1", line: 28, col: 56
-                                      CLOSE_PARENT(1006): ")", line: 28, col: 57
-                IdentifierOrCall(2004)
-                  IDENTIFIER(1022): "available_phenotypes", line: 29, col: 4
-                EQUALS(1010): "=", line: 29, col: 25
+                                                            NUMBER(1023): "0", line: 27, col: 54
+                                                            DOT(1026): ".", line: 27, col: 55
+                                                            NUMBER(1023): "1", line: 27, col: 56
+                                      CLOSE_PARENT(1006): ")", line: 27, col: 57
+                Scope(2002)
+                  IdentifierOrCall(2004)
+                    IDENTIFIER(1022): "available_phenotypes", line: 28, col: 4
+                EQUALS(1010): "=", line: 28, col: 25
                 Context(2007)
                   Expression(2018)
                     OrTerm(2017)
@@ -657,8 +679,8 @@ Root(2001)
                                 Factor(2011)
                                   Scope(2002)
                                     IdentifierOrCall(2004)
-                                      IDENTIFIER(1022): "mask", line: 29, col: 27
-                                      OPEN_PARENT(1005): "(", line: 29, col: 31
+                                      IDENTIFIER(1022): "mask", line: 28, col: 27
+                                      OPEN_PARENT(1005): "(", line: 28, col: 31
                                       CallArgs(2005)
                                         Expression(2018)
                                           OrTerm(2017)
@@ -670,8 +692,8 @@ Root(2001)
                                                       Factor(2011)
                                                         Scope(2002)
                                                           IdentifierOrCall(2004)
-                                                            IDENTIFIER(1022): "mask", line: 29, col: 32
-                                                            OPEN_PARENT(1005): "(", line: 29, col: 36
+                                                            IDENTIFIER(1022): "mask", line: 28, col: 32
+                                                            OPEN_PARENT(1005): "(", line: 28, col: 36
                                                             CallArgs(2005)
                                                               Expression(2018)
                                                                 OrTerm(2017)
@@ -683,14 +705,14 @@ Root(2001)
                                                                             Factor(2011)
                                                                               Scope(2002)
                                                                                 IdentifierOrCall(2004)
-                                                                                  IDENTIFIER(1022): "resources", line: 29, col: 37
-                                                                                DOT(1026): ".", line: 29, col: 46
+                                                                                  IDENTIFIER(1022): "resources", line: 28, col: 37
+                                                                                DOT(1026): ".", line: 28, col: 46
                                                                                 IdentifierOrCall(2004)
-                                                                                  IDENTIFIER(1022): "appearance", line: 29, col: 47
-                                                                                DOT(1026): ".", line: 29, col: 57
+                                                                                  IDENTIFIER(1022): "appearance", line: 28, col: 47
+                                                                                DOT(1026): ".", line: 28, col: 57
                                                                                 IdentifierOrCall(2004)
-                                                                                  IDENTIFIER(1022): "phenotypes", line: 29, col: 58
-                                                              DELIMITER(1004): ",", line: 29, col: 68
+                                                                                  IDENTIFIER(1022): "phenotypes", line: 28, col: 58
+                                                              DELIMITER(1004): ",", line: 28, col: 68
                                                               Expression(2018)
                                                                 OrTerm(2017)
                                                                   AndTerm(2016)
@@ -701,8 +723,8 @@ Root(2001)
                                                                             Factor(2011)
                                                                               Scope(2002)
                                                                                 IdentifierOrCall(2004)
-                                                                                  IDENTIFIER(1022): "traits", line: 29, col: 70
-                                                              DELIMITER(1004): ",", line: 29, col: 76
+                                                                                  IDENTIFIER(1022): "traits", line: 28, col: 70
+                                                              DELIMITER(1004): ",", line: 28, col: 76
                                                               Expression(2018)
                                                                 OrTerm(2017)
                                                                   AndTerm(2016)
@@ -713,14 +735,14 @@ Root(2001)
                                                                             Factor(2011)
                                                                               Scope(2002)
                                                                                 IdentifierOrCall(2004)
-                                                                                  IDENTIFIER(1022): "person", line: 29, col: 78
-                                                                                DOT(1026): ".", line: 29, col: 84
+                                                                                  IDENTIFIER(1022): "person", line: 28, col: 78
+                                                                                DOT(1026): ".", line: 28, col: 84
                                                                                 IdentifierOrCall(2004)
-                                                                                  IDENTIFIER(1022): "culture", line: 29, col: 85
-                                                                                DOT(1026): ".", line: 29, col: 92
+                                                                                  IDENTIFIER(1022): "culture", line: 28, col: 85
+                                                                                DOT(1026): ".", line: 28, col: 92
                                                                                 IdentifierOrCall(2004)
-                                                                                  IDENTIFIER(1022): "traits", line: 29, col: 93
-                                                              DELIMITER(1004): ",", line: 29, col: 99
+                                                                                  IDENTIFIER(1022): "traits", line: 28, col: 93
+                                                              DELIMITER(1004): ",", line: 28, col: 99
                                                               Expression(2018)
                                                                 OrTerm(2017)
                                                                   AndTerm(2016)
@@ -731,9 +753,9 @@ Root(2001)
                                                                             Factor(2011)
                                                                               Scope(2002)
                                                                                 IdentifierOrCall(2004)
-                                                                                  IDENTIFIER(1022): "at_least_one", line: 29, col: 101
-                                                            CLOSE_PARENT(1006): ")", line: 29, col: 113
-                                        DELIMITER(1004): ",", line: 29, col: 114
+                                                                                  IDENTIFIER(1022): "at_least_one", line: 28, col: 101
+                                                            CLOSE_PARENT(1006): ")", line: 28, col: 113
+                                        DELIMITER(1004): ",", line: 28, col: 114
                                         Expression(2018)
                                           OrTerm(2017)
                                             AndTerm(2016)
@@ -744,8 +766,8 @@ Root(2001)
                                                       Factor(2011)
                                                         Scope(2002)
                                                           IdentifierOrCall(2004)
-                                                            IDENTIFIER(1022): "sex", line: 29, col: 116
-                                        DELIMITER(1004): ",", line: 29, col: 119
+                                                            IDENTIFIER(1022): "sex", line: 28, col: 116
+                                        DELIMITER(1004): ",", line: 28, col: 119
                                         Expression(2018)
                                           OrTerm(2017)
                                             AndTerm(2016)
@@ -756,14 +778,15 @@ Root(2001)
                                                       Factor(2011)
                                                         Scope(2002)
                                                           IdentifierOrCall(2004)
-                                                            IDENTIFIER(1022): "person", line: 29, col: 121
-                                                          DOT(1026): ".", line: 29, col: 127
+                                                            IDENTIFIER(1022): "person", line: 28, col: 121
+                                                          DOT(1026): ".", line: 28, col: 127
                                                           IdentifierOrCall(2004)
-                                                            IDENTIFIER(1022): "sex", line: 29, col: 128
-                                      CLOSE_PARENT(1006): ")", line: 29, col: 131
-                IdentifierOrCall(2004)
-                  IDENTIFIER(1022): "back", line: 30, col: 4
-                EQUALS(1010): "=", line: 30, col: 9
+                                                            IDENTIFIER(1022): "sex", line: 28, col: 128
+                                      CLOSE_PARENT(1006): ")", line: 28, col: 131
+                Scope(2002)
+                  IdentifierOrCall(2004)
+                    IDENTIFIER(1022): "back", line: 29, col: 4
+                EQUALS(1010): "=", line: 29, col: 9
                 Context(2007)
                   Expression(2018)
                     OrTerm(2017)
@@ -775,8 +798,8 @@ Root(2001)
                                 Factor(2011)
                                   Scope(2002)
                                     IdentifierOrCall(2004)
-                                      IDENTIFIER(1022): "most_weight", line: 30, col: 11
-                                      OPEN_PARENT(1005): "(", line: 30, col: 22
+                                      IDENTIFIER(1022): "most_weight", line: 29, col: 11
+                                      OPEN_PARENT(1005): "(", line: 29, col: 22
                                       CallArgs(2005)
                                         Expression(2018)
                                           OrTerm(2017)
@@ -788,8 +811,8 @@ Root(2001)
                                                       Factor(2011)
                                                         Scope(2002)
                                                           IdentifierOrCall(2004)
-                                                            IDENTIFIER(1022): "weighted", line: 30, col: 23
-                                                            OPEN_PARENT(1005): "(", line: 30, col: 31
+                                                            IDENTIFIER(1022): "weighted", line: 29, col: 23
+                                                            OPEN_PARENT(1005): "(", line: 29, col: 31
                                                             CallArgs(2005)
                                                               Expression(2018)
                                                                 OrTerm(2017)
@@ -801,14 +824,14 @@ Root(2001)
                                                                             Factor(2011)
                                                                               Scope(2002)
                                                                                 IdentifierOrCall(2004)
-                                                                                  IDENTIFIER(1022): "resources", line: 30, col: 32
-                                                                                DOT(1026): ".", line: 30, col: 41
+                                                                                  IDENTIFIER(1022): "resources", line: 29, col: 32
+                                                                                DOT(1026): ".", line: 29, col: 41
                                                                                 IdentifierOrCall(2004)
-                                                                                  IDENTIFIER(1022): "appearance", line: 30, col: 42
-                                                                                DOT(1026): ".", line: 30, col: 52
+                                                                                  IDENTIFIER(1022): "appearance", line: 29, col: 42
+                                                                                DOT(1026): ".", line: 29, col: 52
                                                                                 IdentifierOrCall(2004)
-                                                                                  IDENTIFIER(1022): "backgrouds", line: 30, col: 53
-                                                              DELIMITER(1004): ",", line: 30, col: 63
+                                                                                  IDENTIFIER(1022): "backgrouds", line: 29, col: 53
+                                                              DELIMITER(1004): ",", line: 29, col: 63
                                                               Expression(2018)
                                                                 OrTerm(2017)
                                                                   AndTerm(2016)
@@ -819,8 +842,8 @@ Root(2001)
                                                                             Factor(2011)
                                                                               Scope(2002)
                                                                                 IdentifierOrCall(2004)
-                                                                                  IDENTIFIER(1022): "traits", line: 30, col: 65
-                                                              DELIMITER(1004): ",", line: 30, col: 71
+                                                                                  IDENTIFIER(1022): "traits", line: 29, col: 65
+                                                              DELIMITER(1004): ",", line: 29, col: 71
                                                               Expression(2018)
                                                                 OrTerm(2017)
                                                                   AndTerm(2016)
@@ -831,8 +854,8 @@ Root(2001)
                                                                             Factor(2011)
                                                                               Scope(2002)
                                                                                 IdentifierOrCall(2004)
-                                                                                  IDENTIFIER(1022): "combine", line: 30, col: 73
-                                                                                  OPEN_PARENT(1005): "(", line: 30, col: 80
+                                                                                  IDENTIFIER(1022): "combine", line: 29, col: 73
+                                                                                  OPEN_PARENT(1005): "(", line: 29, col: 80
                                                                                   CallArgs(2005)
                                                                                     Expression(2018)
                                                                                       OrTerm(2017)
@@ -844,14 +867,14 @@ Root(2001)
                                                                                                   Factor(2011)
                                                                                                     Scope(2002)
                                                                                                       IdentifierOrCall(2004)
-                                                                                                        IDENTIFIER(1022): "person", line: 30, col: 81
-                                                                                                      DOT(1026): ".", line: 30, col: 87
+                                                                                                        IDENTIFIER(1022): "person", line: 29, col: 81
+                                                                                                      DOT(1026): ".", line: 29, col: 87
                                                                                                       IdentifierOrCall(2004)
-                                                                                                        IDENTIFIER(1022): "culture", line: 30, col: 88
-                                                                                                      DOT(1026): ".", line: 30, col: 95
+                                                                                                        IDENTIFIER(1022): "culture", line: 29, col: 88
+                                                                                                      DOT(1026): ".", line: 29, col: 95
                                                                                                       IdentifierOrCall(2004)
-                                                                                                        IDENTIFIER(1022): "traits", line: 30, col: 96
-                                                                                    DELIMITER(1004): ",", line: 30, col: 102
+                                                                                                        IDENTIFIER(1022): "traits", line: 29, col: 96
+                                                                                    DELIMITER(1004): ",", line: 29, col: 102
                                                                                     Expression(2018)
                                                                                       OrTerm(2017)
                                                                                         AndTerm(2016)
@@ -862,15 +885,15 @@ Root(2001)
                                                                                                   Factor(2011)
                                                                                                     Scope(2002)
                                                                                                       IdentifierOrCall(2004)
-                                                                                                        IDENTIFIER(1022): "person", line: 30, col: 104
-                                                                                                      DOT(1026): ".", line: 30, col: 110
+                                                                                                        IDENTIFIER(1022): "person", line: 29, col: 104
+                                                                                                      DOT(1026): ".", line: 29, col: 110
                                                                                                       IdentifierOrCall(2004)
-                                                                                                        IDENTIFIER(1022): "class", line: 30, col: 111
-                                                                                                      DOT(1026): ".", line: 30, col: 116
+                                                                                                        IDENTIFIER(1022): "class", line: 29, col: 111
+                                                                                                      DOT(1026): ".", line: 29, col: 116
                                                                                                       IdentifierOrCall(2004)
-                                                                                                        IDENTIFIER(1022): "traits", line: 30, col: 117
-                                                                                  CLOSE_PARENT(1006): ")", line: 30, col: 123
-                                                              DELIMITER(1004): ",", line: 30, col: 124
+                                                                                                        IDENTIFIER(1022): "traits", line: 29, col: 117
+                                                                                  CLOSE_PARENT(1006): ")", line: 29, col: 123
+                                                              DELIMITER(1004): ",", line: 29, col: 124
                                                               Expression(2018)
                                                                 OrTerm(2017)
                                                                   AndTerm(2016)
@@ -881,8 +904,8 @@ Root(2001)
                                                                             Factor(2011)
                                                                               Atom(2010)
                                                                                 Decimal(2009)
-                                                                                  NUMBER(1023): "1", line: 30, col: 126
-                                                              DELIMITER(1004): ",", line: 30, col: 127
+                                                                                  NUMBER(1023): "1", line: 29, col: 126
+                                                              DELIMITER(1004): ",", line: 29, col: 127
                                                               Expression(2018)
                                                                 OrTerm(2017)
                                                                   AndTerm(2016)
@@ -893,12 +916,13 @@ Root(2001)
                                                                             Factor(2011)
                                                                               Atom(2010)
                                                                                 Decimal(2009)
-                                                                                  NUMBER(1023): "0", line: 30, col: 129
-                                                            CLOSE_PARENT(1006): ")", line: 30, col: 130
-                                      CLOSE_PARENT(1006): ")", line: 30, col: 131
-                IdentifierOrCall(2004)
-                  IDENTIFIER(1022): "available_dresses", line: 32, col: 4
-                EQUALS(1010): "=", line: 32, col: 22
+                                                                                  NUMBER(1023): "0", line: 29, col: 129
+                                                            CLOSE_PARENT(1006): ")", line: 29, col: 130
+                                      CLOSE_PARENT(1006): ")", line: 29, col: 131
+                Scope(2002)
+                  IdentifierOrCall(2004)
+                    IDENTIFIER(1022): "available_dresses", line: 31, col: 4
+                EQUALS(1010): "=", line: 31, col: 22
                 Context(2007)
                   Expression(2018)
                     OrTerm(2017)
@@ -910,8 +934,8 @@ Root(2001)
                                 Factor(2011)
                                   Scope(2002)
                                     IdentifierOrCall(2004)
-                                      IDENTIFIER(1022): "mask", line: 32, col: 24
-                                      OPEN_PARENT(1005): "(", line: 32, col: 28
+                                      IDENTIFIER(1022): "mask", line: 31, col: 24
+                                      OPEN_PARENT(1005): "(", line: 31, col: 28
                                       CallArgs(2005)
                                         Expression(2018)
                                           OrTerm(2017)
@@ -923,14 +947,14 @@ Root(2001)
                                                       Factor(2011)
                                                         Scope(2002)
                                                           IdentifierOrCall(2004)
-                                                            IDENTIFIER(1022): "resources", line: 32, col: 29
-                                                          DOT(1026): ".", line: 32, col: 38
+                                                            IDENTIFIER(1022): "resources", line: 31, col: 29
+                                                          DOT(1026): ".", line: 31, col: 38
                                                           IdentifierOrCall(2004)
-                                                            IDENTIFIER(1022): "appearance", line: 32, col: 39
-                                                          DOT(1026): ".", line: 32, col: 49
+                                                            IDENTIFIER(1022): "appearance", line: 31, col: 39
+                                                          DOT(1026): ".", line: 31, col: 49
                                                           IdentifierOrCall(2004)
-                                                            IDENTIFIER(1022): "dresses", line: 32, col: 50
-                                        DELIMITER(1004): ",", line: 32, col: 57
+                                                            IDENTIFIER(1022): "dresses", line: 31, col: 50
+                                        DELIMITER(1004): ",", line: 31, col: 57
                                         Expression(2018)
                                           OrTerm(2017)
                                             AndTerm(2016)
@@ -941,8 +965,8 @@ Root(2001)
                                                       Factor(2011)
                                                         Scope(2002)
                                                           IdentifierOrCall(2004)
-                                                            IDENTIFIER(1022): "any", line: 32, col: 59
-                                                            OPEN_PARENT(1005): "(", line: 32, col: 62
+                                                            IDENTIFIER(1022): "any", line: 31, col: 59
+                                                            OPEN_PARENT(1005): "(", line: 31, col: 62
                                                             CallArgs(2005)
                                                               Expression(2018)
                                                                 OrTerm(2017)
@@ -954,29 +978,29 @@ Root(2001)
                                                                             Factor(2011)
                                                                               Scope(2002)
                                                                                 IdentifierOrCall(2004)
-                                                                                  IDENTIFIER(1022): "traits", line: 32, col: 63
-                                                            CLOSE_PARENT(1006): ")", line: 32, col: 69
-                                                EQUALS(1010): "=", line: 32, col: 71
+                                                                                  IDENTIFIER(1022): "traits", line: 31, col: 63
+                                                            CLOSE_PARENT(1006): ")", line: 31, col: 69
+                                                EQUALS(1010): "=", line: 31, col: 71
                                                 RelateTerm(2014)
                                                   AddTerm(2013)
                                                     MulTerm(2012)
                                                       Factor(2011)
                                                         Scope(2002)
                                                           IdentifierOrCall(2004)
-                                                            IDENTIFIER(1022): "person", line: 32, col: 73
-                                                          DOT(1026): ".", line: 32, col: 79
+                                                            IDENTIFIER(1022): "person", line: 31, col: 73
+                                                          DOT(1026): ".", line: 31, col: 79
                                                           IdentifierOrCall(2004)
-                                                            IDENTIFIER(1022): "culture", line: 32, col: 80
-                                                          DOT(1026): ".", line: 32, col: 87
+                                                            IDENTIFIER(1022): "culture", line: 31, col: 80
+                                                          DOT(1026): ".", line: 31, col: 87
                                                           IdentifierOrCall(2004)
-                                                            IDENTIFIER(1022): "traits", line: 32, col: 88
-                                              AND(1007): "and", line: 32, col: 95
+                                                            IDENTIFIER(1022): "traits", line: 31, col: 88
+                                              AND(1007): "and", line: 31, col: 95
                                               EqTerm(2015)
                                                 RelateTerm(2014)
                                                   AddTerm(2013)
                                                     MulTerm(2012)
                                                       Factor(2011)
-                                                        OPEN_PARENT(1005): "(", line: 32, col: 99
+                                                        OPEN_PARENT(1005): "(", line: 31, col: 99
                                                         Expression(2018)
                                                           OrTerm(2017)
                                                             AndTerm(2016)
@@ -987,24 +1011,24 @@ Root(2001)
                                                                       Factor(2011)
                                                                         Scope(2002)
                                                                           IdentifierOrCall(2004)
-                                                                            IDENTIFIER(1022): "age", line: 32, col: 100
-                                                                  MORE(1016): ">", line: 32, col: 104
+                                                                            IDENTIFIER(1022): "age", line: 31, col: 100
+                                                                  MORE(1016): ">", line: 31, col: 104
                                                                   AddTerm(2013)
                                                                     MulTerm(2012)
                                                                       Factor(2011)
                                                                         Scope(2002)
                                                                           IdentifierOrCall(2004)
-                                                                            IDENTIFIER(1022): "person", line: 32, col: 106
-                                                                          DOT(1026): ".", line: 32, col: 112
+                                                                            IDENTIFIER(1022): "person", line: 31, col: 106
+                                                                          DOT(1026): ".", line: 31, col: 112
                                                                           IdentifierOrCall(2004)
-                                                                            IDENTIFIER(1022): "age", line: 32, col: 113
-                                                                    SUB(1013): "-", line: 32, col: 117
+                                                                            IDENTIFIER(1022): "age", line: 31, col: 113
+                                                                    SUB(1013): "-", line: 31, col: 117
                                                                     MulTerm(2012)
                                                                       Factor(2011)
                                                                         Atom(2010)
                                                                           Decimal(2009)
-                                                                            NUMBER(1023): "10", line: 32, col: 119
-                                                              AND(1007): "and", line: 32, col: 122
+                                                                            NUMBER(1023): "10", line: 31, col: 119
+                                                              AND(1007): "and", line: 31, col: 122
                                                               EqTerm(2015)
                                                                 RelateTerm(2014)
                                                                   AddTerm(2013)
@@ -1012,25 +1036,25 @@ Root(2001)
                                                                       Factor(2011)
                                                                         Scope(2002)
                                                                           IdentifierOrCall(2004)
-                                                                            IDENTIFIER(1022): "age", line: 32, col: 126
-                                                                  LESS(1017): "<", line: 32, col: 130
+                                                                            IDENTIFIER(1022): "age", line: 31, col: 126
+                                                                  LESS(1017): "<", line: 31, col: 130
                                                                   AddTerm(2013)
                                                                     MulTerm(2012)
                                                                       Factor(2011)
                                                                         Scope(2002)
                                                                           IdentifierOrCall(2004)
-                                                                            IDENTIFIER(1022): "person", line: 32, col: 132
-                                                                          DOT(1026): ".", line: 32, col: 138
+                                                                            IDENTIFIER(1022): "person", line: 31, col: 132
+                                                                          DOT(1026): ".", line: 31, col: 138
                                                                           IdentifierOrCall(2004)
-                                                                            IDENTIFIER(1022): "age", line: 32, col: 139
-                                                                    ADD(1012): "+", line: 32, col: 143
+                                                                            IDENTIFIER(1022): "age", line: 31, col: 139
+                                                                    ADD(1012): "+", line: 31, col: 143
                                                                     MulTerm(2012)
                                                                       Factor(2011)
                                                                         Atom(2010)
                                                                           Decimal(2009)
-                                                                            NUMBER(1023): "10", line: 32, col: 145
-                                                        CLOSE_PARENT(1006): ")", line: 32, col: 147
-                                              AND(1007): "and", line: 32, col: 149
+                                                                            NUMBER(1023): "10", line: 31, col: 145
+                                                        CLOSE_PARENT(1006): ")", line: 31, col: 147
+                                              AND(1007): "and", line: 31, col: 149
                                               EqTerm(2015)
                                                 RelateTerm(2014)
                                                   AddTerm(2013)
@@ -1038,28 +1062,30 @@ Root(2001)
                                                       Factor(2011)
                                                         Scope(2002)
                                                           IdentifierOrCall(2004)
-                                                            IDENTIFIER(1022): "sex", line: 32, col: 153
-                                                EQUALS(1010): "=", line: 32, col: 157
+                                                            IDENTIFIER(1022): "sex", line: 31, col: 153
+                                                EQUALS(1010): "=", line: 31, col: 157
                                                 RelateTerm(2014)
                                                   AddTerm(2013)
                                                     MulTerm(2012)
                                                       Factor(2011)
                                                         Scope(2002)
                                                           IdentifierOrCall(2004)
-                                                            IDENTIFIER(1022): "person", line: 32, col: 159
-                                                          DOT(1026): ".", line: 32, col: 165
+                                                            IDENTIFIER(1022): "person", line: 31, col: 159
+                                                          DOT(1026): ".", line: 31, col: 165
                                                           IdentifierOrCall(2004)
-                                                            IDENTIFIER(1022): "sex", line: 32, col: 166
-                                      CLOSE_PARENT(1006): ")", line: 32, col: 169
-                IdentifierOrCall(2004)
-                  IDENTIFIER(1022): "portrait", line: 33, col: 4
-                EQUALS(1010): "=", line: 33, col: 13
+                                                            IDENTIFIER(1022): "sex", line: 31, col: 166
+                                      CLOSE_PARENT(1006): ")", line: 31, col: 169
+                Scope(2002)
+                  IdentifierOrCall(2004)
+                    IDENTIFIER(1022): "portrait", line: 32, col: 4
+                EQUALS(1010): "=", line: 32, col: 13
                 Context(2007)
-                  OPEN_TABLE(1002): "{", line: 34, col: 4
+                  OPEN_TABLE(1002): "{", line: 33, col: 4
                   List(2008)
-                    IdentifierOrCall(2004)
-                      IDENTIFIER(1022): "skin", line: 35, col: 5
-                    EQUALS(1010): "=", line: 35, col: 10
+                    Scope(2002)
+                      IdentifierOrCall(2004)
+                        IDENTIFIER(1022): "skin", line: 34, col: 5
+                    EQUALS(1010): "=", line: 34, col: 10
                     Context(2007)
                       Expression(2018)
                         OrTerm(2017)
@@ -1071,10 +1097,11 @@ Root(2001)
                                     Factor(2011)
                                       Scope(2002)
                                         IdentifierOrCall(2004)
-                                          IDENTIFIER(1022): "skin_colour", line: 35, col: 12
-                    IdentifierOrCall(2004)
-                      IDENTIFIER(1022): "phenotype", line: 36, col: 5
-                    EQUALS(1010): "=", line: 36, col: 15
+                                          IDENTIFIER(1022): "skin_colour", line: 34, col: 12
+                    Scope(2002)
+                      IdentifierOrCall(2004)
+                        IDENTIFIER(1022): "phenotype", line: 35, col: 5
+                    EQUALS(1010): "=", line: 35, col: 15
                     Context(2007)
                       Expression(2018)
                         OrTerm(2017)
@@ -1086,8 +1113,8 @@ Root(2001)
                                     Factor(2011)
                                       Scope(2002)
                                         IdentifierOrCall(2004)
-                                          IDENTIFIER(1022): "random_from", line: 36, col: 17
-                                          OPEN_PARENT(1005): "(", line: 36, col: 28
+                                          IDENTIFIER(1022): "random_from", line: 35, col: 17
+                                          OPEN_PARENT(1005): "(", line: 35, col: 28
                                           CallArgs(2005)
                                             Expression(2018)
                                               OrTerm(2017)
@@ -1099,11 +1126,12 @@ Root(2001)
                                                           Factor(2011)
                                                             Scope(2002)
                                                               IdentifierOrCall(2004)
-                                                                IDENTIFIER(1022): "available_phenotypes", line: 36, col: 29
-                                          CLOSE_PARENT(1006): ")", line: 36, col: 49
-                    IdentifierOrCall(2004)
-                      IDENTIFIER(1022): "background", line: 37, col: 5
-                    EQUALS(1010): "=", line: 37, col: 16
+                                                                IDENTIFIER(1022): "available_phenotypes", line: 35, col: 29
+                                          CLOSE_PARENT(1006): ")", line: 35, col: 49
+                    Scope(2002)
+                      IdentifierOrCall(2004)
+                        IDENTIFIER(1022): "background", line: 36, col: 5
+                    EQUALS(1010): "=", line: 36, col: 16
                     Context(2007)
                       Expression(2018)
                         OrTerm(2017)
@@ -1115,10 +1143,11 @@ Root(2001)
                                     Factor(2011)
                                       Scope(2002)
                                         IdentifierOrCall(2004)
-                                          IDENTIFIER(1022): "back", line: 37, col: 18
-                    IdentifierOrCall(2004)
-                      IDENTIFIER(1022): "dress", line: 38, col: 5
-                    EQUALS(1010): "=", line: 38, col: 11
+                                          IDENTIFIER(1022): "back", line: 36, col: 18
+                    Scope(2002)
+                      IdentifierOrCall(2004)
+                        IDENTIFIER(1022): "dress", line: 37, col: 5
+                    EQUALS(1010): "=", line: 37, col: 11
                     Context(2007)
                       Expression(2018)
                         OrTerm(2017)
@@ -1130,8 +1159,8 @@ Root(2001)
                                     Factor(2011)
                                       Scope(2002)
                                         IdentifierOrCall(2004)
-                                          IDENTIFIER(1022): "random_from", line: 38, col: 13
-                                          OPEN_PARENT(1005): "(", line: 38, col: 24
+                                          IDENTIFIER(1022): "random_from", line: 37, col: 13
+                                          OPEN_PARENT(1005): "(", line: 37, col: 24
                                           CallArgs(2005)
                                             Expression(2018)
                                               OrTerm(2017)
@@ -1143,9 +1172,9 @@ Root(2001)
                                                           Factor(2011)
                                                             Scope(2002)
                                                               IdentifierOrCall(2004)
-                                                                IDENTIFIER(1022): "available_dresses", line: 38, col: 25
-                                          CLOSE_PARENT(1006): ")", line: 38, col: 42
-                  CLOSE_TABLE(1003): "}", line: 39, col: 4
-              CLOSE_TABLE(1003): "}", line: 41, col: 3
-          CLOSE_TABLE(1003): "}", line: 44, col: 2
-      CLOSE_TABLE(1003): "}", line: 45, col: 1
+                                                                IDENTIFIER(1022): "available_dresses", line: 37, col: 25
+                                          CLOSE_PARENT(1006): ")", line: 37, col: 42
+                  CLOSE_TABLE(1003): "}", line: 38, col: 4
+              CLOSE_TABLE(1003): "}", line: 40, col: 3
+          CLOSE_TABLE(1003): "}", line: 43, col: 2
+      CLOSE_TABLE(1003): "}", line: 44, col: 1
