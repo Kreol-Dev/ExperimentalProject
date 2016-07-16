@@ -1,7 +1,21 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using System.Collections.Generic;
 
+public static class TypeName
+{
+	public static string NameOf (Type type)
+	{
+		Type genType;
+		Debug.Log ("NameOf " + type);
+		if (type.IsGenericType && (genType = type.GetGenericTypeDefinition ()) == typeof(List<>))
+		{
+			return String.Format ("System.Collections.Generic.List<{0}>", type.GetGenericArguments () [0]);
+		}
+		return type.FullName;
+	}
+}
 
 public class IfStatement
 {
@@ -22,17 +36,18 @@ public class DeclareVariableStatement
 	public string InitExpression;
 	public bool IsContext = false;
 	public bool IsArg = false;
+	public bool IsResult = false;
 
 	public override string ToString ()
 	{
 		if (IsArg)
 			return "";
-		return string.Format ("{0} {1} = {2};", Type, Name, InitExpression);
+		return string.Format ("{0} {1} = {2};", TypeName.NameOf (Type), Name, InitExpression);
 	}
 
 	public string DebugString ()
 	{
-		return string.Format ("DeclVarStmt: {0} {1} = {2}, IsContext = {3}", Type, Name, InitExpression, IsContext);
+		return string.Format ("DeclVarStmt: {0} {1} = {2}, IsContext = {3}", TypeName.NameOf (Type), Name, InitExpression, IsContext);
 	}
 }
 

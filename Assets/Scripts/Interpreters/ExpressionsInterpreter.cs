@@ -10,7 +10,7 @@ using System.Reflection;
 public class ExpressionInterpreter : ScriptEnginePlugin
 {
 	Dictionary<string, Type> components = new Dictionary<string, Type> ();
-
+	Dictionary<string, ScopeInterpreter> scopeInterpreters = new Dictionary<string, ScopeInterpreter> ();
 
 	public override void Init ()
 	{
@@ -19,7 +19,12 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 		{
 			string scriptName = NameTranslator.ScriptNameFromCSharp (cmp.Name);
 			components.Add (scriptName, cmp);
+			HasComponentScope scope = new HasComponentScope ();
+			scope.Type = cmp;
+			scopeInterpreters.Add ("has_" + scriptName, scope);
 		}
+
+
 		//string closure = InterpretClosure ();
 	}
 
@@ -29,10 +34,26 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 		public Type Type;
 	}
 
-	public Expr InterpretScope (Scope scope, FunctionBlock block)
+	public Operator InterpretScope (Scope scope, FunctionBlock block)
 	{
+		Operator op = new Operator ();
+		op.Identifier = scope;
+		op.Context = new Context ();
+
+		return op;
+	}
+
+	public Expr InterpretScopedList (Scope scope, FunctionBlock block)
+	{
+		FunctionBlock listBlock = new FunctionBlock (block, block.Method, block.Type);
+		block.Statements.Add (listBlock);
+		var listVar = new DeclareVariableStatement ();
+		listVar.Name = "scopedList" + DeclareVariableStatement.VariableId++;
+		//listVar.InitExpression = 
+
+
+
 		return new Expr ();
-		//var operand = expression.
 	}
 
 	public void TransformScopedOperator (Operator op, FunctionBlock block)
@@ -113,14 +134,14 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 		//return InterpretExpression (expression, block);
 	}
 
-	public Expr InterpretExpression (Expression expression, FunctionBlock block)
+	public Expr InterpretExpression (Expression expression, FunctionBlock block, bool isBool = false)
 	{
 		StringBuilder builder = new StringBuilder ();
 		builder.Length = 0;
 		if (expression.Operands.Length == 1)
 		{
 			//ProcessOperand (expression.Operands [0], builder);
-			return ProcessOperand (expression.Operands [0], block);
+			return ProcessOperand (expression.Operands [0], block, isBool);
 		} else
 		{
 			Expression.BinaryOp binOp = (Expression.BinaryOp)expression.Operands [1];
@@ -142,6 +163,7 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 			case Expression.BinaryOp.And:
 			case Expression.BinaryOp.Or:
 				exprType = typeof(bool);
+				isBool = true;
 				break;
 			case Expression.BinaryOp.Undefined:
 				break;
@@ -153,7 +175,7 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 			{
 				Debug.Log ("OPERAND " + expression.Operands [i]);
 				builder.Append ("(");
-				builder.Append (ProcessOperand (expression.Operands [i], block).ExprString);
+				builder.Append (ProcessOperand (expression.Operands [i], block, isBool).ExprString);
 				builder.Append (")");
 				if (i + 1 < expression.Operands.Length)
 					builder.Append (expression.OpToString ((Expression.BinaryOp)expression.Operands [i + 1]));
@@ -164,7 +186,7 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 
 
 
-	public Expr ProcessOperand (object operand, FunctionBlock block)
+	public Expr ProcessOperand (object operand, FunctionBlock block, bool isInsideBoolean = false)
 	{
 		Expr returnExpr = new Expr ();
 		StringBuilder exprBuilder = new StringBuilder ();
@@ -187,6 +209,7 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 
 		if (operand is Scope)
 		{
+			//bool exprIsResultVar = false;
 			var scope = (operand as Scope).Parts;
 			bool contextVariable = true;
 			var contextVar = block.FindStatement<DeclareVariableStatement> (v => v.Name == scope [0] as string);
@@ -205,27 +228,85 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 			}
 
 			exprBuilder.Append (contextName).Append (".");
+			bool firstTimeList = true;
+			FunctionBlock curBlock = block;
 			for (int i = contextVariable ? 0 : 1; i < scope.Length; i++)
 			{
+
+				//Debug.LogFormat ("scope part {0} {1} {2}", scope [i], contextType.IsGenericType, contextType.IsGenericType ? (contextType.GetGenericTypeDefinition () == typeof(List<>)).ToString () : "null");
+				if (i != scope.Length - 2 && contextType.IsGenericType && contextType.GetGenericTypeDefinition () == typeof(List<>))
+				{
+					if (firstTimeList)
+					{
+						DeclareVariableStatement resultVar = new DeclareVariableStatement ();
+						resultVar.Name = "result" + DeclareVariableStatement.VariableId++;
+						block.Statements.Add (resultVar);
+						resultVar.IsResult = true;
+						//resultList.Type = contextType;
+						//exprIsResultVar = true;
+						firstTimeList = false;
+					}
+					Debug.Log ("scope list " + scope [i]);
+					DeclareVariableStatement declVar = new DeclareVariableStatement ();
+					declVar.Name = "list" + DeclareVariableStatement.VariableId++;
+					declVar.Type = contextType;
+					if (exprBuilder [exprBuilder.Length - 1] == '.')
+						exprBuilder.Length -= 1;
+					if (hasSign)
+					{
+						declVar.InitExpression = exprBuilder.ToString (1, exprBuilder.Length - 1);
+						exprBuilder.Length = 1;
+						//exprBuilder.Append (declVar.Name).Append ('.');
+					} else
+					{
+
+						declVar.InitExpression = exprBuilder.ToString ();
+						exprBuilder.Length = 0;
+						//exprBuilder.Append (declVar.Name).Append ('.');
+					}
+					curBlock.Statements.Add (declVar);
+					ForStatement forStatement = new ForStatement ();
+					forStatement.RepeatBlock = new FunctionBlock (block, block.Method, block.Type);
+					var repeatContext = new DeclareVariableStatement ();
+					forStatement.RepeatBlock.Statements.Add (repeatContext);
+					curBlock.Statements.Add (forStatement);
+					curBlock = forStatement.RepeatBlock;
+					var iterName = "i" + DeclareVariableStatement.VariableId++;
+					forStatement.InsideExpr = String.Format (@"int {0} = 0; {0} < {1}.Count; {0}++", iterName, declVar.Name);
+
+					contextType = contextType.GetGenericArguments () [0];
+					repeatContext.Name = "SubContext" + DeclareVariableStatement.VariableId++;
+					repeatContext.Type = contextType;
+					repeatContext.IsContext = true;
+					repeatContext.InitExpression = String.Format (@"{0}[{1}]", declVar.Name, iterName);
+
+				}
 				if (scope [i] is FunctionCall)
 				{
 //					var callOp = ProcessOperand (scope [i], block);
 					var call = scope [i] as FunctionCall;
-					var method = contextType.GetMethod (NameTranslator.CSharpNameFromScript (call.Name));
-					if (method == null)
+					if (scopeInterpreters.ContainsKey (call.Name))
 					{
-						Debug.LogFormat ("Can't find {0} in {1}", method.Name, contextType);
-						break;
-					}
-					var argsDef = method.GetParameters ();
-					for (int j = 0; j < call.Args.Length; j++)
+						var interpreter = scopeInterpreters [scope [i] as string];
+					} else
 					{
-						if (argsDef [j].ParameterType.IsSubclassOf (typeof(Delegate)))
-							exprBuilder.Append (InterpretClosure (call.Args [j], block, argsDef [j].ParameterType).ExprString).Append (",");
-						else
-							exprBuilder.Append (InterpretExpression (call.Args [j], block).ExprString).Append (",");
+						var method = contextType.GetMethod (NameTranslator.CSharpNameFromScript (call.Name));
+						if (method == null)
+						{
+							Debug.LogFormat ("Can't find {0} in {1}", method.Name, contextType);
+							break;
+						}
+						var argsDef = method.GetParameters ();
+						for (int j = 0; j < call.Args.Length; j++)
+						{
+							if (argsDef [j].ParameterType.IsSubclassOf (typeof(Delegate)))
+								exprBuilder.Append (InterpretClosure (call.Args [j], curBlock, argsDef [j].ParameterType).ExprString).Append (",");
+							else
+								exprBuilder.Append (InterpretExpression (call.Args [j], curBlock).ExprString).Append (",");
+						}
+						contextType = method.ReturnType;
 					}
-					contextType = method.ReturnType;
+
 				} else
 				{
 					var propName = NameTranslator.CSharpNameFromScript (scope [i] as string);
@@ -235,11 +316,12 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 					{
 						var type = components [scope [i] as string];
 						var storedVar = new DeclareVariableStatement ();
-						block.Statements.Add (storedVar);//block.FindStatement<DeclareVariableStatement> (v => !v.IsContext && v.Type == type);
+						curBlock.Statements.Add (storedVar);//block.FindStatement<DeclareVariableStatement> (v => !v.IsContext && v.Type == type);
 						storedVar.Name = "StoredVariable" + DeclareVariableStatement.VariableId++;
 						storedVar.Type = type;
 						contextType = type;
 						exprBuilder.Append (String.Format ("GetComponent<{0}>()", type));
+
 						if (hasSign)
 						{
 							storedVar.InitExpression = exprBuilder.ToString (1, exprBuilder.Length - 1);
@@ -253,6 +335,23 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 							exprBuilder.Append (storedVar.Name).Append ('.');
 						}
 
+
+					} else if (scopeInterpreters.ContainsKey (scope [i] as string))
+					{
+						var interpreter = scopeInterpreters [scope [i] as string];
+						string outExpr = null;
+						interpreter.Interpret (null, curBlock, contextType, exprBuilder.ToString (), out outExpr, out curBlock, out contextType, i == scope.Length - 1);
+						if (hasSign)
+						{
+							exprBuilder.Length = 1;
+							exprBuilder.Append (outExpr).Append ('.');
+						} else
+						{
+
+							exprBuilder.Length = 0;
+							exprBuilder.Append (outExpr).Append ('.');
+						}
+
 					} else if (prop == null)
 					{
 						Debug.LogFormat ("Can't find {0} in {1}", propName, contextType);
@@ -263,7 +362,20 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 						exprBuilder.Append (propName).Append ('.');
 					}
 				}
+
 			}
+			var res = block.FindStatement<DeclareVariableStatement> (v => v.IsResult);
+			if (res != null)
+			{
+				var resType = res.Type;
+				res.IsResult = false;
+				Debug.Log (isInsideBoolean);
+				if (isInsideBoolean && resType.IsGenericType && resType.GetGenericTypeDefinition () == typeof(List<>))
+				{
+					exprBuilder.Append ("Count");
+				}
+			}
+
 			if (exprBuilder [exprBuilder.Length - 1] == '.')
 				exprBuilder.Length -= 1;
 			
@@ -278,7 +390,7 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 
 		} else if (operand is Expression)
 		{
-			var ex = InterpretExpression (operand as Expression, block);
+			var ex = InterpretExpression (operand as Expression, block, isInsideBoolean);
 			exprBuilder.Append (ex.ExprString);
 			returnExpr.Type = ex.Type;
 		} else
@@ -286,6 +398,7 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 			returnExpr.Type = operand.GetType ();
 			exprBuilder.Append (operand);
 		}
+
 		returnExpr.ExprString = exprBuilder.ToString ();
 		return returnExpr;
 	}
@@ -293,3 +406,43 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 }
 
 
+public abstract class ScopeInterpreter
+{
+	public abstract void Interpret (Expression[] args, FunctionBlock block, Type contextType, string exprVal, out string newExprVal, out FunctionBlock newCurBlock, out Type newContextType, bool isLast);
+
+}
+
+public class HasComponentScope : ScopeInterpreter
+{
+	public Type Type;
+
+	public override void Interpret (Expression[] args, FunctionBlock block, Type contextType, string exprVal, out string newExprVal, out FunctionBlock newCurBlock, out Type newContextType, bool isLast)
+	{
+		Debug.Log ("Has component scope");
+		IfStatement ifStatement = new IfStatement ();
+		DeclareVariableStatement cmpStmt = new DeclareVariableStatement ();
+		cmpStmt.Name = "cmp" + DeclareVariableStatement.VariableId++;
+		cmpStmt.Type = Type;
+		string varName = block.FindStatement<DeclareVariableStatement> (v => v.IsContext).Name;
+		cmpStmt.InitExpression = String.Format ("{0}.GetComponent<{1}>()", varName, Type);
+		ifStatement.CheckExpression = String.Format ("{0} != null", cmpStmt.Name);
+		FunctionBlock newBlock = new FunctionBlock (block, block.Method, block.Type);
+		ifStatement.TrueBlock = newBlock;
+		block.Statements.Add (cmpStmt);
+		block.Statements.Add (ifStatement);
+		newCurBlock = newBlock;
+		newExprVal = exprVal;
+		newContextType = contextType;
+		if (isLast)
+		{
+			var res = block.FindStatement<DeclareVariableStatement> (v => v.IsResult);
+			res.Type = typeof(List<>).MakeGenericType (contextType);
+			res.InitExpression = String.Format ("new {0}()", TypeName.NameOf (res.Type));
+			newExprVal = res.Name;
+			newBlock.Statements.Add (String.Format ("{0}.Add({1});", res.Name, varName));
+		}
+
+		//ifStatement.CheckExpression = String.Format("{0}.GetComponen")
+		//ifStatement.CheckExpression = 
+	}
+}

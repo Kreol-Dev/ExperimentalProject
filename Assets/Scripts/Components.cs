@@ -22,6 +22,11 @@ public class Portrait : MonoBehaviour
 		}
 	}
 
+}
+
+public class PersonFitTest : MonoBehaviour
+{
+	public int Value { get; set; }
 
 }
 
