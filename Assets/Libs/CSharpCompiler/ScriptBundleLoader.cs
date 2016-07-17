@@ -57,9 +57,10 @@ namespace CSharpCompiler
 
 				var options = new CompilerParameters ();
 				options.GenerateExecutable = false;
-				options.GenerateInMemory = true;
+				options.GenerateInMemory = false;
 				options.ReferencedAssemblies.AddRange (assemblyReferences);
-
+				options.CompilerOptions = "/target:library /optimize";
+				options.OutputAssembly = "Content.dll";
 				var compiler = new CodeCompiler ();
 				var result = compiler.CompileAssemblyFromSourceBatch (options, sources.ToArray ());
 

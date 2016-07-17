@@ -28,6 +28,11 @@ public class PersonFitTest : MonoBehaviour
 {
 	public int Value { get; set; }
 
+	public int SomeValue ()
+	{
+		return 0;
+	}
+
 }
 
 public class Person : MonoBehaviour

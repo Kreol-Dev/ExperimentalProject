@@ -9,6 +9,8 @@ using System.CodeDom.Compiler;
 using System;
 using Microsoft.CSharp;
 using System.Reflection;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Reflection.Emit;
 
 public class BasicLoader : MonoBehaviour
 {
@@ -37,6 +39,18 @@ public class BasicLoader : MonoBehaviour
 	{
 		Debug.Log ("Success");
 		engine.AddAssembly (asm);
+//		byte[] dllAsArray;
+//
+//		using (MemoryStream stream = new MemoryStream ())
+//		{
+//			BinaryFormatter formatter = new BinaryFormatter ();
+//
+//			formatter.Serialize (stream, asm);
+//
+//			dllAsArray = stream.ToArray ();
+//		}
+//		File.WriteAllBytes ("MyLibrary.dll", dllAsArray);
+		//Debug.Log (asm.CodeBase);
 //		var asmtypes = asm.GetTypes ();
 //		foreach (var type in asmtypes)
 //		{
@@ -47,6 +61,7 @@ public class BasicLoader : MonoBehaviour
 		{
 			Debug.Log (type);
 		}
+
 		//AppDomain.CurrentDomain.Load (asm.Location);
 	}
 	// Update is called once per frame

@@ -61,10 +61,14 @@ namespace InternalDSL
 		{
 			StringBuilder builder = new StringBuilder (100);
 			builder.Append (Name).Append ("(");
-			for (int i = 0; i < Args.Length; i++)
-				builder.Append (Args [i]).Append (", ");
-			if (builder.Length > Name.Length)
-				builder.Length -= 2;
+			if (Args != null)
+			{
+				for (int i = 0; i < Args.Length; i++)
+					builder.Append (Args [i]).Append (", ");
+				if (builder.Length > Name.Length)
+					builder.Length -= 2;
+			}
+
 			builder.Append (")");
 			return builder.ToString ();
 		}

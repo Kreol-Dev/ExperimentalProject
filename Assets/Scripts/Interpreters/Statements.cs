@@ -7,6 +7,8 @@ public static class TypeName
 {
 	public static string NameOf (Type type)
 	{
+		if (type == null)
+			return "NullType";
 		Type genType;
 		Debug.Log ("NameOf " + type);
 		if (type.IsGenericType && (genType = type.GetGenericTypeDefinition ()) == typeof(List<>))
@@ -42,7 +44,10 @@ public class DeclareVariableStatement
 	{
 		if (IsArg)
 			return "";
-		return string.Format ("{0} {1} = {2};", TypeName.NameOf (Type), Name, InitExpression);
+		if (InitExpression == null)
+			return string.Format ("{0} {1};", TypeName.NameOf (Type), Name);
+		else
+			return string.Format ("{0} {1} = {2};", TypeName.NameOf (Type), Name, InitExpression);
 	}
 
 	public string DebugString ()
