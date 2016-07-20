@@ -6,7 +6,7 @@ camps_filler =
 		camp.size = 5
 		camp = 
 		{
-			if(people.has_person_fit_test.person_fit_test.some_value() > 0 and not root.entity.dead) = 
+			if(people.has_camp.fit(camp.size = 0).has_person_fit_test.person_fit_test.some_value() > 0 and not root.entity.dead) = 
 			{
 				repeat(size) = 
 				{

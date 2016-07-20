@@ -39,6 +39,7 @@ public class DeclareVariableStatement
 	public bool IsContext = false;
 	public bool IsArg = false;
 	public bool IsResult = false;
+	public bool IsTemp = false;
 
 	public override string ToString ()
 	{

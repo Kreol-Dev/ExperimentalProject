@@ -46,6 +46,14 @@ public class ComponentsFiltersPlugin : ScriptEnginePlugin
 			HasComponentFilter filter = new HasComponentFilter (cmp);
 			filtersPlugin.AddFilter (filter, opName);
 		}
+
+		var specTypes = Engine.FindTypesWithAttribute<FilterPartInterpreterAttribute> ();
+		foreach (var specType in specTypes)
+		{
+			FilterPartInterpreter inter = Activator.CreateInstance (specType.Type) as FilterPartInterpreter;
+			inter.Engine = this.Engine;
+			filtersPlugin.AddFilter (inter, specType.Attribute.Name);
+		}
 	}
 }
 
@@ -84,5 +92,27 @@ public class HasComponentFilter : FilterPartInterpreter
 		if (args != null)
 			Debug.Log ("Somehow has component filter has arguments");
 		filterFunction.Statements.Add (new CodeSnippetStatement (checkString));
+	}
+}
+
+[FilterPartInterpreter ("fit")]
+public class FitFilter : FilterPartInterpreter
+{
+	string checkString;
+
+	public FitFilter ()
+	{
+
+		checkString = "if(!{0}) return false;";
+	}
+
+	public override void Interpret (Expression[] args, CodeMemberMethod filterFunction)
+	{
+		if (args != null)
+			Debug.Log ("Somehow has component filter has arguments");
+		FunctionBlock block = new FunctionBlock (null, filterFunction, null);
+		var expr = Engine.GetPlugin<ExpressionInterpreter> ().InterpretExpression (args [0], block);
+		filterFunction.Statements.Add (new CodeSnippetStatement (String.Format (expr.ExprString, expr.ExprString)));
+		//filterFunction.Statements.Add ();
 	}
 }
