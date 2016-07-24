@@ -22,3 +22,26 @@ camps_filler =
 		
 	} 
 }
+
+world_filler = 
+{
+	scope = has_world.has_space
+	action = 
+	{
+		space = 
+		{
+			repeat(5) = 
+			{
+				generate(party_member) =
+				{
+					person = yes
+					entity = yes
+				}
+				place = party_member
+
+			}
+		}
+		
+		
+	} 
+}

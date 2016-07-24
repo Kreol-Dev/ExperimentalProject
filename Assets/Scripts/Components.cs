@@ -60,6 +60,12 @@ public class Camp : MonoBehaviour
 
 public class Entity : MonoBehaviour
 {
+
+	void Awake ()
+	{
+		gameObject.AddComponent<CircleCollider2D> ().radius = 1;
+	}
+
 	public bool Dead { get; internal set; }
 
 	public void Destroy ()
@@ -68,3 +74,6 @@ public class Entity : MonoBehaviour
 		Destroy (gameObject);
 	}
 }
+
+
+

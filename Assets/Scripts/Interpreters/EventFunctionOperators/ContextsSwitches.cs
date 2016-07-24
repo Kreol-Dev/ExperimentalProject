@@ -29,7 +29,7 @@ public class ContextSwitchesPlugin : ScriptEnginePlugin
 		foreach (var cmp in components)
 		{
 			ContextSwitchInterpreter inter = new ContextSwitchInterpreter (cmp, Engine);
-			Debug.Log ("context engine " + inter.Engine);
+			Debug.Log ("context " + inter.Engine);
 			ops.AddInterpreter (NameTranslator.ScriptNameFromCSharp (cmp.Name), inter);
 		}
 	}
@@ -56,17 +56,25 @@ public class ContextSwitchInterpreter : FunctionOperatorInterpreter
 			ops = Engine.GetPlugin<EventFunctionOperators> ();
 		FunctionBlock contextBlock = new FunctionBlock (block, block.Method, block.Type);
 		block.Statements.Add (contextBlock);
-		DeclareVariableStatement declareVar = new DeclareVariableStatement ();
-		declareVar.Type = contextType;
-		declareVar.Name = "subContext" + DeclareVariableStatement.VariableId++;
-		declareVar.IsContext = true;
-		DeclareVariableStatement contextVar = block.FindStatement<DeclareVariableStatement> (v => v.IsContext);
+		var addVar = block.FindStatement<DeclareVariableStatement> (v => v.IsContext && v.Type == contextType && v.IsNew);
+		DeclareVariableStatement contextVar = block.FindStatement<DeclareVariableStatement> (v => v.IsContext && v != addVar);
+		DeclareVariableStatement declareVar = null;
+		if (addVar == null)
+		{
+			declareVar = new DeclareVariableStatement ();
+			declareVar.Type = contextType;
+			declareVar.Name = "subContext" + DeclareVariableStatement.VariableId++;
+			declareVar.IsContext = true;
 
-		if (contextVar == null)
-			declareVar.InitExpression = String.Format ("root.GetComponent<{0}>()", contextType);
-		else
-			declareVar.InitExpression = String.Format ("{1}.GetComponent<{0}>()", contextType, contextVar.Name);
-		contextBlock.Statements.Add (declareVar);
+			if (contextVar == null)
+				declareVar.InitExpression = String.Format ("root.GetComponent<{0}>()", contextType);
+			else
+				declareVar.InitExpression = String.Format ("{1}.GetComponent<{0}>()", contextType, contextVar.Name);
+			contextBlock.Statements.Add (declareVar);
+
+		} else
+			declareVar = addVar;
+
 		contextBlock.Statements.Add (new ContextStatement () {
 			ContextVar = contextVar,
 			InterpretInContext = InterpretInContext
@@ -82,9 +90,10 @@ public class ContextSwitchInterpreter : FunctionOperatorInterpreter
 			if (!properties.TryGetValue (subOp.Identifier as string, out opInter))
 			if ((opInter = ops.GetInterpreter (subOp, contextBlock)) == null)
 			{
-				Debug.LogFormat ("Can't interpret context operator {1} in {0}", block.Method.Name, subOp.Identifier);
+				Debug.LogWarningFormat ("Can't interpret context operator {1} in {0}", block.Method.Name, subOp.Identifier);
 				continue;
 			}
+			Debug.LogFormat ("Interpret {0} via {1}", subOp.Identifier, opInter);
 			opInter.Interpret (subOp, contextBlock);
 		}
 
@@ -98,7 +107,7 @@ public class ContextSwitchInterpreter : FunctionOperatorInterpreter
 		if (!functions.TryGetValue (op.Identifier as string, out opInter))
 		if (!properties.TryGetValue (op.Identifier as string, out opInter))
 		{
-			Debug.LogFormat ("Can't interpret context operator {1} in {0}", block.Method.Name, op.Identifier);
+			Debug.LogWarningFormat ("Can't interpret context operator {1} in {0}", block.Method.Name, op.Identifier);
 			return null;
 		}
 		return opInter;
@@ -177,6 +186,7 @@ public class ContextFunctionCallInterpreter : FunctionOperatorInterpreter
 
 	public override void Interpret (Operator op, FunctionBlock block)
 	{
+		Debug.LogWarning ("Context function " + op.Identifier);
 		if (exprInter == null)
 			exprInter = Engine.GetPlugin<ExpressionInterpreter> ();
 		var contextVar = block.FindStatement<DeclareVariableStatement> (v => v.IsContext);
@@ -193,13 +203,15 @@ public class ContextFunctionCallInterpreter : FunctionOperatorInterpreter
 			else
 				argsBuilder.Append (exprInter.InterpretExpression (op.Args [i], block).ExprString).Append (",");
 		}
-		if (argsDef [op.Args.Count - 1].ParameterType.IsSubclassOf (typeof(Delegate)))
-			argsBuilder.Append (exprInter.InterpretClosure (op.Context as Expression, block, argsDef [op.Args.Count - 1].ParameterType).ExprString).Append (",");
+		if (argsDef [argsDef.Length - 1].ParameterType.IsSubclassOf (typeof(Delegate)))
+			argsBuilder.Append (exprInter.InterpretClosure (op.Context as Expression, block, argsDef [argsDef.Length - 1].ParameterType).ExprString);
 		else
-			argsBuilder.Append (exprInter.InterpretExpression (op.Context as Expression, block).ExprString).Append (",");
+			argsBuilder.Append (exprInter.InterpretExpression (op.Context as Expression, block).ExprString);
 		
 		if (contextVar == null)
-			block.Statements.Add (string.Format ("root.{0}({1})", funcName, argsBuilder));
+			block.Statements.Add (string.Format ("root.{0}({1});", funcName, argsBuilder));
+		else
+			block.Statements.Add (string.Format ("{2}.{0}({1});", funcName, argsBuilder, contextVar.Name));
 	}
 
 	public override bool Match (Operator op, FunctionBlock block)

@@ -16,29 +16,33 @@ public class BasicLoader : MonoBehaviour
 {
 
 	// Use this for initialization
-	ScriptEngine engine;
+	public ScriptEngine Engine { get; private set; }
+
+	public delegate void VoidDelegate ();
+
+	public event VoidDelegate Loaded;
 
 	void Start ()
 	{
 
 
 		List<Assembly> addons = new List<Assembly> ();
-		engine = new ScriptEngine (addons);
+		Engine = new ScriptEngine (addons);
 //		AbstractClassChildren actionsList = new AbstractClassChildren ("Generators", engine){ BaseType = typeof(EventAction) };
-		EventActionsLoader loader = new EventActionsLoader ("generators", engine);
+		EventActionsLoader loader = new EventActionsLoader ("generators", Engine);
 		Script genScript = new Script ("generators", loader);
 		genScript.LoadFile ("Mods/test.def");
 		foreach (var entry in genScript.Entries)
 			Debug.Log (entry);
 		genScript.Interpret ();
-		var compiler = engine.GetPlugin<ScriptCompiler> ();
+		var compiler = Engine.GetPlugin<ScriptCompiler> ();
 		compiler.Compile (OnAssemblyCompiled);
 	}
 
 	void OnAssemblyCompiled (Assembly asm)
 	{
 		Debug.Log ("Success");
-		engine.AddAssembly (asm);
+		Engine.AddAssembly (asm);
 //		byte[] dllAsArray;
 //
 //		using (MemoryStream stream = new MemoryStream ())
@@ -56,11 +60,13 @@ public class BasicLoader : MonoBehaviour
 //		{
 //			Debug.Log (type);
 //		}
-		var types = engine.FindTypesCastableTo<EventAction> ();
+		var types = Engine.FindTypesCastableTo<EventAction> ();
 		foreach (var type in types)
 		{
 			Debug.Log (type);
 		}
+		if (Loaded != null)
+			Loaded ();
 
 		//AppDomain.CurrentDomain.Load (asm.Location);
 	}

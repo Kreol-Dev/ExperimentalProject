@@ -33,9 +33,11 @@ public class RepeatOperator : FunctionOperatorInterpreter
 			foreach (var entry in (op.Context as Context).Entries)
 			{
 				var subOp = entry as Operator;
+			
 				if (subOp == null)
 					continue;
 				var subInter = ops.GetInterpreter (subOp, stmt.RepeatBlock);
+
 				if (subInter == null)
 				{
 					Debug.LogFormat ("Can't interpret operator {0} in {1}", subOp.Identifier, block.Method.Name);

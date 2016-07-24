@@ -36,6 +36,7 @@ public class DeclareVariableStatement
 	public Type Type;
 	public string Name;
 	public string InitExpression;
+	public bool IsNew = false;
 	public bool IsContext = false;
 	public bool IsArg = false;
 	public bool IsResult = false;

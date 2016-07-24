@@ -25,6 +25,11 @@ public class EventFunctionOperators : ScriptEnginePlugin
 
 	public void AddInterpreter (string name, FunctionOperatorInterpreter inter)
 	{
+		if (interpreters.ContainsKey (name))
+		{
+			Debug.LogWarning ("Already has an interpreter " + name);
+			return;
+		}
 		inter.Engine = Engine;
 		interpreters.Add (name, inter);
 	}
@@ -47,8 +52,13 @@ public class EventFunctionOperators : ScriptEnginePlugin
 			}
 			var context = block.FindStatement<ContextStatement> ();
 			if (context != null)
+				Debug.LogWarningFormat ("{0} is not an operator of context, found one {1}", op.Identifier, context);
+			else
+				Debug.LogWarningFormat ("{0} is not an operator of context, not found one", op.Identifier);
+			if (context != null)
 				inter = context.InterpretInContext (op, block);
 		}
+		Debug.LogFormat ("{0} - {1}", op.Identifier, inter);
 		return inter;
 	}
 
