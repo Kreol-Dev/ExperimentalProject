@@ -2,26 +2,30 @@
 using System.Collections;
 using System;
 
-public class GenerateCmp : MonoBehaviour
+public class GenerateCmp : MonoBehaviour, ILoadable
 {
-	BasicLoader loader;
+	public event VoidDelegate Loaded;
+
+	Generators generators;
+	DependencyWaiter waiter;
 
 	void Awake ()
 	{
-		loader = FindObjectOfType<BasicLoader> ();
-		loader.Loaded += OnLoad;
+		
+		var loader = FindObjectOfType<BasicLoader> ();
+		generators = FindObjectOfType<Generators> ();
+		waiter = new DependencyWaiter (OnLoad, loader, generators);
+	
 	}
+
+	int loaded = 0;
 
 	void OnLoad ()
 	{
-		var eventActions = loader.Engine.FindTypesCastableTo<EventAction> ();
-		foreach (var ea in eventActions)
-		{
-			var action = Activator.CreateInstance (ea) as EventAction;
-			if (action.Filter (gameObject))
-				action.Action (gameObject);
-		}
-	
+		generators.Generate (gameObject);
+		Debug.Log ("Generate " + gameObject);
+		if (Loaded != null)
+			Loaded ();
 	}
 }
 

@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Space : MonoBehaviour
+public class Space : MonoBehaviour, ILoadable
 {
+	public event VoidDelegate Loaded;
+
 	static Vector3 OutPosition = new Vector3 (0, -10000, 0);
 	Transform cachedTransform;
 	static System.Random random = new System.Random (0);
@@ -33,10 +35,11 @@ public class Space : MonoBehaviour
 		float sizeX = Size.x;
 		float sizeY = Size.y;
 		bool found = false;
-		Vector3 position = OutPosition;
-		for (float x = -sizeX / 2; x < sizeX / 2; x += radius)
+		bool stop = false;
+		int times = (int)(sizeX / radius) * (int)(sizeY / radius);
+		for (float x = -(sizeX + radius / 2); x < (sizeX - radius / 2) && !stop; x += radius)
 		{
-			for (float y = -sizeY / 2; y < sizeY / 2; y += radius)
+			for (float y = -(sizeY + radius / 2); y < (sizeY - radius / 2) && !stop; y += radius)
 			{
 
 				var pos = (Vector2)cachedTransform.position + new Vector2 (x, y);
@@ -45,15 +48,13 @@ public class Space : MonoBehaviour
 				{
 					if (!found)
 					{
-
-						position = pos;
+						goTransform.position = pos;
 						found = true;
 					} else
 					{
 						if (random.Next (0, 2) > 0)
-							position = pos;
-						if (random.Next (0, 5) > 0)
-							break;
+							goTransform.position = pos;
+						stop |= random.Next (0, times) == 0;
 					}
 				}
 			}
@@ -61,7 +62,6 @@ public class Space : MonoBehaviour
 		}
 		if (found)
 		{
-			goTransform.position = position;
 			Debug.Log ("Place has been found");
 		} else
 		{

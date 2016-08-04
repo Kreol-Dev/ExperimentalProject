@@ -36,7 +36,7 @@ public class GenerateOperator : FunctionOperatorInterpreter
 		{
 			var subOp = entry as Operator;
 			var subContext = subOp.Context as Context;
-			Debug.LogWarning (subOp.Identifier.GetType ());
+			Debug.Log (subOp.Identifier.GetType ());
 			if (subOp.Identifier is string)
 			{
 
@@ -59,6 +59,7 @@ public class GenerateOperator : FunctionOperatorInterpreter
 					inter.Interpret (subOp, subBlock);
 			}
 		}
+		block.Statements.Add (String.Format ("UnityEngine.Object.FindObjectOfType<Generators>().Generate({0});", varName));
 	}
 
 

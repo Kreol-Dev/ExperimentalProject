@@ -1,12 +1,13 @@
 camps_filler = 
 {
 	scope = has_camp
+	utility = camp.size
 	action = 
 	{
 		camp.size = 5
 		camp = 
 		{
-			if(people.has_camp.fit(camp.size = 0).has_person_fit_test.person_fit_test.some_value() > 0 and not root.entity.dead) = 
+			if(people.has_camp.fit(size = 0).has_person_fit_test.person_fit_test.some_value() > 0 and not entity.dead) = 
 			{
 				repeat(size) = 
 				{
@@ -18,6 +19,11 @@ camps_filler =
 					add_to(people) = party_member.person
 				}
 			}
+
+			people = 
+			{
+				name = "Name McNamesky"
+			}
 		}
 		
 	} 
@@ -26,6 +32,11 @@ camps_filler =
 world_filler = 
 {
 	scope = has_world.has_space
+	utility = {
+		if(yes) ={
+			ut = ut + 1
+		}
+	}
 	action = 
 	{
 		space = 
@@ -45,3 +56,4 @@ world_filler =
 		
 	} 
 }
+

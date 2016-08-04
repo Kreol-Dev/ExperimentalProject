@@ -1,17 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class World : MonoBehaviour, ILoadable
+public class Team : MonoBehaviour, ILoadable
 {
 	public event VoidDelegate Loaded;
 
-	public string Name;
-
+	// Use this for initialization
 	void Start ()
 	{
 	
 	}
-
+	
+	// Update is called once per frame
 	void Update ()
 	{
 	

@@ -14,6 +14,7 @@ public class HasComponentScope : ScopeInterpreter
 		IfStatement ifStatement = new IfStatement ();
 		DeclareVariableStatement cmpStmt = new DeclareVariableStatement ();
 		cmpStmt.IsTemp = true;
+		cmpStmt.IsContext = true;
 		ExprInter.CleanUpContextes.Add (cmpStmt);
 		cmpStmt.Name = "cmp" + DeclareVariableStatement.VariableId++;
 		cmpStmt.Type = Type;

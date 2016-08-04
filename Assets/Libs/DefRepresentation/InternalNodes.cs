@@ -116,6 +116,23 @@ namespace InternalDSL
 
 		public override string ToString ()
 		{
+			if (Content is bool)
+			{
+				bool b = (bool)Content;
+				if (b)
+				{
+					if (Op == UnaryOp.None)
+						return "true";
+					else if (Op == UnaryOp.Inverse)
+						return "false";
+				} else
+				{
+					if (Op == UnaryOp.None)
+						return "false";
+					else if (Op == UnaryOp.Inverse)
+						return "true";
+				}
+			}
 			if (Op == UnaryOp.None)
 				return string.Format ("({0})", Content);
 			else if (Op == UnaryOp.Inverse)

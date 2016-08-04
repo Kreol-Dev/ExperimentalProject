@@ -212,6 +212,7 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 		Expr returnExpr = new Expr ();
 		StringBuilder exprBuilder = new StringBuilder ();
 		bool hasSign = false;
+		DeclareVariableStatement resultVar = null;
 		if (operand is ExprAtom)
 		{
 			if ((operand as ExprAtom).Op == ExprAtom.UnaryOp.Inverse)
@@ -228,7 +229,6 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 		}
 
 
-		DeclareVariableStatement resultVar = null;
 		if (operand is Scope)
 		{
 			//bool exprIsResultVar = false;
@@ -236,7 +236,7 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 			bool contextVariable = true;
 			var contextVar = block.FindStatement<DeclareVariableStatement> (v => v.Name == scope [0] as string);
 			if (contextVariable = (contextVar == null))
-				contextVar = block.FindStatement<DeclareVariableStatement> (v => v.IsContext && !v.IsTemp);
+				contextVar = block.FindStatement<DeclareVariableStatement> (v => v.IsContext);
 			string contextName = null; //!contextVariable ? "root" : contextVar.Name;
 			Type contextType = null; //!contextVariable ? typeof(GameObject) : contextVar.Type;
 			if (contextVar == null)
@@ -332,11 +332,22 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 						}
 					} else
 					{
-						
-						var method = contextType.GetMethod (NameTranslator.CSharpNameFromScript (call.Name));
+						var methodName = NameTranslator.CSharpNameFromScript (call.Name);
+						var method = contextType.GetMethod (methodName);
+						if (i == 0 && method == null)
+						{
+							var otherContext = block.FindStatement<DeclareVariableStatement> (v => (v.IsContext) && (method = v.Type.GetMethod (methodName)) != null);
+							if (otherContext != null)
+							{
+								exprBuilder.Length = 0;
+								exprBuilder.Append (otherContext.Name).Append ('.');
+								contextType = otherContext.Type;
+							} else
+								Debug.LogWarning ("Can't find context for method " + methodName);
+						}
 						if (method == null)
 						{
-							Debug.LogFormat ("Can't find {0} in {1}", method.Name, contextType);
+							Debug.LogFormat ("Can't find {0} in {1}", NameTranslator.CSharpNameFromScript (call.Name), contextType);
 							break;
 						}
 						exprBuilder.Append (method.Name).Append ("(");
@@ -383,9 +394,23 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 					var propName = NameTranslator.CSharpNameFromScript (scope [i] as string);
 
 					var prop = contextType.GetProperty (propName);
+					if (i == 0 && prop == null)
+					{
+						var otherContext = block.FindStatement<DeclareVariableStatement> (v => (v.IsContext) && (prop = v.Type.GetProperty (propName)) != null);
+						if (otherContext != null)
+						{
+							exprBuilder.Length = 0;
+							exprBuilder.Append (otherContext.Name).Append ('.');
+							contextType = otherContext.Type;
+						} else
+							Debug.LogWarning ("Can't find context for property " + propName);
+
+					}
+					Debug.LogWarning (prop);
 					if (prop == null && components.ContainsKey (scope [i] as string))
 					{
 						var type = components [scope [i] as string];
+						Debug.LogWarning ("Component found " + type);
 						var storedVar = curBlock.FindStatement<DeclareVariableStatement> (v => v.Type == type);
 						contextType = type;
 						if (storedVar == null)
@@ -393,6 +418,7 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 							storedVar = new DeclareVariableStatement ();
 							CleanUpContextes.Add (storedVar);
 							storedVar.IsTemp = true;
+							storedVar.IsContext = true;
 							curBlock.Statements.Add (storedVar);//block.FindStatement<DeclareVariableStatement> (v => !v.IsContext && v.Type == type);
 							storedVar.Name = "StoredVariable" + DeclareVariableStatement.VariableId++;
 							storedVar.Type = type;
@@ -528,7 +554,10 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 		} else
 		{
 			returnExpr.Type = operand.GetType ();
-			exprBuilder.Append (operand);
+			if (operand is bool)
+				exprBuilder.Append ((bool)operand ? "true" : "false");
+			else
+				exprBuilder.Append (operand);
 		}
 
 		returnExpr.ExprString = exprBuilder.ToString ();

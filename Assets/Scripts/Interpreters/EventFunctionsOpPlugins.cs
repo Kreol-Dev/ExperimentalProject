@@ -17,9 +17,11 @@ public class EventFunctionOperators : ScriptEnginePlugin
 {
 	Dictionary<string, FunctionOperatorInterpreter> interpreters = new Dictionary<string, FunctionOperatorInterpreter> ();
 	ExpressionInterpreter exprInter;
+	ContextSwitchesPlugin switches;
 
 	public override void Init ()
 	{
+		switches = Engine.GetPlugin<ContextSwitchesPlugin> ();
 		exprInter = Engine.GetPlugin<ExpressionInterpreter> ();
 	}
 
@@ -43,25 +45,88 @@ public class EventFunctionOperators : ScriptEnginePlugin
 			Debug.Log ("Transformed op " + op.ToString ());
 		}
 		interpreters.TryGetValue (op.Identifier as string, out inter);
+
 		if (inter == null)
 		{
-			foreach (var interPair in interpreters)
+			var customVar = block.FindStatement<DeclareVariableStatement> (v => v.Name == (op.Identifier as string));
+			if (customVar == null)
 			{
-				if (interPair.Value.Match (op, block))
-					return interPair.Value;
+				foreach (var interPair in interpreters)
+				{
+					if (interPair.Value.Match (op, block))
+						return interPair.Value;
+				}
+				var context = block.FindStatement<ContextStatement> ();
+				if (context != null)
+					Debug.LogFormat ("{0} is not an operator of context, found one {1}", op.Identifier, context);
+				else
+					Debug.LogWarningFormat ("{0} is not an operator of context, not found one", op.Identifier);
+				if (context != null)
+					inter = context.InterpretInContext (op, block);
+				if (inter == null && op.Context is Expression)
+				{
+					VarDeclareInterpreter declInter = new VarDeclareInterpreter ();
+					declInter.Inter = exprInter;
+					inter = declInter;
+				}
+			} else
+			{
+				if (op.Context is Expression)
+				{
+					VarAssignInterpreter varInter = new VarAssignInterpreter ();
+					varInter.Var = customVar;
+					varInter.Inter = exprInter;
+					inter = varInter;
+				} else
+				{
+					inter = switches.GetInterByType (customVar.Type);
+
+
+				}
+				//if(op.Context is Expression)
+					
 			}
-			var context = block.FindStatement<ContextStatement> ();
-			if (context != null)
-				Debug.LogWarningFormat ("{0} is not an operator of context, found one {1}", op.Identifier, context);
-			else
-				Debug.LogWarningFormat ("{0} is not an operator of context, not found one", op.Identifier);
-			if (context != null)
-				inter = context.InterpretInContext (op, block);
 		}
+
 		Debug.LogFormat ("{0} - {1}", op.Identifier, inter);
 		return inter;
 	}
 
+}
+
+public class VarAssignInterpreter : FunctionOperatorInterpreter
+{
+	public DeclareVariableStatement Var;
+	public ExpressionInterpreter Inter;
+
+	public override bool Match (Operator op, FunctionBlock block)
+	{
+		return false;
+	}
+
+	public override void Interpret (Operator op, FunctionBlock block)
+	{
+		block.Statements.Add (String.Format ("{0} = {1};", Var.Name, Inter.InterpretExpression (op.Context as Expression, block).ExprString));
+	}
+}
+
+public class VarDeclareInterpreter : FunctionOperatorInterpreter
+{
+	public ExpressionInterpreter Inter;
+
+	public override bool Match (Operator op, FunctionBlock block)
+	{
+		return false;
+	}
+
+	public override void Interpret (Operator op, FunctionBlock block)
+	{
+		DeclareVariableStatement stmt = new DeclareVariableStatement ();
+		stmt.Name = op.Identifier as string;
+		stmt.InitExpression = Inter.InterpretExpression (op.Context as Expression, block).ExprString;
+		stmt.Type = Inter.InterpretExpression (op.Context as Expression, block).Type;
+		block.Statements.Add (stmt);
+	}
 }
 
 public class CommonOperatorInterpretators : ScriptEnginePlugin

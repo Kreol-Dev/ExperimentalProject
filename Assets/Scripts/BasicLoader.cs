@@ -12,13 +12,13 @@ using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Reflection.Emit;
 
-public class BasicLoader : MonoBehaviour
+public delegate void VoidDelegate ();
+public class BasicLoader : MonoBehaviour, ILoadable
 {
 
 	// Use this for initialization
 	public ScriptEngine Engine { get; private set; }
 
-	public delegate void VoidDelegate ();
 
 	public event VoidDelegate Loaded;
 

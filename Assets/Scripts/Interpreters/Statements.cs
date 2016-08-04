@@ -41,6 +41,7 @@ public class DeclareVariableStatement
 	public bool IsArg = false;
 	public bool IsResult = false;
 	public bool IsTemp = false;
+	public bool IsReturn = false;
 
 	public override string ToString ()
 	{
