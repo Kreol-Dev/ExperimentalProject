@@ -5,6 +5,7 @@ using System.IO;
 using System.ComponentModel;
 using System.Linq;
 using System;
+using System.Text;
 
 namespace CSharpCompiler
 {
@@ -21,9 +22,10 @@ namespace CSharpCompiler
 			this.synchronizedInvoke = synchronizedInvoke;
 		}
 
-		public ScriptBundle LoadScriptsBundle (IEnumerable<string> sources)
+
+		public ScriptBundle LoadScriptsBundle (IEnumerable<string> sources, string DLLName)
 		{
-			var bundle = new ScriptBundle (this, sources);
+			var bundle = new ScriptBundle (this, sources, DLLName);
 			allFilesBundle.Add (bundle);
 			return bundle;
 		}
@@ -38,15 +40,30 @@ namespace CSharpCompiler
 			ScriptBundleLoader manager;
 
 			string[] assemblyReferences;
+			public string DLLName;
 
-			public ScriptBundle (ScriptBundleLoader manager, IEnumerable<string> sources)
+			public ScriptBundle (ScriptBundleLoader manager, IEnumerable<string> sources, string dllName)
 			{
+				DLLName = dllName;
 				this.sources = sources;
 				this.manager = manager;
 
 
 				var domain = System.AppDomain.CurrentDomain;
-				this.assemblyReferences = domain.GetAssemblies ().Select (a => a.Location).ToArray ();
+				var asms = domain.GetAssemblies ();
+				List<string> locs = new List<string> ();
+				foreach (var asm in asms)
+				{
+					try
+					{
+						locs.Add (asm.Location);
+					} catch
+					{
+						
+						locs.Add (asm.GetName ().Name);
+					}
+				}
+				this.assemblyReferences = locs.ToArray ();
 
 //				manager.logWriter.WriteLine ("loading " + string.Join (", ", sources.ToArray ()));
 				CompileFiles ();
@@ -60,7 +77,9 @@ namespace CSharpCompiler
 				options.GenerateInMemory = false;
 				options.ReferencedAssemblies.AddRange (assemblyReferences);
 				options.CompilerOptions = "/target:library /optimize";
-				options.OutputAssembly = "Content.dll";
+				options.OutputAssembly = DLLName + ".dll";
+
+				//options.
 				var compiler = new CodeCompiler ();
 				var result = compiler.CompileAssemblyFromSourceBatch (options, sources.ToArray ());
 
@@ -70,6 +89,7 @@ namespace CSharpCompiler
 				}
 
 				this.assembly = result.CompiledAssembly;
+				var name = this.assembly.GetName ();
 			}
 
 

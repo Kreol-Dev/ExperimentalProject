@@ -11,6 +11,7 @@ using Microsoft.CSharp;
 using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Reflection.Emit;
+using System.Linq;
 
 public delegate void VoidDelegate ();
 public class BasicLoader : MonoBehaviour, ILoadable
@@ -19,6 +20,14 @@ public class BasicLoader : MonoBehaviour, ILoadable
 	// Use this for initialization
 	public ScriptEngine Engine { get; private set; }
 
+	System.Random random = new System.Random ();
+
+	public int Random (int max)
+	{
+		return random.Next (0, max);
+	}
+
+	public int Dsix { get { return random.Next (0, 10); } internal set { } }
 
 	public event VoidDelegate Loaded;
 
@@ -29,18 +38,53 @@ public class BasicLoader : MonoBehaviour, ILoadable
 		List<Assembly> addons = new List<Assembly> ();
 		Engine = new ScriptEngine (addons);
 //		AbstractClassChildren actionsList = new AbstractClassChildren ("Generators", engine){ BaseType = typeof(EventAction) };
+		AppDomain.CurrentDomain.AssemblyResolve += Resolver;
+		loadedAsms.Add ("ExternalCode");
+		var extr = Engine.GetPlugin<ExternalFunctionsPlugin> ();
+		extr.AddProvider (this, "Random", "Dsix");
+		extr.Setup (OnExternalsCompiled);
+
+	}
+
+	void OnExternalsCompiled ()
+	{
+		
 		EventActionsLoader loader = new EventActionsLoader ("generators", Engine);
 		Script genScript = new Script ("generators", loader);
 		genScript.LoadFile ("Mods/test.def");
 		foreach (var entry in genScript.Entries)
 			Debug.Log (entry);
 		genScript.Interpret ();
+
 		var compiler = Engine.GetPlugin<ScriptCompiler> ();
 		compiler.Compile (OnAssemblyCompiled);
 	}
 
+	HashSet<string> loadedAsms = new HashSet<string> ();
+
+	StringBuilder builder = new StringBuilder ();
+
+	Assembly Resolver (object sender, ResolveEventArgs args)
+	{
+		Debug.LogWarning (string.Format ("RESOLVE {0} = {1}", args.Name, loadedAsms.Contains (args.Name)));
+
+		var asms = AppDomain.CurrentDomain.GetAssemblies ();
+		builder.Length = 0;
+		foreach (var a in asms)
+			builder.AppendLine (a.GetName ().Name);
+		Debug.LogWarning (builder.ToString ());
+		if (loadedAsms.Contains (args.Name))
+			return asms.First (x => x.GetName ().Name == args.Name);
+		else
+			return Assembly.Load (args.Name);
+	}
+
+
+
 	void OnAssemblyCompiled (Assembly asm)
 	{
+		if (asm == null)
+			return;
 		Debug.Log ("Success");
 		Engine.AddAssembly (asm);
 //		byte[] dllAsArray;

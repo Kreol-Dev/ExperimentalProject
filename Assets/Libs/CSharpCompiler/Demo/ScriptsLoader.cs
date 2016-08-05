@@ -25,25 +25,11 @@ namespace CSharpCompiler
 			loader.logWriter = new UnityLogTextWriter ();
 		}
 
-		void Update ()
-		{
-			synchronizedInvoke.ProcessQueue ();
-			if (bundle != null)
-			if (bundle.assembly != null)
-			{
-				onAssemblyCompiled (bundle.assembly);
-				bundle.assembly = null;
-				Destroy (this);
-			}
-		}
 
-		Action<Assembly> onAssemblyCompiled;
-		ScriptBundleLoader.ScriptBundle bundle;
-
-		public void Load (string[] sources, Action<Assembly> onAssemblyCompiled)
+		public Assembly Load (string[] sources, string asmName)
 		{
-			this.onAssemblyCompiled = onAssemblyCompiled;
-			bundle = loader.LoadScriptsBundle (sources);
+			var bundle = loader.LoadScriptsBundle (sources, asmName);
+			return bundle.assembly;
 		
 
 		}

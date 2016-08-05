@@ -153,6 +153,12 @@ public class EventActionsLoader : ScriptInterpreter
 		method.ReturnType = new CodeTypeReference (baseMethod.ReturnType);
 		var args = baseMethod.GetParameters ();
 		FunctionBlock block = new FunctionBlock (null, method, codeType);
+		block.Statements.Add (new DeclareVariableStatement () {
+			Name = "External",
+			IsArg = true,
+			Type = Engine.GetType ("External")
+		});
+
 		foreach (var initStmt in initStatements)
 			block.Statements.Add (initStmt);
 		//bool hasRoot = false;

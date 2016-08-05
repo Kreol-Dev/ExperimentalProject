@@ -200,7 +200,7 @@ namespace CSharpCompiler
 				return true;
 			}
 
-			var output_file = settings.OutputFile;
+			var output_file = "DLLs/" + settings.OutputFile;
 			string output_file_name;
 			/* if (output_file == null)
             {

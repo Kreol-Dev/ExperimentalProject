@@ -228,7 +228,7 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 			operand = (operand as ExprAtom).Content;
 		}
 
-
+		BindingFlags any = BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public;
 		if (operand is Scope)
 		{
 			//bool exprIsResultVar = false;
@@ -336,7 +336,7 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 						var method = contextType.GetMethod (methodName);
 						if (i == 0 && method == null)
 						{
-							var otherContext = block.FindStatement<DeclareVariableStatement> (v => (v.IsContext) && (method = v.Type.GetMethod (methodName)) != null);
+							var otherContext = block.FindStatement<DeclareVariableStatement> (v => (v.IsContext || v.IsArg) && (method = v.Type.GetMethod (methodName, any)) != null);
 							if (otherContext != null)
 							{
 								exprBuilder.Length = 0;
@@ -361,7 +361,10 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 								else
 									exprBuilder.Append (InterpretExpression (call.Args [j], curBlock).ExprString).Append (",");
 							}
+							if (call.Args.Length > 0)
+								exprBuilder.Length -= 1;
 						}
+
 						exprBuilder.Append (")");
 						contextType = method.ReturnType;
 
@@ -396,7 +399,7 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 					var prop = contextType.GetProperty (propName);
 					if (i == 0 && prop == null)
 					{
-						var otherContext = block.FindStatement<DeclareVariableStatement> (v => (v.IsContext) && (prop = v.Type.GetProperty (propName)) != null);
+						var otherContext = block.FindStatement<DeclareVariableStatement> (v => (v.IsContext || v.IsArg) && (prop = v.Type.GetProperty (propName, any)) != null);
 						if (otherContext != null)
 						{
 							exprBuilder.Length = 0;

@@ -5,6 +5,7 @@ using System.Reflection;
 using System;
 using System.CodeDom.Compiler;
 using System.Text;
+using System.Linq;
 
 public class ScriptEngine
 {
@@ -20,11 +21,12 @@ public class ScriptEngine
 		this.Addons = addons;
 		foreach (var plugin in addons)
 		{
-			AppDomain.CurrentDomain.Load (plugin.GetName ());
-			var pluginTypes = plugin.GetTypes ();
+			var asm = AppDomain.CurrentDomain.Load (plugin.GetName ());
+			var pluginTypes = asm.GetTypes ();
 			for (int i = 0; i < pluginTypes.Length; i++)
 				allTypes.Add (pluginTypes [i]);
 		}
+
 		var coreTypes = Assembly.GetExecutingAssembly ().GetTypes ();
 		for (int i = 0; i < coreTypes.Length; i++)
 			allTypes.Add (coreTypes [i]);
@@ -50,7 +52,10 @@ public class ScriptEngine
 		return plugin as T;
 	}
 
-
+	public Type GetType (string name)
+	{
+		return allTypes.Find (x => x.Name == name);
+	}
 
 	public struct TypeAttributePair<T> where T : Attribute
 	{
@@ -92,23 +97,35 @@ public class ScriptEngine
 		return types;
 	}
 
+	int count = 0;
+
 	public void AddAssembly (Assembly asm)
 	{
+		Debug.LogWarning (count++);
 		try
 		{
-
-			AppDomain.CurrentDomain.Load (asm.Location);
+			//asm = Assembly.LoadFile (asm.GetName ().Name + ".dll");
+			//asm = Assembly.ReflectionOnlyLoad (asm.GetName ().Name);
+			//asm = AppDomain.CurrentDomain.Load (asm.GetName ());
 		} catch
 		{
 			
 		}
-		var types = asm.GetTypes ();
+		//var asmName = asm.GetName ().Name;
+		//var domainAsm = AppDomain.CurrentDomain.GetAssemblies ().First (a => a.GetName ().Name == asmName);
+		var	types = asm.GetTypes ();
 		for (int i = 0; i < types.Length; i++)
 		{
 //			Debug.Log (types [i]);
 
 			allTypes.Add (types [i]);
 		}
+
+		var asms = AppDomain.CurrentDomain.GetAssemblies ();
+		StringBuilder builder = new StringBuilder ();
+		foreach (var a in asms)
+			builder.AppendLine (a.GetName ().Name);
+		Debug.LogWarning (builder.ToString ());
 	}
 
 

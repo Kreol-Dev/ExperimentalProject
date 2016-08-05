@@ -4,10 +4,10 @@ camps_filler =
 	utility = camp.size
 	action = 
 	{
-		camp.size = 5
+		camp.size = dsix
 		camp = 
 		{
-			if(people.has_camp.fit(size = 0).has_person_fit_test.person_fit_test.some_value() > 0 and not entity.dead) = 
+			if(people.has_camp.fit(size = 0).has_person_fit_test.person_fit_test.some_value() > random(3) and not entity.dead) = 
 			{
 				repeat(size) = 
 				{
@@ -41,7 +41,7 @@ world_filler =
 	{
 		space = 
 		{
-			repeat(5) = 
+			repeat(dsix) = 
 			{
 				generate(party_member) =
 				{
