@@ -115,7 +115,7 @@ public class ContextSwitchInterpreter : FunctionOperatorInterpreter
 
 	}
 
-	FunctionOperatorInterpreter InterpretInContext (Operator op, FunctionBlock block)
+	public FunctionOperatorInterpreter InterpretInContext (Operator op, FunctionBlock block)
 	{
 		Debug.Log ("interpret in context");
 		FunctionOperatorInterpreter opInter = null;
@@ -147,8 +147,8 @@ public class ContextSwitchInterpreter : FunctionOperatorInterpreter
 		engine.GetPlugin<ContextSwitchesPlugin> ().AddInterToType (type, this);
 		Debug.Log ("Context switch " + type);
 		contextType = type;
-		var props = type.GetProperties (BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
-		var methods = type.GetMethods (BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+		var props = type.GetProperties (BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly);
+		var methods = type.GetMethods (BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly);
 
 		foreach (var prop in props)
 		{
@@ -178,8 +178,7 @@ public class ContextSwitchInterpreter : FunctionOperatorInterpreter
 			if (method.GetCustomAttributes (typeof(CompilerGeneratedAttribute), false).Length > 0)
 				continue;
 			Debug.Log ("Context method " + method.Name);
-			ContextFunctionCallInterpreter inter = new ContextFunctionCallInterpreter (method);
-			inter.Engine = Engine;
+			ContextFunctionCallInterpreter inter = new ContextFunctionCallInterpreter (method, Engine);
 			functions.Add (NameTranslator.ScriptNameFromCSharp (method.Name), inter);
 		}
 	}
@@ -195,9 +194,19 @@ public class ContextFunctionCallInterpreter : FunctionOperatorInterpreter
 	ParameterInfo[] argsDef;
 	string funcName;
 	ExpressionInterpreter exprInter;
+	Type returnType;
+	ContextPropertySwitchInterpreter ctxInter;
 
-	public ContextFunctionCallInterpreter (MethodInfo method)
+	public ContextFunctionCallInterpreter (MethodInfo method, ScriptEngine engine)
 	{
+		Engine = engine;
+		returnType = method.ReturnType;
+		if (returnType != typeof(string) && (returnType.IsClass || (returnType.IsValueType && !returnType.IsEnum &&
+		    returnType != typeof(bool) && returnType != typeof(float) && returnType != typeof(int))) &&
+		    !(returnType.IsGenericType && returnType.GetGenericTypeDefinition () == typeof(List<>)))
+		{
+			ctxInter = new ContextPropertySwitchInterpreter ("", returnType, engine);
+		}
 		funcName = method.Name;
 		argsDef = method.GetParameters ();
 	}
@@ -207,9 +216,13 @@ public class ContextFunctionCallInterpreter : FunctionOperatorInterpreter
 		Debug.LogWarning ("Context function " + op.Identifier);
 		if (exprInter == null)
 			exprInter = Engine.GetPlugin<ExpressionInterpreter> ();
-		var contextVar = block.FindStatement<DeclareVariableStatement> (v => v.IsContext);
+		var any = BindingFlags.Instance | BindingFlags.Public | BindingFlags.Static;
+
+		var contextVar = block.FindStatement<DeclareVariableStatement> (v => (v.IsContext || v.IsArg) && v.Type.GetMethod (funcName, any) != null);
+
 		StringBuilder argsBuilder = new StringBuilder ();
-		if (op.Args.Count + 1 != argsDef.Length)
+		if (((op.Context is Expression) && op.Args.Count + 1 != argsDef.Length) ||
+		    (!(op.Context is Context) && op.Args.Count != argsDef.Length))
 		{
 			Debug.Log ("Wrong amount of arguments");
 			return;
@@ -220,16 +233,44 @@ public class ContextFunctionCallInterpreter : FunctionOperatorInterpreter
 				argsBuilder.Append (exprInter.InterpretClosure (op.Args [i], block, argsDef [i].ParameterType).ExprString).Append (",");
 			else
 				argsBuilder.Append (exprInter.InterpretExpression (op.Args [i], block).ExprString).Append (",");
+			
 		}
-		if (argsDef [argsDef.Length - 1].ParameterType.IsSubclassOf (typeof(Delegate)))
-			argsBuilder.Append (exprInter.InterpretClosure (op.Context as Expression, block, argsDef [argsDef.Length - 1].ParameterType).ExprString);
-		else
-			argsBuilder.Append (exprInter.InterpretExpression (op.Context as Expression, block).ExprString);
+		if (op.Context is Expression)
+		{
+			if (argsDef [argsDef.Length - 1].ParameterType.IsSubclassOf (typeof(Delegate)))
+				argsBuilder.Append (exprInter.InterpretClosure (op.Context as Expression, block, argsDef [argsDef.Length - 1].ParameterType).ExprString);
+			else
+				argsBuilder.Append (exprInter.InterpretExpression (op.Context as Expression, block).ExprString);
+			if (contextVar == null)
+				block.Statements.Add (string.Format ("root.{0}({1});", funcName, argsBuilder));
+			else
+				block.Statements.Add (string.Format ("{2}.{0}({1});", funcName, argsBuilder, contextVar.Name));
+		} else if (ctxInter != null)
+		{
+			if (op.Args.Count > 0)
+				argsBuilder.Length -= 1;
+			var ctx = op.Context as Context;
+			DeclareVariableStatement ctxVar = new DeclareVariableStatement ();
+			ctxVar.Name = "FuncCtx" + DeclareVariableStatement.VariableId++;
+			ctxVar.InitExpression = contextVar == null ? string.Format ("root.{0}({1});", funcName, argsBuilder) : string.Format ("{2}.{0}({1});", funcName, argsBuilder, contextVar.Name);
+			ctxVar.Type = returnType;
+			ctxVar.IsContext = true;
+
+			ContextStatement stmt = new ContextStatement ();
+			stmt.ContextVar = ctxVar;
+			stmt.InterpretInContext = ctxInter.InterpretInContext;
+			block.Statements.Add (ctxVar);
+			block.Statements.Add (stmt);
+			for (int i = 0; i < ctx.Entries.Count; i++)
+			{
+				ctxInter.InterpretInContext (ctx.Entries [i] as Operator, block).Interpret (ctx.Entries [i] as Operator, block);
+			}
+		}
+			
+
+
 		
-		if (contextVar == null)
-			block.Statements.Add (string.Format ("root.{0}({1});", funcName, argsBuilder));
-		else
-			block.Statements.Add (string.Format ("{2}.{0}({1});", funcName, argsBuilder, contextVar.Name));
+	
 	}
 
 	public override bool Match (Operator op, FunctionBlock block)
@@ -251,7 +292,9 @@ public class ContextPropertyInterpreter : FunctionOperatorInterpreter
 			ops = Engine.GetPlugin<EventFunctionOperators> ();
 			exprInter = Engine.GetPlugin<ExpressionInterpreter> ();
 		}
-
+		if (!(op.Context is Expression))
+			return;
+			
 		var varName = op.Identifier as string;
 
 		var context = block.FindStatement<DeclareVariableStatement> (v => v.IsContext);
@@ -287,6 +330,7 @@ public class ContextPropertyInterpreter : FunctionOperatorInterpreter
 			var inter = ops.GetInterpreter (listVarOp, repeatBlock);
 			inter.Interpret (listVarOp, repeatBlock);
 		}
+		interpret = true;
 	}
 
 	public override bool Match (Operator op, FunctionBlock block)
@@ -294,8 +338,8 @@ public class ContextPropertyInterpreter : FunctionOperatorInterpreter
 		return false;
 	}
 
-	Type propType;
-	string propName;
+	protected Type propType;
+	protected string propName;
 	Type listT = null;
 
 	public ContextPropertyInterpreter (string propName, Type type)
@@ -309,11 +353,8 @@ public class ContextPropertyInterpreter : FunctionOperatorInterpreter
 	}
 }
 
-public class ContextPropertySwitchInterpreter : FunctionOperatorInterpreter
+public class ContextPropertySwitchInterpreter : ContextPropertyInterpreter
 {
-	Type propType;
-	string propName;
-
 	struct PropKey
 	{
 		public Type Type;
@@ -344,10 +385,21 @@ public class ContextPropertySwitchInterpreter : FunctionOperatorInterpreter
 	}
 
 	static Dictionary<PropKey, ContextPropertySwitchInterpreter> allPropSwitches = new Dictionary<PropKey, ContextPropertySwitchInterpreter> ();
+	//	static Dictionary<Type, ContextPropertySwitchInterpreter> switchesByType = new Dictionary<Type, ContextPropertySwitchInterpreter> ();
+	//
+	//	public static ContextPropertySwitchInterpreter GetSwitch (Type t)
+	//	{
+	//		ContextPropertySwitchInterpreter inter = null;
+	//		if (!switchesByType.TryGetValue (t, out inter))
+	//		{
+	//
+	//
+	//		}
+	//		return inter;
+	//	}
 
-	public ContextPropertySwitchInterpreter (string propName, Type type, ScriptEngine engine)
+	public ContextPropertySwitchInterpreter (string propName, Type type, ScriptEngine engine) : base (propName, type)
 	{
-
 		engine.GetPlugin<ContextSwitchesPlugin> ().AddInterToType (type, this);
 		this.propName = propName;
 		propType = type;
@@ -395,8 +447,7 @@ public class ContextPropertySwitchInterpreter : FunctionOperatorInterpreter
 				if (method.GetCustomAttributes (typeof(CompilerGeneratedAttribute), false).Length > 0)
 					continue;
 				Debug.Log ("Context method " + method.Name);
-				ContextFunctionCallInterpreter inter = new ContextFunctionCallInterpreter (method);
-				inter.Engine = Engine;
+				ContextFunctionCallInterpreter inter = new ContextFunctionCallInterpreter (method, Engine);
 				functions.Add (NameTranslator.ScriptNameFromCSharp (method.Name), inter);
 			}
 		}
@@ -411,6 +462,11 @@ public class ContextPropertySwitchInterpreter : FunctionOperatorInterpreter
 
 	public override void Interpret (Operator op, FunctionBlock block)
 	{
+		base.Interpret (op, block);
+		if (interpret)
+			return;
+		if (!(op.Context is Context))
+			return;
 		if (ops == null)
 			ops = Engine.GetPlugin<EventFunctionOperators> ();
 		var varName = op.Identifier as string;
@@ -454,7 +510,7 @@ public class ContextPropertySwitchInterpreter : FunctionOperatorInterpreter
 
 	}
 
-	FunctionOperatorInterpreter InterpretInContext (Operator op, FunctionBlock block)
+	public FunctionOperatorInterpreter InterpretInContext (Operator op, FunctionBlock block)
 	{
 		Debug.Log ("interpret in context");
 		FunctionOperatorInterpreter opInter = null;

@@ -7,6 +7,7 @@ using System;
 public abstract class FunctionOperatorInterpreter
 {
 	public ScriptEngine Engine;
+	protected bool interpret = false;
 
 	public abstract void Interpret (Operator op, FunctionBlock block);
 
@@ -56,13 +57,13 @@ public class EventFunctionOperators : ScriptEnginePlugin
 					if (interPair.Value.Match (op, block))
 						return interPair.Value;
 				}
-				var context = block.FindStatement<ContextStatement> ();
+				var context = block.FindStatement<ContextStatement> (c => (inter = c.InterpretInContext (op, block)) != null);
 				if (context != null)
 					Debug.LogFormat ("{0} is not an operator of context, found one {1}", op.Identifier, context);
 				else
 					Debug.LogWarningFormat ("{0} is not an operator of context, not found one", op.Identifier);
-				if (context != null)
-					inter = context.InterpretInContext (op, block);
+//				if (context != null)
+//					inter = context.InterpretInContext (op, block);
 				if (inter == null && op.Context is Expression)
 				{
 					VarDeclareInterpreter declInter = new VarDeclareInterpreter ();

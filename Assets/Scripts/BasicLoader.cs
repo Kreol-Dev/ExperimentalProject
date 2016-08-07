@@ -27,6 +27,11 @@ public class BasicLoader : MonoBehaviour, ILoadable
 		return random.Next (0, max);
 	}
 
+	public Camp AbstractCamp ()
+	{
+		return GetComponent<Camp> ();
+	}
+
 	public int Dsix { get { return random.Next (0, 10); } internal set { } }
 
 	public event VoidDelegate Loaded;
@@ -41,7 +46,7 @@ public class BasicLoader : MonoBehaviour, ILoadable
 		AppDomain.CurrentDomain.AssemblyResolve += Resolver;
 		loadedAsms.Add ("ExternalCode");
 		var extr = Engine.GetPlugin<ExternalFunctionsPlugin> ();
-		extr.AddProvider (this, "Random", "Dsix");
+		extr.AddProvider (this, "Random", "Dsix", "AbstractCamp");
 		extr.Setup (OnExternalsCompiled);
 
 	}

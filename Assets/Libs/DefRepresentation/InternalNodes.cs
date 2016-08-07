@@ -522,14 +522,18 @@ namespace InternalDSL
 					{
 						Debug.Log ("Args: " + argsNode);
 						//It's a function call with some arguments
-						int argsCount = (argsNode.Count - 1) / 2 + 1;
-						for (int i = 0; i < argsCount; i++)
+						if (argsNode.Id != (int)DefConstants.CLOSE_PARENT)
 						{
-							var argNode = argsNode.GetChildAt (i * 2);
-							//Debug.LogFormat ("Context arg: {0} in {1}", argNode, argsNode);
-							Expression expr = new Expression (argNode);
-							Args.Add (expr);
+							int argsCount = (argsNode.Count - 1) / 2 + 1;
+							for (int i = 0; i < argsCount; i++)
+							{
+								var argNode = argsNode.GetChildAt (i * 2);
+								Debug.LogFormat ("Context arg: {0} in {1}", argNode, argsNode);
+								Expression expr = new Expression (argNode);
+								Args.Add (expr);
+							}
 						}
+
 					}
 				}
 			} else

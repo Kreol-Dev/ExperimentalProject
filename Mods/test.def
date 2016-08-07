@@ -41,7 +41,7 @@ world_filler =
 	{
 		space = 
 		{
-			repeat(dsix) = 
+			repeat(random(3)) = 
 			{
 				generate(party_member) =
 				{
@@ -51,6 +51,10 @@ world_filler =
 				place = party_member
 
 			}
+		}
+		abstract_camp() = 
+		{
+			size = 5
 		}
 		
 		

@@ -158,7 +158,7 @@ public class EventActionsLoader : ScriptInterpreter
 			IsArg = true,
 			Type = Engine.GetType ("External")
 		});
-
+		block.Statements.Add (new ContextStatement (){ InterpretInContext = Engine.GetPlugin<ExternalFunctionsPlugin> ().Ctx.InterpretInContext });
 		foreach (var initStmt in initStatements)
 			block.Statements.Add (initStmt);
 		//bool hasRoot = false;

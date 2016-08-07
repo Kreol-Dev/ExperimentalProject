@@ -113,6 +113,8 @@ public class ExternalFunctionsPlugin : ScriptEnginePlugin
 		//onCompiled ();
 	}
 
+	public ContextSwitchInterpreter Ctx { get; internal set; }
+
 	void OnCompiled (Assembly asm)
 	{
 		//AppDomain.CurrentDomain.Load (asm.GetName ());
@@ -131,6 +133,9 @@ public class ExternalFunctionsPlugin : ScriptEnginePlugin
 			type.GetField (provider.Name, BindingFlags.NonPublic | BindingFlags.Static).SetValue (null, provider.Instance);
 			Debug.LogWarning (type.GetField (provider.Name, BindingFlags.NonPublic | BindingFlags.Static).GetValue (null));
 		}
+
+		Ctx = new ContextSwitchInterpreter (type, Engine);
+
 		onCompiled ();
 	}
 
