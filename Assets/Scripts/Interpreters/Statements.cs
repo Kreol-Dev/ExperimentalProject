@@ -42,11 +42,19 @@ public class DeclareVariableStatement
 	public bool IsResult = false;
 	public bool IsTemp = false;
 	public bool IsReturn = false;
+	public bool IsDeclaration = true;
 
 	public override string ToString ()
 	{
 		if (IsArg)
 			return "";
+		if (!IsDeclaration)
+		{
+			if (InitExpression == null)
+				return string.Format ("{0} {1};", "", Name);
+			else
+				return string.Format ("{0} {1} = {2};", "", Name, InitExpression);
+		}
 		if (InitExpression == null)
 			return string.Format ("{0} {1};", TypeName.NameOf (Type), Name);
 		else

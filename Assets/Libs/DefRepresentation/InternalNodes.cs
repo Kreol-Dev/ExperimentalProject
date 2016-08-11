@@ -639,7 +639,7 @@ namespace InternalDSL
 
 	public class Scope
 	{
-		public object[] Parts;
+		public List<object> Parts;
 
 		public enum ScopeType
 		{
@@ -652,13 +652,13 @@ namespace InternalDSL
 		public Scope (Node n)
 		{
 			int childCount = (n.Count - 1) / 2 + 1;
-			Parts = new object[childCount];
+			Parts = new List<object> (childCount + 1);
 			if (n.Id == (int)DefConstants.FUNC_SCOPE)
 			{
 				for (int i = 0; i < childCount; i++)
 				{
 					var argNode = n.GetChildAt (i * 2);
-					Parts [i] = (argNode as Token).Image;
+					Parts.Add ((argNode as Token).Image);
 				}
 				Type = ScopeType.FunctionScope;
 			} else if (n.Id == (int)DefConstants.SCOPE)
@@ -672,9 +672,9 @@ namespace InternalDSL
 					{
 						//It's a function call
 						FunctionCall call = new FunctionCall (argNode);
-						Parts [i] = call;
+						Parts.Add (call);
 					} else
-						Parts [i] = (idNode as Token).Image;
+						Parts.Add ((idNode as Token).Image);
 				}
 				Type = ScopeType.CommonScope;
 			}
@@ -684,7 +684,7 @@ namespace InternalDSL
 		{
 			StringBuilder builder = new StringBuilder (100);
 			builder.Append ("SCOPE<");
-			for (int i = 0; i < Parts.Length; i++)
+			for (int i = 0; i < Parts.Count; i++)
 				builder.Append (Parts [i]).Append (".");
 			if (builder.Length > 0)
 				builder.Length -= 1;

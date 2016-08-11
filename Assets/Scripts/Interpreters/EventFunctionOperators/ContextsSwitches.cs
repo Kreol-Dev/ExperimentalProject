@@ -72,7 +72,7 @@ public class ContextSwitchInterpreter : FunctionOperatorInterpreter
 		block.Statements.Add (contextBlock);
 		DeclareVariableStatement addVar = block.FindStatement<DeclareVariableStatement> (v => v.Name == op.Identifier as string);
 		if (addVar == null)
-			block.FindStatement<DeclareVariableStatement> (v => v.IsContext && v.Type == contextType && v.IsNew);
+			block.FindStatement<DeclareVariableStatement> (v => v.IsContext && v.Type == contextType);
 		DeclareVariableStatement contextVar = block.FindStatement<DeclareVariableStatement> (v => v.IsContext && v != addVar);
 		DeclareVariableStatement declareVar = null;
 		if (addVar == null)
@@ -222,7 +222,7 @@ public class ContextFunctionCallInterpreter : FunctionOperatorInterpreter
 
 		StringBuilder argsBuilder = new StringBuilder ();
 		if (((op.Context is Expression) && op.Args.Count + 1 != argsDef.Length) ||
-		    (!(op.Context is Context) && op.Args.Count != argsDef.Length))
+		    ((op.Context is Context) && op.Args.Count != argsDef.Length))
 		{
 			Debug.Log ("Wrong amount of arguments");
 			return;

@@ -124,8 +124,9 @@ public class VarDeclareInterpreter : FunctionOperatorInterpreter
 	{
 		DeclareVariableStatement stmt = new DeclareVariableStatement ();
 		stmt.Name = op.Identifier as string;
-		stmt.InitExpression = Inter.InterpretExpression (op.Context as Expression, block).ExprString;
-		stmt.Type = Inter.InterpretExpression (op.Context as Expression, block).Type;
+		var expr = Inter.InterpretExpression (op.Context as Expression, block);
+		stmt.InitExpression = expr.ExprString;
+		stmt.Type = expr.Type;
 		block.Statements.Add (stmt);
 	}
 }

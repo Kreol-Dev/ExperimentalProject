@@ -36,6 +36,13 @@ world_filler =
 		if(yes) ={
 			ut = ut + 1
 		}
+		cache(ut_val) = ut
+		random_value = random(3)
+		cache = random_value
+		cache(cached_world, world) = 
+		{
+			name = "some_world"
+		}
 	}
 	action = 
 	{

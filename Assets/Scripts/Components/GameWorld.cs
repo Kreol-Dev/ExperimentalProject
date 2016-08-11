@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class World : MonoBehaviour, ILoadable
+public class GameWorld : MonoBehaviour, ILoadable
 {
 	public event VoidDelegate Loaded;
 

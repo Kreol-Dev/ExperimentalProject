@@ -62,6 +62,7 @@ public class EventActionsLoader : ScriptInterpreter
 				continue;
 			var actionMethod = typeof(EventAction).GetMethod ("Action");
 			var utMethod = typeof(EventAction).GetMethod ("Utility");
+			var scopeMethod = typeof(EventAction).GetMethod ("Filter");
 			for (int j = 0; j < ctx.Entries.Count; j++)
 			{
 				var op = ctx.Entries [j] as Operator;
@@ -71,7 +72,17 @@ public class EventActionsLoader : ScriptInterpreter
 				{
 					//It's a filter function
 					//					Debug.Log (op.Context.GetType ());
-					CreateFilterFunction (op.Context as Expression, codeType);
+					Debug.Log ((op.Context as Expression).Operands [0].GetType ());
+
+					(((op.Context as Expression).Operands [0] as ExprAtom).Content as Scope).Parts.Add ("true");
+					DeclareVariableStatement retVal = new DeclareVariableStatement ();
+					retVal.IsReturn = true;
+					retVal.Name = "applicable";
+					retVal.Type = typeof(bool);
+					retVal.InitExpression = "false";
+
+					CreateEventFunction ("Filter", op.Context, codeType, scopeMethod, retVal);
+					//CreateFilterFunction (op.Context as Expression, codeType);
 
 				} else if (op.Identifier as string == "action")
 				{
@@ -126,7 +137,7 @@ public class EventActionsLoader : ScriptInterpreter
 
 		method.Name = "Filter";
 		method.Attributes = MemberAttributes.Override | MemberAttributes.Public;
-		for (int i = 0; i < scope.Parts.Length; i++)
+		for (int i = 0; i < scope.Parts.Count; i++)
 		{
 			var part = scope.Parts [i];
 			if (part is FunctionCall)
@@ -177,7 +188,21 @@ public class EventActionsLoader : ScriptInterpreter
 		rootVar.Name = "root";
 		rootVar.Type = typeof(GameObject);
 		rootVar.IsArg = true;
+
 		block.Statements.Add (rootVar);
+		foreach (var member in codeType.Members)
+		{
+			var field = member as CodeMemberField;
+			if (field != null)
+			{
+				var cachedVar = new DeclareVariableStatement ();
+				cachedVar.Name = field.Name;
+				cachedVar.Type = field.UserData ["type"] as Type;
+				cachedVar.IsArg = true;
+
+				block.Statements.Add (cachedVar);
+			}
+		}
 		//if (!hasRoot)
 		//{
 		//	Debug.LogFormat ("Method {0} in {1} has no root arg", baseMethod.Name, codeType.Name);
@@ -207,7 +232,7 @@ public class EventActionsLoader : ScriptInterpreter
 			var expr = context as Expression;
 
 			var retVal = block.FindStatement<DeclareVariableStatement> (v => v.IsReturn);
-			retVal.IsArg = true;
+			//retVal.IsArg = true;
 			block.Statements.Add (String.Format ("return ({1}){0};", exprInter.InterpretExpression (expr, block).ExprString, TypeName.NameOf (retVal.Type)));
 		}
 

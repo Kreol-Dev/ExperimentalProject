@@ -16,7 +16,7 @@ public class AddToListOperator : FunctionOperatorInterpreter
 			exprInter = Engine.GetPlugin<ExpressionInterpreter> ();
 		if (op.Args.Count > 0 && op.Args [0].Operands [0] is ExprAtom &&
 		    (op.Args [0].Operands [0] as ExprAtom).Content is Scope &&
-		    ((op.Args [0].Operands [0] as ExprAtom).Content as Scope).Parts.Length == 1)
+		    ((op.Args [0].Operands [0] as ExprAtom).Content as Scope).Parts.Count == 1)
 		{
 			var part = ((op.Args [0].Operands [0] as ExprAtom).Content as Scope).Parts [0];
 			if (!(part is string))

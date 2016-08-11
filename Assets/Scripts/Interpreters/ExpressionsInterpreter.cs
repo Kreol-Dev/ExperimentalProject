@@ -73,7 +73,7 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 		var scope = op.Identifier as Scope;
 		var endContext = op.Context;
 		Operator curOp = null;
-		for (int i = 0; i < scope.Parts.Length; i++)
+		for (int i = 0; i < scope.Parts.Count; i++)
 		{
 			var part = scope.Parts [i];
 			Operator subOp = new Operator ();
@@ -252,7 +252,7 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 			exprBuilder.Append (contextName).Append (".");
 			bool firstTimeList = true;
 			FunctionBlock curBlock = block;
-			for (int i = contextVariable ? 0 : 1; i < scope.Length; i++)
+			for (int i = contextVariable ? 0 : 1; i < scope.Count; i++)
 			{
 
 				//Debug.LogFormat ("scope part {0} {1} {2}", scope [i], contextType.IsGenericType, contextType.IsGenericType ? (contextType.GetGenericTypeDefinition () == typeof(List<>)).ToString () : "null");
@@ -319,7 +319,7 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 					{
 						var interpreter = scopeInterpreters [call.Name];
 						string outExpr = null;
-						interpreter.Interpret (call.Args, curBlock, contextType, exprBuilder.ToString (), out outExpr, out curBlock, out contextType, i == scope.Length - 1);
+						interpreter.Interpret (call.Args, curBlock, contextType, exprBuilder.ToString (), out outExpr, out curBlock, out contextType, i == scope.Count - 1);
 						if (hasSign)
 						{
 							exprBuilder.Length = 1;
@@ -399,14 +399,24 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 					var prop = contextType.GetProperty (propName);
 					if (i == 0 && prop == null)
 					{
-						var otherContext = block.FindStatement<DeclareVariableStatement> (v => (v.IsContext || v.IsArg) && (prop = v.Type.GetProperty (propName, any)) != null);
-						if (otherContext != null)
+						var customVar = block.FindStatement<DeclareVariableStatement> (v => v.Name == scope [i] as string);
+						if (customVar == null)
+						{
+							var otherContext = block.FindStatement<DeclareVariableStatement> (v => (v.IsContext || v.IsArg) && (prop = v.Type.GetProperty (propName, any)) != null);
+							if (otherContext != null)
+							{
+								exprBuilder.Length = 0;
+								exprBuilder.Append (otherContext.Name).Append ('.');
+								contextType = otherContext.Type;
+							} else
+								Debug.LogWarning ("Can't find context for property " + propName);
+						} else
 						{
 							exprBuilder.Length = 0;
-							exprBuilder.Append (otherContext.Name).Append ('.');
-							contextType = otherContext.Type;
-						} else
-							Debug.LogWarning ("Can't find context for property " + propName);
+							exprBuilder.Append (customVar.Name).Append ('.');
+							contextType = customVar.Type;
+						}
+
 
 					}
 					Debug.LogWarning (prop);
@@ -456,7 +466,7 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 					{
 						var interpreter = scopeInterpreters [scope [i] as string];
 						string outExpr = null;
-						interpreter.Interpret (null, curBlock, contextType, exprBuilder.ToString (), out outExpr, out curBlock, out contextType, i == scope.Length - 1);
+						interpreter.Interpret (null, curBlock, contextType, exprBuilder.ToString (), out outExpr, out curBlock, out contextType, i == scope.Count - 1);
 						if (hasSign)
 						{
 							exprBuilder.Length = 1;
@@ -498,9 +508,12 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 						declVar.Type = contextType;
 						curBlock.Statements.Add (declVar);
 					}
+
+
 				}
 
 			}
+			returnExpr.Type = contextType;
 			var res = resultVar;
 			if (res != null)
 			{
@@ -526,6 +539,8 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 					exprBuilder.Length = 0;
 					exprBuilder.Append (res.Name).Append ('.');
 				}
+
+				returnExpr.Type = res.Type;
 			}
 			if (res != null && res.Type != null)
 			{
