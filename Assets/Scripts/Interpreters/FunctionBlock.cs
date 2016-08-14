@@ -19,6 +19,17 @@ public class FunctionBlock
 
 	public int Ident { get; internal set; }
 
+	public FunctionBlock (FunctionBlock parent)
+	{
+		if (parent == null)
+			Ident = 3;
+		else
+			Ident = parent.Ident + 1;
+		Parent = parent;
+		Method = parent.Method;
+		Type = parent.Type;
+	}
+
 	public FunctionBlock (FunctionBlock parent, CodeMemberMethod method, CodeTypeDeclaration type)
 	{
 		if (parent == null)

@@ -148,6 +148,10 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 
 	public Expr InterpretExpression (Expression expression, FunctionBlock block, bool isBool = false)
 	{
+		for (int i = 0; i < CleanUpContextes.Count; i++)
+		{
+			CleanUpContextes [i].IsContext = false;
+		}
 		CleanUpContextes.Clear ();
 		StringBuilder builder = new StringBuilder ();
 		builder.Length = 0;
@@ -212,7 +216,10 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 		Expr returnExpr = new Expr ();
 		StringBuilder exprBuilder = new StringBuilder ();
 		bool hasSign = false;
-		DeclareVariableStatement resultVar = null;
+		DeclareVariableStatement resultVar = new DeclareVariableStatement ();
+		resultVar.IsHidden = true;
+		int insertResultIndex = block.Statements.Count;
+		block.Statements.Add ("");
 		if (operand is ExprAtom)
 		{
 			if ((operand as ExprAtom).Op == ExprAtom.UnaryOp.Inverse)
@@ -255,17 +262,16 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 			for (int i = contextVariable ? 0 : 1; i < scope.Count; i++)
 			{
 
-				//Debug.LogFormat ("scope part {0} {1} {2}", scope [i], contextType.IsGenericType, contextType.IsGenericType ? (contextType.GetGenericTypeDefinition () == typeof(List<>)).ToString () : "null");
+				Debug.LogWarningFormat ("scope part {0} {1} {2}", scope [i], contextType.IsGenericType, contextType.IsGenericType ? (contextType.GetGenericTypeDefinition () == typeof(List<>)).ToString () : "");
 				if (contextType.IsGenericType && contextType.GetGenericTypeDefinition () == typeof(List<>))
 				{
 					if (firstTimeList)
 					{
-						resultVar = new DeclareVariableStatement ();
 						CleanUpContextes.Add (resultVar);
 						resultVar.IsTemp = true;
 						resultVar.Name = "result" + DeclareVariableStatement.VariableId++;
-						block.Statements.Add (resultVar);
-						resultVar.IsTemp = true;
+						block.Statements [insertResultIndex] = resultVar;
+						resultVar.IsHidden = false;
 						resultVar.IsResult = true;
 
 						//resultList.Type = contextType;
@@ -390,6 +396,14 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 						}
 						declVar.Type = contextType;
 						curBlock.Statements.Add (declVar);
+						if (contextType.IsClass)
+						{
+							IfStatement ifSt = new IfStatement ();
+							ifSt.CheckExpression = String.Format ("{0} != null", declVar.Name);
+							ifSt.TrueBlock = new FunctionBlock (curBlock);
+							curBlock.Statements.Add (ifSt);
+							curBlock = ifSt.TrueBlock;
+						}
 					}
 
 				} else
@@ -408,6 +422,14 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 								exprBuilder.Length = 0;
 								exprBuilder.Append (otherContext.Name).Append ('.');
 								contextType = otherContext.Type;
+								if (contextType.IsClass)
+								{
+									IfStatement ifSt = new IfStatement ();
+									ifSt.CheckExpression = String.Format ("{0} != null", otherContext.Name);
+									ifSt.TrueBlock = new FunctionBlock (curBlock);
+									curBlock.Statements.Add (ifSt);
+									curBlock = ifSt.TrueBlock;
+								}
 							} else
 								Debug.LogWarning ("Can't find context for property " + propName);
 						} else
@@ -415,6 +437,14 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 							exprBuilder.Length = 0;
 							exprBuilder.Append (customVar.Name).Append ('.');
 							contextType = customVar.Type;
+							if (contextType.IsClass)
+							{
+								IfStatement ifSt = new IfStatement ();
+								ifSt.CheckExpression = String.Format ("{0} != null", customVar.Name);
+								ifSt.TrueBlock = new FunctionBlock (curBlock);
+								curBlock.Statements.Add (ifSt);
+								curBlock = ifSt.TrueBlock;
+							}
 						}
 
 
@@ -461,6 +491,14 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 							exprBuilder.Append (storedVar.Name).Append ('.');
 						}
 
+						if (contextType.IsClass)
+						{
+							IfStatement ifSt = new IfStatement ();
+							ifSt.CheckExpression = String.Format ("{0} != null", storedVar.Name);
+							ifSt.TrueBlock = new FunctionBlock (curBlock);
+							curBlock.Statements.Add (ifSt);
+							curBlock = ifSt.TrueBlock;
+						}
 
 					} else if (scopeInterpreters.ContainsKey (scope [i] as string))
 					{
@@ -507,6 +545,14 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 						}
 						declVar.Type = contextType;
 						curBlock.Statements.Add (declVar);
+						if (contextType.IsClass)
+						{
+							IfStatement ifSt = new IfStatement ();
+							ifSt.CheckExpression = String.Format ("{0} != null", declVar.Name);
+							ifSt.TrueBlock = new FunctionBlock (curBlock);
+							curBlock.Statements.Add (ifSt);
+							curBlock = ifSt.TrueBlock;
+						}
 					}
 
 
@@ -515,9 +561,9 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 			}
 			returnExpr.Type = contextType;
 			var res = resultVar;
-			if (res != null)
+			if (!res.IsHidden)
 			{
-				var list = curBlock.FindStatement<DeclareVariableStatement> (v => v.Type.IsGenericType && v.Type.GetGenericTypeDefinition () == typeof(List<>));
+				var list = curBlock.FindStatement<DeclareVariableStatement> (v => v.Type != null && v.Type.IsGenericType && v.Type.GetGenericTypeDefinition () == typeof(List<>));
 				var lasVar = curBlock.FindStatement<DeclareVariableStatement> (v => v.IsContext);
 				if (list != null && !firstTimeList)
 				{
@@ -542,7 +588,8 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 
 				returnExpr.Type = res.Type;
 			}
-			if (res != null && res.Type != null)
+
+			if (!res.IsHidden && res.Type != null)
 			{
 				var resType = res.Type;
 				res.IsResult = false;
@@ -551,9 +598,21 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 				{
 					exprBuilder.Append ("Count");
 				}
-			} 
+			}
 			if (exprBuilder.Length > 0 && exprBuilder [exprBuilder.Length - 1] == '.')
 				exprBuilder.Length -= 1;
+			if (res.IsHidden)
+			{
+				resultVar.Name = "OperandVar" + DeclareVariableStatement.VariableId++;
+				resultVar.Type = contextType;
+				resultVar.InitExpression = string.Format ("default({0})", TypeName.NameOf (contextType));
+				resultVar.IsHidden = false;
+				block.Statements [insertResultIndex] = resultVar;
+				curBlock.Statements.Add (String.Format ("{0} = {1};", resultVar.Name, exprBuilder));
+				exprBuilder.Length = 0;
+				exprBuilder.Append (resultVar.Name);
+			}
+
 			
 		} else if (operand is FunctionCall)
 		{

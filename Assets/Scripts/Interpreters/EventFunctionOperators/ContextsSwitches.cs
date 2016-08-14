@@ -104,6 +104,11 @@ public class ContextSwitchInterpreter : FunctionOperatorInterpreter
 			ContextVar = contextVar,
 			InterpretInContext = InterpretInContext
 		});
+		IfStatement isNotNull = new IfStatement ();
+		isNotNull.CheckExpression = String.Format ("{0} != null", declareVar.Name);
+		isNotNull.TrueBlock = new FunctionBlock (contextBlock);
+		contextBlock.Statements.Add (isNotNull);
+		contextBlock = isNotNull.TrueBlock;
 		foreach (var entry in (op.Context as Context).Entries)
 		{
 			var subOp = entry as Operator;
@@ -259,6 +264,9 @@ public class ContextFunctionCallInterpreter : FunctionOperatorInterpreter
 			if (op.Args.Count > 0)
 				argsBuilder.Length -= 1;
 			var ctx = op.Context as Context;
+			FunctionBlock contextBlock = new FunctionBlock (block);
+			block.Statements.Add (contextBlock);
+			block = contextBlock;
 			DeclareVariableStatement ctxVar = new DeclareVariableStatement ();
 			ctxVar.Name = "FuncCtx" + DeclareVariableStatement.VariableId++;
 			ctxVar.InitExpression = contextVar == null ? string.Format ("root.{0}({1});", funcName, argsBuilder) : string.Format ("{2}.{0}({1});", funcName, argsBuilder, contextVar.Name);
@@ -270,6 +278,11 @@ public class ContextFunctionCallInterpreter : FunctionOperatorInterpreter
 			stmt.InterpretInContext = ctxInter.InterpretInContext;
 			block.Statements.Add (ctxVar);
 			block.Statements.Add (stmt);
+			IfStatement isNotNull = new IfStatement ();
+			isNotNull.CheckExpression = String.Format ("{0} != null", ctxVar.Name);
+			isNotNull.TrueBlock = new FunctionBlock (block);
+			block.Statements.Add (isNotNull);
+			block = isNotNull.TrueBlock;
 			for (int i = 0; i < ctx.Entries.Count; i++)
 			{
 				ctxInter.InterpretInContext (ctx.Entries [i] as Operator, block).Interpret (ctx.Entries [i] as Operator, block);
@@ -319,7 +332,7 @@ public class ContextPropertyInterpreter : FunctionOperatorInterpreter
 			ForStatement statement = new ForStatement ();
 			string listVarName = context == null ? "root." + propName : context.Name + "." + propName;
 			string iterName = "i" + DeclareVariableStatement.VariableId++;
-			statement.InsideExpr = String.Format ("int {0} = 0; {0} < {1}.Count; {0}++", iterName,
+			statement.InsideExpr = String.Format ("int {0} = 0; {1} != null && {0} < {1}.Count; {0}++", iterName,
 			                                      listVarName);
 			FunctionBlock repeatBlock = new FunctionBlock (block, block.Method, block.Type);
 			statement.RepeatBlock = repeatBlock;
@@ -500,6 +513,11 @@ public class ContextPropertySwitchInterpreter : ContextPropertyInterpreter
 			ContextVar = contextVar,
 			InterpretInContext = InterpretInContext
 		});
+		IfStatement isNotNull = new IfStatement ();
+		isNotNull.CheckExpression = String.Format ("{0} != null", declareVar.Name);
+		isNotNull.TrueBlock = new FunctionBlock (contextBlock);
+		contextBlock.Statements.Add (isNotNull);
+		contextBlock = isNotNull.TrueBlock;
 		foreach (var entry in (op.Context as Context).Entries)
 		{
 			var subOp = entry as Operator;
