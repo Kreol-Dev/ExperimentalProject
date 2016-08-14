@@ -34,7 +34,9 @@ public class AddToListOperator : FunctionOperatorInterpreter
 			{
 				if (op.Context is Expression)
 				{
-					block.Statements.Add (String.Format ("{0}.{1}.Add({2});", declareVar.Name, listName, exprInter.InterpretExpression (op.Context as Expression, block).ExprString));
+					var exprValue = exprInter.InterpretExpression (op.Context as Expression, block);
+					//block = exprValue.NotNullBlock;
+					block.Statements.Add (String.Format ("{0}.{1}.Add({2});", declareVar.Name, listName, exprValue.ExprString));
 				} 
 			}
 

@@ -1,8 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using System;
 
 public class Entity : MonoBehaviour
 {
+	Dictionary<Type, object> blackboard = new Dictionary<Type, object> ();
 
 	void Awake ()
 	{
@@ -16,5 +19,7 @@ public class Entity : MonoBehaviour
 		Dead = true;
 		Destroy (gameObject);
 	}
+
+
 }
 

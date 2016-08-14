@@ -1,0 +1,16 @@
+test_board =
+{
+	random_value = int
+	random_object = gameobject
+	some_value = string
+	
+}
+
+test_board =
+{
+	list_value = list(gameobject)
+	other_list = list(int)
+	string_list = list(string)
+	boolean = bool
+	list_of_bools = list(bool)
+}

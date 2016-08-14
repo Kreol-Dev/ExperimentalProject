@@ -27,6 +27,11 @@ public class BasicLoader : MonoBehaviour, ILoadable
 		return random.Next (0, max);
 	}
 
+	public bool Has (object obj)
+	{
+		return obj != null;
+	}
+
 	public Camp AbstractCamp ()
 	{
 		return GetComponent<Camp> ();
@@ -45,8 +50,9 @@ public class BasicLoader : MonoBehaviour, ILoadable
 //		AbstractClassChildren actionsList = new AbstractClassChildren ("Generators", engine){ BaseType = typeof(EventAction) };
 		AppDomain.CurrentDomain.AssemblyResolve += Resolver;
 		loadedAsms.Add ("ExternalCode");
+		loadedAsms.Add ("BlackboardsData");
 		var extr = Engine.GetPlugin<ExternalFunctionsPlugin> ();
-		extr.AddProvider (this, "Random", "Dsix", "AbstractCamp");
+		extr.AddProvider (this, "Random", "Dsix", "AbstractCamp", "Has");
 		extr.Setup (OnExternalsCompiled);
 
 	}
@@ -57,10 +63,23 @@ public class BasicLoader : MonoBehaviour, ILoadable
 		EventActionsLoader loader = new EventActionsLoader ("generators", Engine);
 		Script genScript = new Script ("generators", loader);
 		genScript.LoadFile ("Mods/test.def");
+
+		BlackboardsLoader bbloader = new BlackboardsLoader (Engine);
+
+		bbloader.AddType (typeof(GameObject), "gameobject");
+		bbloader.AddType (typeof(int), "int");
+		bbloader.AddType (typeof(float), "float");
+		bbloader.AddType (typeof(string), "string");
+		bbloader.AddType (typeof(bool), "bool");
+		Script blackboardsScript = new Script ("blackboards", bbloader);
+		blackboardsScript.LoadFile ("Mods/blackboards.def");
+
 		foreach (var entry in genScript.Entries)
 			Debug.Log (entry);
-		genScript.Interpret ();
 
+		blackboardsScript.Interpret ();
+		Engine.InitPlugins ();
+		genScript.Interpret ();
 		var compiler = Engine.GetPlugin<ScriptCompiler> ();
 		compiler.Compile (OnAssemblyCompiled);
 	}

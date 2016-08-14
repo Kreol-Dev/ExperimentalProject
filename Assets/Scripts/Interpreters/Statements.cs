@@ -36,6 +36,7 @@ public class DeclareVariableStatement
 	public Type Type;
 	public string Name;
 	public string InitExpression;
+	public bool IsHidden = false;
 	public bool IsNew = false;
 	public bool IsContext = false;
 	public bool IsArg = false;
@@ -46,7 +47,7 @@ public class DeclareVariableStatement
 
 	public override string ToString ()
 	{
-		if (IsArg)
+		if (IsArg || IsHidden)
 			return "";
 		if (!IsDeclaration)
 		{

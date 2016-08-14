@@ -39,6 +39,11 @@ public class ScriptEngine
 			plugins.Add (enginePlugins [i], pluginInstance);
 		}
 
+
+	}
+
+	public void InitPlugins ()
+	{
 		foreach (var pluginPair in plugins)
 		{
 			pluginPair.Value.Init ();

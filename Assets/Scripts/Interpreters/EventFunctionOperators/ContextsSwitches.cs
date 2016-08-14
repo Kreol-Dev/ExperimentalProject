@@ -36,9 +36,18 @@ public class ContextSwitchesPlugin : ScriptEnginePlugin
 		return contextType;
 	}
 
+	EventFunctionOperators ops;
+
+	public void AddCmp (Type cmp)
+	{
+		ContextSwitchInterpreter inter = new ContextSwitchInterpreter (cmp, Engine);
+		Debug.Log ("context " + inter.Engine);
+		ops.AddInterpreter (NameTranslator.ScriptNameFromCSharp (cmp.Name), inter);
+	}
+
 	public override void Init ()
 	{
-		EventFunctionOperators ops = Engine.GetPlugin<EventFunctionOperators> ();
+		ops = Engine.GetPlugin<EventFunctionOperators> ();
 		var components = Engine.FindTypesCastableTo<MonoBehaviour> ();
 		foreach (var cmp in components)
 		{
