@@ -30,6 +30,17 @@ public class IfStatement
 	}
 }
 
+public class LambdaStatement
+{
+	public FunctionBlock Block;
+	public string Name;
+
+	public override string ToString ()
+	{
+		return String.Format ("var {0} = {1};", Name, Block);
+	}
+}
+
 public class DeclareVariableStatement
 {
 	public static int VariableId = 0;
@@ -44,9 +55,14 @@ public class DeclareVariableStatement
 	public bool IsTemp = false;
 	public bool IsReturn = false;
 	public bool IsDeclaration = true;
+	//	public object Lambda;
 
 	public override string ToString ()
 	{
+//		if (Lambda != null)
+//		{
+//			return string.Format("var {0}")
+//		}
 		if (IsArg || IsHidden)
 			return "";
 		if (!IsDeclaration)

@@ -9,6 +9,7 @@ using System.CodeDom;
 using InternalDSL;
 using System.Linq;
 using CSharpCompiler;
+using UnityEngine.UI;
 
 public abstract class ScriptEnginePlugin
 {
@@ -83,7 +84,7 @@ public class ScriptCompiler : ScriptEnginePlugin
 		var loader = UnityEngine.Object.FindObjectOfType<ScriptsLoader> ();
 		string sourceCode = string.Concat (csharpSources.ToArray ());
 
-		UnityEngine.Object.FindObjectOfType<UnityEngine.UI.Text> ().text = sourceCode;
+		UnityEngine.GameObject.Find ("SourceCode").GetComponent<Text> ().text = sourceCode;
 		onAssemblyCompiled (loader.Load (csharpSources.ToArray (), "Content"));
 	}
 }

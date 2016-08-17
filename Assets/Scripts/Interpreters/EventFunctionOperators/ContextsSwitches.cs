@@ -210,9 +210,17 @@ public class ContextFunctionCallInterpreter : FunctionOperatorInterpreter
 	ExpressionInterpreter exprInter;
 	Type returnType;
 	ContextPropertySwitchInterpreter ctxInter;
+	ContextSwitchesPlugin switches;
+	FunctionOperatorInterpreter addContextInter = null;
+	EventFunctionOperators ops;
 
 	public ContextFunctionCallInterpreter (MethodInfo method, ScriptEngine engine)
 	{
+		ops = engine.GetPlugin<EventFunctionOperators> ();
+		switches = engine.GetPlugin<ContextSwitchesPlugin> ();
+		argsDef = method.GetParameters ();
+		if (argsDef.Length > 0)
+			addContextInter = switches.GetInterByType (argsDef [argsDef.Length - 1].ParameterType);
 		Engine = engine;
 		returnType = method.ReturnType;
 		if (returnType != typeof(string) && (returnType.IsClass || (returnType.IsValueType && !returnType.IsEnum &&
@@ -222,7 +230,6 @@ public class ContextFunctionCallInterpreter : FunctionOperatorInterpreter
 			ctxInter = new ContextPropertySwitchInterpreter ("", returnType, engine);
 		}
 		funcName = method.Name;
-		argsDef = method.GetParameters ();
 	}
 
 	public override void Interpret (Operator op, FunctionBlock block)
@@ -286,6 +293,52 @@ public class ContextFunctionCallInterpreter : FunctionOperatorInterpreter
 			for (int i = 0; i < ctx.Entries.Count; i++)
 			{
 				ctxInter.InterpretInContext (ctx.Entries [i] as Operator, block).Interpret (ctx.Entries [i] as Operator, block);
+			}
+		} else
+		{
+			//Func doesn't return a context, while maybe allows for either lambda as value or context addition
+			var lastArg = argsDef [argsDef.Length - 1];
+			if (typeof(Delegate).IsAssignableFrom (lastArg.ParameterType))
+			{
+				//Interpret as lambda
+				LambdaStatement lambda = new LambdaStatement ();
+				lambda.Name = "Lambda" + DeclareVariableStatement.VariableId++;
+				block.Statements.Add (lambda);
+
+				lambda.Block = new FunctionBlock (block);
+				foreach (var entry in (op.Context as Context).Entries)
+				{
+					var subOp = entry as Operator;
+					ops.GetInterpreter (subOp, lambda.Block).Interpret (subOp, lambda.Block);
+				}
+				//Don't forget to call a function and add an arugment
+				argsBuilder.Append (lambda.Name);
+				if (contextVar == null)
+					block.Statements.Add (string.Format ("root.{0}({1});", funcName, argsBuilder));
+				else
+					block.Statements.Add (string.Format ("{2}.{0}({1});", funcName, argsBuilder, contextVar.Name));
+			} else if (addContextInter != null)
+			{
+				//Interpret as new value
+				DeclareVariableStatement newVar = new DeclareVariableStatement ();
+				newVar.Name = "NewArg" + DeclareVariableStatement.VariableId++;
+				newVar.IsContext = true;
+				newVar.Type = lastArg.ParameterType;
+				if (contextVar == null)
+					newVar.InitExpression = String.Format ("root.AddComponent<{0}>()", newVar.Type);
+				else
+					newVar.InitExpression = String.Format ("{0}.AddComponent<{0}>()", contextVar.Name, newVar.Type);
+				FunctionBlock contextBlock = new FunctionBlock (block);
+				contextBlock.Statements.Add (newVar);
+				addContextInter.Interpret (op, contextBlock);
+
+				argsBuilder.Append (newVar.Name);
+				if (contextVar == null)
+					contextBlock.Statements.Add (string.Format ("root.{0}({1});", funcName, argsBuilder));
+				else
+					contextBlock.Statements.Add (string.Format ("{2}.{0}({1});", funcName, argsBuilder, contextVar.Name));
+			
+				block.Statements.Add (contextBlock);
 			}
 		}
 			

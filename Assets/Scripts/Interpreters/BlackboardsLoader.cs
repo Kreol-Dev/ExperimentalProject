@@ -31,6 +31,8 @@ public class BlackboardsLoader  : ScriptInterpreter
 	//
 	public void AddType (Type t, string name)
 	{
+		
+		//if (t.IsClass)
 		types.Add (name, t);
 	}
 
