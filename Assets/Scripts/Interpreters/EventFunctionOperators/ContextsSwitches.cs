@@ -486,7 +486,7 @@ public class ContextPropertySwitchInterpreter : ContextPropertyInterpreter
 		var thisKey = new PropKey (type, propName);
 		if (!allPropSwitches.ContainsKey (thisKey))
 			allPropSwitches.Add (thisKey, this);
-		if (typeof(MonoBehaviour).IsAssignableFrom (type))
+		if (typeof(MonoBehaviour).IsAssignableFrom (type) && type != typeof(MonoBehaviour))
 		{
 			foreach (var prop in props)
 			{

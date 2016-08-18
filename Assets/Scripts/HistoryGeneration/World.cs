@@ -16,11 +16,13 @@ public class World : MonoBehaviour
 	public void Add (GameObject go)
 	{
 		Objects.Add (go);
+		Debug.Log (Objects.Count);
 	}
 
 	public void Remove (GameObject go)
 	{
 		Objects.Remove (go);
+		Debug.Log (Objects.Count);
 	}
 }
 

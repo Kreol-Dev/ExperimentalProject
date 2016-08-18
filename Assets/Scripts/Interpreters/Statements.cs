@@ -26,7 +26,7 @@ public class IfStatement
 
 	public override string ToString ()
 	{
-		return String.Format ("if({0}){1}", CheckExpression, TrueBlock);
+		return String.Format ("if({0}){1} else {{ UnityEngine.Debug.Log(\"{0} = false \" ); }}", CheckExpression, TrueBlock);
 	}
 }
 

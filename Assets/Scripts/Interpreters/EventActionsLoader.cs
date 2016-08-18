@@ -12,7 +12,7 @@ using System;
 
 public abstract class EventAction
 {
-	public abstract bool Filter (GameObject go);
+	public abstract bool Filter ();
 
 	public abstract float Utility ();
 
@@ -164,6 +164,7 @@ public class EventActionsLoader : ScriptInterpreter
 		method.ReturnType = new CodeTypeReference (baseMethod.ReturnType);
 		var args = baseMethod.GetParameters ();
 		FunctionBlock block = new FunctionBlock (null, method, codeType);
+		block.Statements.Add ("UnityEngine.Debug.Log(root);");
 		block.Statements.Add (new DeclareVariableStatement () {
 			Name = "External",
 			IsArg = true,

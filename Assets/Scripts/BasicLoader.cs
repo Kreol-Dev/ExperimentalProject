@@ -22,6 +22,19 @@ public class BasicLoader : MonoBehaviour, ILoadable
 
 	System.Random random = new System.Random ();
 
+	World world;
+	EventsController eventsController;
+
+	void Awake ()
+	{
+		world = UnityEngine.Object.FindObjectOfType<World> ();
+		eventsController = UnityEngine.Object.FindObjectOfType<EventsController> ();
+	}
+
+	public World World { get { return world; } }
+
+	public EventsController EventsController { get { return eventsController; } }
+
 	public int Random (int max)
 	{
 		return random.Next (0, max);
@@ -52,7 +65,7 @@ public class BasicLoader : MonoBehaviour, ILoadable
 		loadedAsms.Add ("ExternalCode");
 		loadedAsms.Add ("BlackboardsData");
 		var extr = Engine.GetPlugin<ExternalFunctionsPlugin> ();
-		extr.AddProvider (this, "Random", "Dsix", "AbstractCamp", "Has");
+		extr.AddProvider (this, "Random", "Dsix", "AbstractCamp", "Has", "World", "EventsController");
 		extr.Setup (OnExternalsCompiled);
 
 	}

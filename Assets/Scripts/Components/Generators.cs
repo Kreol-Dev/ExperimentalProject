@@ -30,18 +30,32 @@ public class Generators : MonoBehaviour, ILoadable
 
 	public void Generate (GameObject go)
 	{
-		foreach (var gen in actions)
+		bool changed;
+		do
 		{
-			gen.Root = go;
-			Debug.LogFormat ("Test {0} on {1}", gen.GetType (), go);
-			if (gen.Filter (go))
+			changed = false;
+			foreach (var gen in actions)
 			{
+				var cachedRoot = gen.Root;
+				gen.Root = go;
+				Debug.Log ("Checking " + gen.GetType ());
+				if (gen.Filter ())
+				{
 
-				gen.Action ();
-				Debug.LogFormat ("Applied {0} to {1}", gen.GetType (), go);
+					Debug.Log ("Getting utility " + gen.GetType ());
+					if (gen.Utility () > 0)
+					{
+						Debug.Log ("Performing " + gen.GetType ());
+						gen.Action ();
+						changed = true;
+					}
+				}
+				gen.Root = cachedRoot;
 			}
-		}
+		} while(changed);
 			
 	}
+
+
 }
 

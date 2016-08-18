@@ -4,26 +4,26 @@ using System.Collections.Generic;
 
 public class Actor : MonoBehaviour
 {
-	public HashSet< string> Tags { get; internal set; }
+	HashSet< string> tags;
 
 	void Awake ()
 	{
-		Tags = new HashSet< string> ();
+		tags = new HashSet< string> ();
 	}
 
 	void SetTag (string nameTag)
 	{
-		Tags.Add (nameTag);
+		tags.Add (nameTag);
 	}
 
 	void RemoveTag (string nameTag)
 	{
-		Tags.Remove (nameTag);
+		tags.Remove (nameTag);
 	}
 
 	bool HasTag (string nameTag)
 	{
-		return Tags.Contains (nameTag);
+		return tags.Contains (nameTag);
 	}
 
 }

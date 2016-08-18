@@ -483,7 +483,7 @@ namespace InternalDSL
 	{
 		public object Identifier;
 		public object Context;
-		public List<Expression> Args;
+		public List<Expression> Args = new List<Expression> ();
 		bool init = false;
 
 		public enum ContextType

@@ -146,13 +146,13 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 		//return InterpretExpression (expression, block);
 	}
 
-	public Expr InterpretExpression (Expression expression, FunctionBlock block, bool isBool = false)
+	public Expr InterpretExpression (Expression expression, FunctionBlock block, bool isFirst = true, bool isBool = false)
 	{
-		for (int i = 0; i < CleanUpContextes.Count; i++)
-		{
-			CleanUpContextes [i].IsContext = false;
-		}
-		CleanUpContextes.Clear ();
+//		for (int i = 0; i < CleanUpContextes.Count; i++)
+//		{
+//			CleanUpContextes [i].IsContext = false;
+//		}
+//		CleanUpContextes.Clear ();
 		StringBuilder builder = new StringBuilder ();
 		builder.Length = 0;
 		Expr res;
@@ -200,12 +200,15 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 			}
 			res = new Expr (){ ExprString = builder.ToString (), Type = exprType };
 		}
-
-		for (int i = 0; i < CleanUpContextes.Count; i++)
+		if (isFirst)
 		{
-			CleanUpContextes [i].IsContext = false;
+			for (int i = 0; i < CleanUpContextes.Count; i++)
+			{
+				CleanUpContextes [i].IsContext = false;
+			}
+			CleanUpContextes.Clear ();
 		}
-		CleanUpContextes.Clear ();
+
 		return res;
 	}
 
@@ -416,7 +419,13 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 						var customVar = block.FindStatement<DeclareVariableStatement> (v => v.Name == scope [i] as string);
 						if (customVar == null)
 						{
-							var otherContext = block.FindStatement<DeclareVariableStatement> (v => (v.IsContext || v.IsArg) && (prop = v.Type.GetProperty (propName, any)) != null);
+							var otherContext = block.FindStatement<DeclareVariableStatement> (v => {
+								Debug.LogWarning (v.Type);
+								Debug.Log (v.IsContext || v.IsArg);
+								var props = v.Type.GetProperties (any);
+								foreach (var allProp in props)
+									Debug.Log (allProp.Name);
+								return (v.IsContext || v.IsArg) && (prop = v.Type.GetProperty (propName, any)) != null;});
 							if (otherContext != null)
 							{
 								exprBuilder.Length = 0;
@@ -596,7 +605,7 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 				Debug.Log (isInsideBoolean);
 				if (isInsideBoolean && resType.IsGenericType && resType.GetGenericTypeDefinition () == typeof(List<>))
 				{
-					exprBuilder.Append ("Count");
+					exprBuilder.Append (String.Format (" != null ? {0}.Count : 0", exprBuilder));
 				}
 			}
 			if (exprBuilder.Length > 0 && exprBuilder [exprBuilder.Length - 1] == '.')
@@ -610,7 +619,15 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 				block.Statements [insertResultIndex] = resultVar;
 				curBlock.Statements.Add (String.Format ("{0} = {1};", resultVar.Name, exprBuilder));
 				exprBuilder.Length = 0;
-				exprBuilder.Append (resultVar.Name);
+				var resType = res.Type;
+				if (isInsideBoolean && resType.IsGenericType && resType.GetGenericTypeDefinition () == typeof(List<>))
+				{
+					exprBuilder.Append (String.Format ("{0} != null ? {0}.Count : 0", resultVar.Name));
+				} else
+				{
+					exprBuilder.Append (resultVar.Name);
+					
+				}
 			}
 
 			
@@ -625,7 +642,7 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 
 		} else if (operand is Expression)
 		{
-			var ex = InterpretExpression (operand as Expression, block, isInsideBoolean);
+			var ex = InterpretExpression (operand as Expression, block, false, isInsideBoolean);
 			exprBuilder.Append (ex.ExprString);
 			returnExpr.Type = ex.Type;
 		} else

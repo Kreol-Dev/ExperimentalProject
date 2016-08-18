@@ -7,10 +7,55 @@ public class EventsController : MonoBehaviour
 {
 	public Transform ReactionsTab;
 	public Text UIText;
+	Generators gens;
+	World world;
+
+	void Awake ()
+	{
+		world = FindObjectOfType<World> ();
+		gens = FindObjectOfType<Generators> ();
+	}
+
+	void Start ()
+	{
+		NextEvent ();
+	}
 
 	public void NextEvent ()
 	{
 		Debug.Log ("Next event!");
+		float maxUt = float.MinValue;
+		EventAction maxAction = null;
+		GameObject maxObject = null;
+		foreach (var obj in world.Objects)
+		{
+			foreach (var action in gens.actions)
+			{
+				var cachedRoot = action.Root;
+				action.Root = obj;
+				if (action.Filter ())
+				{
+					var ut = action.Utility ();
+					if (ut > maxUt)
+					{
+						maxUt = ut;
+						maxAction = action;
+						maxObject = obj;
+					}
+				}
+				action.Root = cachedRoot;
+			}
+		}
+
+		if (maxAction != null)
+		{
+			maxAction.Root = maxObject;
+			maxAction.Action ();
+		} else
+		{
+			Debug.Log ("Generate world");
+			gens.Generate (world.gameObject);
+		}
 	}
 
 	public void Reaction (string text, VoidDelegate reactFunc)

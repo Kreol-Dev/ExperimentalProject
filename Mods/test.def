@@ -1,73 +1,14 @@
-camps_filler = 
+court_member_introduced =
 {
-	scope = has_camp
-	utility = camp.size
+	scope = has_world.fit(objects = 0)
+	utility = 0.3
 	action = 
 	{
-
-		camp.size = 3
-		some_variable = random(4)
-		camp = 
+		generate(court_member) = 
 		{
-			if(people.has_camp.fit(size = 0).has_person_fit_test.person_fit_test.some_value() > random(3) and not entity.dead) = 
-			{
-				repeat(size) = 
-				{
-					generate(party_member) =
-					{
-						person = yes
-						named = yes
-					}
-					add_to(people) = party_member.person
-				}
-			}
-
-			people = 
-			{
-				name = "Name McNamesky"
-			}
+			actor = yes
+			traits = yes
 		}
-		
-	} 
-}
-
-world_filler = 
-{
-	scope = has_world.has_space
-	utility = {
-		if(yes) ={
-			ut = ut + 1
-		}
-		cache(ut_val) = ut
-		random_value = random(3)
-		cache = random_value
-		cache(cached_world, world) = 
-		{
-			name = "some_world"
-		}
+		world.add = court_member
 	}
-	action = 
-	{
-		
-		space = 
-		{
-			repeat(random(3)) = 
-			{
-				generate(party_member) =
-				{
-					person = yes
-					entity = yes
-				}
-				place = party_member
-
-			}
-		}
-		abstract_camp() = 
-		{
-			size = 5
-		}
-		
-		
-	} 
 }
-
