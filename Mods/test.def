@@ -1,14 +1,29 @@
 court_member_introduced =
 {
-	scope = has_world.fit(objects = 0)
-	utility = 0.3
+	scope = world.fit(objects = 0)
+	utility = 1
 	action = 
 	{
+		w = get_world
 		generate(court_member) = 
 		{
 			actor = yes
 			traits = yes
 		}
 		world.add = court_member
+		world.objects.actor = 
+		{
+			name = "Court Member"
+		}
+	}
+}
+
+personality_added = 
+{
+	scope = actor.fit(not has(personality))
+	utility = 1
+	action = 
+	{
+		add = personality
 	}
 }

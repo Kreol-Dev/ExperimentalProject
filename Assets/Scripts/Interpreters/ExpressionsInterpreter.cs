@@ -223,17 +223,16 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 		resultVar.IsHidden = true;
 		int insertResultIndex = block.Statements.Count;
 		block.Statements.Add ("");
+		char signChar = ' ';
 		if (operand is ExprAtom)
 		{
 			if ((operand as ExprAtom).Op == ExprAtom.UnaryOp.Inverse)
 			{
 
-				exprBuilder.Append ("!");
-				hasSign = true;
+				signChar = '!';
 			} else if ((operand as ExprAtom).Op == ExprAtom.UnaryOp.Not)
 			{
-				hasSign = true;
-				exprBuilder.Append ("-");
+				signChar = '-';
 			}
 			operand = (operand as ExprAtom).Content;
 		}
@@ -348,7 +347,8 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 							var otherContext = block.FindStatement<DeclareVariableStatement> (v => (v.IsContext || v.IsArg) && (method = v.Type.GetMethod (methodName, any)) != null);
 							if (otherContext != null)
 							{
-								exprBuilder.Length = 0;
+								exprBuilder.Length = hasSign ? 1 : 0;
+								Debug.LogWarning ("OTHER CONTEXT" + otherContext.DebugString ());
 								exprBuilder.Append (otherContext.Name).Append ('.');
 								contextType = otherContext.Type;
 							} else
@@ -420,15 +420,16 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 						if (customVar == null)
 						{
 							var otherContext = block.FindStatement<DeclareVariableStatement> (v => {
-								Debug.LogWarning (v.Type);
-								Debug.Log (v.IsContext || v.IsArg);
-								var props = v.Type.GetProperties (any);
-								foreach (var allProp in props)
-									Debug.Log (allProp.Name);
+								//Debug.LogWarning (v.Type);
+								//Debug.Log (v.IsContext || v.IsArg);
+								//var props = v.Type.GetProperties (any);
+								//foreach (var allProp in props)
+								//	Debug.Log (allProp.Name);
 								return (v.IsContext || v.IsArg) && (prop = v.Type.GetProperty (propName, any)) != null;});
 							if (otherContext != null)
 							{
-								exprBuilder.Length = 0;
+								exprBuilder.Length = hasSign ? 1 : 0;
+
 								exprBuilder.Append (otherContext.Name).Append ('.');
 								contextType = otherContext.Type;
 								if (contextType.IsClass)
@@ -443,7 +444,7 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 								Debug.LogWarning ("Can't find context for property " + propName);
 						} else
 						{
-							exprBuilder.Length = 0;
+							exprBuilder.Length = hasSign ? 1 : 0;
 							exprBuilder.Append (customVar.Name).Append ('.');
 							contextType = customVar.Type;
 							if (contextType.IsClass)
@@ -618,7 +619,7 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 				resultVar.IsHidden = false;
 				block.Statements [insertResultIndex] = resultVar;
 				curBlock.Statements.Add (String.Format ("{0} = {1};", resultVar.Name, exprBuilder));
-				exprBuilder.Length = 0;
+				exprBuilder.Length = hasSign ? 1 : 0;
 				var resType = res.Type;
 				if (isInsideBoolean && resType.IsGenericType && resType.GetGenericTypeDefinition () == typeof(List<>))
 				{
@@ -654,7 +655,7 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 				exprBuilder.Append (operand);
 		}
 
-		returnExpr.ExprString = exprBuilder.ToString ();
+		returnExpr.ExprString = exprBuilder.Insert (0, signChar).ToString ();
 		return returnExpr;
 	}
 

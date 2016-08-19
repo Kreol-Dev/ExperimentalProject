@@ -68,14 +68,14 @@ public class DeclareVariableStatement
 		if (!IsDeclaration)
 		{
 			if (InitExpression == null)
-				return string.Format ("{0} {1};", "", Name);
+				return string.Format ("{0} {1}; //IsContext = {2} IsNew = {3}", "", Name, IsContext, IsNew);
 			else
-				return string.Format ("{0} {1} = {2};", "", Name, InitExpression);
+				return string.Format ("{0} {1} = {2}; //IsContext = {3} IsNew = {4}", "", Name, InitExpression, IsContext, IsNew);
 		}
 		if (InitExpression == null)
-			return string.Format ("{0} {1};", TypeName.NameOf (Type), Name);
+			return string.Format ("{0} {1}; //IsContext = {2} IsNew = {3}", TypeName.NameOf (Type), Name, IsContext, IsNew);
 		else
-			return string.Format ("{0} {1} = {2};", TypeName.NameOf (Type), Name, InitExpression);
+			return string.Format ("{0} {1} = {2}; //IsContext = {3} IsNew = {4}", TypeName.NameOf (Type), Name, InitExpression, IsContext, IsNew);
 	}
 
 	public string DebugString ()

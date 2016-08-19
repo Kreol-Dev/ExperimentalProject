@@ -55,6 +55,7 @@ public class ContextSwitchesPlugin : ScriptEnginePlugin
 			Debug.Log ("context " + inter.Engine);
 			ops.AddInterpreter (NameTranslator.ScriptNameFromCSharp (cmp.Name), inter);
 		}
+		var goInter = new ContextSwitchInterpreter (typeof(GameObject), Engine);
 	}
 }
 
@@ -81,7 +82,7 @@ public class ContextSwitchInterpreter : FunctionOperatorInterpreter
 		block.Statements.Add (contextBlock);
 		DeclareVariableStatement addVar = block.FindStatement<DeclareVariableStatement> (v => v.Name == op.Identifier as string);
 		if (addVar == null)
-			block.FindStatement<DeclareVariableStatement> (v => v.IsContext && v.Type == contextType);
+			addVar = block.FindStatement<DeclareVariableStatement> (v => v.IsContext && v.Type == contextType);
 		DeclareVariableStatement contextVar = block.FindStatement<DeclareVariableStatement> (v => v.IsContext && v != addVar);
 		DeclareVariableStatement declareVar = null;
 		if (addVar == null)
@@ -161,9 +162,10 @@ public class ContextSwitchInterpreter : FunctionOperatorInterpreter
 		engine.GetPlugin<ContextSwitchesPlugin> ().AddInterToType (type, this);
 		Debug.Log ("Context switch " + type);
 		contextType = type;
+		if (type == typeof(GameObject))
+			return;
 		var props = type.GetProperties (BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly);
 		var methods = type.GetMethods (BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly);
-
 		foreach (var prop in props)
 		{
 			//Debug.Log (prop.Name);
@@ -178,7 +180,7 @@ public class ContextSwitchInterpreter : FunctionOperatorInterpreter
 				Debug.Log ("SubContext " + NameTranslator.ScriptNameFromCSharp (prop.Name));
 			} else
 			{
-				ContextPropertyInterpreter inter = new ContextPropertyInterpreter (prop.Name, prop.PropertyType);
+				ContextPropertyInterpreter inter = new ContextPropertyInterpreter (prop.Name, prop.PropertyType, Engine);
 				inter.Engine = Engine;
 				Debug.Log (inter.Engine);
 				properties.Add (NameTranslator.ScriptNameFromCSharp (prop.Name), inter);
@@ -359,22 +361,25 @@ public class ContextPropertyInterpreter : FunctionOperatorInterpreter
 {
 	ExpressionInterpreter exprInter;
 	EventFunctionOperators ops;
+	ContextSwitchesPlugin switches;
 
 	public override void Interpret (Operator op, FunctionBlock block)
 	{
 		if (exprInter == null)
 		{
+			switches = Engine.GetPlugin<ContextSwitchesPlugin> ();
 			ops = Engine.GetPlugin<EventFunctionOperators> ();
 			exprInter = Engine.GetPlugin<ExpressionInterpreter> ();
 		}
-		if (!(op.Context is Expression))
-			return;
-			
+
 		var varName = op.Identifier as string;
 
 		var context = block.FindStatement<DeclareVariableStatement> (v => v.IsContext);
 		if (listT == null)
 		{
+			if (!(op.Context is Expression))
+				return;
+
 			if (context == null)
 				block.Statements.Add (String.Format ("root.{0} = {1};", propName, exprInter.InterpretExpression (op.Context as Expression, block).ExprString));
 			else
@@ -382,6 +387,7 @@ public class ContextPropertyInterpreter : FunctionOperatorInterpreter
 			
 		} else
 		{
+			Debug.Log ("list of" + listT);
 			ForStatement statement = new ForStatement ();
 			string listVarName = context == null ? "root." + propName : context.Name + "." + propName;
 			string iterName = "i" + DeclareVariableStatement.VariableId++;
@@ -391,8 +397,6 @@ public class ContextPropertyInterpreter : FunctionOperatorInterpreter
 			statement.RepeatBlock = repeatBlock;
 			block.Statements.Add (statement);
 			Operator listVarOp = new Operator ();
-			listVarOp.Identifier = NameTranslator.ScriptNameFromCSharp (listT.Name);
-			listVarOp.Context = op.Context;
 
 			DeclareVariableStatement listVar = new DeclareVariableStatement ();
 			listVar.Name = "iter" + DeclareVariableStatement.VariableId++;
@@ -402,8 +406,8 @@ public class ContextPropertyInterpreter : FunctionOperatorInterpreter
 			listVar.InitExpression = String.Format ("{0}[{1}]", listVarName, iterName);
 
 			statement.RepeatBlock.Statements.Add (listVar);
-			var inter = ops.GetInterpreter (listVarOp, repeatBlock);
-			inter.Interpret (listVarOp, repeatBlock);
+			var inter = switches.GetInterByType (listT);
+			inter.Interpret (op, repeatBlock);
 		}
 		interpret = true;
 	}
@@ -417,12 +421,17 @@ public class ContextPropertyInterpreter : FunctionOperatorInterpreter
 	protected string propName;
 	Type listT = null;
 
-	public ContextPropertyInterpreter (string propName, Type type)
+	public ContextPropertyInterpreter (string propName, Type type, ScriptEngine engine)
 	{
 		
 		if (type.IsGenericType && type.GetGenericTypeDefinition () == typeof(List<>))
+		{
+
 			listT = type.GetGenericArguments () [0];
-		
+			engine.GetPlugin<ContextSwitchesPlugin> ().AddInterToType (type, this);
+		}
+
+		Engine = engine;
 		this.propName = propName;
 		propType = type;
 	}
@@ -473,7 +482,7 @@ public class ContextPropertySwitchInterpreter : ContextPropertyInterpreter
 	//		return inter;
 	//	}
 
-	public ContextPropertySwitchInterpreter (string propName, Type type, ScriptEngine engine) : base (propName, type)
+	public ContextPropertySwitchInterpreter (string propName, Type type, ScriptEngine engine) : base (propName, type, engine)
 	{
 		engine.GetPlugin<ContextSwitchesPlugin> ().AddInterToType (type, this);
 		this.propName = propName;
@@ -508,7 +517,7 @@ public class ContextPropertySwitchInterpreter : ContextPropertyInterpreter
 					Debug.Log ("SubContext " + NameTranslator.ScriptNameFromCSharp (prop.Name));
 				} else
 				{
-					ContextPropertyInterpreter inter = new ContextPropertyInterpreter (prop.Name, prop.PropertyType);
+					ContextPropertyInterpreter inter = new ContextPropertyInterpreter (prop.Name, prop.PropertyType, engine);
 					inter.Engine = Engine;
 					Debug.Log (inter.Engine);
 					properties.Add (NameTranslator.ScriptNameFromCSharp (prop.Name), inter);

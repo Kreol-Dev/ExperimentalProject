@@ -6,6 +6,7 @@ public class ReactionButton : MonoBehaviour
 {
 	public VoidDelegate OnClick;
 	public string Text;
+	public EventsController EventsController;
 	[SerializeField]
 	Text UIText;
 
@@ -18,6 +19,7 @@ public class ReactionButton : MonoBehaviour
 	void Click ()
 	{
 		OnClick ();
+		EventsController.NextEvent ();
 	}
 
 

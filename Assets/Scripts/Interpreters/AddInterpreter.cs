@@ -11,12 +11,17 @@ public class AddInterpreter : FunctionOperatorInterpreter
 	ContextSwitchesPlugin switches;
 	Dictionary<string, Type> components = new Dictionary<string, Type> ();
 
+
+
 	public override void Interpret (Operator op, FunctionBlock block)
 	{
 		if (ops == null)
 		{
 			ops = Engine.GetPlugin<EventFunctionOperators> ();
 			switches = Engine.GetPlugin<ContextSwitchesPlugin> ();
+			var cmps = Engine.FindTypesCastableTo<MonoBehaviour> ();
+			foreach (var cmp in cmps)
+				components.Add (NameTranslator.ScriptNameFromCSharp (cmp.Name), cmp);
 		}
 		//add = cmp_type - no args, context is Expression
 		//add(var) = cmp_type - 1 arg, context is Expression
@@ -84,24 +89,6 @@ public class AddInterpreter : FunctionOperatorInterpreter
 		}
 
 
-		DeclareVariableStatement stmt = new DeclareVariableStatement ();
-		stmt.Name = "New" + DeclareVariableStatement.VariableId++;
-		stmt.IsNew = true;
-
-		if (op.Context is Context)
-		{
-
-			FunctionBlock subBlock = new FunctionBlock (block, block.Method, block.Type);
-			block.Statements.Add (subBlock);
-			subBlock.Statements.Add (stmt);
-			stmt.IsContext = true;
-
-			foreach (var entry in (op.Context as Context).Entries)
-			{
-				var subOp = entry as Operator;
-
-			}
-		}
 
 
 	}

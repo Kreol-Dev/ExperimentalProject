@@ -127,6 +127,7 @@ public class VarDeclareInterpreter : FunctionOperatorInterpreter
 		var expr = Inter.InterpretExpression (op.Context as Expression, block);
 		stmt.InitExpression = expr.ExprString;
 		stmt.Type = expr.Type;
+		Debug.Log (stmt);
 		block.Statements.Add (stmt);
 	}
 }

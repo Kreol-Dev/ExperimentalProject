@@ -10,11 +10,10 @@ public class Event : MonoBehaviour
 
 	public Event Result { get; set; }
 
-
 	void Start ()
 	{
-		string eventDesc = string.Format ("{0} {1} {2}", Actor, Action, Result);
-		FindObjectOfType<EventsController> ().EventDescription (eventDesc);
+		FindObjectOfType<Generators> ().Generate (gameObject);
 	}
+
 }
 
