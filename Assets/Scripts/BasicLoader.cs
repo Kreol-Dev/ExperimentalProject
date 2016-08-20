@@ -41,9 +41,9 @@ public class BasicLoader : MonoBehaviour, ILoadable
 		return eventsController;
 	}
 
-	public int Random (int max)
+	public float Random (float min, float max)
 	{
-		return random.Next (0, max);
+		return Mathf.Lerp (min, max, (float)random.NextDouble ());
 	}
 
 	public bool Has (object obj)

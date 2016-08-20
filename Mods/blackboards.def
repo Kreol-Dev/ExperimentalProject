@@ -5,3 +5,10 @@ personality =
 	generosity = float
 	zealotry = float
 }
+
+event_desc =
+{
+	actor = string
+	action = string
+	result = string
+}

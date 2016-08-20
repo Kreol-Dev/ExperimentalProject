@@ -138,7 +138,7 @@ public class ContextSwitchInterpreter : FunctionOperatorInterpreter
 		if (!functions.TryGetValue (op.Identifier as string, out opInter))
 		if (!properties.TryGetValue (op.Identifier as string, out opInter))
 		{
-			Debug.LogWarningFormat ("Can't interpret context operator {1} in {0}", block.Method.Name, op.Identifier);
+			Debug.LogWarningFormat ("Can't interpret context operator {1} in {0} by switch - {2}", block.Method.Name, op.Identifier, contextType);
 			return null;
 		}
 		return opInter;

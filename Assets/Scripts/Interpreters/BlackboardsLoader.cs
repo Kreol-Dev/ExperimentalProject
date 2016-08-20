@@ -55,6 +55,14 @@ public class BlackboardsLoader  : ScriptInterpreter
 				var op = fieldOp as Operator;
 				var typeName = (((op.Context as Expression).Operands [0] as ExprAtom).Content as Scope).Parts [0] as string;
 				CodeMemberField field = null;
+				CodeMemberProperty prop = new CodeMemberProperty ();
+				prop.HasGet = true;
+				prop.HasSet = true;
+				prop.GetStatements.Add (new CodeSnippetStatement (String.Format ("return {0}; ", op.Identifier)));
+				prop.SetStatements.Add (new CodeSnippetStatement (String.Format ("{0} = value; ", op.Identifier)));
+				prop.Name = NameTranslator.CSharpNameFromScript (op.Identifier as string);
+
+				bbType.Members.Add (prop);
 				if (typeName == null)
 				{
 					var listFunc = (((op.Context as Expression).Operands [0] as ExprAtom).Content as Scope).Parts [0] as FunctionCall;
@@ -71,6 +79,8 @@ public class BlackboardsLoader  : ScriptInterpreter
 					field = new CodeMemberField (types [typeName], op.Identifier as string);
 				}
 				field.Attributes = MemberAttributes.Public;
+				prop.Type = field.Type;
+				prop.Attributes = MemberAttributes.Public;
 				bbType.Members.Add (field);
 			}
 		}

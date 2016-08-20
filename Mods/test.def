@@ -24,6 +24,14 @@ personality_added =
 	utility = 1
 	action = 
 	{
-		add = personality
+		add(personality) = 
+		{
+			cruelty = random(0, 1)
+			rationality = random(0, 1)
+			generosity = random(0, 1)
+			zealotry = random(0, 1)
+		}
 	}
 }
+
+
