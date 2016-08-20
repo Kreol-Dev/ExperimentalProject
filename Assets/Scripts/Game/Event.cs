@@ -4,7 +4,7 @@ using System.Collections;
 public class Event : MonoBehaviour
 {
 
-	public Actor Actor { get; set; }
+	public Actor Involved { get; set; }
 
 	public MonoBehaviour Action { get; set; }
 

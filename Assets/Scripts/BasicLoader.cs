@@ -41,6 +41,16 @@ public class BasicLoader : MonoBehaviour, ILoadable
 		return eventsController;
 	}
 
+	public delegate bool SelectionDelegate (GameObject go);
+
+	public GameObject SelectFrom (List<GameObject> list, SelectionDelegate checker)
+	{
+		for (int i = 0; i < list.Count; i++)
+			if (checker (list [i]))
+				return list [i];
+		return null;
+	}
+
 	public float Random (float min, float max)
 	{
 		return Mathf.Lerp (min, max, (float)random.NextDouble ());
@@ -71,7 +81,7 @@ public class BasicLoader : MonoBehaviour, ILoadable
 		loadedAsms.Add ("ExternalCode");
 		loadedAsms.Add ("BlackboardsData");
 		var extr = Engine.GetPlugin<ExternalFunctionsPlugin> ();
-		extr.AddProvider (this, "Random", "Dsix", "AbstractCamp", "Has", "GetWorld", "GetEventsController");
+		extr.AddProvider (this, "Random", "Dsix", "AbstractCamp", "Has", "GetWorld", "GetEventsController", "SelectFrom");
 		extr.Setup (OnExternalsCompiled);
 
 	}

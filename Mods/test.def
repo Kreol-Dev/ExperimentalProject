@@ -4,17 +4,20 @@ court_member_introduced =
 	utility = 1
 	action = 
 	{
-		w = get_world
-		generate(court_member) = 
+		world = 
 		{
-			actor = yes
-			traits = yes
+			repeat(5) = 
+			{
+				generate(court_member) = 
+				{
+					actor = yes
+					traits = yes
+				}
+				attach = court_member
+			}
+
 		}
-		world.add = court_member
-		world.objects.actor = 
-		{
-			name = "Court Member"
-		}
+		
 	}
 }
 
@@ -24,12 +27,46 @@ personality_added =
 	utility = 1
 	action = 
 	{
-		add(personality) = 
+		create(personality) = 
 		{
 			cruelty = random(0, 1)
 			rationality = random(0, 1)
 			generosity = random(0, 1)
 			zealotry = random(0, 1)
+		}
+	}
+}
+
+burn_the_wizard = 
+{
+	scope = actor.personality.fit(cruelty > 0.7 and rationality < 0.3 and zealotry > 0.8)
+	utility = 
+	{
+		get_world.events_data =
+		{
+			if(not has(wizard)) =
+			{
+				wizard = select_from(objects, personality.rationality > 0.7 and not (this = root))
+			}
+			if(has(wizard)) = 
+			{
+
+				ut = personality.cruelty * 0.5 + personality.zealotry * 0.5
+			}
+		}
+		
+
+	}
+	action = 
+	{
+		generate(wizard_event) = 
+		{
+			event = 
+			{
+				involved = root.actor
+				create(act, burn_event).target = get_world.events_data.wizard
+				action = act
+			}
 		}
 	}
 }

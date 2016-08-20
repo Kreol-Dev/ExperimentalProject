@@ -6,9 +6,12 @@ personality =
 	zealotry = float
 }
 
-event_desc =
+events_data = 
 {
-	actor = string
-	action = string
-	result = string
+	wizard = gameobject
+}
+
+burn_event = 
+{
+	target = gameobject
 }

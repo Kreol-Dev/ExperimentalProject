@@ -28,6 +28,7 @@ public class FunctionBlock
 		Parent = parent;
 		Method = parent.Method;
 		Type = parent.Type;
+		DefaultScope = parent.DefaultScope;
 	}
 
 	public FunctionBlock (FunctionBlock parent, CodeMemberMethod method, CodeTypeDeclaration type)
@@ -39,6 +40,8 @@ public class FunctionBlock
 		Parent = parent;
 		Method = method;
 		Type = type;
+		if (parent != null)
+			DefaultScope = parent.DefaultScope;
 	}
 
 	public override string ToString ()
@@ -57,8 +60,9 @@ public class FunctionBlock
 		FunctionBlock curBlock = this;
 		while (curBlock != null && statement == null)
 		{
-			foreach (var stmt in curBlock.Statements)
+			for (int i = curBlock.Statements.Count - 1; i >= 0; i--)
 			{
+				var stmt = curBlock.Statements [i];
 				statement = stmt as T;
 				if (statement == null)
 					continue;
@@ -76,8 +80,9 @@ public class FunctionBlock
 		while (curBlock != null && statement == null)
 		{
 			bool found = false;
-			foreach (var stmt in curBlock.Statements)
+			for (int i = curBlock.Statements.Count - 1; i >= 0; i--)
 			{
+				var stmt = curBlock.Statements [i];
 				statement = stmt as T;
 				if (statement == null)
 					continue;

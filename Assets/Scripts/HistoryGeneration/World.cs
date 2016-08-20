@@ -13,13 +13,13 @@ public class World : MonoBehaviour
 		Objects = new List<GameObject> ();
 	}
 
-	public void Add (GameObject go)
+	public void Attach (GameObject go)
 	{
 		Objects.Add (go);
 		Debug.Log (Objects.Count);
 	}
 
-	public void Remove (GameObject go)
+	public void Detach (GameObject go)
 	{
 		Objects.Remove (go);
 		Debug.Log (Objects.Count);

@@ -4,7 +4,7 @@ using InternalDSL;
 using System.Collections.Generic;
 using System;
 
-[CommonFunctionOperator ("add")]
+[CommonFunctionOperator ("create")]
 public class AddInterpreter : FunctionOperatorInterpreter
 {
 	EventFunctionOperators ops;
@@ -27,6 +27,7 @@ public class AddInterpreter : FunctionOperatorInterpreter
 		//add(var) = cmp_type - 1 arg, context is Expression
 		//add(cmp_type) = { ... } - 1 arg, context is Context
 		//add(var, cmp_type) = { ... } - 2 args, context is Context
+		DeclareVariableStatement cmpVar = null;
 		DeclareVariableStatement contextVar = block.FindStatement<DeclareVariableStatement> (v => (v.IsContext | v.IsArg) && v.Type == typeof(GameObject));
 		string ctxVar = contextVar == null ? "root" : contextVar.Name;
 		if (op.Args.Count == 0)
@@ -47,17 +48,18 @@ public class AddInterpreter : FunctionOperatorInterpreter
 				var cmpTypeName = (((op.Context as Expression).Operands [0] as ExprAtom).Content as Scope).Parts [0] as string;
 				var varName = ((op.Args [0].Operands [0] as ExprAtom).Content as Scope).Parts [0] as string;
 				var cmpType = components [cmpTypeName];
-				DeclareVariableStatement cmpVar = new DeclareVariableStatement ();
+				cmpVar = new DeclareVariableStatement ();
 				cmpVar.InitExpression = string.Format ("{0}.AddComponent<{1}>();", ctxVar, cmpType);
 				cmpVar.Type = cmpType;
 				cmpVar.Name = varName;
 				cmpVar.IsNew = true;
+				cmpVar.IsContext = true;
 				block.Statements.Add (cmpVar);
 			} else if (ctx != null)
 			{
 				var cmpTypeName = ((op.Args [0].Operands [0] as ExprAtom).Content as Scope).Parts [0] as string;
 				var cmpType = components [cmpTypeName];
-				DeclareVariableStatement cmpVar = new DeclareVariableStatement ();
+				cmpVar = new DeclareVariableStatement ();
 				cmpVar.InitExpression = string.Format ("{0}.AddComponent<{1}>();", ctxVar, cmpType);
 				cmpVar.Type = cmpType;
 				cmpVar.IsContext = true;
@@ -73,13 +75,13 @@ public class AddInterpreter : FunctionOperatorInterpreter
 			var ctx = op.Context as Context;
 			if (ctx != null)
 			{
-				var cmpTypeName = (((op.Context as Expression).Operands [0] as ExprAtom).Content as Scope).Parts [0] as string;
+				var cmpTypeName = ((op.Args [1].Operands [0] as ExprAtom).Content as Scope).Parts [0] as string;
 				var varName = ((op.Args [0].Operands [0] as ExprAtom).Content as Scope).Parts [0] as string;
 				var cmpType = components [cmpTypeName];
-				DeclareVariableStatement cmpVar = new DeclareVariableStatement ();
+				cmpVar = new DeclareVariableStatement ();
 				cmpVar.InitExpression = string.Format ("{0}.AddComponent<{1}>();", ctxVar, cmpType);
 				cmpVar.Type = cmpType;
-				//cmpVar.IsContext = true;
+				cmpVar.IsContext = true;
 				cmpVar.IsNew = true;
 				cmpVar.Name = varName;
 				block.Statements.Add (cmpVar);
@@ -88,6 +90,8 @@ public class AddInterpreter : FunctionOperatorInterpreter
 			}
 		}
 
+		if (cmpVar != null)
+			cmpVar.IsContext = false;
 
 
 

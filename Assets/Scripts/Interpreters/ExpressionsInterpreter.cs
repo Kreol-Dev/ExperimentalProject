@@ -114,6 +114,7 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 
 	public Expr InterpretClosure (Expression expression, FunctionBlock block, Type closureType)
 	{
+		Debug.LogFormat ("Interpret {0} as closure", expression);
 		StringBuilder closureBuilder = new StringBuilder ();
 		var methodInfo = closureType.GetMethod ("Invoke");
 		var args = methodInfo.GetParameters ();
@@ -121,28 +122,31 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 		lambdaBlock.DefaultScope = args [0].Name;
 
 		closureBuilder.Append ("(");
+		DeclareVariableStatement lastArg = null;
 		foreach (var param in args)
 		{
 			var argVar = new DeclareVariableStatement ();
+			lastArg = argVar;
 			argVar.Name = param.Name;
 			argVar.IsArg = true;
 			argVar.Type = param.ParameterType;
 			lambdaBlock.Statements.Add (argVar);
 			closureBuilder.Append (param.ParameterType).Append (" ").Append (param.Name).Append (",");
 		}
+		if (lastArg != null)
+			lastArg.IsContext = true;
 		if (closureBuilder [closureBuilder.Length - 1] == ',')
 			closureBuilder.Length -= 1;
 		closureBuilder.Append (")=>{");
+		var internals = InterpretExpression (expression, lambdaBlock);
 		foreach (var statement in lambdaBlock.Statements)
-			closureBuilder.Append (statement).Append (";");
+			closureBuilder.Append (statement).Append (";").Append (Environment.NewLine);
 		if (methodInfo.ReturnType != null)
 			closureBuilder.Append ("return ");
-		var internals = InterpretExpression (expression, lambdaBlock);
 		closureBuilder.Append (internals.ExprString).Append (";");
 		closureBuilder.Append ("}");
 
-
-		return new Expr ();
+		return new Expr (){ ExprString = closureBuilder.ToString () };
 		//return InterpretExpression (expression, block);
 	}
 
@@ -213,6 +217,7 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 	}
 
 
+	Expression[] defaultArgsList = new Expression[0];
 
 	public Expr ProcessOperand (object operand, FunctionBlock block, bool isInsideBoolean = false)
 	{
@@ -319,15 +324,27 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 					repeatContext.InitExpression = String.Format (@"{0}[{1}]", declVar.Name, iterName);
 
 				}
-				if (scope [i] is FunctionCall)
+				bool isFunc = false;
+				if (scope [i] is FunctionCall || scope [i] is string)
 				{
 //					var callOp = ProcessOperand (scope [i], block);
+					Expression[] callArgs = defaultArgsList;
+					string callName = null;
 					var call = scope [i] as FunctionCall;
-					if (scopeInterpreters.ContainsKey (call.Name))
+					if (call != null)
 					{
-						var interpreter = scopeInterpreters [call.Name];
+						callName = call.Name;
+						callArgs = call.Args;
+					} else
+					{
+
+						callName = scope [i] as string;
+					}
+					if (scopeInterpreters.ContainsKey (callName))
+					{
+						var interpreter = scopeInterpreters [callName];
 						string outExpr = null;
-						interpreter.Interpret (call.Args, curBlock, contextType, exprBuilder.ToString (), out outExpr, out curBlock, out contextType, i == scope.Count - 1);
+						interpreter.Interpret (callArgs, curBlock, contextType, exprBuilder.ToString (), out outExpr, out curBlock, out contextType, i == scope.Count - 1);
 						if (hasSign)
 						{
 							exprBuilder.Length = 1;
@@ -338,9 +355,10 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 							exprBuilder.Length = 0;
 							exprBuilder.Append (outExpr).Append ('.');
 						}
+						isFunc = true;
 					} else
 					{
-						var methodName = NameTranslator.CSharpNameFromScript (call.Name);
+						var methodName = NameTranslator.CSharpNameFromScript (callName);
 						var method = contextType.GetMethod (methodName);
 						if (i == 0 && method == null)
 						{
@@ -356,60 +374,64 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 						}
 						if (method == null)
 						{
-							Debug.LogFormat ("Can't find {0} in {1}", NameTranslator.CSharpNameFromScript (call.Name), contextType);
-							break;
-						}
-						exprBuilder.Append (method.Name).Append ("(");
-						var argsDef = method.GetParameters ();
-						if (call.Args != null)
-						{
-							for (int j = 0; j < call.Args.Length; j++)
-							{
-								if (argsDef [j].ParameterType.IsSubclassOf (typeof(Delegate)))
-									exprBuilder.Append (InterpretClosure (call.Args [j], curBlock, argsDef [j].ParameterType).ExprString).Append (",");
-								else
-									exprBuilder.Append (InterpretExpression (call.Args [j], curBlock).ExprString).Append (",");
-							}
-							if (call.Args.Length > 0)
-								exprBuilder.Length -= 1;
-						}
-
-						exprBuilder.Append (")");
-						contextType = method.ReturnType;
-
-
-						var declVar = new DeclareVariableStatement ();
-						CleanUpContextes.Add (declVar);
-						declVar.IsTemp = true;
-						declVar.Name = "prop" + DeclareVariableStatement.VariableId++;
-						declVar.IsContext = true;
-						if (exprBuilder.Length > 0 && exprBuilder [exprBuilder.Length - 1] == '.')
-							exprBuilder.Length -= 1;
-						if (hasSign)
-						{
-							declVar.InitExpression = exprBuilder.ToString (1, exprBuilder.Length - 1);
-							exprBuilder.Length = 1;
-							exprBuilder.Append (declVar.Name).Append ('.');
+							Debug.LogFormat ("Can't find {0} in {1}", NameTranslator.CSharpNameFromScript (callName), contextType);
 						} else
 						{
+							exprBuilder.Append (method.Name).Append ("(");
+							var argsDef = method.GetParameters ();
+							if (callArgs != null)
+							{
+								for (int j = 0; j < callArgs.Length; j++)
+								{
+									if (argsDef [j].ParameterType.IsSubclassOf (typeof(Delegate)))
+										exprBuilder.Append (InterpretClosure (callArgs [j], curBlock, argsDef [j].ParameterType).ExprString).Append (",");
+									else
+										exprBuilder.Append (InterpretExpression (callArgs [j], curBlock).ExprString).Append (",");
+								}
+								if (callArgs.Length > 0)
+									exprBuilder.Length -= 1;
+							}
 
-							declVar.InitExpression = exprBuilder.ToString ();
-							exprBuilder.Length = 0;
-							exprBuilder.Append (declVar.Name).Append ('.');
+							exprBuilder.Append (")");
+							contextType = method.ReturnType;
+
+
+							var declVar = new DeclareVariableStatement ();
+							CleanUpContextes.Add (declVar);
+							declVar.IsTemp = true;
+							declVar.Name = "prop" + DeclareVariableStatement.VariableId++;
+							declVar.IsContext = true;
+							if (exprBuilder.Length > 0 && exprBuilder [exprBuilder.Length - 1] == '.')
+								exprBuilder.Length -= 1;
+							if (hasSign)
+							{
+								declVar.InitExpression = exprBuilder.ToString (1, exprBuilder.Length - 1);
+								exprBuilder.Length = 1;
+								exprBuilder.Append (declVar.Name).Append ('.');
+							} else
+							{
+
+								declVar.InitExpression = exprBuilder.ToString ();
+								exprBuilder.Length = 0;
+								exprBuilder.Append (declVar.Name).Append ('.');
+							}
+							declVar.Type = contextType;
+							curBlock.Statements.Add (declVar);
+							if (contextType.IsClass)
+							{
+								IfStatement ifSt = new IfStatement ();
+								ifSt.CheckExpression = String.Format ("{0} != null", declVar.Name);
+								ifSt.TrueBlock = new FunctionBlock (curBlock);
+								curBlock.Statements.Add (ifSt);
+								curBlock = ifSt.TrueBlock;
+							}
+							isFunc = true;
 						}
-						declVar.Type = contextType;
-						curBlock.Statements.Add (declVar);
-						if (contextType.IsClass)
-						{
-							IfStatement ifSt = new IfStatement ();
-							ifSt.CheckExpression = String.Format ("{0} != null", declVar.Name);
-							ifSt.TrueBlock = new FunctionBlock (curBlock);
-							curBlock.Statements.Add (ifSt);
-							curBlock = ifSt.TrueBlock;
-						}
+
 					}
 
-				} else
+				} 
+				if (!isFunc)
 				{
 					var propName = NameTranslator.CSharpNameFromScript (scope [i] as string);
 
@@ -653,6 +675,8 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 				exprBuilder.Append ((bool)operand ? "true" : "false");
 			else
 				exprBuilder.Append (operand);
+			if (operand is float)
+				exprBuilder.Append ('f');
 		}
 
 		returnExpr.ExprString = exprBuilder.Insert (0, signChar).ToString ();

@@ -32,6 +32,12 @@ public class GenerateOperator : FunctionOperatorInterpreter
 		var ctx = op.Context as Context;
 		FunctionBlock subBlock = new FunctionBlock (block, block.Method, block.Type);
 		block.Statements.Add (subBlock);
+		subBlock.Statements.Add (new DeclareVariableStatement () {
+			Name = varName + DeclareVariableStatement.VariableId++,
+			InitExpression = varName,
+			Type = typeof(GameObject),
+			IsContext = true
+		});
 		foreach (var entry in ctx.Entries)
 		{
 			var subOp = entry as Operator;

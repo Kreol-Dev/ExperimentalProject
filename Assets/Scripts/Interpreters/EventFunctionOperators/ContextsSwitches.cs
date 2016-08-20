@@ -116,10 +116,11 @@ public class ContextSwitchInterpreter : FunctionOperatorInterpreter
 			if (subOp == null)
 				continue;
 			FunctionOperatorInterpreter opInter = null;
+
+			if ((opInter = ops.GetInterpreter (subOp, contextBlock)) == null)
 			if (!contextSwitches.TryGetValue (subOp.Identifier as string, out opInter))
 			if (!functions.TryGetValue (subOp.Identifier as string, out opInter))
 			if (!properties.TryGetValue (subOp.Identifier as string, out opInter))
-			if ((opInter = ops.GetInterpreter (subOp, contextBlock)) == null)
 			{
 				Debug.LogWarningFormat ("Can't interpret context operator {1} in {0}", block.Method.Name, subOp.Identifier);
 				continue;
@@ -294,7 +295,7 @@ public class ContextFunctionCallInterpreter : FunctionOperatorInterpreter
 			block = isNotNull.TrueBlock;
 			for (int i = 0; i < ctx.Entries.Count; i++)
 			{
-				ctxInter.InterpretInContext (ctx.Entries [i] as Operator, block).Interpret (ctx.Entries [i] as Operator, block);
+				ops.GetInterpreter (ctx.Entries [i] as Operator, block).Interpret (ctx.Entries [i] as Operator, block);
 			}
 		} else
 		{
@@ -374,12 +375,15 @@ public class ContextPropertyInterpreter : FunctionOperatorInterpreter
 
 		var varName = op.Identifier as string;
 
-		var context = block.FindStatement<DeclareVariableStatement> (v => v.IsContext);
+		Debug.Log (block);
+		var context = block.FindStatement<DeclareVariableStatement> (v =>{
+			Debug.Log (v);
+			return v.IsContext;});
 		if (listT == null)
 		{
 			if (!(op.Context is Expression))
 				return;
-
+			Debug.Log ("PROPERTY " + propName);
 			if (context == null)
 				block.Statements.Add (String.Format ("root.{0} = {1};", propName, exprInter.InterpretExpression (op.Context as Expression, block).ExprString));
 			else
@@ -586,10 +590,10 @@ public class ContextPropertySwitchInterpreter : ContextPropertyInterpreter
 			if (subOp == null)
 				continue;
 			FunctionOperatorInterpreter opInter = null;
+			if ((opInter = ops.GetInterpreter (subOp, contextBlock)) == null)
 			if (!contextSwitches.TryGetValue (subOp.Identifier as string, out opInter))
 			if (!functions.TryGetValue (subOp.Identifier as string, out opInter))
 			if (!properties.TryGetValue (subOp.Identifier as string, out opInter))
-			if ((opInter = ops.GetInterpreter (subOp, contextBlock)) == null)
 			{
 				Debug.LogFormat ("Can't interpret context operator {1} in {0}", block.Method.Name, subOp.Identifier);
 				continue;

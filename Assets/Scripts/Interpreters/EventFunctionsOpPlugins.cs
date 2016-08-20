@@ -89,7 +89,7 @@ public class EventFunctionOperators : ScriptEnginePlugin
 			}
 		}
 
-		Debug.LogFormat ("{0} - {1}", op.Identifier, inter);
+		Debug.LogFormat ("{0} - {1}", op, inter);
 		return inter;
 	}
 

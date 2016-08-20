@@ -85,6 +85,7 @@ public class ScriptCompiler : ScriptEnginePlugin
 		string sourceCode = string.Concat (csharpSources.ToArray ());
 
 		UnityEngine.GameObject.Find ("SourceCode").GetComponent<Text> ().text = sourceCode;
+		System.IO.File.WriteAllText ("Mods/SourceCode.cs", sourceCode);
 		onAssemblyCompiled (loader.Load (csharpSources.ToArray (), "Content"));
 	}
 }
