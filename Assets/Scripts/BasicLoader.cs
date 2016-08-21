@@ -24,8 +24,9 @@ public class BasicLoader : MonoBehaviour, ILoadable
 
 	World world;
 	EventsController eventsController;
+	Player player;
 
-	public void Log (string log)
+	public void Log (object log)
 	{
 		Debug.Log (log);
 	}
@@ -34,6 +35,7 @@ public class BasicLoader : MonoBehaviour, ILoadable
 	{
 		world = UnityEngine.Object.FindObjectOfType<World> ();
 		eventsController = UnityEngine.Object.FindObjectOfType<EventsController> ();
+		player = UnityEngine.Object.FindObjectOfType<Player> ();
 	}
 
 	public World GetWorld ()
@@ -46,6 +48,8 @@ public class BasicLoader : MonoBehaviour, ILoadable
 		return eventsController;
 	}
 
+
+
 	public delegate bool SelectionDelegate (GameObject go);
 
 	public GameObject SelectFrom (List<GameObject> list, SelectionDelegate checker)
@@ -56,6 +60,16 @@ public class BasicLoader : MonoBehaviour, ILoadable
 		return null;
 	}
 
+	public void Destroy (UnityEngine.Object obj)
+	{
+		if (obj is GameObject)
+			UnityEngine.Object.Destroy (obj);
+		else if (obj is MonoBehaviour)
+		{
+			UnityEngine.Object.Destroy ((obj as MonoBehaviour).gameObject);
+		}
+	}
+
 	public float Random (float min, float max)
 	{
 		return Mathf.Lerp (min, max, (float)random.NextDouble ());
@@ -64,6 +78,11 @@ public class BasicLoader : MonoBehaviour, ILoadable
 	public bool Has (object obj)
 	{
 		return obj != null;
+	}
+
+	public Player GetPlayer ()
+	{
+		return player;
 	}
 
 	public Camp AbstractCamp ()
@@ -82,6 +101,8 @@ public class BasicLoader : MonoBehaviour, ILoadable
 		Engine = new ScriptEngine (addons);
 		var dirInfo = new DirectoryInfo ("Mods");
 		DateTime lastWriteTime = DateTime.MinValue;
+		var extr = Engine.GetPlugin<ExternalFunctionsPlugin> ();
+		extr.AddProvider (this, "Random", "Dsix", "AbstractCamp", "Has", "GetWorld", "GetEventsController", "SelectFrom", "Log", "String", "GetPlayer", "Destroy");
 		foreach (var fileInfo in dirInfo.GetFiles ())
 		{
 			if (fileInfo.LastWriteTimeUtc > lastWriteTime)
@@ -96,15 +117,11 @@ public class BasicLoader : MonoBehaviour, ILoadable
 			AppDomain.CurrentDomain.AssemblyResolve += Resolver;
 			loadedAsms.Add ("ExternalCode");
 			loadedAsms.Add ("BlackboardsData");
-			var extr = Engine.GetPlugin<ExternalFunctionsPlugin> ();
-			extr.AddProvider (this, "Random", "Dsix", "AbstractCamp", "Has", "GetWorld", "GetEventsController", "SelectFrom", "Log");
 			extr.Setup (OnExternalsCompiled);
 		} else
 		{
 			//Load dlls
 			var asm = Assembly.LoadFile ("DLLs/ExternalCode.dll");
-			var extr = Engine.GetPlugin<ExternalFunctionsPlugin> ();
-			extr.AddProvider (this, "Random", "Dsix", "AbstractCamp", "Has", "GetWorld", "GetEventsController", "SelectFrom", "Log");
 			extr.OnCompiled (asm);
 			asm = Assembly.LoadFile ("DLLs/BlackboardsData.dll");
 			Engine.AddAssembly (asm);

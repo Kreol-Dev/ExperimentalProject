@@ -226,7 +226,7 @@ public class ContextFunctionCallInterpreter : FunctionOperatorInterpreter
 			addContextInter = switches.GetInterByType (argsDef [argsDef.Length - 1].ParameterType);
 		Engine = engine;
 		returnType = method.ReturnType;
-		if (returnType != typeof(string) && (returnType.IsClass || (returnType.IsValueType && !returnType.IsEnum &&
+		if (returnType != typeof(void) && returnType != typeof(string) && (returnType.IsClass || (returnType.IsValueType && !returnType.IsEnum &&
 		    returnType != typeof(bool) && returnType != typeof(float) && returnType != typeof(int))) &&
 		    !(returnType.IsGenericType && returnType.GetGenericTypeDefinition () == typeof(List<>)))
 		{
@@ -245,12 +245,12 @@ public class ContextFunctionCallInterpreter : FunctionOperatorInterpreter
 		var contextVar = block.FindStatement<DeclareVariableStatement> (v => (v.IsContext || v.IsArg) && v.Type.GetMethod (funcName, any) != null);
 
 		StringBuilder argsBuilder = new StringBuilder ();
-		if (((op.Context is Expression) && op.Args.Count + 1 != argsDef.Length) ||
-		    ((op.Context is Context) && op.Args.Count != argsDef.Length))
-		{
-			Debug.Log ("Wrong amount of arguments");
-			return;
-		}
+//		if (((op.Context is Expression) && op.Args.Count + 1 != argsDef.Length) ||
+//		    ((op.Context is Context) && op.Args.Count != argsDef.Length))
+//		{
+//			Debug.Log ("Wrong amount of arguments");
+//			return;
+//		}
 		for (int i = 0; i < op.Args.Count; i++)
 		{
 			if (argsDef [i].ParameterType.IsSubclassOf (typeof(Delegate)))
@@ -303,6 +303,8 @@ public class ContextFunctionCallInterpreter : FunctionOperatorInterpreter
 			var lastArg = argsDef [argsDef.Length - 1];
 			if (typeof(Delegate).IsAssignableFrom (lastArg.ParameterType))
 			{
+
+				Debug.Log ("LAMBDA!");
 				//Interpret as lambda
 				LambdaStatement lambda = new LambdaStatement ();
 				lambda.Name = "Lambda" + DeclareVariableStatement.VariableId++;
@@ -495,12 +497,13 @@ public class ContextPropertySwitchInterpreter : ContextPropertyInterpreter
 		Debug.Log ("Context switch " + type);
 		var props = type.GetProperties (BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
 		var methods = type.GetMethods (BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
-
+		Debug.Log ("Methods count " + methods.Length);
 		var thisKey = new PropKey (type, propName);
 		if (!allPropSwitches.ContainsKey (thisKey))
 			allPropSwitches.Add (thisKey, this);
 		if (typeof(MonoBehaviour).IsAssignableFrom (type) && type != typeof(MonoBehaviour))
 		{
+			Debug.Log ("It's a component! " + type);
 			foreach (var prop in props)
 			{
 				//Debug.Log (prop.Name);

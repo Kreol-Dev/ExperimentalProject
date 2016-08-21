@@ -208,7 +208,7 @@ namespace InternalDSL
 			case BinaryOp.MoreOrEquals:
 				return " >= ";
 			case BinaryOp.LessOrEquals:
-				return " <=+> ";
+				return " <=";
 			case BinaryOp.And:
 				return " && ";
 			case BinaryOp.Or:

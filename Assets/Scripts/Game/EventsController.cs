@@ -9,6 +9,7 @@ public class EventsController : MonoBehaviour
 	public Text UIText;
 	Generators gens;
 	World world;
+	public GameObject ReactionButton;
 
 	void Awake ()
 	{
@@ -32,6 +33,7 @@ public class EventsController : MonoBehaviour
 	public void NextEvent ()
 	{
 		Debug.Log ("Next event!");
+		HasDesc = false;
 		float maxUt = 0f;
 		EventAction maxAction = null;
 		GameObject maxObject = null;
@@ -68,12 +70,15 @@ public class EventsController : MonoBehaviour
 
 	public void Reaction (string text, VoidDelegate reactFunc)
 	{
-		GameObject go = new GameObject ("reaction");
-		ReactionButton button = go.AddComponent<ReactionButton> ();
+		GameObject go = Instantiate (ReactionButton);
+		ReactionButton button = go.GetComponent<ReactionButton> ();
+		button.EventsController = this;
 		button.OnClick = reactFunc;
 		button.Text = text;
 		go.transform.SetParent (ReactionsTab);
 	}
+
+	public bool HasDesc { get; set; }
 
 	public void EventDescription (string text)
 	{

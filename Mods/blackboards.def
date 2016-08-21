@@ -15,4 +15,6 @@ events_data =
 burn_event = 
 {
 	target = gameobject
+	church_reaction = bool
+	kill_reaction = bool
 }

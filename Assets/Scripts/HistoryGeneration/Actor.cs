@@ -5,7 +5,8 @@ using System.Collections.Generic;
 public class Actor : MonoBehaviour
 {
 	HashSet< string> tags;
-	public string Name;
+
+	public string Name { get; set; }
 
 	void Awake ()
 	{

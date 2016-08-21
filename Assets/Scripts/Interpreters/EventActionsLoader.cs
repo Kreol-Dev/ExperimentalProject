@@ -164,6 +164,7 @@ public class EventActionsLoader : ScriptInterpreter
 		method.ReturnType = new CodeTypeReference (baseMethod.ReturnType);
 		var args = baseMethod.GetParameters ();
 		FunctionBlock block = new FunctionBlock (null, method, codeType);
+		block.Statements.Add ("var root = this.root;");
 		block.Statements.Add ("UnityEngine.Debug.Log(root);");
 		block.Statements.Add (new DeclareVariableStatement () {
 			Name = "External",

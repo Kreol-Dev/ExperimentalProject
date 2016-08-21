@@ -37,7 +37,7 @@ public class LambdaStatement
 
 	public override string ToString ()
 	{
-		return String.Format ("var {0} = {1};", Name, Block);
+		return String.Format ("VoidDelegate {0} = () => {1};", Name, Block);
 	}
 }
 

@@ -10,7 +10,9 @@ court_member_introduced =
 			{
 				generate(court_member) = 
 				{
-					actor = yes
+					actor = {
+						name = "Courtier" + random(0, 1000000)
+					}
 					traits = yes
 				}
 				attach = court_member
@@ -84,4 +86,57 @@ burn_the_wizard =
 	}
 }
 
+burn_wizard_desc = 
+{
+	scope = event.burn_event
+	utility = 
+	{
+		if(not get_events_controller.has_desc) = 
+		{
+			ut = 1
+		}
+	}
+	action = 
+	{
 
+		get_events_controller = 
+		{
+			has_desc = yes
+			event_description = root.event.involved.name + " gonna burn the wizard. This wizard is known by name " + root.burn_event.target.actor.name
+		}
+	}
+}
+
+burn_wizard_reaction_watch =
+{
+	scope = event.burn_event.fit(church_reaction = no and get_player.church > 45)
+	utility = 1
+	action = 
+	{
+		burn_event.church_reaction = yes
+		get_events_controller.reaction("Let him burn") = 
+		{
+			log = root
+			destroy = root.burn_event.target
+			get_player.church = church + 10
+		}
+	}
+}
+
+burn_wizard_reaction_kill =
+{
+	scope = event.burn_event.fit(kill_reaction = no and get_player.church <= 75)
+	utility = 1
+	action = 
+	{
+
+		burn_event.kill_reaction = yes
+		get_events_controller.reaction("I can't tolerate such atrocity, kill him and free the guy") = 
+		{
+			log = root
+			destroy = root.event.involved
+			destroy = event
+			get_player.church = church - 10
+		}
+	}
+}
