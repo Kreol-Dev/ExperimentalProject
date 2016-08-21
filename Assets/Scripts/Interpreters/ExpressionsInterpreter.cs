@@ -678,8 +678,9 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 			if (operand is float)
 				exprBuilder.Append ('f');
 		}
-
-		returnExpr.ExprString = exprBuilder.Insert (0, signChar).ToString ();
+		string head = String.Format ("{0}(", signChar);
+		exprBuilder.Insert (0, head).Append (')');
+		returnExpr.ExprString = exprBuilder.ToString ();
 		return returnExpr;
 	}
 

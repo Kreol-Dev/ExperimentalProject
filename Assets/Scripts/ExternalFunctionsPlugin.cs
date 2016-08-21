@@ -27,9 +27,16 @@ public class ExternalFunctionsPlugin : ScriptEnginePlugin
 
 	List<ProviderData> providers = new List<ProviderData> ();
 
+	int memberID = 0;
+
 	public void AddProvider (object provider, params string[] members)
 	{
-		providers.Add (new ProviderData (){ Instance = provider, Members = members });
+
+		providers.Add (new ProviderData () {
+			Instance = provider,
+			Members = members,
+			Name = provider.GetType ().Name + memberID
+		});
 	}
 
 	StringBuilder builder = new StringBuilder ();
@@ -51,12 +58,10 @@ public class ExternalFunctionsPlugin : ScriptEnginePlugin
 //		decl.Members.Add (ctor);
 		decl.Attributes = MemberAttributes.Public | MemberAttributes.Static;
 
-		int memberID = 0;
 		foreach (var provider in providers)
 		{
 			var providerType = provider.Instance.GetType ();
-			string providerName = providerType.Name + memberID;
-			provider.Name = providerName;
+			var providerName = provider.Name;
 			var field = new CodeMemberField (providerType, providerName);
 			field.Attributes = MemberAttributes.Private | MemberAttributes.Static;
 			decl.Members.Add (field);
@@ -71,7 +76,8 @@ public class ExternalFunctionsPlugin : ScriptEnginePlugin
 					method.ReturnType = new CodeTypeReference (methodInfo.ReturnType);
 					var args = methodInfo.GetParameters ();
 					builder.Length = 0;
-					builder.Append ("return ");
+					if (methodInfo.ReturnType != null && methodInfo.ReturnType != typeof(void))
+						builder.Append ("return ");
 					builder.Append (providerName).Append ('.').Append (member).Append ('(');
 					foreach (var arg in args)
 					{
@@ -115,7 +121,7 @@ public class ExternalFunctionsPlugin : ScriptEnginePlugin
 
 	public ContextSwitchInterpreter Ctx { get; internal set; }
 
-	void OnCompiled (Assembly asm)
+	public void OnCompiled (Assembly asm)
 	{
 		//AppDomain.CurrentDomain.Load (asm.GetName ());
 		//asm.GetName ().SetPublicKeyToken (new byte[]{ 12, 13, 48, 2 });
@@ -135,8 +141,8 @@ public class ExternalFunctionsPlugin : ScriptEnginePlugin
 		}
 
 		Ctx = new ContextSwitchInterpreter (type, Engine);
-
-		onCompiled ();
+		if (onCompiled != null)
+			onCompiled ();
 	}
 
 }

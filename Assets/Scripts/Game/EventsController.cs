@@ -21,10 +21,18 @@ public class EventsController : MonoBehaviour
 		NextEvent ();
 	}
 
+	void Update ()
+	{
+		if (Input.GetKeyUp (KeyCode.Space))
+		{
+			NextEvent ();
+		}
+	}
+
 	public void NextEvent ()
 	{
 		Debug.Log ("Next event!");
-		float maxUt = float.MinValue;
+		float maxUt = 0f;
 		EventAction maxAction = null;
 		GameObject maxObject = null;
 		foreach (var obj in world.Objects)

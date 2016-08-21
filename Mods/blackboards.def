@@ -9,6 +9,7 @@ personality =
 events_data = 
 {
 	wizard = gameobject
+	wizard_burned = bool
 }
 
 burn_event = 

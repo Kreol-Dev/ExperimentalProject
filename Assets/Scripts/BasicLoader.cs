@@ -25,6 +25,11 @@ public class BasicLoader : MonoBehaviour, ILoadable
 	World world;
 	EventsController eventsController;
 
+	public void Log (string log)
+	{
+		Debug.Log (log);
+	}
+
 	void Awake ()
 	{
 		world = UnityEngine.Object.FindObjectOfType<World> ();
@@ -72,17 +77,49 @@ public class BasicLoader : MonoBehaviour, ILoadable
 
 	void Start ()
 	{
-
-
+		
 		List<Assembly> addons = new List<Assembly> ();
 		Engine = new ScriptEngine (addons);
-//		AbstractClassChildren actionsList = new AbstractClassChildren ("Generators", engine){ BaseType = typeof(EventAction) };
-		AppDomain.CurrentDomain.AssemblyResolve += Resolver;
-		loadedAsms.Add ("ExternalCode");
-		loadedAsms.Add ("BlackboardsData");
-		var extr = Engine.GetPlugin<ExternalFunctionsPlugin> ();
-		extr.AddProvider (this, "Random", "Dsix", "AbstractCamp", "Has", "GetWorld", "GetEventsController", "SelectFrom");
-		extr.Setup (OnExternalsCompiled);
+		var dirInfo = new DirectoryInfo ("Mods");
+		DateTime lastWriteTime = DateTime.MinValue;
+		foreach (var fileInfo in dirInfo.GetFiles ())
+		{
+			if (fileInfo.LastWriteTimeUtc > lastWriteTime)
+				lastWriteTime = fileInfo.LastWriteTimeUtc;
+		}
+		var lastBuildString = PlayerPrefs.GetString ("last_build", DateTime.MinValue.ToLongTimeString ());
+		if (lastBuildString == null || DateTime.Parse (lastBuildString) < lastWriteTime)
+		{
+			//loads scripts and set a date
+
+			//		AbstractClassChildren actionsList = new AbstractClassChildren ("Generators", engine){ BaseType = typeof(EventAction) };
+			AppDomain.CurrentDomain.AssemblyResolve += Resolver;
+			loadedAsms.Add ("ExternalCode");
+			loadedAsms.Add ("BlackboardsData");
+			var extr = Engine.GetPlugin<ExternalFunctionsPlugin> ();
+			extr.AddProvider (this, "Random", "Dsix", "AbstractCamp", "Has", "GetWorld", "GetEventsController", "SelectFrom", "Log");
+			extr.Setup (OnExternalsCompiled);
+		} else
+		{
+			//Load dlls
+			var asm = Assembly.LoadFile ("DLLs/ExternalCode.dll");
+			var extr = Engine.GetPlugin<ExternalFunctionsPlugin> ();
+			extr.AddProvider (this, "Random", "Dsix", "AbstractCamp", "Has", "GetWorld", "GetEventsController", "SelectFrom", "Log");
+			extr.OnCompiled (asm);
+			asm = Assembly.LoadFile ("DLLs/BlackboardsData.dll");
+			Engine.AddAssembly (asm);
+			asm = Assembly.LoadFile ("DLLs/Content.dll");
+			Engine.AddAssembly (asm);
+
+
+			if (Loaded != null)
+				Loaded ();
+			//AppDomain.CurrentDomain.Load()
+
+		}
+
+
+
 
 	}
 
@@ -165,6 +202,7 @@ public class BasicLoader : MonoBehaviour, ILoadable
 		if (Loaded != null)
 			Loaded ();
 
+		PlayerPrefs.SetString ("last_build", DateTime.UtcNow.ToLongTimeString ());
 		//AppDomain.CurrentDomain.Load (asm.Location);
 	}
 	// Update is called once per frame

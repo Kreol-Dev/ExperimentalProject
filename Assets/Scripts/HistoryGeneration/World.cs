@@ -6,8 +6,6 @@ public class World : MonoBehaviour
 {
 	public List<GameObject> Objects { get; internal set; }
 
-	public string Name { get; set; }
-
 	void Awake ()
 	{
 		Objects = new List<GameObject> ();

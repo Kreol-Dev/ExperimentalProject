@@ -31,6 +31,7 @@ public class Generators : MonoBehaviour, ILoadable
 	public void Generate (GameObject go)
 	{
 		bool changed;
+		//int count = 0;
 		do
 		{
 			changed = false;
@@ -52,6 +53,9 @@ public class Generators : MonoBehaviour, ILoadable
 				}
 				gen.Root = cachedRoot;
 			}
+			//count++;
+			//if (count > 10)
+			//	break;
 		} while(changed);
 			
 	}

@@ -20,7 +20,15 @@ court_member_introduced =
 		
 	}
 }
-
+events_data_added = 
+{
+	scope = world.fit(not has(events_data))
+	utility = 1
+	action = 
+	{
+		create = events_data
+	}
+}
 personality_added = 
 {
 	scope = actor.fit(not has(personality))
@@ -29,36 +37,40 @@ personality_added =
 	{
 		create(personality) = 
 		{
-			cruelty = random(0, 1)
+			cruelty = random(0.4, 1)
 			rationality = random(0, 1)
 			generosity = random(0, 1)
-			zealotry = random(0, 1)
+			zealotry = random(0.4, 1)
 		}
 	}
 }
 
 burn_the_wizard = 
 {
-	scope = actor.personality.fit(cruelty > 0.7 and rationality < 0.3 and zealotry > 0.8)
+	scope = actor.personality.fit(cruelty > 0.5 and rationality < 0.5 and zealotry > 0.5)
 	utility = 
 	{
+
 		get_world.events_data =
 		{
+			log = "IS IT NECCESSARY TO KILL A WITH?"
 			if(not has(wizard)) =
 			{
+				log = "SEARCHING FOR THE WITCH"
 				wizard = select_from(objects, personality.rationality > 0.7 and not (this = root))
 			}
-			if(has(wizard)) = 
+			if(has(wizard) and not wizard_burned) = 
 			{
-
-				ut = personality.cruelty * 0.5 + personality.zealotry * 0.5
+				log = "FOUND THE WITCH"
+				ut = root.personality.cruelty * 0.33 + root.personality.zealotry * 0.33 + wizard.personality.rationality * 0.33
 			}
+			
 		}
-		
-
 	}
 	action = 
 	{
+		log = "BURN THE WITCH"
+		get_world.events_data.wizard_burned = yes
 		generate(wizard_event) = 
 		{
 			event = 
@@ -68,6 +80,7 @@ burn_the_wizard =
 				action = act
 			}
 		}
+
 	}
 }
 
