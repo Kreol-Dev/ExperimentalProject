@@ -36,6 +36,7 @@ public class BasicLoader : MonoBehaviour, ILoadable
 		world = UnityEngine.Object.FindObjectOfType<World> ();
 		eventsController = UnityEngine.Object.FindObjectOfType<EventsController> ();
 		player = UnityEngine.Object.FindObjectOfType<Player> ();
+
 	}
 
 	public World GetWorld ()
@@ -63,9 +64,12 @@ public class BasicLoader : MonoBehaviour, ILoadable
 	public void Destroy (UnityEngine.Object obj)
 	{
 		if (obj is GameObject)
-			UnityEngine.Object.Destroy (obj);
-		else if (obj is MonoBehaviour)
 		{
+			world.Objects.Remove (obj as GameObject);
+			UnityEngine.Object.Destroy (obj);
+		} else if (obj is MonoBehaviour)
+		{
+			world.Objects.Remove ((obj as MonoBehaviour).gameObject);
 			UnityEngine.Object.Destroy ((obj as MonoBehaviour).gameObject);
 		}
 	}
@@ -73,6 +77,11 @@ public class BasicLoader : MonoBehaviour, ILoadable
 	public float Random (float min, float max)
 	{
 		return Mathf.Lerp (min, max, (float)random.NextDouble ());
+	}
+
+	public GameObject NoOne ()
+	{
+		return null;
 	}
 
 	public bool Has (object obj)
@@ -102,14 +111,16 @@ public class BasicLoader : MonoBehaviour, ILoadable
 		var dirInfo = new DirectoryInfo ("Mods");
 		DateTime lastWriteTime = DateTime.MinValue;
 		var extr = Engine.GetPlugin<ExternalFunctionsPlugin> ();
-		extr.AddProvider (this, "Random", "Dsix", "AbstractCamp", "Has", "GetWorld", "GetEventsController", "SelectFrom", "Log", "String", "GetPlayer", "Destroy");
+		extr.AddProvider (this, "Random", "Dsix", "AbstractCamp", "Has", "GetWorld", "GetEventsController", "SelectFrom", "Log", "String", "GetPlayer", "Destroy", "NoOne");
 		foreach (var fileInfo in dirInfo.GetFiles ())
 		{
 			if (fileInfo.LastWriteTimeUtc > lastWriteTime)
 				lastWriteTime = fileInfo.LastWriteTimeUtc;
 		}
-		var lastBuildString = PlayerPrefs.GetString ("last_build", DateTime.MinValue.ToLongTimeString ());
-		if (lastBuildString == null || DateTime.Parse (lastBuildString) < lastWriteTime)
+		var lastBuildString = PlayerPrefs.GetString ("last_build");
+		Debug.Log (lastBuildString);
+		Debug.Log (lastWriteTime);
+		if (String.IsNullOrEmpty (lastBuildString) || (!String.IsNullOrEmpty (lastBuildString) && DateTime.Parse (lastBuildString) < lastWriteTime))
 		{
 			//loads scripts and set a date
 
@@ -219,7 +230,7 @@ public class BasicLoader : MonoBehaviour, ILoadable
 		if (Loaded != null)
 			Loaded ();
 
-		PlayerPrefs.SetString ("last_build", DateTime.UtcNow.ToLongTimeString ());
+		PlayerPrefs.SetString ("last_build", DateTime.UtcNow.ToLongDateString ());
 		//AppDomain.CurrentDomain.Load (asm.Location);
 	}
 	// Update is called once per frame

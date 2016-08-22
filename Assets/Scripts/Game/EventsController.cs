@@ -2,6 +2,7 @@
 using System.Collections;
 using System;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class EventsController : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class EventsController : MonoBehaviour
 	Generators gens;
 	World world;
 	public GameObject ReactionButton;
+	public Stack<GameObject> Reactions = new Stack<GameObject> ();
 
 	void Awake ()
 	{
@@ -30,10 +32,15 @@ public class EventsController : MonoBehaviour
 		}
 	}
 
+	int eID = 0;
+
 	public void NextEvent ()
 	{
-		Debug.Log ("Next event!");
+		Debug.Log ("Next event! " + eID++);
+		while (Reactions.Count > 0)
+			Destroy (Reactions.Pop ());
 		HasDesc = false;
+		UIText.text = null;
 		float maxUt = 0f;
 		EventAction maxAction = null;
 		GameObject maxObject = null;
@@ -73,8 +80,11 @@ public class EventsController : MonoBehaviour
 		GameObject go = Instantiate (ReactionButton);
 		ReactionButton button = go.GetComponent<ReactionButton> ();
 		button.EventsController = this;
-		button.OnClick = reactFunc;
+		button.OnClick = () => {
+			NextEvent ();
+			reactFunc (); };
 		button.Text = text;
+		Reactions.Push (go);
 		go.transform.SetParent (ReactionsTab);
 	}
 

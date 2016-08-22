@@ -118,7 +118,9 @@ burn_wizard_reaction_watch =
 		{
 			log = root
 			destroy = root.burn_event.target
+			destroy = event
 			get_player.church = church + 10
+			get_world.events_data = { wizard = no_one wizard_burned = no }
 		}
 	}
 }
@@ -130,6 +132,7 @@ burn_wizard_reaction_kill =
 	action = 
 	{
 
+
 		burn_event.kill_reaction = yes
 		get_events_controller.reaction("I can't tolerate such atrocity, kill him and free the guy") = 
 		{
@@ -137,6 +140,7 @@ burn_wizard_reaction_kill =
 			destroy = root.event.involved
 			destroy = event
 			get_player.church = church - 10
+			get_world.events_data = { wizard = no_one wizard_burned = no }
 		}
 	}
 }

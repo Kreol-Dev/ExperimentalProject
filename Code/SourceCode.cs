@@ -736,20 +736,52 @@ return ( (( ( (OperandVar51))) > ( ( (0.7f))))) && ( (!(( ( (OperandVar52))) == 
 							} else { UnityEngine.Debug.Log("prop110 != null = false " ); }
 						} else { UnityEngine.Debug.Log("StoredVariable109 != null = false " ); }
 						External.Destroy( (OperandVar111));
+						Event OperandVar113 = default(Event); //IsContext = False IsNew = False
+						Event StoredVariable112 = FuncCtx106.GetComponent<Event>(); //IsContext = False IsNew = False
+						if(StoredVariable112 != null)
+						{
+							OperandVar113 = StoredVariable112;
+						} else { UnityEngine.Debug.Log("StoredVariable112 != null = false " ); }
+						External.Destroy( (OperandVar113));
 						
 						{
-							Player FuncCtx112 = External.GetPlayer();; //IsContext = True IsNew = False
+							Player FuncCtx114 = External.GetPlayer();; //IsContext = True IsNew = False
 							
-							if(FuncCtx112 != null)
+							if(FuncCtx114 != null)
 							{
 								
-								System.Single OperandVar114 = default(System.Single); //IsContext = False IsNew = False
-								System.Single prop113 = FuncCtx112.Church; //IsContext = False IsNew = False
-								OperandVar114 = prop113;
+								System.Single OperandVar116 = default(System.Single); //IsContext = False IsNew = False
+								System.Single prop115 = FuncCtx114.Church; //IsContext = False IsNew = False
+								OperandVar116 = prop115;
 								
 								
-								FuncCtx112.Church = ( ( (OperandVar114))) + ( ( (10f)));
-							} else { UnityEngine.Debug.Log("FuncCtx112 != null = false " ); }
+								FuncCtx114.Church = ( ( (OperandVar116))) + ( ( (10f)));
+							} else { UnityEngine.Debug.Log("FuncCtx114 != null = false " ); }
+						}
+						
+						{
+							World FuncCtx117 = External.GetWorld();; //IsContext = True IsNew = False
+							
+							if(FuncCtx117 != null)
+							{
+								
+								{
+									Blackboards.events_data subContext118 = FuncCtx117.GetComponent<Blackboards.events_data>(); //IsContext = True IsNew = False
+									
+									if(subContext118 != null)
+									{
+										UnityEngine.GameObject OperandVar120 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
+										UnityEngine.GameObject prop119 = External.NoOne(); //IsContext = False IsNew = False
+										if(prop119 != null)
+										{
+											OperandVar120 = prop119;
+										} else { UnityEngine.Debug.Log("prop119 != null = false " ); }
+										subContext118.Wizard =  (OperandVar120);
+										
+										subContext118.WizardBurned =  (false);
+									} else { UnityEngine.Debug.Log("subContext118 != null = false " ); }
+								}
+							} else { UnityEngine.Debug.Log("FuncCtx117 != null = false " ); }
 						}
 					};
 					FuncCtx106.Reaction( ("Let him burn"),Lambda107);
@@ -770,39 +802,39 @@ return ( (( ( (OperandVar51))) > ( ( (0.7f))))) && ( (!(( ( (OperandVar52))) == 
 			
 			System.Boolean applicable = false; //IsContext = False IsNew = False
 			
-			System.Boolean OperandVar122 = default(System.Boolean); //IsContext = False IsNew = False
-			Event StoredVariable115 = root.GetComponent<Event>(); //IsContext = False IsNew = False
-			if(StoredVariable115 != null)
+			System.Boolean OperandVar128 = default(System.Boolean); //IsContext = False IsNew = False
+			Event StoredVariable121 = root.GetComponent<Event>(); //IsContext = False IsNew = False
+			if(StoredVariable121 != null)
 			{
-				Blackboards.burn_event StoredVariable116 = StoredVariable115.GetComponent<Blackboards.burn_event>(); //IsContext = False IsNew = False
-				if(StoredVariable116 != null)
+				Blackboards.burn_event StoredVariable122 = StoredVariable121.GetComponent<Blackboards.burn_event>(); //IsContext = False IsNew = False
+				if(StoredVariable122 != null)
 				{
 					
 					
-					System.Boolean OperandVar118 = default(System.Boolean); //IsContext = False IsNew = False
-					System.Boolean prop117 = StoredVariable116.KillReaction; //IsContext = False IsNew = False
-					OperandVar118 = prop117;
+					System.Boolean OperandVar124 = default(System.Boolean); //IsContext = False IsNew = False
+					System.Boolean prop123 = StoredVariable122.KillReaction; //IsContext = False IsNew = False
+					OperandVar124 = prop123;
 					
 					
 					
 					
-					System.Single OperandVar121 = default(System.Single); //IsContext = False IsNew = False
-					Player prop119 = External.GetPlayer(); //IsContext = False IsNew = False
-					if(prop119 != null)
+					System.Single OperandVar127 = default(System.Single); //IsContext = False IsNew = False
+					Player prop125 = External.GetPlayer(); //IsContext = False IsNew = False
+					if(prop125 != null)
 					{
-						System.Single prop120 = prop119.Church; //IsContext = False IsNew = False
-						OperandVar121 = prop120;
-					} else { UnityEngine.Debug.Log("prop119 != null = false " ); }
+						System.Single prop126 = prop125.Church; //IsContext = False IsNew = False
+						OperandVar127 = prop126;
+					} else { UnityEngine.Debug.Log("prop125 != null = false " ); }
 					
 					
-					if(( (( ( (OperandVar118))) == ( ( (false))))) && ( (( ( (OperandVar121))) <=( ( (75f))))))
+					if(( (( ( (OperandVar124))) == ( ( (false))))) && ( (( ( (OperandVar127))) <=( ( (75f))))))
 					{
 						applicable = true;
-						OperandVar122 = applicable;
-					} else { UnityEngine.Debug.Log("( (( ( (OperandVar118))) == ( ( (false))))) && ( (( ( (OperandVar121))) <=( ( (75f))))) = false " ); }
-				} else { UnityEngine.Debug.Log("StoredVariable116 != null = false " ); }
-			} else { UnityEngine.Debug.Log("StoredVariable115 != null = false " ); }
-			return (System.Boolean) (OperandVar122);
+						OperandVar128 = applicable;
+					} else { UnityEngine.Debug.Log("( (( ( (OperandVar124))) == ( ( (false))))) && ( (( ( (OperandVar127))) <=( ( (75f))))) = false " ); }
+				} else { UnityEngine.Debug.Log("StoredVariable122 != null = false " ); }
+			} else { UnityEngine.Debug.Log("StoredVariable121 != null = false " ); }
+			return (System.Boolean) (OperandVar128);
 		}
         }
         
@@ -830,61 +862,86 @@ return ( (( ( (OperandVar51))) > ( ( (0.7f))))) && ( (!(( ( (OperandVar52))) == 
 			
 			
 			{
-				Blackboards.burn_event subContext123 = root.GetComponent<Blackboards.burn_event>(); //IsContext = True IsNew = False
+				Blackboards.burn_event subContext129 = root.GetComponent<Blackboards.burn_event>(); //IsContext = True IsNew = False
 				
-				if(subContext123 != null)
+				if(subContext129 != null)
 				{
 					
-					subContext123.KillReaction =  (true);
-				} else { UnityEngine.Debug.Log("subContext123 != null = false " ); }
+					subContext129.KillReaction =  (true);
+				} else { UnityEngine.Debug.Log("subContext129 != null = false " ); }
 			}
 			
 			{
-				EventsController FuncCtx124 = External.GetEventsController();; //IsContext = True IsNew = False
+				EventsController FuncCtx130 = External.GetEventsController();; //IsContext = True IsNew = False
 				
-				if(FuncCtx124 != null)
+				if(FuncCtx130 != null)
 				{
 					
-					VoidDelegate Lambda125 = () => 
+					VoidDelegate Lambda131 = () => 
 					{
-						UnityEngine.GameObject OperandVar126 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
-						OperandVar126 = root;
-						External.Log( (OperandVar126));
-						Actor OperandVar129 = default(Actor); //IsContext = False IsNew = False
-						Event StoredVariable127 = root.GetComponent<Event>(); //IsContext = False IsNew = False
-						if(StoredVariable127 != null)
+						UnityEngine.GameObject OperandVar132 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
+						OperandVar132 = root;
+						External.Log( (OperandVar132));
+						Actor OperandVar135 = default(Actor); //IsContext = False IsNew = False
+						Event StoredVariable133 = root.GetComponent<Event>(); //IsContext = False IsNew = False
+						if(StoredVariable133 != null)
 						{
-							Actor prop128 = StoredVariable127.Involved; //IsContext = False IsNew = False
-							if(prop128 != null)
+							Actor prop134 = StoredVariable133.Involved; //IsContext = False IsNew = False
+							if(prop134 != null)
 							{
-								OperandVar129 = prop128;
-							} else { UnityEngine.Debug.Log("prop128 != null = false " ); }
-						} else { UnityEngine.Debug.Log("StoredVariable127 != null = false " ); }
-						External.Destroy( (OperandVar129));
-						Event OperandVar130 = default(Event); //IsContext = False IsNew = False
-						if(StoredVariable127 != null)
+								OperandVar135 = prop134;
+							} else { UnityEngine.Debug.Log("prop134 != null = false " ); }
+						} else { UnityEngine.Debug.Log("StoredVariable133 != null = false " ); }
+						External.Destroy( (OperandVar135));
+						Event OperandVar136 = default(Event); //IsContext = False IsNew = False
+						if(StoredVariable133 != null)
 						{
-							OperandVar130 = StoredVariable127;
-						} else { UnityEngine.Debug.Log("StoredVariable127 != null = false " ); }
-						External.Destroy( (OperandVar130));
+							OperandVar136 = StoredVariable133;
+						} else { UnityEngine.Debug.Log("StoredVariable133 != null = false " ); }
+						External.Destroy( (OperandVar136));
 						
 						{
-							Player FuncCtx131 = External.GetPlayer();; //IsContext = True IsNew = False
+							Player FuncCtx137 = External.GetPlayer();; //IsContext = True IsNew = False
 							
-							if(FuncCtx131 != null)
+							if(FuncCtx137 != null)
 							{
 								
-								System.Single OperandVar133 = default(System.Single); //IsContext = False IsNew = False
-								System.Single prop132 = FuncCtx131.Church; //IsContext = False IsNew = False
-								OperandVar133 = prop132;
+								System.Single OperandVar139 = default(System.Single); //IsContext = False IsNew = False
+								System.Single prop138 = FuncCtx137.Church; //IsContext = False IsNew = False
+								OperandVar139 = prop138;
 								
 								
-								FuncCtx131.Church = ( ( (OperandVar133))) - ( ( (10f)));
-							} else { UnityEngine.Debug.Log("FuncCtx131 != null = false " ); }
+								FuncCtx137.Church = ( ( (OperandVar139))) - ( ( (10f)));
+							} else { UnityEngine.Debug.Log("FuncCtx137 != null = false " ); }
+						}
+						
+						{
+							World FuncCtx140 = External.GetWorld();; //IsContext = True IsNew = False
+							
+							if(FuncCtx140 != null)
+							{
+								
+								{
+									Blackboards.events_data subContext141 = FuncCtx140.GetComponent<Blackboards.events_data>(); //IsContext = True IsNew = False
+									
+									if(subContext141 != null)
+									{
+										UnityEngine.GameObject OperandVar143 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
+										UnityEngine.GameObject prop142 = External.NoOne(); //IsContext = False IsNew = False
+										if(prop142 != null)
+										{
+											OperandVar143 = prop142;
+										} else { UnityEngine.Debug.Log("prop142 != null = false " ); }
+										subContext141.Wizard =  (OperandVar143);
+										
+										subContext141.WizardBurned =  (false);
+									} else { UnityEngine.Debug.Log("subContext141 != null = false " ); }
+								}
+							} else { UnityEngine.Debug.Log("FuncCtx140 != null = false " ); }
 						}
 					};
-					FuncCtx124.Reaction( ("I can't tolerate such atrocity, kill him and free the guy"),Lambda125);
-				} else { UnityEngine.Debug.Log("FuncCtx124 != null = false " ); }
+					FuncCtx130.Reaction( ("I can't tolerate such atrocity, kill him and free the guy"),Lambda131);
+				} else { UnityEngine.Debug.Log("FuncCtx130 != null = false " ); }
 			}
 		}
         }
