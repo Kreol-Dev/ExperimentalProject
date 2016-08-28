@@ -65,11 +65,9 @@ public class BasicLoader : MonoBehaviour, ILoadable
 	{
 		if (obj is GameObject)
 		{
-			world.Objects.Remove (obj as GameObject);
 			UnityEngine.Object.Destroy (obj);
 		} else if (obj is MonoBehaviour)
 		{
-			world.Objects.Remove ((obj as MonoBehaviour).gameObject);
 			UnityEngine.Object.Destroy ((obj as MonoBehaviour).gameObject);
 		}
 	}

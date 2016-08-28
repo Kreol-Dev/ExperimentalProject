@@ -6,10 +6,17 @@ court_member_introduced =
 	{
 		world = 
 		{
+		
 			repeat(5) = 
 			{
 				generate(court_member) = 
 				{
+					entity = 
+					{
+						on_destruction = {
+							detach = entity
+						}
+					}
 					actor = {
 						name = "Courtier" + random(0, 1000000)
 					}
@@ -55,15 +62,12 @@ burn_the_wizard =
 
 		get_world.events_data =
 		{
-			log = "IS IT NECCESSARY TO KILL A WITH?"
 			if(not has(wizard)) =
 			{
-				log = "SEARCHING FOR THE WITCH"
 				wizard = select_from(objects, personality.rationality > 0.7 and not (this = root))
 			}
 			if(has(wizard) and not wizard_burned) = 
 			{
-				log = "FOUND THE WITCH"
 				ut = root.personality.cruelty * 0.33 + root.personality.zealotry * 0.33 + wizard.personality.rationality * 0.33
 			}
 			
@@ -71,7 +75,6 @@ burn_the_wizard =
 	}
 	action = 
 	{
-		log = "BURN THE WITCH"
 		get_world.events_data.wizard_burned = yes
 		generate(wizard_event) = 
 		{
@@ -82,7 +85,6 @@ burn_the_wizard =
 				action = act
 			}
 		}
-
 	}
 }
 

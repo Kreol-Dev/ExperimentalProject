@@ -307,10 +307,27 @@ public class ContextFunctionCallInterpreter : FunctionOperatorInterpreter
 				Debug.Log ("LAMBDA!");
 				//Interpret as lambda
 				LambdaStatement lambda = new LambdaStatement ();
+				lambda.DelegateType = lastArg.ParameterType;
+				var method = lastArg.ParameterType.GetMethod ("Invoke");
+				lambda.Params = method.GetParameters ();
 				lambda.Name = "Lambda" + DeclareVariableStatement.VariableId++;
 				block.Statements.Add (lambda);
-
 				lambda.Block = new FunctionBlock (block);
+
+				//DeclareVariableStatement lastVar = null;
+				foreach (var param in lambda.Params)
+				{
+					var argVar = new DeclareVariableStatement ();
+					//	lastVar = argVar;
+					argVar.Name = param.Name;
+					argVar.IsArg = true;
+					argVar.Type = param.ParameterType;
+					lambda.Block.Statements.Add (argVar);
+				}
+				//if (lastVar != null)
+				//	lastVar.IsContext = true;
+
+
 				foreach (var entry in (op.Context as Context).Entries)
 				{
 					var subOp = entry as Operator;

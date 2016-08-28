@@ -2,6 +2,8 @@
 using System.Collections;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
+using System.Text;
 
 public static class TypeName
 {
@@ -34,10 +36,23 @@ public class LambdaStatement
 {
 	public FunctionBlock Block;
 	public string Name;
+	public Type DelegateType;
+	public ParameterInfo[] Params;
+	static StringBuilder paramsBuilder = new StringBuilder ();
 
 	public override string ToString ()
 	{
-		return String.Format ("VoidDelegate {0} = () => {1};", Name, Block);
+		paramsBuilder.Length = 0;
+		if (Params != null)
+		{
+
+			foreach (var param in Params)
+				paramsBuilder.Append (param.ParameterType).Append (' ').Append (param.Name).Append (',');
+			if (Params.Length > 0)
+				paramsBuilder.Length -= 1;
+		}
+		string args = paramsBuilder.ToString ();
+		return String.Format ("{3} {0} = ({2}) => {1};", Name, Block, args, DelegateType);
 	}
 }
 
