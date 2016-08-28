@@ -2,9 +2,8 @@
 using System.Collections;
 using System;
 
-public class GenerateCmp : MonoBehaviour, ILoadable
+public class GenerateCmp : MonoBehaviour
 {
-	public event VoidDelegate Loaded;
 
 	Generators generators;
 	DependencyWaiter waiter;
@@ -24,8 +23,6 @@ public class GenerateCmp : MonoBehaviour, ILoadable
 	{
 		generators.Generate (gameObject);
 		Debug.Log ("Generate " + gameObject);
-		if (Loaded != null)
-			Loaded ();
 	}
 }
 

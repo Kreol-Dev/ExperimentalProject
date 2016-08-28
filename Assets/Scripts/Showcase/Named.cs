@@ -5,31 +5,38 @@ using System.Collections.Generic;
 
 public class Named : MonoBehaviour
 {
-	public Dictionary<string, string> Names { get; internal set; }
+
+	public struct NamePart
+	{
+		public string Part;
+		public string Priority;
+	}
+
+	public Dictionary<string, NamePart> Names { get; internal set; }
 
 	void Awake ()
 	{
-		Names = new Dictionary<string, string> ();
+		Names = new Dictionary<string, NamePart> ();
 	}
 
-	void Set (string nameTag, string name)
+	public void Set (string nameTag, string priority, string name)
 	{
 		if (Names.ContainsKey (nameTag))
-			Names [nameTag] = name;
+			Names [nameTag] = new NamePart (){ Part = name, Priority = priority };
 		else
-			Names.Add (nameTag, name);
+			Names.Add (nameTag, new NamePart (){ Part = name, Priority = priority });
 	}
 
-	void Remove (string nameTag)
+	public void Remove (string nameTag)
 	{
 		if (Names.ContainsKey (nameTag))
 			Names.Remove (nameTag);
 	}
 
-	string Get (string nameTag)
+	public string Get (string nameTag)
 	{
 		if (Names.ContainsKey (nameTag))
-			return Names [nameTag];
+			return Names [nameTag].Part;
 		else
 			return "";
 	}

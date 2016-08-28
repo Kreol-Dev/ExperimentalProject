@@ -64,7 +64,14 @@ public class FitScopeInterpreter : ScopeInterpreter
 //		cmpStmt.InitExpression = String.Format ("{0}.GetComponent<{1}>()", varName, Type);
 //		ifStatement.CheckExpression = String.Format ("{0} != null", cmpStmt.Name);
 		FunctionBlock newBlock = new FunctionBlock (block, block.Method, block.Type);
-		ifStatement.CheckExpression = ExprInter.InterpretExpression (args [0], block).ExprString;
+
+		DeclareVariableStatement ifValue = new DeclareVariableStatement ();
+		ifValue.Name = "ifResult" + DeclareVariableStatement.VariableId++;
+		ifValue.IsTemp = true;
+		ifValue.Type = typeof(bool);
+		block.Statements.Add (ifValue);
+		ifStatement.CheckExpression = (ifValue.Name + " = ") + ExprInter.InterpretExpression (args [0], block).ExprString;
+
 		ifStatement.TrueBlock = newBlock;
 		//block.Statements.Add (cmpStmt);
 		block.Statements.Add (ifStatement);
@@ -75,10 +82,18 @@ public class FitScopeInterpreter : ScopeInterpreter
 		{
 
 			var res = block.FindStatement<DeclareVariableStatement> (v => v.IsResult);
-			res.Type = typeof(List<>).MakeGenericType (contextType);
-			res.InitExpression = String.Format ("new {0}()", TypeName.NameOf (res.Type));
-			newExprVal = res.Name;
-			newBlock.Statements.Add (String.Format ("{0}.Add({1});", res.Name, varName));
+			if (res != null)
+			{
+				res.Type = typeof(List<>).MakeGenericType (contextType);
+				res.InitExpression = String.Format ("new {0}()", TypeName.NameOf (res.Type));
+				newExprVal = res.Name;
+				newBlock.Statements.Add (String.Format ("{0}.Add({1});", res.Name, varName));
+			} else
+			{
+				newExprVal = ifValue.Name;
+				newContextType = typeof(bool);
+			}
+
 		}
 
 		//ifStatement.CheckExpression = String.Format("{0}.GetComponen")

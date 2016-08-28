@@ -17,14 +17,15 @@ public class Entity : MonoBehaviour
 	{
 		if (onDestoryDelegate != null)
 			onDestoryDelegate (gameObject);
+		onDestoryDelegate = null;
 		Dead = true;
 		Destroy (gameObject);
 	}
 
-	GODelegate onDestoryDelegate;
+	event GODelegate onDestoryDelegate;
 
 	public void OnDestruction (GODelegate del)
 	{
-		onDestoryDelegate = del;
+		onDestoryDelegate += del;
 	}
 }

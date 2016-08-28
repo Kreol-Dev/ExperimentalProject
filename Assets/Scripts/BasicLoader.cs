@@ -228,7 +228,7 @@ public class BasicLoader : MonoBehaviour, ILoadable
 		if (Loaded != null)
 			Loaded ();
 
-		PlayerPrefs.SetString ("last_build", DateTime.UtcNow.ToLongDateString ());
+		PlayerPrefs.SetString ("last_build", DateTime.UtcNow.ToString ());
 		//AppDomain.CurrentDomain.Load (asm.Location);
 	}
 	// Update is called once per frame

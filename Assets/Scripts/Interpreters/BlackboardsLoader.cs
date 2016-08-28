@@ -49,40 +49,43 @@ public class BlackboardsLoader  : ScriptInterpreter
 				cNamespace.Types.Add (bbType);
 				codeTypes.Add (entry.Identifier as string, bbType);
 			}
-
-			foreach (var fieldOp in (entry.Context as Context).Entries)
+			if (entry.Context is Context)
 			{
-				var op = fieldOp as Operator;
-				var typeName = (((op.Context as Expression).Operands [0] as ExprAtom).Content as Scope).Parts [0] as string;
-				CodeMemberField field = null;
-				CodeMemberProperty prop = new CodeMemberProperty ();
-				prop.HasGet = true;
-				prop.HasSet = true;
-				prop.GetStatements.Add (new CodeSnippetStatement (String.Format ("return {0}; ", op.Identifier)));
-				prop.SetStatements.Add (new CodeSnippetStatement (String.Format ("{0} = value; ", op.Identifier)));
-				prop.Name = NameTranslator.CSharpNameFromScript (op.Identifier as string);
-
-				bbType.Members.Add (prop);
-				if (typeName == null)
+				foreach (var fieldOp in (entry.Context as Context).Entries)
 				{
-					var listFunc = (((op.Context as Expression).Operands [0] as ExprAtom).Content as Scope).Parts [0] as FunctionCall;
-					typeName = ((listFunc.Args [0].Operands [0] as ExprAtom).Content as Scope).Parts [0] as string;
+					var op = fieldOp as Operator;
+					var typeName = (((op.Context as Expression).Operands [0] as ExprAtom).Content as Scope).Parts [0] as string;
+					CodeMemberField field = null;
+					CodeMemberProperty prop = new CodeMemberProperty ();
+					prop.HasGet = true;
+					prop.HasSet = true;
+					prop.GetStatements.Add (new CodeSnippetStatement (String.Format ("return {0}; ", op.Identifier)));
+					prop.SetStatements.Add (new CodeSnippetStatement (String.Format ("{0} = value; ", op.Identifier)));
+					prop.Name = NameTranslator.CSharpNameFromScript (op.Identifier as string);
 
-					Debug.Log ("LIST: " + typeName);
-					var listType = String.Format ("System.Collections.Generic.List<{0}>", types [typeName]);
-					field = new CodeMemberField (new CodeTypeReference (listType), op.Identifier as string);
-					field.InitExpression = new CodeSnippetExpression (String.Format ("new {0}()", listType));
-				} else
-				{
+					bbType.Members.Add (prop);
+					if (typeName == null)
+					{
+						var listFunc = (((op.Context as Expression).Operands [0] as ExprAtom).Content as Scope).Parts [0] as FunctionCall;
+						typeName = ((listFunc.Args [0].Operands [0] as ExprAtom).Content as Scope).Parts [0] as string;
 
-					Debug.Log (typeName);
-					field = new CodeMemberField (types [typeName], op.Identifier as string);
+						Debug.Log ("LIST: " + typeName);
+						var listType = String.Format ("System.Collections.Generic.List<{0}>", types [typeName]);
+						field = new CodeMemberField (new CodeTypeReference (listType), op.Identifier as string);
+						field.InitExpression = new CodeSnippetExpression (String.Format ("new {0}()", listType));
+					} else
+					{
+
+						Debug.Log (typeName);
+						field = new CodeMemberField (types [typeName], op.Identifier as string);
+					}
+					field.Attributes = MemberAttributes.Public;
+					prop.Type = field.Type;
+					prop.Attributes = MemberAttributes.Public;
+					bbType.Members.Add (field);
 				}
-				field.Attributes = MemberAttributes.Public;
-				prop.Type = field.Type;
-				prop.Attributes = MemberAttributes.Public;
-				bbType.Members.Add (field);
 			}
+
 		}
 		var loader = UnityEngine.Object.FindObjectOfType<ScriptsLoader> ();
 		CSharpCodeProvider codeProvider = new CSharpCodeProvider ();

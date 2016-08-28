@@ -1,148 +1,46 @@
-court_member_introduced =
+locations_filler =
 {
-	scope = world.fit(objects = 0)
+	scope = space.fit(places = 0)
 	utility = 1
 	action = 
 	{
-		world = 
+		space = 
 		{
-		
-			repeat(5) = 
+			repeat(random(1,4)) = 
 			{
-				generate(court_member) = 
+				generate(loc) = 
 				{
 					entity = 
 					{
-						on_destruction = {
-							detach = entity
+						on_destruction = 
+						{
+							detach = place
 						}
 					}
-					actor = {
-						name = "Courtier" + random(0, 1000000)
+					place = yes
+					named = 
+					{
+						set("main_name", "_1") = "Some location"
 					}
-					traits = yes
 				}
-				attach = court_member
-			}
 
-		}
-		
-	}
-}
-events_data_added = 
-{
-	scope = world.fit(not has(events_data))
-	utility = 1
-	action = 
-	{
-		create = events_data
-	}
-}
-personality_added = 
-{
-	scope = actor.fit(not has(personality))
-	utility = 1
-	action = 
-	{
-		create(personality) = 
-		{
-			cruelty = random(0.4, 1)
-			rationality = random(0, 1)
-			generosity = random(0, 1)
-			zealotry = random(0.4, 1)
-		}
-	}
-}
-
-burn_the_wizard = 
-{
-	scope = actor.personality.fit(cruelty > 0.5 and rationality < 0.5 and zealotry > 0.5)
-	utility = 
-	{
-
-		get_world.events_data =
-		{
-			if(not has(wizard)) =
-			{
-				wizard = select_from(objects, personality.rationality > 0.7 and not (this = root))
-			}
-			if(has(wizard) and not wizard_burned) = 
-			{
-				ut = root.personality.cruelty * 0.33 + root.personality.zealotry * 0.33 + wizard.personality.rationality * 0.33
-			}
-			
-		}
-	}
-	action = 
-	{
-		get_world.events_data.wizard_burned = yes
-		generate(wizard_event) = 
-		{
-			event = 
-			{
-				involved = root.actor
-				create(act, burn_event).target = get_world.events_data.wizard
-				action = act
+				attach = loc.place
 			}
 		}
 	}
 }
 
-burn_wizard_desc = 
+named_ui = 
 {
-	scope = event.burn_event
-	utility = 
-	{
-		if(not get_events_controller.has_desc) = 
-		{
-			ut = 1
-		}
-	}
+	scope = card.fit(card.showed_object.fit(has(named)) and not has(named_ui_marker))
+	utility = 1 
 	action = 
 	{
-
-		get_events_controller = 
+		create = named_ui_marker
+		create = text_field
+		text_field = 
 		{
-			has_desc = yes
-			event_description = root.event.involved.name + " gonna burn the wizard. This wizard is known by name " + root.burn_event.target.actor.name
-		}
-	}
-}
-
-burn_wizard_reaction_watch =
-{
-	scope = event.burn_event.fit(church_reaction = no and get_player.church > 45)
-	utility = 1
-	action = 
-	{
-		burn_event.church_reaction = yes
-		get_events_controller.reaction("Let him burn") = 
-		{
-			log = root
-			destroy = root.burn_event.target
-			destroy = event
-			get_player.church = church + 10
-			get_world.events_data = { wizard = no_one wizard_burned = no }
-		}
-	}
-}
-
-burn_wizard_reaction_kill =
-{
-	scope = event.burn_event.fit(kill_reaction = no and get_player.church <= 75)
-	utility = 1
-	action = 
-	{
-
-
-		burn_event.kill_reaction = yes
-		get_events_controller.reaction("I can't tolerate such atrocity, kill him and free the guy") = 
-		{
-			log = root
-			destroy = root.event.involved
-			destroy = event
-			get_player.church = church - 10
-			get_world.events_data = { wizard = no_one wizard_burned = no }
+			set = root.card.showed_object.named.get("main_name")
 		}
 	}
 }

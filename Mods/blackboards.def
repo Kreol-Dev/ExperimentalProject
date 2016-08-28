@@ -18,3 +18,5 @@ burn_event =
 	church_reaction = bool
 	kill_reaction = bool
 }
+
+named_ui_marker = yes
