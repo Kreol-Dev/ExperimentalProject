@@ -2,10 +2,10 @@
 using System.Collections;
 using UnityEngine.EventSystems;
 using System.Collections.Generic;
+using UnityEngine.Events;
 
 public class CardsHolder : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPointerExitHandler
 {
-	HashSet<GameObject> cards = new HashSet<GameObject> ();
 	public Transform DragOverZone;
 
 	public void OnPointerExit (PointerEventData eventData)
@@ -17,41 +17,44 @@ public class CardsHolder : MonoBehaviour, IDropHandler, IPointerEnterHandler, IP
 	{
 	}
 
-	public class AcceptanceHandler
-	{
-		public bool Accepted = false;
-	}
-
-	AcceptanceHandler aH = new AcceptanceHandler ();
 
 	public void OnDrop (PointerEventData eventData)
 	{
-		aH.Accepted = false;
+		Debug.LogFormat ("UI:{0}.OnDrop {1}", this.gameObject, eventData.pointerDrag);
+		bool accepted = false;
 		//Card c = eventData.pointerDrag.GetComponent<Card> ();
+		var card = eventData.pointerDrag.GetComponent<Card> ();
+		card.transform.SetParent (transform);
+		Debug.LogFormat ("{0} parent is {1}, cards count = {2}", card, transform.gameObject, 
+		                 transform.GetComponentsInChildren<Card> ().Length);
+		if (card.currentHolder != this)
 		if (CardDropped != null)
-			CardDropped (eventData.pointerDrag, aH);
-		if (aH.Accepted)
+			accepted = CardDropped (card);
+		if (accepted)
 		{
-			cards.Add (eventData.pointerDrag);
-			eventData.pointerDrag.transform.SetParent (transform);
 
-			eventData.pointerDrag.GetComponent<Card> ().AcceptDrag (this);
+			Debug.LogFormat ("UI:{0}.OnDrop - AcceptedDrop {1}", this.gameObject, eventData.pointerDrag);
+			card.AcceptDrag (this);
 		} else
 		{
-			eventData.pointerDrag.GetComponent<Card> ().CancelDrag ();
+			Debug.LogFormat ("UI:{0}.OnDrop - DeclinedDrop {1}", this.gameObject, eventData.pointerDrag);
+			card.CancelDrag ();
 		}
 	}
 
 	public void CardRemove (Card card)
 	{
 		if (CardRemoved != null)
-			CardRemoved (card.gameObject);
+			CardRemoved (card);
 	}
 
-	public delegate void CardAcceptance (GameObject go, AcceptanceHandler acceptance);
+	public delegate bool CardAcceptance (Card card);
 
-	public event CardAcceptance CardDropped;
+	public delegate void CardDelegate (Card card);
 
-	public event GODelegate CardRemoved;
+	public CardAcceptance CardDropped;
+
+	public event CardDelegate CardAccepted;
+	public event CardDelegate CardRemoved;
 }
 

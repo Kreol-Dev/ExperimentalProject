@@ -18,6 +18,7 @@ public class Space : MonoBehaviour
 
 	public void Attach (Place place)
 	{
+		Debug.LogFormat ("{0} Attach {1}", gameObject, place);
 		if (PlaceAttached != null)
 			PlaceAttached (place);
 		Places.Add (place);
@@ -25,6 +26,7 @@ public class Space : MonoBehaviour
 
 	public void Detach (Place place)
 	{
+		Debug.LogFormat ("{0} Detach {1}", gameObject, place);
 		if (PlaceDetached != null)
 			PlaceDetached (place);
 		Places.Remove (place);
