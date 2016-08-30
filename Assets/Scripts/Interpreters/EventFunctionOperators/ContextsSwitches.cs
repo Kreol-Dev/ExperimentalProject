@@ -404,9 +404,9 @@ public class ContextPropertyInterpreter : FunctionOperatorInterpreter
 				return;
 			Debug.Log ("PROPERTY " + propName);
 			if (context == null)
-				block.Statements.Add (String.Format ("root.{0} = {1};", propName, exprInter.InterpretExpression (op.Context as Expression, block).ExprString));
+				block.Statements.Add (String.Format ("root.{0} = ({2})({1});", propName, exprInter.InterpretExpression (op.Context as Expression, block).ExprString, TypeName.NameOf (propType)));
 			else
-				block.Statements.Add (String.Format ("{2}.{0} = {1};", propName, exprInter.InterpretExpression (op.Context as Expression, block).ExprString, context.Name));
+				block.Statements.Add (String.Format ("{2}.{0} = ({3})({1});", propName, exprInter.InterpretExpression (op.Context as Expression, block).ExprString, context.Name, TypeName.NameOf (propType)));
 			
 		} else
 		{

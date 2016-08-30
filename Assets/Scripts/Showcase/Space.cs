@@ -6,6 +6,10 @@ public class Space : MonoBehaviour
 {
 	public List<Place> Places { get; internal set; }
 
+	public int size;
+
+	public int Size { get { return size; } set { size = value; } }
+
 	void Awake ()
 	{
 		Places = new List<Place> ();
@@ -16,17 +20,22 @@ public class Space : MonoBehaviour
 	public event PlaceDelegate PlaceAttached;
 	public event PlaceDelegate PlaceDetached;
 
-	public void Attach (Place place)
+	public bool Attach (Place place)
 	{
-		Debug.LogFormat ("{0} Attach {1}", gameObject, place);
+		if (Size <= Places.Count)
+			return false;
 		if (PlaceAttached != null)
 			PlaceAttached (place);
+		var marker = place.GetComponent<SpaceMarker> ();
+		if (marker == null)
+			marker = place.gameObject.AddComponent<SpaceMarker> ();
+		marker.CurrentSpace = this;
 		Places.Add (place);
+		return true;
 	}
 
 	public void Detach (Place place)
 	{
-		Debug.LogFormat ("{0} Detach {1}", gameObject, place);
 		if (PlaceDetached != null)
 			PlaceDetached (place);
 		Places.Remove (place);
@@ -34,3 +43,7 @@ public class Space : MonoBehaviour
 
 }
 
+public class SpaceMarker : MonoBehaviour
+{
+	public Space CurrentSpace { get; set; }
+}

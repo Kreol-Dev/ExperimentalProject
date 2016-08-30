@@ -6,6 +6,7 @@ locations_filler =
 	{
 		space = 
 		{
+			size = 5
 			repeat(random(1,4)) = 
 			{
 				generate(loc) = 
@@ -14,7 +15,7 @@ locations_filler =
 					{
 						on_destruction = 
 						{
-							detach = place
+							entity.space_marker.current_space.detach = place
 						}
 					}
 					place = yes
