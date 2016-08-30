@@ -5,11 +5,16 @@ using System.Collections.Generic;
 public abstract class CardsUI<T> : MonoBehaviour
 {
 	public T TargetContainer;
-	public GameObject PlaceUI;
+	public GameObject CardUI;
 	Dictionary<GameObject, GameObject> uiByPlace = new Dictionary<GameObject, GameObject> ();
 	Dictionary<GameObject, GameObject> cardsByCreation = new Dictionary<GameObject, GameObject> ();
 	Generators gens;
 	Transform temporaryCardsHolder;
+
+	protected virtual void Init ()
+	{
+		
+	}
 
 	public abstract List<GameObject> GetContainer (T targetContainer);
 
@@ -19,6 +24,8 @@ public abstract class CardsUI<T> : MonoBehaviour
 
 	void Start ()
 	{
+
+		Init ();
 		temporaryCardsHolder = GameObject.FindWithTag ("CardsHolder").transform;
 		gens = FindObjectOfType<Generators> ();
 		foreach (var place in GetContainer(TargetContainer))
@@ -55,9 +62,9 @@ public abstract class CardsUI<T> : MonoBehaviour
 		if (found == null)
 		{
 			Debug.LogFormat ("UI:{0} OnPlaceAttached - CreateNew {1}", this, go);
-			var placeUIGO = GameObject.Instantiate (PlaceUI);
+			var placeUIGO = GameObject.Instantiate (CardUI);
 			placeUIGO.transform.SetParent (gameObject.transform);
-			placeUIGO.GetComponent<Card> ().ShowedObject = go;
+			placeUIGO.GetComponent<UiObject> ().ShowedObject = go;
 			gens.Generate (placeUIGO);
 			uiByPlace.Add (go, placeUIGO);
 			cardsByCreation.Add (go, placeUIGO);

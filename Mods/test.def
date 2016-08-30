@@ -18,7 +18,10 @@ locations_filler =
 							entity.space_marker.current_space.detach = place
 						}
 					}
-					place = yes
+					place = 
+					{
+						size = random(1, 3)
+					}
 					named = 
 					{
 						set("main_name", "_1") = "Some location"
@@ -33,7 +36,7 @@ locations_filler =
 
 named_ui = 
 {
-	scope = card.fit(card.showed_object.fit(has(named)) and not has(named_ui_marker))
+	scope = card.ui_object.fit(showed_object.fit(has(named)) and not has(named_ui_marker))
 	utility = 1 
 	action = 
 	{
@@ -42,6 +45,38 @@ named_ui =
 		text_field = 
 		{
 			set = root.card.showed_object.named.get("main_name")
+		}
+	}
+}
+
+agents_pool_filler = 
+{
+	scope = place.generate_marker.fit(agents = 0)
+	utility = 1
+	action = 
+	{
+		place = {
+			size = 5
+			repeat(random(1,4)) = 
+			{
+				generate(ag) = 
+				{
+					entity = 
+					{
+						on_destruction = 
+						{
+							entity.place_marker.current_place.detach = agent
+						}
+					}
+					agent = yes
+					named = 
+					{
+						set("main_name", "_1") = "Some agent"
+					}
+				}
+
+				attach = ag.agent
+			}
 		}
 	}
 }

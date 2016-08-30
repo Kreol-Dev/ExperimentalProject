@@ -4,7 +4,9 @@ using UnityEngine.EventSystems;
 
 public class Card : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-	public GameObject ShowedObject { get; set; }
+	UiObject uiObject;
+
+	public GameObject ShowedObject { get { return uiObject.ShowedObject; } set { uiObject.ShowedObject = value; } }
 
 	public Transform ReturnToParent;
 	RectTransform transform;
@@ -12,19 +14,21 @@ public class Card : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
 
 	void Awake ()
 	{
+		uiObject = gameObject.GetComponent<UiObject> ();
 		transform = gameObject.GetComponent<RectTransform> ();
 	}
 
 	void Start ()
 	{
 		if (currentHolder == null)
-			currentHolder = GetComponentInParent<CardsHolder> ();
+			currentHolder = transform.parent.GetComponentInParent<CardsHolder> ();
 	}
 
 	public void OnBeginDrag (PointerEventData eventData)
 	{
 		ReturnToParent = transform.parent;
 		transform.SetParent (currentHolder.DragOverZone);
+		Debug.LogFormat ("{0} parent is now {1}, where holder is {2} and it's dragoverzone is {3}", this, transform.parent, currentHolder, currentHolder.DragOverZone);
 		GetComponent<CanvasGroup> ().blocksRaycasts = false;
 	}
 

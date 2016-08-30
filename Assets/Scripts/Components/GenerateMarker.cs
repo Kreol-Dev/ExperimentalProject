@@ -2,7 +2,7 @@
 using System.Collections;
 using System;
 
-public class GenerateCmp : MonoBehaviour
+public class GenerateMarker : MonoBehaviour
 {
 
 	Generators generators;

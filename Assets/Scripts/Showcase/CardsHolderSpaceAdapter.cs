@@ -3,7 +3,7 @@ using System.Collections;
 
 public class CardsHolderSpaceAdapter : CardsHolderAdapter<Space>
 {
-
+	
 	protected override bool OnCardDropped (Card card)
 	{
 		Debug.LogFormat ("{0} OnCardDropped {1}", this, card);

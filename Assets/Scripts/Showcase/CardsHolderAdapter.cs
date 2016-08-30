@@ -6,13 +6,18 @@ public abstract class CardsHolderAdapter<T> : MonoBehaviour
 	CardsHolder holder;
 	public T Container;
 
-	void Awake ()
+	void Start ()
 	{
 		holder = GetComponent<CardsHolder> ();
 		holder.CardDropped = OnCardDropped;
 		holder.CardRemoved += OnCardRemoved;
-
+		Init ();
 	}
+
+	protected virtual void Init ()
+	{
+	}
+
 
 	protected abstract bool OnCardDropped (Card card);
 

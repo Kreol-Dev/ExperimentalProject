@@ -8,6 +8,12 @@ public class CardsHolder : MonoBehaviour, IDropHandler, IPointerEnterHandler, IP
 {
 	public Transform DragOverZone;
 
+	void Start ()
+	{
+		if (DragOverZone == null)
+			DragOverZone = GameObject.Find ("Canvas").transform;
+	}
+
 	public void OnPointerExit (PointerEventData eventData)
 	{
 	}
