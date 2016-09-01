@@ -405,30 +405,181 @@ namespace generators {
 								} else { UnityEngine.Debug.Log("AddContext52 != null = false " ); }
 							}
 							Agent AddContext58 = ag.AddComponent<Agent>(); //IsContext = True IsNew = True
-							Named AddContext59 = ag.AddComponent<Named>(); //IsContext = True IsNew = True
+							Blackboards.human AddContext59 = ag.AddComponent<Blackboards.human>(); //IsContext = True IsNew = True
 							
 							{
 								
 								if(AddContext59 != null)
 								{
+									System.Single OperandVar61 = default(System.Single); //IsContext = False IsNew = False
 									
 									
-									
-									AddContext59.Set( ("main_name"), ("_1"), ("Some agent"));
+									System.Single prop60 = External.Random( (20f), (45f)); //IsContext = False IsNew = False
+									OperandVar61 = prop60;
+									AddContext59.Age = (System.Int32)( (OperandVar61));
 								} else { UnityEngine.Debug.Log("AddContext59 != null = false " ); }
+							}
+							Named AddContext62 = ag.AddComponent<Named>(); //IsContext = True IsNew = True
+							
+							{
+								
+								if(AddContext62 != null)
+								{
+									
+									
+									
+									
+									
+									System.Single OperandVar64 = default(System.Single); //IsContext = False IsNew = False
+									
+									
+									System.Single prop63 = External.Random( (0f), (1000f)); //IsContext = False IsNew = False
+									OperandVar64 = prop63;
+									AddContext62.Set( ("main_name"), ("_1"),( ( ("Some agent"))) + ( ( (OperandVar64))));
+								} else { UnityEngine.Debug.Log("AddContext62 != null = false " ); }
 							}
 						}
 						UnityEngine.Object.FindObjectOfType<Generators>().Generate(ag);
-						Agent OperandVar61 = default(Agent); //IsContext = False IsNew = False
-						Agent StoredVariable60 = ag.GetComponent<Agent>(); //IsContext = False IsNew = False
-						if(StoredVariable60 != null)
+						Agent OperandVar66 = default(Agent); //IsContext = False IsNew = False
+						Agent StoredVariable65 = ag.GetComponent<Agent>(); //IsContext = False IsNew = False
+						if(StoredVariable65 != null)
 						{
-							OperandVar61 = StoredVariable60;
-						} else { UnityEngine.Debug.Log("StoredVariable60 != null = false " ); }
-						subContext48.Attach( (OperandVar61));
+							OperandVar66 = StoredVariable65;
+						} else { UnityEngine.Debug.Log("StoredVariable65 != null = false " ); }
+						subContext48.Attach( (OperandVar66));
 					}
 				} else { UnityEngine.Debug.Log("subContext48 != null = false " ); }
 			}
+		}
+        }
+    }
+    
+    public class agent_personality : EventAction {
+        
+        public override bool Filter() {
+
+		{
+			var root = this.root;
+			UnityEngine.Debug.Log(root);
+			
+			
+			System.Boolean applicable = false; //IsContext = False IsNew = False
+			
+			System.Boolean OperandVar73 = default(System.Boolean); //IsContext = False IsNew = False
+			Agent StoredVariable67 = root.GetComponent<Agent>(); //IsContext = False IsNew = False
+			if(StoredVariable67 != null)
+			{
+				System.Boolean ifResult68; //IsContext = False IsNew = False
+				System.Boolean OperandVar72 = default(System.Boolean); //IsContext = False IsNew = False
+				Blackboards.personality OperandVar70 = default(Blackboards.personality); //IsContext = False IsNew = False
+				Blackboards.personality StoredVariable69 = StoredVariable67.GetComponent<Blackboards.personality>(); //IsContext = False IsNew = False
+				if(StoredVariable69 != null)
+				{
+					OperandVar70 = StoredVariable69;
+				} else { UnityEngine.Debug.Log("StoredVariable69 != null = false " ); }
+				System.Boolean prop71 = External.Has( (OperandVar70)); //IsContext = False IsNew = False
+				OperandVar72 = prop71;
+				if(ifResult68 = !(OperandVar72))
+				{
+					applicable = true;
+					OperandVar73 = applicable;
+				} else { UnityEngine.Debug.Log("ifResult68 = !(OperandVar72) = false " ); }
+			} else { UnityEngine.Debug.Log("StoredVariable67 != null = false " ); }
+			return (System.Boolean) (OperandVar73);
+		}
+        }
+        
+        public override float Utility() {
+
+		{
+			var root = this.root;
+			UnityEngine.Debug.Log(root);
+			
+			
+			System.Single ut = 0; //IsContext = False IsNew = False
+			
+			
+			return (System.Single) (1f);
+		}
+        }
+        
+        public override void Action() {
+
+		{
+			var root = this.root;
+			UnityEngine.Debug.Log(root);
+			
+			
+			
+			root.AddComponent<Blackboards.personality>();
+		}
+        }
+    }
+    
+    public class event_scientist_rescue : EventAction {
+        
+        public override bool Filter() {
+
+		{
+			var root = this.root;
+			UnityEngine.Debug.Log(root);
+			
+			
+			System.Boolean applicable = false; //IsContext = False IsNew = False
+			
+			System.Boolean OperandVar75 = default(System.Boolean); //IsContext = False IsNew = False
+			Place StoredVariable74 = root.GetComponent<Place>(); //IsContext = False IsNew = False
+			if(StoredVariable74 != null)
+			{
+				applicable = true;
+				OperandVar75 = applicable;
+			} else { UnityEngine.Debug.Log("StoredVariable74 != null = false " ); }
+			return (System.Boolean) (OperandVar75);
+		}
+        }
+        
+        public override float Utility() {
+
+		{
+			var root = this.root;
+			UnityEngine.Debug.Log(root);
+			
+			
+			System.Single ut = 0; //IsContext = False IsNew = False
+			
+			
+			System.Single OperandVar77 = default(System.Single); //IsContext = False IsNew = False
+			
+			
+			System.Single prop76 = External.Random( (0f), (100f)); //IsContext = False IsNew = False
+			OperandVar77 = prop76;
+			
+			
+			if(( ( (OperandVar77))) > ( ( (90f))))
+			{
+				
+				ut =  (1f);
+			} else { UnityEngine.Debug.Log("( ( (OperandVar77))) > ( ( (90f))) = false " ); }
+			
+			ut =  (0f);
+			return ut;
+		}
+        }
+        
+        public override void Action() {
+
+		{
+			var root = this.root;
+			UnityEngine.Debug.Log(root);
+			
+			
+			
+			UnityEngine.GameObject ev = new UnityEngine.GameObject("ev"); //IsContext = False IsNew = False
+			
+			{
+				UnityEngine.GameObject ev78 = ev; //IsContext = True IsNew = False
+			}
+			UnityEngine.Object.FindObjectOfType<Generators>().Generate(ev);
 		}
         }
     }

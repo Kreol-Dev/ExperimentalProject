@@ -6,17 +6,12 @@ personality =
 	zealotry = float
 }
 
-events_data = 
-{
-	wizard = gameobject
-	wizard_burned = bool
-}
-
-burn_event = 
-{
-	target = gameobject
-	church_reaction = bool
-	kill_reaction = bool
+event_marker = {
+	cur_event = gameobject
 }
 
 named_ui_marker = yes
+human = {
+	age = int
+}
+

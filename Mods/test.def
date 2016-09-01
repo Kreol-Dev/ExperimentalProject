@@ -24,7 +24,7 @@ locations_filler =
 					}
 					named = 
 					{
-						set("main_name", "_1") = "Some location"
+						set("main_name", "_1") = "Location of " + random_name 
 					}
 				}
 
@@ -69,9 +69,12 @@ agents_pool_filler =
 						}
 					}
 					agent = yes
+					human = {
+						age = random(20, 45)
+					}
 					named = 
 					{
-						set("main_name", "_1") = "Some agent"
+						set("main_name", "_1") = random_name
 					}
 				}
 
@@ -80,3 +83,28 @@ agents_pool_filler =
 		}
 	}
 }
+
+location_event = 
+{
+	scope = place.fit(not has(event_marker))
+	utility = 1
+	action = {
+		create = event_marker
+	}
+}
+agent_personality = 
+{
+	scope = agent.fit(not has(personality))
+	utility = 1
+	action = 
+	{
+		create(personality) = 
+		{
+			cruelty = random(0, 1)
+			rationality = random(0, 1)
+			generosity = random(0, 1)
+			zealotry = random(0, 1)
+		}
+	}
+}
+

@@ -14,7 +14,7 @@ using System.Reflection.Emit;
 using System.Linq;
 
 public delegate void VoidDelegate ();
-public class BasicLoader : MonoBehaviour, ILoadable
+public class BasicLoader : MonoBehaviour
 {
 
 	// Use this for initialization
@@ -22,9 +22,19 @@ public class BasicLoader : MonoBehaviour, ILoadable
 
 	System.Random random = new System.Random ();
 
-	World world;
-	EventsController eventsController;
-	Player player;
+	public class ExternalFunctions
+	{
+		public object Provider;
+		public string[] Functions;
+
+		public ExternalFunctions (object provider, params string[] functions)
+		{
+			Provider = provider;
+			Functions = functions;
+		}
+	}
+
+	public List<ExternalFunctions> EFunctions = new List<ExternalFunctions> ();
 
 	public void Log (object log)
 	{
@@ -33,21 +43,9 @@ public class BasicLoader : MonoBehaviour, ILoadable
 
 	void Awake ()
 	{
-		world = UnityEngine.Object.FindObjectOfType<World> ();
-		eventsController = UnityEngine.Object.FindObjectOfType<EventsController> ();
-		player = UnityEngine.Object.FindObjectOfType<Player> ();
 
 	}
 
-	public World GetWorld ()
-	{
-		return world;
-	}
-
-	public EventsController GetEventsController ()
-	{
-		return eventsController;
-	}
 
 
 
@@ -87,15 +85,6 @@ public class BasicLoader : MonoBehaviour, ILoadable
 		return obj != null;
 	}
 
-	public Player GetPlayer ()
-	{
-		return player;
-	}
-
-	public Camp AbstractCamp ()
-	{
-		return GetComponent<Camp> ();
-	}
 
 	public int Dsix { get { return random.Next (0, 10); } internal set { } }
 
@@ -103,13 +92,20 @@ public class BasicLoader : MonoBehaviour, ILoadable
 
 	void Start ()
 	{
+		StartCoroutine (LoadCoroutine ());
+	}
+
+	IEnumerator LoadCoroutine ()
+	{
 		
 		List<Assembly> addons = new List<Assembly> ();
 		Engine = new ScriptEngine (addons);
 		var dirInfo = new DirectoryInfo ("Mods");
 		DateTime lastWriteTime = DateTime.MinValue;
-		var extr = Engine.GetPlugin<ExternalFunctionsPlugin> ();
-		extr.AddProvider (this, "Random", "Dsix", "AbstractCamp", "Has", "GetWorld", "GetEventsController", "SelectFrom", "Log", "String", "GetPlayer", "Destroy", "NoOne");
+		var ExternalFunctions = Engine.GetPlugin<ExternalFunctionsPlugin> ();
+		foreach (var eFunctions in EFunctions)
+			ExternalFunctions.AddProvider (eFunctions.Provider, eFunctions.Functions);
+		ExternalFunctions.AddProvider (this, "Random", "Dsix", "AbstractCamp", "Has", "GetWorld", "GetEventsController", "SelectFrom", "Log", "String", "GetPlayer", "Destroy", "NoOne");
 		foreach (var fileInfo in dirInfo.GetFiles ())
 		{
 			if (fileInfo.LastWriteTimeUtc > lastWriteTime)
@@ -120,23 +116,28 @@ public class BasicLoader : MonoBehaviour, ILoadable
 		Debug.Log (lastWriteTime);
 		if (String.IsNullOrEmpty (lastBuildString) || (!String.IsNullOrEmpty (lastBuildString) && DateTime.Parse (lastBuildString) < lastWriteTime))
 		{
+			Debug.Log ("Loading scripts");
+			yield return null;
 			//loads scripts and set a date
 
 			//		AbstractClassChildren actionsList = new AbstractClassChildren ("Generators", engine){ BaseType = typeof(EventAction) };
 			AppDomain.CurrentDomain.AssemblyResolve += Resolver;
 			loadedAsms.Add ("ExternalCode");
 			loadedAsms.Add ("BlackboardsData");
-			extr.Setup (OnExternalsCompiled);
+			ExternalFunctions.Setup (OnExternalsCompiled);
 		} else
 		{
+			Debug.Log ("Loading dlls");
+			yield return null;
 			//Load dlls
 			var asm = Assembly.LoadFile ("DLLs/ExternalCode.dll");
-			extr.OnCompiled (asm);
+			ExternalFunctions.OnCompiled (asm);
 			asm = Assembly.LoadFile ("DLLs/BlackboardsData.dll");
 			Engine.AddAssembly (asm);
 			asm = Assembly.LoadFile ("DLLs/Content.dll");
 			Engine.AddAssembly (asm);
 
+			yield return null;
 
 			if (Loaded != null)
 				Loaded ();
