@@ -21,6 +21,8 @@ public class Generators : MonoBehaviour
 		var eventTypes = loader.Engine.FindTypesCastableTo<EventAction> ();
 		foreach (var type in eventTypes)
 			actions.Add (Activator.CreateInstance (type) as EventAction);
+
+		weights = new ActionWeight[actions.Count];
 		Loaded = true;
 	}
 
@@ -40,8 +42,12 @@ public class Generators : MonoBehaviour
 		}
 	}
 
-	public void GenerateMostUseful (GameObject go)
+	System.Random random = new System.Random ();
+
+	public void GenerateMostUseful (GameObject go, float fuzzy = 0f)
 	{
+		if (fuzzy < 0f)
+			fuzzy = -fuzzy;
 		float maxUt = 0;
 		EventAction act = null;
 		foreach (var action in actions)
@@ -50,7 +56,7 @@ public class Generators : MonoBehaviour
 			if (action.Filter ())
 			{
 
-				var ut = action.Utility ();
+				var ut = action.Utility () * (1f + fuzzy * ((float)random.NextDouble () - 0.5f) * 2f);
 				if (ut > maxUt)
 				{
 					maxUt = ut;
@@ -62,6 +68,47 @@ public class Generators : MonoBehaviour
 			act.Action ();
 
 
+	}
+
+	ActionWeight[] weights;
+
+	struct ActionWeight
+	{
+		public EventAction Action;
+		public float Weight;
+	}
+
+	public void GenerateRandomByWeight (GameObject go, float fuzzy = 0f)
+	{
+		float cumulativeWeights = 0f;
+		int filteredActionsCount = 0;
+		foreach (var action in actions)
+		{
+			action.Root = go;
+			if (action.Filter ())
+			{
+				var ut = action.Utility ();
+				if (ut > 0f)
+				{
+					weights [filteredActionsCount].Action = action;
+					cumulativeWeights += ut;
+					weights [filteredActionsCount].Weight = cumulativeWeights;
+					filteredActionsCount++;
+				}
+
+			}
+		}
+
+		var num = (float)random.NextDouble () * cumulativeWeights;
+		EventAction act = null;
+		for (int i = 1; i < filteredActionsCount; i++)
+		{
+			if (weights [i - 1].Weight <= num && weights [i].Weight > num)
+				act = weights [i - 1].Action;
+		}
+		if (act == null && filteredActionsCount > 0)
+			act = weights [filteredActionsCount - 1].Action;
+		act.Action ();
 	}
 
 }

@@ -108,3 +108,13 @@ agent_personality =
 	}
 }
 
+send_team_event = {
+	scope = place.event_marker.fit(has(cur_event))
+	utility = 1
+	action = 
+	{
+		event_marker.cur_event = {
+			create = event
+		}
+	}
+}
