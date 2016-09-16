@@ -23,12 +23,13 @@ public static class TypeName
 
 public class IfStatement
 {
+	public static int AntiMergeValue = 0;
 	public string CheckExpression;
 	public FunctionBlock TrueBlock;
 
 	public override string ToString ()
 	{
-		return String.Format ("if({0}){1} else {{ UnityEngine.Debug.Log(\"{0} = false \" ); }}", CheckExpression, TrueBlock);
+		return String.Format ("if({0}){1} else {{ UnityEngine.Debug.Log(\"{0} = false \" +  IfStatement.AntiMergeValue++); }}", CheckExpression, TrueBlock);
 	}
 }
 

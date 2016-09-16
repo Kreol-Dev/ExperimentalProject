@@ -165,7 +165,7 @@ public class EventActionsLoader : ScriptInterpreter
 		var args = baseMethod.GetParameters ();
 		FunctionBlock block = new FunctionBlock (null, method, codeType);
 		block.Statements.Add ("var root = this.root;");
-		block.Statements.Add ("UnityEngine.Debug.Log(root);");
+		block.Statements.Add ("UnityEngine.Debug.Log(root.ToString() + IfStatement.AntiMergeValue++);");
 		block.Statements.Add (new DeclareVariableStatement () {
 			Name = "External",
 			IsArg = true,

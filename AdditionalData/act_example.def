@@ -1,0 +1,62 @@
+scenario_demons = 
+{
+	scope = scenario.fit(fantasy > 0.5)
+	utility = setting.fantasy
+	action = 
+	{
+		create(background_act) = 
+		{
+			act_background = 
+			{
+				size = 300
+			}
+			act = {
+				fantasy = 0.9
+			}
+		}
+
+		create(moderate_act) = 
+		{
+			common_act = 
+			{
+				drama = 100
+			}
+			act = {
+				fantasy = 0.6
+				previous = background_act
+			}
+		}
+		create(conflict_act) = 
+		{
+			common_act = 
+			{
+				drama = 800
+			}
+			act = {
+				fantasy = 0.5
+				previous = moderate_act
+			}
+		}
+		create(culmination_act) = 
+		{
+			solve_act = 
+			{
+				drama = 1000
+			}
+			act = {
+				fantasy  = 0.1
+				previous = conflict_act
+			}
+		}
+		create(problem_act) = 
+		{
+			cause_act = {
+				drama = 200
+			}
+			act = {
+				fantasy = 0.9
+				previous = culmination_act
+			}
+		}
+	}
+}

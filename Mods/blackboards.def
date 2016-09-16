@@ -1,10 +1,42 @@
 personality =
 {
-	cruelty = float
-	rationality = float
-	generosity = float
-	zealotry = float
+	brave = float
+	rational = float
+	optimistic = float
+	cruel = float
+	ambitious = float
+	reckless = float
 }
+
+attributes = 
+{
+	charisma = int
+	intellect = int
+	military = int
+	mental = int
+	health = int
+}
+
+location = 
+{
+	urban = float
+	fantasy = float
+	civilized = float
+	populated = float
+	exotic = float
+	evil = float
+}
+
+climate = 
+{
+	moisture = float
+	temperature = float
+	height = float
+	water = float
+}
+
+skills = yes
+
 
 event_marker = {
 	cur_event = gameobject
@@ -14,4 +46,6 @@ named_ui_marker = yes
 human = {
 	age = int
 }
+
+send_team_event = yes
 

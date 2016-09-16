@@ -82,7 +82,7 @@ public class BasicLoader : MonoBehaviour
 
 	public bool Has (object obj)
 	{
-		return obj != null;
+		return !(ReferenceEquals (obj, null) || obj.Equals (null));
 	}
 
 

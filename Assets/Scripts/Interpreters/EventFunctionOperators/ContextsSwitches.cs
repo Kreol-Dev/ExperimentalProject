@@ -93,9 +93,9 @@ public class ContextSwitchInterpreter : FunctionOperatorInterpreter
 			declareVar.IsContext = true;
 
 			if (contextVar == null)
-				declareVar.InitExpression = String.Format ("root.GetComponent<{0}>()", contextType);
+				declareVar.InitExpression = String.Format ("({0})root.GetComponent(typeof({0}))", contextType);
 			else
-				declareVar.InitExpression = String.Format ("{1}.GetComponent<{0}>()", contextType, contextVar.Name);
+				declareVar.InitExpression = String.Format ("({0}){1}.GetComponent(typeof({0}))", contextType, contextVar.Name);
 			contextBlock.Statements.Add (declareVar);
 
 		} else

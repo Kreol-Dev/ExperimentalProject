@@ -497,8 +497,8 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 							curBlock.Statements.Add (storedVar);//block.FindStatement<DeclareVariableStatement> (v => !v.IsContext && v.Type == type);
 							storedVar.Name = "StoredVariable" + DeclareVariableStatement.VariableId++;
 							storedVar.Type = type;
-							exprBuilder.Append (String.Format ("GetComponent<{0}>()", type));
-
+							exprBuilder.Append (String.Format ("GetComponent(typeof({0})))", type));
+							exprBuilder.Insert (0, String.Format ("(({0})", type));
 							if (hasSign)
 							{
 								storedVar.InitExpression = exprBuilder.ToString (1, exprBuilder.Length - 1);

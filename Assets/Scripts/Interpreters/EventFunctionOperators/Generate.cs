@@ -52,7 +52,7 @@ public class GenerateOperator : FunctionOperatorInterpreter
 					DeclareVariableStatement addVar = new DeclareVariableStatement ();
 					addVar.Name = "AddContext" + DeclareVariableStatement.VariableId++;
 					addVar.IsNew = true;
-					addVar.InitExpression = String.Format ("{0}.AddComponent<{1}>()", varName, cmpType);
+					addVar.InitExpression = String.Format ("({1}){0}.AddComponent(typeof({1}))", varName, cmpType);
 					addVar.IsContext = true;
 					addVar.Type = cmpType;
 					subBlock.Statements.Add (addVar);

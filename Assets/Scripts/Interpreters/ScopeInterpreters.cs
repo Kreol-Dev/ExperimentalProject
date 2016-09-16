@@ -22,7 +22,7 @@ public class HasComponentScope : ScopeInterpreter
 		var ctxVar = block.FindStatement<DeclareVariableStatement> (v => v.IsContext);
 
 		string varName = ctxVar == null ? "root" : ctxVar.Name;
-		cmpStmt.InitExpression = String.Format ("{0}.GetComponent<{1}>()", varName, Type);
+		cmpStmt.InitExpression = String.Format ("({1}){0}.GetComponent(typeof({1}))", varName, Type);
 		ifStatement.CheckExpression = String.Format ("{0} != null", cmpStmt.Name);
 		FunctionBlock newBlock = new FunctionBlock (block, block.Method, block.Type);
 		ifStatement.TrueBlock = newBlock;

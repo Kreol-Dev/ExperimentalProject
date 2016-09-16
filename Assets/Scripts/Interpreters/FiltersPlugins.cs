@@ -84,7 +84,7 @@ public class HasComponentFilter : FilterPartInterpreter
 	{
 
 		this.cmpType = cmpType;
-		checkString = String.Format ("if(go.GetComponent<{0}>() == null) return false;", cmpType);
+		checkString = String.Format ("if(go.GetComponent((typeof({0})) == null) return false;", cmpType);
 	}
 
 	public override void Interpret (Expression[] args, CodeMemberMethod filterFunction)
