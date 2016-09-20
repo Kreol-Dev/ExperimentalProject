@@ -53,7 +53,7 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 		return op;
 	}
 
-	public List<DeclareVariableStatement> CleanUpContextes = new List<DeclareVariableStatement> ();
+	public Stack<DeclareVariableStatement> CleanUpContextes = new Stack<DeclareVariableStatement> ();
 
 	public Expr InterpretScopedList (Scope scope, FunctionBlock block)
 	{
@@ -197,8 +197,12 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 			{
 				Debug.Log ("OPERAND " + expression.Operands [i]);
 				builder.Append ("(");
+				int stackSize = CleanUpContextes.Count;
 				builder.Append (ProcessOperand (expression.Operands [i], block, isBool).ExprString);
 				builder.Append (")");
+				int dif = CleanUpContextes.Count - stackSize;
+				for (int j = 0; j < dif; j++)
+					CleanUpContextes.Pop ().IsContext = false;
 				if (i + 1 < expression.Operands.Length)
 					builder.Append (expression.OpToString ((Expression.BinaryOp)expression.Operands [i + 1]));
 			}
@@ -206,11 +210,12 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 		}
 		if (isFirst)
 		{
-			for (int i = 0; i < CleanUpContextes.Count; i++)
-			{
-				CleanUpContextes [i].IsContext = false;
-			}
-			CleanUpContextes.Clear ();
+//			while(Clean)
+//			for (int i = 0; i < CleanUpContextes.Count; i++)
+//			{
+//				CleanUpContextes [i].IsContext = false;
+//			}
+//			CleanUpContextes.Clear ();
 		}
 
 		return res;
@@ -251,6 +256,7 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 			var contextVar = block.FindStatement<DeclareVariableStatement> (v => v.Name == scope [0] as string);
 			if (contextVariable = (contextVar == null))
 				contextVar = block.FindStatement<DeclareVariableStatement> (v => v.IsContext);
+			Debug.LogWarningFormat ("S_CTX {0} {1}", contextVar, operand);
 			string contextName = null; //!contextVariable ? "root" : contextVar.Name;
 			Type contextType = null; //!contextVariable ? typeof(GameObject) : contextVar.Type;
 			if (contextVar == null)
@@ -274,7 +280,7 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 				{
 					if (firstTimeList)
 					{
-						CleanUpContextes.Add (resultVar);
+						CleanUpContextes.Push (resultVar);
 						resultVar.IsTemp = true;
 						resultVar.Name = "result" + DeclareVariableStatement.VariableId++;
 						block.Statements [insertResultIndex] = resultVar;
@@ -287,7 +293,7 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 					}
 					Debug.Log ("scope list " + scope [i]);
 					DeclareVariableStatement declVar = new DeclareVariableStatement ();
-					CleanUpContextes.Add (declVar);
+					CleanUpContextes.Push (declVar);
 					declVar.IsTemp = true;
 					declVar.Name = "list" + DeclareVariableStatement.VariableId++;
 					declVar.Type = contextType;
@@ -310,7 +316,7 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 					forStatement.RepeatBlock = new FunctionBlock (block, block.Method, block.Type);
 					var repeatContext = new DeclareVariableStatement ();
 					repeatContext.IsTemp = true;
-					CleanUpContextes.Add (repeatContext);
+					CleanUpContextes.Push (repeatContext);
 					forStatement.RepeatBlock.Statements.Add (repeatContext);
 					curBlock.Statements.Add (forStatement);
 					curBlock = forStatement.RepeatBlock;
@@ -397,7 +403,7 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 
 
 							var declVar = new DeclareVariableStatement ();
-							CleanUpContextes.Add (declVar);
+							CleanUpContextes.Push (declVar);
 							declVar.IsTemp = true;
 							declVar.Name = "prop" + DeclareVariableStatement.VariableId++;
 							declVar.IsContext = true;
@@ -491,7 +497,7 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 						if (storedVar == null)
 						{
 							storedVar = new DeclareVariableStatement ();
-							CleanUpContextes.Add (storedVar);
+							CleanUpContextes.Push (storedVar);
 							storedVar.IsTemp = true;
 							storedVar.IsContext = true;
 							curBlock.Statements.Add (storedVar);//block.FindStatement<DeclareVariableStatement> (v => !v.IsContext && v.Type == type);
@@ -557,7 +563,7 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 						contextType = prop.PropertyType;
 						exprBuilder.Append (propName).Append ('.');
 						var declVar = new DeclareVariableStatement ();
-						CleanUpContextes.Add (declVar);
+						CleanUpContextes.Push (declVar);
 						declVar.IsTemp = true;
 						declVar.IsContext = true;
 						declVar.Name = "prop" + DeclareVariableStatement.VariableId++;

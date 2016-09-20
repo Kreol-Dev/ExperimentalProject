@@ -50,7 +50,7 @@ named_ui =
 }
 
 agents_pool_filler = {
-	scope = place.generate_marker.fit(agents = 0)
+	scope = markers.place.fit(agents = 0 and has_marker("agents_pool"))
 	utility = 1
 	action = {
 		place = {
@@ -89,5 +89,44 @@ agent_personality = {
 	utility = 1
 	action = {
 		create = personality
+	}
+}
+
+aged_generation_add = {
+	scope = human.fit(not has(aged_generation))
+	utility = 1
+	action = {
+		create = aged_generation
+	}
+}
+
+historical_persons = 
+{
+	scope = markers.lore.place.fit(agents = 0 and has_marker("lore_pool"))
+	utility = 1 
+	action = 
+	{
+		place = {
+			size = 5
+			repeat(random(1,4)) = {
+				generate(ag) = {
+					entity = {
+						on_destruction = {
+							entity.place_marker.current_place.detach = agent
+						}
+					}
+					agent = yes
+					historical_person = yes
+					human = {
+						age = random(20, 45)
+					}
+					named = {
+						set("main_name", "_1") = "Historical person: " + random_name
+					}
+				}
+
+				attach = ag.agent
+			}
+		}
 	}
 }

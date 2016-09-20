@@ -7,6 +7,7 @@ using UnityEngine.Events;
 public class CardsHolder : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPointerExitHandler
 {
 	public Transform DragOverZone;
+	public bool Closed;
 
 	void Start ()
 	{
@@ -30,13 +31,15 @@ public class CardsHolder : MonoBehaviour, IDropHandler, IPointerEnterHandler, IP
 		bool accepted = false;
 		//Card c = eventData.pointerDrag.GetComponent<Card> ();
 		var card = eventData.pointerDrag.GetComponent<Card> ();
+		if (!card.Movable)
+			return;
 		card.transform.SetParent (transform);
 		Debug.LogFormat ("{0} parent is {1}, cards count = {2}", card, transform.gameObject, 
 		                 transform.GetComponentsInChildren<Card> ().Length);
 		if (card.currentHolder != this)
 		if (CardDropped != null)
 			accepted = CardDropped (card);
-		if (accepted)
+		if (!Closed && accepted)
 		{
 
 			Debug.LogFormat ("UI:{0}.OnDrop - AcceptedDrop {1}", this.gameObject, eventData.pointerDrag);

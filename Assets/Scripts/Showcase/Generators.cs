@@ -108,7 +108,8 @@ public class Generators : MonoBehaviour
 		}
 		if (act == null && filteredActionsCount > 0)
 			act = weights [filteredActionsCount - 1].Action;
-		act.Action ();
+		if (act != null)
+			act.Action ();
 	}
 
 }

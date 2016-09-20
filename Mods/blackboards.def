@@ -47,5 +47,10 @@ human = {
 	age = int
 }
 
+aged_generation = {
+	cur_age = int
+}
+
+historical_person = yes
 send_team_event = yes
 
