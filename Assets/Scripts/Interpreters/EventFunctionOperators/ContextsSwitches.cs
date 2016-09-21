@@ -66,7 +66,10 @@ public class ContextStatement
 
 	public override string ToString ()
 	{
-		return "";
+		if (ContextVar != null)
+			return String.Format ("//ContextStatement {0} {1} {2}", ContextVar.Type, ContextVar.Name, InterpretInContext.Target);
+		else
+			return String.Format ("//ContextStatement {0}", InterpretInContext.Target);
 	}
 }
 
@@ -81,9 +84,13 @@ public class ContextSwitchInterpreter : FunctionOperatorInterpreter
 		FunctionBlock contextBlock = new FunctionBlock (block, block.Method, block.Type);
 		block.Statements.Add (contextBlock);
 		DeclareVariableStatement addVar = block.FindStatement<DeclareVariableStatement> (v => v.Name == op.Identifier as string);
+		bool setContext = false;
+		if (addVar != null && !addVar.IsContext)
+			setContext = addVar.IsContext = true;
 		if (addVar == null)
 			addVar = block.FindStatement<DeclareVariableStatement> (v => v.IsContext && v.Type == contextType);
-		DeclareVariableStatement contextVar = block.FindStatement<DeclareVariableStatement> (v => v.IsContext && v != addVar);
+		//TODO: probably will fail
+		DeclareVariableStatement contextVar = block.FindStatement<DeclareVariableStatement> (v => v.IsContext && v.Type == typeof(GameObject) && v != addVar);
 		DeclareVariableStatement declareVar = null;
 		if (addVar == null)
 		{
@@ -102,7 +109,7 @@ public class ContextSwitchInterpreter : FunctionOperatorInterpreter
 			declareVar = addVar;
 
 		contextBlock.Statements.Add (new ContextStatement () {
-			ContextVar = contextVar,
+			ContextVar = declareVar,
 			InterpretInContext = InterpretInContext
 		});
 		IfStatement isNotNull = new IfStatement ();
@@ -128,6 +135,9 @@ public class ContextSwitchInterpreter : FunctionOperatorInterpreter
 			Debug.LogFormat ("Interpret {0} via {1}", subOp.Identifier, opInter);
 			opInter.Interpret (subOp, contextBlock);
 		}
+
+		if (setContext)
+			addVar.IsContext = false;
 
 	}
 
@@ -241,8 +251,9 @@ public class ContextFunctionCallInterpreter : FunctionOperatorInterpreter
 		if (exprInter == null)
 			exprInter = Engine.GetPlugin<ExpressionInterpreter> ();
 		var any = BindingFlags.Instance | BindingFlags.Public | BindingFlags.Static;
-
-		var contextVar = block.FindStatement<DeclareVariableStatement> (v => (v.IsContext || v.IsArg) && v.Type.GetMethod (funcName, any) != null);
+		var sCtx = block.FindStatement<ContextStatement> (v => v.InterpretInContext (op, block) != null && (v.ContextVar.IsContext || v.ContextVar.IsArg));
+		var contextVar = sCtx != null ? sCtx.ContextVar : null;
+		//var contextVar = block.FindStatement<DeclareVariableStatement> (v => );
 
 		StringBuilder argsBuilder = new StringBuilder ();
 //		if (((op.Context is Expression) && op.Args.Count + 1 != argsDef.Length) ||
@@ -395,9 +406,9 @@ public class ContextPropertyInterpreter : FunctionOperatorInterpreter
 		var varName = op.Identifier as string;
 
 		Debug.Log (block);
-		var context = block.FindStatement<DeclareVariableStatement> (v =>{
-			Debug.Log (v);
-			return v.IsContext;});
+		var sCtx = block.FindStatement<ContextStatement> (v => v.InterpretInContext (op, block) != null && v.ContextVar.IsContext);
+		var context = sCtx != null ? sCtx.ContextVar : null;
+		Debug.LogFormat ("FOUND COUNTEXT {0} for {1}", context, op.Identifier);
 		if (listT == null)
 		{
 			if (!(op.Context is Expression))
@@ -588,7 +599,10 @@ public class ContextPropertySwitchInterpreter : ContextPropertyInterpreter
 
 		DeclareVariableStatement contextVar = block.FindStatement<DeclareVariableStatement> (v => v.Name == varName);
 		if (contextVar == null)
-			contextVar = block.FindStatement<DeclareVariableStatement> (v => v.IsContext);
+		{
+			var sCtx = block.FindStatement<ContextStatement> (v => v.InterpretInContext (op, block) != null && v.ContextVar.IsContext);
+			contextVar = sCtx != null ? sCtx.ContextVar : null;
+		}
 
 		if (contextVar == null)
 			declareVar.InitExpression = String.Format ("root.{0}", propName);
@@ -596,7 +610,7 @@ public class ContextPropertySwitchInterpreter : ContextPropertyInterpreter
 			declareVar.InitExpression = String.Format ("{1}.{0}", propName, contextVar.Name);
 		contextBlock.Statements.Add (declareVar);
 		contextBlock.Statements.Add (new ContextStatement () {
-			ContextVar = contextVar,
+			ContextVar = declareVar,
 			InterpretInContext = InterpretInContext
 		});
 		IfStatement isNotNull = new IfStatement ();

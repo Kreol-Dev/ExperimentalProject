@@ -16,6 +16,7 @@ public class AgentsActions : MonoBehaviour
 	{
 		foreach (var agent in place.Agents)
 		{
+			agent.Act = true;
 			generators.GenerateRandomByWeight (agent.gameObject, 0.1f);
 		}
 	}

@@ -210,6 +210,8 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 		}
 		if (isFirst)
 		{
+			while (CleanUpContextes.Count > 0)
+				CleanUpContextes.Pop ().IsContext = false;
 //			while(Clean)
 //			for (int i = 0; i < CleanUpContextes.Count; i++)
 //			{

@@ -166,12 +166,16 @@ public class EventActionsLoader : ScriptInterpreter
 		FunctionBlock block = new FunctionBlock (null, method, codeType);
 		block.Statements.Add ("var root = this.root;");
 		//block.Statements.Add ("UnityEngine.Debug.Log(root.ToString() + IfStatement.AntiMergeValue++);");
-		block.Statements.Add (new DeclareVariableStatement () {
+		var externVar = new DeclareVariableStatement () {
 			Name = "External",
 			IsArg = true,
 			Type = Engine.GetType ("External")
+		};
+		block.Statements.Add (externVar);
+		block.Statements.Add (new ContextStatement () {
+			ContextVar = externVar,
+			InterpretInContext = Engine.GetPlugin<ExternalFunctionsPlugin> ().Ctx.InterpretInContext
 		});
-		block.Statements.Add (new ContextStatement (){ InterpretInContext = Engine.GetPlugin<ExternalFunctionsPlugin> ().Ctx.InterpretInContext });
 		foreach (var initStmt in initStatements)
 			block.Statements.Add (initStmt);
 		//bool hasRoot = false;

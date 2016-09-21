@@ -59,7 +59,7 @@ public class EventFunctionOperators : ScriptEnginePlugin
 				}
 				var context = block.FindStatement<ContextStatement> (c => (inter = c.InterpretInContext (op, block)) != null);
 				if (context != null)
-					Debug.LogFormat ("{0} is not an operator of context, found one {1}", op.Identifier, context);
+					Debug.LogFormat ("{0} is not an operator of context, found one {1}", op.Identifier, context.ContextVar);
 				else
 					Debug.LogWarningFormat ("{0} is not an operator of context, not found one", op.Identifier);
 //				if (context != null)
@@ -81,6 +81,7 @@ public class EventFunctionOperators : ScriptEnginePlugin
 				} else
 				{
 					inter = switches.GetInterByType (customVar.Type);
+
 
 
 				}
