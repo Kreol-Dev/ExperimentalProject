@@ -163,7 +163,11 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 		if (expression.Operands.Length == 1)
 		{
 			//ProcessOperand (expression.Operands [0], builder);
+
+			int stackSize = CleanUpContextes.Count;
 			res = ProcessOperand (expression.Operands [0], block, isBool);
+			while (CleanUpContextes.Count > stackSize)
+				CleanUpContextes.Pop ().IsContext = false;
 		} else
 		{
 			Expression.BinaryOp binOp = (Expression.BinaryOp)expression.Operands [1];
@@ -200,25 +204,24 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 				int stackSize = CleanUpContextes.Count;
 				builder.Append (ProcessOperand (expression.Operands [i], block, isBool).ExprString);
 				builder.Append (")");
-				int dif = CleanUpContextes.Count - stackSize;
-				for (int j = 0; j < dif; j++)
+				while (CleanUpContextes.Count > stackSize)
 					CleanUpContextes.Pop ().IsContext = false;
 				if (i + 1 < expression.Operands.Length)
 					builder.Append (expression.OpToString ((Expression.BinaryOp)expression.Operands [i + 1]));
 			}
 			res = new Expr (){ ExprString = builder.ToString (), Type = exprType };
 		}
-		if (isFirst)
-		{
-			while (CleanUpContextes.Count > 0)
-				CleanUpContextes.Pop ().IsContext = false;
-//			while(Clean)
-//			for (int i = 0; i < CleanUpContextes.Count; i++)
-//			{
-//				CleanUpContextes [i].IsContext = false;
-//			}
-//			CleanUpContextes.Clear ();
-		}
+//		if (isFirst)
+//		{
+//			while (CleanUpContextes.Count > 0)
+//				CleanUpContextes.Pop ().IsContext = false;
+////			while(Clean)
+////			for (int i = 0; i < CleanUpContextes.Count; i++)
+////			{
+////				CleanUpContextes [i].IsContext = false;
+////			}
+////			CleanUpContextes.Clear ();
+//		}
 
 		return res;
 	}
@@ -378,7 +381,13 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 								exprBuilder.Append (otherContext.Name).Append ('.');
 								contextType = otherContext.Type;
 							} else
+							{
+
 								Debug.LogWarning ("Can't find context for method " + methodName);
+								block.FindStatement<DeclareVariableStatement> (v => {
+									Debug.LogFormat ("{0} {1} {3}                  ||||{2}", v.Name, v.Type, IfStatement.AntiMergeValue++, v.IsContext || v.IsArg);
+									return false; });
+							}
 						}
 						if (method == null)
 						{
@@ -556,9 +565,17 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 							exprBuilder.Append (outExpr).Append ('.');
 						}
 
+					} else if (prop == null && scope.Count == 1)
+					{
+						Debug.LogWarningFormat ("Can't find {0} in {1}, interpreting as a string", propName, contextType);
+						contextType = typeof(string);
+						exprBuilder.Length = 0;
+						exprBuilder.Append ("\"").Append (scope [i]).Append ("\"");
+						break;
 					} else if (prop == null)
 					{
-						Debug.LogFormat ("Can't find {0} in {1}", propName, contextType);
+
+						Debug.LogWarningFormat ("Can't find {0} in {1}", propName, contextType);
 						break;
 					} else
 					{

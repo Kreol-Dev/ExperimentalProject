@@ -47,6 +47,11 @@ human = {
 	age = int
 }
 
+place_ui_data =
+{
+	last_size = int
+}
+
 aged_generation = {
 	cur_age = int
 }

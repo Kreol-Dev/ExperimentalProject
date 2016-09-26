@@ -15,11 +15,8 @@ public class Entity : MonoBehaviour
 
 	public void Destroy ()
 	{
-		if (onDestoryDelegate != null)
-			onDestoryDelegate (gameObject);
-		onDestoryDelegate = null;
 		Dead = true;
-		Destroy (gameObject);
+		StartCoroutine (DeathCoroutine ());
 	}
 
 	event GODelegate onDestoryDelegate;
@@ -27,5 +24,15 @@ public class Entity : MonoBehaviour
 	public void OnDestruction (GODelegate del)
 	{
 		onDestoryDelegate += del;
+	}
+
+	IEnumerator DeathCoroutine ()
+	{
+		yield return null;
+		Debug.Log ("Death " + gameObject, gameObject);
+		if (onDestoryDelegate != null)
+			onDestoryDelegate (gameObject);
+		onDestoryDelegate = null;
+		Destroy (gameObject);
 	}
 }

@@ -55,13 +55,17 @@ public class Generators : MonoBehaviour
 			action.Root = go;
 			if (action.Filter ())
 			{
-
-				var ut = action.Utility () * (1f + fuzzy * ((float)random.NextDouble () - 0.5f) * 2f);
-				if (ut > maxUt)
+				var baseUt = action.Utility ();
+				if (baseUt > 0)
 				{
-					maxUt = ut;
-					act = action;
+					var ut = baseUt * (1f + fuzzy * ((float)random.NextDouble () - 0.5f) * 2f);
+					if (ut > maxUt)
+					{
+						maxUt = ut;
+						act = action;
+					}
 				}
+
 			}
 		}
 		if (act != null)
@@ -87,12 +91,13 @@ public class Generators : MonoBehaviour
 			action.Root = go;
 			if (action.Filter ())
 			{
-				var ut = action.Utility ();
-				if (ut > 0f)
+				var baseUt = action.Utility ();
+				var ut = baseUt * (1f + fuzzy * ((float)random.NextDouble () - 0.5f) * 2f);
+				if (baseUt > 0f)
 				{
 					weights [filteredActionsCount].Action = action;
-					cumulativeWeights += ut;
 					weights [filteredActionsCount].Weight = cumulativeWeights;
+					cumulativeWeights += ut;
 					filteredActionsCount++;
 				}
 

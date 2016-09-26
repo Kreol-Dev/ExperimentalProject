@@ -266,16 +266,32 @@ public class ContextFunctionCallInterpreter : FunctionOperatorInterpreter
 		{
 			if (argsDef [i].ParameterType.IsSubclassOf (typeof(Delegate)))
 				argsBuilder.Append (exprInter.InterpretClosure (op.Args [i], block, argsDef [i].ParameterType).ExprString).Append (",");
+			else if (argsDef [i].ParameterType == typeof(string))
+				argsBuilder.Append ('(').Append (exprInter.InterpretExpression (op.Args [i], block).ExprString).Append (')').Append (".ToString()").Append (",");
 			else
-				argsBuilder.Append (exprInter.InterpretExpression (op.Args [i], block).ExprString).Append (",");
+				argsBuilder.Append ('(').Append (argsDef [i].ParameterType).Append (')').Append ('(').Append (exprInter.InterpretExpression (op.Args [i], block).ExprString).Append (')').Append (",");
 			
 		}
 		if (op.Context is Expression)
 		{
 			if (argsDef [argsDef.Length - 1].ParameterType.IsSubclassOf (typeof(Delegate)))
-				argsBuilder.Append (exprInter.InterpretClosure (op.Context as Expression, block, argsDef [argsDef.Length - 1].ParameterType).ExprString);
+				argsBuilder.
+				Append ('(').
+				Append (argsDef [argsDef.Length - 1].ParameterType).
+				Append (')').
+				Append ('(').
+				Append (exprInter.InterpretClosure (op.Context as Expression, block, argsDef [argsDef.Length - 1].ParameterType).ExprString).
+				Append (')');
+			else if (argsDef [argsDef.Length - 1].ParameterType == typeof(string))
+				argsBuilder.Append ('(').Append (exprInter.InterpretExpression (op.Context as Expression, block).ExprString).Append (')').Append (".ToString()");
 			else
-				argsBuilder.Append (exprInter.InterpretExpression (op.Context as Expression, block).ExprString);
+				argsBuilder.
+				Append ('(').
+				Append (argsDef [argsDef.Length - 1].ParameterType).
+				Append (')').
+				Append ('(').
+				Append (exprInter.InterpretExpression (op.Context as Expression, block).ExprString).
+				Append (')');
 			if (contextVar == null)
 				block.Statements.Add (string.Format ("root.{0}({1});", funcName, argsBuilder));
 			else
@@ -338,12 +354,26 @@ public class ContextFunctionCallInterpreter : FunctionOperatorInterpreter
 				//if (lastVar != null)
 				//	lastVar.IsContext = true;
 
+				var retType = lambda.DelegateType.GetMethod ("Invoke").ReturnType;
+				bool hasReturn = false;
+				if (retType != null && retType != typeof(void))
+				{
+					hasReturn = true;
+					lambda.Block.Statements.Add (new DeclareVariableStatement () {
+						Name = "return_value",
+						InitExpression = string.Format ("default({0})", retType),
+						IsReturn = true,
+						Type = retType
+					});
+				}
 
 				foreach (var entry in (op.Context as Context).Entries)
 				{
 					var subOp = entry as Operator;
 					ops.GetInterpreter (subOp, lambda.Block).Interpret (subOp, lambda.Block);
 				}
+				if (hasReturn)
+					lambda.Block.Statements.Add ("return return_value;");
 				//Don't forget to call a function and add an arugment
 				argsBuilder.Append (lambda.Name);
 				if (contextVar == null)
@@ -364,7 +394,6 @@ public class ContextFunctionCallInterpreter : FunctionOperatorInterpreter
 				FunctionBlock contextBlock = new FunctionBlock (block);
 				contextBlock.Statements.Add (newVar);
 				addContextInter.Interpret (op, contextBlock);
-
 				argsBuilder.Append (newVar.Name);
 				if (contextVar == null)
 					contextBlock.Statements.Add (string.Format ("root.{0}({1});", funcName, argsBuilder));

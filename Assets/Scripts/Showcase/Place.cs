@@ -6,11 +6,34 @@ public class Place : MonoBehaviour
 {
 	public List<Agent> Agents { get; set; }
 
+	public bool Act { get; internal set; }
+
+	Generators generators;
+
 	public int Size { get; set; }
 
 	void Awake ()
 	{
+		Act = false;
+		generators = FindObjectOfType<Generators> ();
 		Agents = new List<Agent> ();
+	}
+
+	void Start ()
+	{
+		Act = true;
+		StartCoroutine (EventsCoroutine ());
+	}
+
+	WaitForSeconds seconds = new WaitForSeconds (1f);
+
+	IEnumerator EventsCoroutine ()
+	{
+		while (true)
+		{
+			generators.GenerateMostUseful (gameObject, 0.15f);
+			yield return seconds;
+		}
 	}
 
 	public bool Attach (Agent agent)

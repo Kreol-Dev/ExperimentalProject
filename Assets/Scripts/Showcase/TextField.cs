@@ -5,6 +5,21 @@ using UnityEngine.UI;
 public class TextField : MonoBehaviour
 {
 	Text text;
+
+	public LayoutElement Layout { get; internal set; }
+
+	string label;
+	string lastText;
+
+	public string Label {
+		get { return label; }
+		set
+		{
+			label = value + ": ";
+			Show (lastText);
+		}
+	}
+
 	static FontHolder Holder;
 
 	void Awake ()
@@ -15,11 +30,13 @@ public class TextField : MonoBehaviour
 		textSubObject.transform.SetParent (this.transform);
 		text = textSubObject.AddComponent<Text> ();
 		text.font = Holder.Font;
+		Layout = textSubObject.AddComponent<LayoutElement> ();
 	}
 
-	public void Set (string txt)
+	public void Show (string txt)
 	{
-		text.text = txt;
+		lastText = txt;
+		text.text = Label + txt;
 	}
 }
 

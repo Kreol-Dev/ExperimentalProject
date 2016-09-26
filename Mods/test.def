@@ -45,19 +45,55 @@ named_ui =
 		ui_object = 
 		{
 			showed_named = showed_object.named
-			create(fld, text_field) = {
-				set = showed_named.full_name
+			create(text_field) = {
+				show = showed_named.full_name
 				showed_named.on_update = {
-					fld.set = showed_named.full_name
+					show = showed_named.full_name
 				}
+				layout.min_height = 20
 			}
 			
 		}
 	}
 }
 
+place_ui = 
+{
+	scope = markers.ui_object.fit(showed_object.fit(has(place)) and not has_marker(place_ui_set))
+	utility = 1
+	action = 
+	{
+		markers.set_marker = place_ui_set
+		ui_object = 
+		{
+			pl = showed_object.place
+			create(puidata) = place_ui_data
+			puidata.last_size = pl.size
+			create(text_field) = {
+				show = pl.size
+				if(not has(updated)) = 
+				{
+					create = updated
+				}
+				text_field.label = "size"
+				layout.min_height = 20
+				updated = {
+					on_update.pl.puidata =
+					{
+						if(not (size = last_size)) = 
+						{
+							last_size = size
+							show = size
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
 agents_pool_filler = {
-	scope = markers.place.fit(agents = 0 and has_marker("agents_pool"))
+	scope = markers.place.fit(agents = 0 and has_marker(agents_pool))
 	utility = 1
 	action = {
 		place = {
@@ -110,17 +146,21 @@ aged_generation_add = {
 
 historical_persons = 
 {
-	scope = markers.lore.place.fit(agents = 0 and has_marker("lore_pool"))
+	scope = markers.lore.place.fit(agents = 0 and has_marker(lore_pool))
 	utility = 1 
 	action = 
 	{
 		place = {
-			size = 5
+			size = 10
 			repeat(random(4,10)) = {
-				generate(ag) = {
+				generate(old_ag) = {
 					entity = {
 						on_destruction = {
-							entity.place_marker.current_place.detach = agent
+							log = "detaching"
+							entity = {
+								e_agent = agent
+								place_marker.current_place.detach = e_agent
+							}
 						}
 					}
 					agent = yes
@@ -134,7 +174,7 @@ historical_persons =
 					}
 				}
 
-				attach = ag.agent
+				attach = old_ag.agent
 			}
 		}
 	}
@@ -142,9 +182,30 @@ historical_persons =
 
 change_name_historical_action = 
 {
-	scope = historical_person.named.agent.fit(act = yes)
-	utility = 0.3
+	scope = entity.historical_person.named.agent.fit(act = yes and not dead)
+	utility = 0.5
 	action = {
 		named.switch("main_name") = random_name
+	}
+}
+
+location_log = 
+{
+	scope = place.named.fit(act = yes)
+	utility = 0.3
+	action  = 
+	{
+		log = named.get(main_name)
+	}
+}
+
+destroy_self = 
+{
+	scope = entity.agent.fit(act = yes and not dead)
+	utility = 0.00001
+	action = 
+	{
+		log = "Destroying self " + root
+		destroy = root
 	}
 }
