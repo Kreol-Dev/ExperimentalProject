@@ -69,9 +69,11 @@ public static class NameTranslator
 public class ScriptCompiler : ScriptEnginePlugin
 {
 	List<string> csharpSources = new List<string> ();
+	ScriptsLoader loader;
 
 	public override void Init ()
 	{
+		loader = UnityEngine.Object.FindObjectOfType<ScriptsLoader> ();
 	}
 
 	public void AddSource (string source)
@@ -81,7 +83,6 @@ public class ScriptCompiler : ScriptEnginePlugin
 
 	public void Compile (Action<Assembly> onAssemblyCompiled)
 	{
-		var loader = UnityEngine.Object.FindObjectOfType<ScriptsLoader> ();
 		string sourceCode = string.Concat (csharpSources.ToArray ());
 
 		//UnityEngine.GameObject.Find ("SourceCode").GetComponent<Text> ().text = sourceCode;

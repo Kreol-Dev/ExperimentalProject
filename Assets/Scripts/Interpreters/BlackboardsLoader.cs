@@ -17,6 +17,13 @@ public class BlackboardsLoader  : ScriptInterpreter
 	Dictionary<string, Type> types = new Dictionary<string, Type> ();
 	CodeNamespace cNamespace = new CodeNamespace ();
 	Dictionary<string, CodeTypeDeclaration> codeTypes = new Dictionary<string, CodeTypeDeclaration> ();
+	ScriptsLoader loader;
+
+	public void Init ()
+	{
+
+		loader = UnityEngine.Object.FindObjectOfType<ScriptsLoader> ();
+	}
 
 	public BlackboardsLoader (ScriptEngine engine) : base (engine)
 	{
@@ -87,7 +94,6 @@ public class BlackboardsLoader  : ScriptInterpreter
 			}
 
 		}
-		var loader = UnityEngine.Object.FindObjectOfType<ScriptsLoader> ();
 		CSharpCodeProvider codeProvider = new CSharpCodeProvider ();
 		CodeGeneratorOptions options = new CodeGeneratorOptions ();
 		var writer = new StringWriter ();

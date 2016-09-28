@@ -12,6 +12,7 @@ using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Reflection.Emit;
 using System.Linq;
+using System.Threading;
 
 public delegate void VoidDelegate ();
 public class BasicLoader : MonoBehaviour
@@ -19,6 +20,7 @@ public class BasicLoader : MonoBehaviour
 
 	// Use this for initialization
 	public ScriptEngine Engine { get; private set; }
+
 
 	System.Random random = new System.Random ();
 
@@ -93,6 +95,7 @@ public class BasicLoader : MonoBehaviour
 	void Start ()
 	{
 		StartCoroutine (LoadCoroutine ());
+		StartCoroutine (UpdateCoroutine ());
 	}
 
 	IEnumerator LoadCoroutine ()
@@ -103,6 +106,7 @@ public class BasicLoader : MonoBehaviour
 		var dirInfo = new DirectoryInfo ("Mods");
 		DateTime lastWriteTime = DateTime.MinValue;
 		var ExternalFunctions = Engine.GetPlugin<ExternalFunctionsPlugin> ();
+		ExternalFunctions.Load ();
 		foreach (var eFunctions in EFunctions)
 			ExternalFunctions.AddProvider (eFunctions.Provider, eFunctions.Functions);
 		ExternalFunctions.AddProvider (this, "Random", "Dsix", "AbstractCamp", "Has", "GetWorld", "GetEventsController", "SelectFrom", "Log", "String", "GetPlayer", "Destroy", "NoOne");
@@ -124,6 +128,9 @@ public class BasicLoader : MonoBehaviour
 			AppDomain.CurrentDomain.AssemblyResolve += Resolver;
 			loadedAsms.Add ("ExternalCode");
 			loadedAsms.Add ("BlackboardsData");
+			bbloader = new BlackboardsLoader (Engine);
+			bbloader.Init ();
+
 			ExternalFunctions.Setup (OnExternalsCompiled);
 		} else
 		{
@@ -150,6 +157,8 @@ public class BasicLoader : MonoBehaviour
 
 	}
 
+	BlackboardsLoader bbloader;
+
 	void OnExternalsCompiled ()
 	{
 		
@@ -157,7 +166,6 @@ public class BasicLoader : MonoBehaviour
 		Script genScript = new Script ("generators", loader);
 		genScript.LoadFile ("Mods/test.def");
 
-		BlackboardsLoader bbloader = new BlackboardsLoader (Engine);
 
 		bbloader.AddType (typeof(GameObject), "gameobject");
 		bbloader.AddType (typeof(int), "int");
@@ -196,42 +204,38 @@ public class BasicLoader : MonoBehaviour
 			return Assembly.Load (args.Name);
 	}
 
-
+	Assembly loadedAsm;
 
 	void OnAssemblyCompiled (Assembly asm)
 	{
-		if (asm == null)
-			return;
-		Debug.Log ("Success");
-		Engine.AddAssembly (asm);
-//		byte[] dllAsArray;
-//
-//		using (MemoryStream stream = new MemoryStream ())
-//		{
-//			BinaryFormatter formatter = new BinaryFormatter ();
-//
-//			formatter.Serialize (stream, asm);
-//
-//			dllAsArray = stream.ToArray ();
-//		}
-//		File.WriteAllBytes ("MyLibrary.dll", dllAsArray);
-		//Debug.Log (asm.CodeBase);
-//		var asmtypes = asm.GetTypes ();
-//		foreach (var type in asmtypes)
-//		{
-//			Debug.Log (type);
-//		}
-		var types = Engine.FindTypesCastableTo<EventAction> ();
-		foreach (var type in types)
-		{
-			Debug.Log (type);
-		}
-		if (Loaded != null)
-			Loaded ();
+		loadedAsm = asm;
 
-		PlayerPrefs.SetString ("last_build", DateTime.UtcNow.ToString ());
-		//AppDomain.CurrentDomain.Load (asm.Location);
 	}
 
+	IEnumerator UpdateCoroutine ()
+	{
+
+		while (true)
+		{
+			yield return null;
+
+			if (loadedAsm == null)
+				continue;
+			Debug.Log ("Success");
+			Engine.AddAssembly (loadedAsm);
+			var types = Engine.FindTypesCastableTo<EventAction> ();
+			foreach (var type in types)
+			{
+				Debug.Log (type);
+			}
+			if (Loaded != null)
+				Loaded ();
+
+			PlayerPrefs.SetString ("last_build", DateTime.UtcNow.ToString ());
+			//AppDomain.CurrentDomain.Load (asm.Location);
+			break;
+
+		}
+	}
 }
 

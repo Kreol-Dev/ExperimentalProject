@@ -12,10 +12,16 @@ using System.IO;
 
 public class ExternalFunctionsPlugin : ScriptEnginePlugin
 {
+	ScriptsLoader loader;
+
+	public void Load ()
+	{
+		loader = UnityEngine.Object.FindObjectOfType<ScriptsLoader> ();
+	}
 
 	public override void Init ()
 	{
-		
+
 	}
 
 	class ProviderData
@@ -109,7 +115,6 @@ public class ExternalFunctionsPlugin : ScriptEnginePlugin
 			}
 		}
 
-		var loader = UnityEngine.Object.FindObjectOfType<ScriptsLoader> ();
 		CSharpCodeProvider codeProvider = new CSharpCodeProvider ();
 		CodeGeneratorOptions options = new CodeGeneratorOptions ();
 		var writer = new StringWriter ();
