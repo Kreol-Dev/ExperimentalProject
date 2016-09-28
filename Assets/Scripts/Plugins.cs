@@ -71,9 +71,14 @@ public class ScriptCompiler : ScriptEnginePlugin
 	List<string> csharpSources = new List<string> ();
 	ScriptsLoader loader;
 
+	public ScriptCompiler ()
+	{
+
+		loader = UnityEngine.Object.FindObjectOfType<ScriptsLoader> ();
+	}
+
 	public override void Init ()
 	{
-		loader = UnityEngine.Object.FindObjectOfType<ScriptsLoader> ();
 	}
 
 	public void AddSource (string source)

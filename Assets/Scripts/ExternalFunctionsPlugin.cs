@@ -140,9 +140,9 @@ public class ExternalFunctionsPlugin : ScriptEnginePlugin
 		foreach (var provider in providers)
 		{
 			Debug.LogWarning (provider.Name);
-			Debug.LogWarning (provider.Instance);
+			//Debug.LogWarning (provider.Instance);
 			type.GetField (provider.Name, BindingFlags.NonPublic | BindingFlags.Static).SetValue (null, provider.Instance);
-			Debug.LogWarning (type.GetField (provider.Name, BindingFlags.NonPublic | BindingFlags.Static).GetValue (null));
+			//Debug.LogWarning (type.GetField (provider.Name, BindingFlags.NonPublic | BindingFlags.Static).GetValue (null));
 		}
 
 		Ctx = new ContextSwitchInterpreter (type, Engine);

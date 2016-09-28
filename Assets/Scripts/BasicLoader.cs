@@ -98,6 +98,8 @@ public class BasicLoader : MonoBehaviour
 		StartCoroutine (UpdateCoroutine ());
 	}
 
+	Thread compileThread;
+
 	IEnumerator LoadCoroutine ()
 	{
 		
@@ -130,8 +132,8 @@ public class BasicLoader : MonoBehaviour
 			loadedAsms.Add ("BlackboardsData");
 			bbloader = new BlackboardsLoader (Engine);
 			bbloader.Init ();
-
-			ExternalFunctions.Setup (OnExternalsCompiled);
+			compileThread = new Thread (() => ExternalFunctions.Setup (OnExternalsCompiled));
+			compileThread.Start ();
 		} else
 		{
 			Debug.Log ("Loading dlls");
@@ -204,23 +206,22 @@ public class BasicLoader : MonoBehaviour
 			return Assembly.Load (args.Name);
 	}
 
+	object asmLock = new object ();
 	Assembly loadedAsm;
 
 	void OnAssemblyCompiled (Assembly asm)
 	{
-		loadedAsm = asm;
+		lock (asmLock)
+		{
 
+			loadedAsm = asm;
+		}
 	}
 
-	IEnumerator UpdateCoroutine ()
+	void OnRetrievedAsm ()
 	{
-
-		while (true)
+		lock (asmLock)
 		{
-			yield return null;
-
-			if (loadedAsm == null)
-				continue;
 			Debug.Log ("Success");
 			Engine.AddAssembly (loadedAsm);
 			var types = Engine.FindTypesCastableTo<EventAction> ();
@@ -233,8 +234,22 @@ public class BasicLoader : MonoBehaviour
 
 			PlayerPrefs.SetString ("last_build", DateTime.UtcNow.ToString ());
 			//AppDomain.CurrentDomain.Load (asm.Location);
-			break;
+		}
 
+	}
+
+	IEnumerator UpdateCoroutine ()
+	{
+
+		while (true)
+		{
+			
+			yield return null;
+			if (loadedAsm == null)
+				continue;
+			compileThread.Join ();
+			OnRetrievedAsm ();
+			break;
 		}
 	}
 }
