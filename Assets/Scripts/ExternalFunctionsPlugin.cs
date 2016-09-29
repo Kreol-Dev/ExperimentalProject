@@ -9,6 +9,8 @@ using CSharpCompiler;
 using Microsoft.CSharp;
 using System.CodeDom.Compiler;
 using System.IO;
+using System.Linq;
+using System.Threading;
 
 public class ExternalFunctionsPlugin : ScriptEnginePlugin
 {
@@ -17,11 +19,6 @@ public class ExternalFunctionsPlugin : ScriptEnginePlugin
 	public void Load ()
 	{
 		loader = UnityEngine.Object.FindObjectOfType<ScriptsLoader> ();
-	}
-
-	public override void Init ()
-	{
-
 	}
 
 	class ProviderData
@@ -63,9 +60,12 @@ public class ExternalFunctionsPlugin : ScriptEnginePlugin
 //		ctor.Statements.Add (new CodeSnippetStatement (""));
 //		decl.Members.Add (ctor);
 		decl.Attributes = MemberAttributes.Public | MemberAttributes.Static;
-
+		MaxProgress = (from p in providers
+		               select p.Members.Length).Sum ();
 		foreach (var provider in providers)
 		{
+			if (!Engine.Working)
+				Thread.CurrentThread.Abort ();
 			var providerType = provider.Instance.GetType ();
 			var providerName = provider.Name;
 			var field = new CodeMemberField (providerType, providerName);
@@ -73,6 +73,7 @@ public class ExternalFunctionsPlugin : ScriptEnginePlugin
 			decl.Members.Add (field);
 			foreach (var member in provider.Members)
 			{
+				CurProgress++;
 				var methodInfo = providerType.GetMethod (member);
 				if (methodInfo != null)
 				{
@@ -114,7 +115,7 @@ public class ExternalFunctionsPlugin : ScriptEnginePlugin
 				}
 			}
 		}
-
+		CurProgress = MaxProgress;
 		CSharpCodeProvider codeProvider = new CSharpCodeProvider ();
 		CodeGeneratorOptions options = new CodeGeneratorOptions ();
 		var writer = new StringWriter ();

@@ -49,12 +49,15 @@ public class ContextSwitchesPlugin : ScriptEnginePlugin
 	{
 		ops = Engine.GetPlugin<EventFunctionOperators> ();
 		var components = Engine.FindTypesCastableTo<MonoBehaviour> ();
+		MaxProgress = components.Count;
 		foreach (var cmp in components)
 		{
+			CurProgress++;
 			ContextSwitchInterpreter inter = new ContextSwitchInterpreter (cmp, Engine);
 			Debug.Log ("context " + inter.Engine);
 			ops.AddInterpreter (NameTranslator.ScriptNameFromCSharp (cmp.Name), inter);
 		}
+		CurProgress = MaxProgress;
 		var goInter = new ContextSwitchInterpreter (typeof(GameObject), Engine);
 	}
 }

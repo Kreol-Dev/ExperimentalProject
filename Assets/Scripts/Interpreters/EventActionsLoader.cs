@@ -8,6 +8,7 @@ using System.IO;
 using System.CodeDom.Compiler;
 using System.Reflection;
 using System;
+using System.Threading;
 
 
 public abstract class EventAction
@@ -49,8 +50,12 @@ public class EventActionsLoader : ScriptInterpreter
 
 	public override void Interpret (Script script)
 	{
+		MaxProgress = script.Entries.Count;
 		for (int i = 0; i < script.Entries.Count; i++)
 		{
+			if (!Engine.Working)
+				Thread.CurrentThread.Abort ();
+			CurProgress = i;
 			var entry = script.Entries [i];
 			CodeTypeDeclaration codeType = new CodeTypeDeclaration ();
 			codeType.BaseTypes.Add (new CodeTypeReference (typeof(EventAction)));
@@ -103,7 +108,7 @@ public class EventActionsLoader : ScriptInterpreter
 			}
 
 		}
-
+		CurProgress = MaxProgress;
 		foreach (var type in codeTypes)
 		{
 			cNamespace.Types.Add (type);

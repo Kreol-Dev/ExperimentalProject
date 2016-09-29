@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using InternalDSL;
 using System;
+using System.Threading;
 
 public class Script
 {
@@ -12,9 +13,11 @@ public class Script
 	public List<Operator> Entries { get; internal set; }
 
 	ScriptInterpreter interpreter;
+	ScriptEngine engine;
 
-	public Script (string name, ScriptInterpreter interpreter)
+	public Script (string name, ScriptInterpreter interpreter, ScriptEngine engine)
 	{
+		this.engine = engine;
 		Name = name;
 		Entries = new List<Operator> ();
 		this.interpreter = interpreter;
@@ -40,7 +43,11 @@ public class Script
 			var rootNode = parser.Parse ();
 			Root root = new Root (rootNode);
 			for (int i = 0; i < root.Operators.Count; i++)
+			{
+				if (!engine.Working)
+					Thread.CurrentThread.Abort ();
 				Entries.Add (root.Operators [i]);
+			}
 		} catch (Exception e)
 		{
 			Debug.Log (e);

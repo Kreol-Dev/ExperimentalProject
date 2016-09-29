@@ -9,12 +9,14 @@ using System.Linq;
 
 public class ScriptEngine
 {
-	
+	public bool Working = true;
 	List<Type> allTypes = new List<Type> ();
 
 	public IEnumerable<Assembly> Addons { get; internal set; }
 
 	Dictionary<Type, ScriptEnginePlugin> plugins = new Dictionary<Type, ScriptEnginePlugin> ();
+
+	public Dictionary<Type, ScriptEnginePlugin>.ValueCollection Plugins { get { return plugins.Values; } }
 
 	public ScriptEngine (IEnumerable<Assembly> addons)
 	{
@@ -46,9 +48,11 @@ public class ScriptEngine
 	{
 		foreach (var pluginPair in plugins)
 		{
-			pluginPair.Value.Init ();
+			pluginPair.Value.Kickstart ();
 		}
 	}
+
+	public int PluginsCount { get { return plugins.Count; } }
 
 	public T GetPlugin<T> () where T : ScriptEnginePlugin
 	{

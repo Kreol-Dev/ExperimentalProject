@@ -21,7 +21,7 @@ public class BasicLoader : MonoBehaviour
 	// Use this for initialization
 	public ScriptEngine Engine { get; private set; }
 
-
+	List<ProgressBar> pluginBars = new List<ProgressBar> ();
 	System.Random random = new System.Random ();
 
 	public class ExternalFunctions
@@ -100,14 +100,22 @@ public class BasicLoader : MonoBehaviour
 
 	Thread compileThread;
 
+	void OnDestroy ()
+	{
+		Engine.Working = false;
+	}
+
 	IEnumerator LoadCoroutine ()
 	{
-		
+
 		List<Assembly> addons = new List<Assembly> ();
 		Engine = new ScriptEngine (addons);
 		var dirInfo = new DirectoryInfo ("Mods");
 		DateTime lastWriteTime = DateTime.MinValue;
 		var ExternalFunctions = Engine.GetPlugin<ExternalFunctionsPlugin> ();
+		var bars = FindObjectOfType<ProgressBarSet> ();
+		for (int i = 0; i < Engine.PluginsCount; i++)
+			pluginBars.Add (bars.CreateBar (Color.blue));
 		ExternalFunctions.Load ();
 		foreach (var eFunctions in EFunctions)
 			ExternalFunctions.AddProvider (eFunctions.Provider, eFunctions.Functions);
@@ -132,6 +140,7 @@ public class BasicLoader : MonoBehaviour
 			loadedAsms.Add ("BlackboardsData");
 			bbloader = new BlackboardsLoader (Engine);
 			bbloader.Init ();
+			eaBar = FindObjectOfType<ProgressBarSet> ().CreateBar (Color.green);
 			compileThread = new Thread (() => ExternalFunctions.Setup (OnExternalsCompiled));
 			compileThread.Start ();
 		} else
@@ -148,6 +157,8 @@ public class BasicLoader : MonoBehaviour
 
 			yield return null;
 
+			foreach (var bar in this.pluginBars)
+				bar.Expire ();
 			if (Loaded != null)
 				Loaded ();
 			//AppDomain.CurrentDomain.Load()
@@ -160,12 +171,20 @@ public class BasicLoader : MonoBehaviour
 	}
 
 	BlackboardsLoader bbloader;
+	ProgressBar eaBar;
 
 	void OnExternalsCompiled ()
 	{
-		
-		EventActionsLoader loader = new EventActionsLoader ("generators", Engine);
-		Script genScript = new Script ("generators", loader);
+		var loader = new EventActionsLoader ("generators", Engine);
+		loader.CurProgressUpdated += x => eaBar.CurValue = x;
+		loader.CurProgressUpdated += x => {
+			if (x == eaBar.MaxValue)
+			{
+				eaBar.Expire ();
+			}
+		};
+		loader.MaxProgressResolved += x => eaBar.MaxValue = x;
+		Script genScript = new Script ("generators", loader, Engine);
 		genScript.LoadFile ("Mods/test.def");
 
 
@@ -174,18 +193,40 @@ public class BasicLoader : MonoBehaviour
 		bbloader.AddType (typeof(float), "float");
 		bbloader.AddType (typeof(string), "string");
 		bbloader.AddType (typeof(bool), "bool");
-		Script blackboardsScript = new Script ("blackboards", bbloader);
+		Script blackboardsScript = new Script ("blackboards", bbloader, Engine);
 		blackboardsScript.LoadFile ("Mods/blackboards.def");
 
 		foreach (var entry in genScript.Entries)
 			Debug.Log (entry);
 
 		blackboardsScript.Interpret ();
+		int pluginId = 0;
+		foreach (var plugin in Engine.Plugins)
+		{
+			var bar = pluginBars [pluginId++];
+			plugin.CurProgressUpdated += x => bar.CurValue = x;
+			plugin.CurProgressUpdated += x => {
+				if (x == bar.MaxValue)
+				{
+					bar.Expire ();
+				}
+			};
+			plugin.MaxProgressResolved += x => bar.MaxValue = x;
+			plugin.MaxProgressResolved += x => {
+				if (x == -1)
+				{
+					bar.Expire ();
+				}
+			};
+		}
 		Engine.InitPlugins ();
+
 		genScript.Interpret ();
 		var compiler = Engine.GetPlugin<ScriptCompiler> ();
 		compiler.Compile (OnAssemblyCompiled);
 	}
+
+
 
 	HashSet<string> loadedAsms = new HashSet<string> ();
 
