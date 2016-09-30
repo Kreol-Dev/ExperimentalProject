@@ -8,6 +8,8 @@ using System.Threading;
 
 public class Script
 {
+	public ProgressIndicator Progress;
+
 	public string Name { get; internal set; }
 
 	public List<Operator> Entries { get; internal set; }
@@ -42,6 +44,10 @@ public class Script
 		{
 			var rootNode = parser.Parse ();
 			Root root = new Root (rootNode);
+			int startProgress = Progress.CurProgress;
+			root.Progress.CurProgressUpdated += x => Progress.CurProgress = startProgress + x;
+			root.Progress.MaxProgressResolved += x => Progress.MaxProgress += x;
+			root.Init ();
 			for (int i = 0; i < root.Operators.Count; i++)
 			{
 				if (!engine.Working)

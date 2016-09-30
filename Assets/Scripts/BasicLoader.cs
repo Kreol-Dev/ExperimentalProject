@@ -114,6 +114,7 @@ public class BasicLoader : MonoBehaviour
 		DateTime lastWriteTime = DateTime.MinValue;
 		var ExternalFunctions = Engine.GetPlugin<ExternalFunctionsPlugin> ();
 		var bars = FindObjectOfType<ProgressBarSet> ();
+		genBar = bars.CreateBar (Color.yellow);
 		for (int i = 0; i < Engine.PluginsCount; i++)
 			pluginBars.Add (bars.CreateBar (Color.blue));
 		ExternalFunctions.Load ();
@@ -172,6 +173,7 @@ public class BasicLoader : MonoBehaviour
 
 	BlackboardsLoader bbloader;
 	ProgressBar eaBar;
+	ProgressBar genBar;
 
 	void OnExternalsCompiled ()
 	{
@@ -185,8 +187,17 @@ public class BasicLoader : MonoBehaviour
 		};
 		loader.MaxProgressResolved += x => eaBar.MaxValue = x;
 		Script genScript = new Script ("generators", loader, Engine);
+		genScript.Progress.CurProgressUpdated += x => genBar.CurValue = x;
+		genScript.Progress.CurProgressUpdated += x => {
+			if (x == genBar.MaxValue)
+			{
+				genBar.Expire ();
+			}
+		};
+		genScript.Progress.MaxProgressResolved += x => genBar.MaxValue = x;
 		genScript.LoadFile ("Mods/test.def");
 
+	
 
 		bbloader.AddType (typeof(GameObject), "gameobject");
 		bbloader.AddType (typeof(int), "int");

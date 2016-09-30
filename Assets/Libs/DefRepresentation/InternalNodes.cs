@@ -13,12 +13,24 @@ namespace InternalDSL
 	{
 		public List<Operator> Operators { get; internal set; }
 
+		public ProgressIndicator Progress;
+		Node n;
+
 		public Root (Node n)
+		{
+			this.n = n;
+		}
+
+		public void Init ()
 		{
 			Operators = new List<Operator> ();
 			int count = n.Count;
+			Progress.MaxProgress = count;
 			for (int i = 0; i < count; i++)
+			{
 				Operators.Add (new Operator (n.GetChildAt (i)));
+				Progress.CurProgress++;
+			}
 		}
 
 		public void Show ()

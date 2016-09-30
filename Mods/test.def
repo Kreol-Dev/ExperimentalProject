@@ -209,3 +209,50 @@ destroy_self =
 		destroy = root
 	}
 }
+
+
+story_start = 
+{
+	scope = markers.fit(has_marker(init_node) and not has_marker(story_set)) 
+	utility = 1
+	action = 
+	{
+
+		markers.set_marker = story_set
+		generate(s_node) =
+		{
+			story_node = yes
+			markers = yes
+		}
+
+	}
+}
+
+story_basic_decomposition = 
+{
+	scope = markers.story_node.fit(not has_marker(decomposed))
+	utility = 1
+	action = 
+	{
+		markers.set_marker = decomposed
+		generate(c_node) = 
+		{
+			conflict_node = yes
+			node_connections =
+			{
+				add_to(nodes) = root
+			}
+		}
+		generate(r_node) =
+		{
+			result_node = yes
+			node_connections = 
+			{
+				add_to(nodes) = root
+				add_to(nodes) = c_node
+			}
+		} 
+
+		c_node.node_connections.add_to(nodes) = r_node
+	}
+}

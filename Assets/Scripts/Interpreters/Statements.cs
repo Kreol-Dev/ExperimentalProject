@@ -80,6 +80,9 @@ public class DeclareVariableStatement
 //		{
 //			return string.Format("var {0}")
 //		}
+		if (InitExpression != null && InitExpression.Length > 0 && InitExpression [InitExpression.Length - 1] == '.')
+			InitExpression = InitExpression.Substring (0, InitExpression.Length - 1);
+			
 		if (IsArg || IsHidden)
 			return "";
 		if (!IsDeclaration)

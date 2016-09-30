@@ -59,3 +59,18 @@ aged_generation = {
 historical_person = yes
 send_team_event = yes
 
+node_connections =
+{
+	nodes = list(gameobject)
+}
+story_node = yes
+conflict_node = yes
+result_node = yes
+faction_node = yes
+goal_node = yes
+heroes_node = yes
+hero_node = yes
+state_node = yes
+location_node = yes
+myth_source_node = yes
+person_node = yes

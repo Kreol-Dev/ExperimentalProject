@@ -1321,4 +1321,211 @@ namespace generators {
 		}
         }
     }
+    
+    public class story_start : EventAction {
+        
+        public override bool Filter() {
+
+		{
+			var root = this.root;
+			
+			//ContextStatement External External ContextSwitchInterpreter
+			System.Boolean applicable = false; //IsContext = False IsNew = False
+			
+			System.Boolean OperandVar209 = default(System.Boolean); //IsContext = False IsNew = False
+			Markers StoredVariable201 = ((Markers)root.GetComponent(typeof(Markers))); //IsContext = False IsNew = False
+			if(StoredVariable201 != null)
+			{
+				System.Boolean ifResult202; //IsContext = False IsNew = False
+				
+				System.Boolean OperandVar205 = default(System.Boolean); //IsContext = False IsNew = False
+				System.String OperandVar203 = default(System.String); //IsContext = False IsNew = False
+				OperandVar203 = "init_node";
+				System.Boolean prop204 = StoredVariable201.HasMarker( (OperandVar203)); //IsContext = False IsNew = False
+				OperandVar205 = prop204;
+				
+				System.Boolean OperandVar208 = default(System.Boolean); //IsContext = False IsNew = False
+				System.String OperandVar206 = default(System.String); //IsContext = False IsNew = False
+				OperandVar206 = "story_set";
+				System.Boolean prop207 = StoredVariable201.HasMarker( (OperandVar206)); //IsContext = False IsNew = False
+				OperandVar208 = prop207;
+				if(ifResult202 = ( ( (OperandVar205))) && ( (!(OperandVar208))))
+				{
+					applicable = true;
+					OperandVar209 = applicable;
+				}
+			}
+			return (System.Boolean) (OperandVar209);
+		}
+        }
+        
+        public override float Utility() {
+
+		{
+			var root = this.root;
+			
+			//ContextStatement External External ContextSwitchInterpreter
+			System.Single ut = 0; //IsContext = False IsNew = False
+			
+			
+			return (System.Single) (1f);
+		}
+        }
+        
+        public override void Action() {
+
+		{
+			var root = this.root;
+			
+			//ContextStatement External External ContextSwitchInterpreter
+			
+			
+			{
+				Markers subContext210 = (Markers)root.GetComponent(typeof(Markers)); //IsContext = True IsNew = False
+				//ContextStatement Markers subContext210 ContextSwitchInterpreter
+				if(subContext210 != null)
+				{
+					System.String OperandVar211 = default(System.String); //IsContext = False IsNew = False
+					OperandVar211 = "story_set";
+					subContext210.SetMarker(( (OperandVar211)).ToString());
+				}
+			}
+			UnityEngine.GameObject s_node = new UnityEngine.GameObject("s_node"); //IsContext = False IsNew = False
+			
+			{
+				UnityEngine.GameObject s_node212 = s_node; //IsContext = True IsNew = False
+				Blackboards.story_node AddContext213 = (Blackboards.story_node)s_node.AddComponent(typeof(Blackboards.story_node)); //IsContext = True IsNew = True
+				Markers AddContext214 = (Markers)s_node.AddComponent(typeof(Markers)); //IsContext = True IsNew = True
+			}
+			UnityEngine.Object.FindObjectOfType<Generators>().Generate(s_node);
+		}
+        }
+    }
+    
+    public class story_basic_decomposition : EventAction {
+        
+        public override bool Filter() {
+
+		{
+			var root = this.root;
+			
+			//ContextStatement External External ContextSwitchInterpreter
+			System.Boolean applicable = false; //IsContext = False IsNew = False
+			
+			System.Boolean OperandVar221 = default(System.Boolean); //IsContext = False IsNew = False
+			Markers StoredVariable215 = ((Markers)root.GetComponent(typeof(Markers))); //IsContext = False IsNew = False
+			if(StoredVariable215 != null)
+			{
+				Blackboards.story_node StoredVariable216 = ((Blackboards.story_node)StoredVariable215.GetComponent(typeof(Blackboards.story_node))); //IsContext = False IsNew = False
+				if(StoredVariable216 != null)
+				{
+					System.Boolean ifResult217; //IsContext = False IsNew = False
+					System.Boolean OperandVar220 = default(System.Boolean); //IsContext = False IsNew = False
+					System.String OperandVar218 = default(System.String); //IsContext = False IsNew = False
+					OperandVar218 = "decomposed";
+					System.Boolean prop219 = StoredVariable215.HasMarker( (OperandVar218)); //IsContext = False IsNew = False
+					OperandVar220 = prop219;
+					if(ifResult217 = !(OperandVar220))
+					{
+						applicable = true;
+						OperandVar221 = applicable;
+					}
+				}
+			}
+			return (System.Boolean) (OperandVar221);
+		}
+        }
+        
+        public override float Utility() {
+
+		{
+			var root = this.root;
+			
+			//ContextStatement External External ContextSwitchInterpreter
+			System.Single ut = 0; //IsContext = False IsNew = False
+			
+			
+			return (System.Single) (1f);
+		}
+        }
+        
+        public override void Action() {
+
+		{
+			var root = this.root;
+			
+			//ContextStatement External External ContextSwitchInterpreter
+			
+			
+			{
+				Markers subContext222 = (Markers)root.GetComponent(typeof(Markers)); //IsContext = True IsNew = False
+				//ContextStatement Markers subContext222 ContextSwitchInterpreter
+				if(subContext222 != null)
+				{
+					System.String OperandVar223 = default(System.String); //IsContext = False IsNew = False
+					OperandVar223 = "decomposed";
+					subContext222.SetMarker(( (OperandVar223)).ToString());
+				}
+			}
+			UnityEngine.GameObject c_node = new UnityEngine.GameObject("c_node"); //IsContext = False IsNew = False
+			
+			{
+				UnityEngine.GameObject c_node224 = c_node; //IsContext = True IsNew = False
+				Blackboards.conflict_node AddContext225 = (Blackboards.conflict_node)c_node.AddComponent(typeof(Blackboards.conflict_node)); //IsContext = True IsNew = True
+				Blackboards.node_connections AddContext226 = (Blackboards.node_connections)c_node.AddComponent(typeof(Blackboards.node_connections)); //IsContext = True IsNew = True
+				
+				{
+					//ContextStatement Blackboards.node_connections AddContext226 ContextSwitchInterpreter
+					if(AddContext226 != null)
+					{
+						UnityEngine.GameObject OperandVar227 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
+						OperandVar227 = root;
+						AddContext226.Nodes.Add( (OperandVar227));
+					}
+				}
+			}
+			UnityEngine.Object.FindObjectOfType<Generators>().Generate(c_node);
+			UnityEngine.GameObject r_node = new UnityEngine.GameObject("r_node"); //IsContext = False IsNew = False
+			
+			{
+				UnityEngine.GameObject r_node228 = r_node; //IsContext = True IsNew = False
+				Blackboards.result_node AddContext229 = (Blackboards.result_node)r_node.AddComponent(typeof(Blackboards.result_node)); //IsContext = True IsNew = True
+				Blackboards.node_connections AddContext230 = (Blackboards.node_connections)r_node.AddComponent(typeof(Blackboards.node_connections)); //IsContext = True IsNew = True
+				
+				{
+					//ContextStatement Blackboards.node_connections AddContext230 ContextSwitchInterpreter
+					if(AddContext230 != null)
+					{
+						UnityEngine.GameObject OperandVar231 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
+						OperandVar231 = root;
+						AddContext230.Nodes.Add( (OperandVar231));
+						UnityEngine.GameObject OperandVar232 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
+						OperandVar232 = c_node;
+						AddContext230.Nodes.Add( (OperandVar232));
+					}
+				}
+			}
+			UnityEngine.Object.FindObjectOfType<Generators>().Generate(r_node);
+			
+			{
+				UnityEngine.GameObject subContext233 = c_node; //IsContext = True IsNew = False
+				//ContextStatement UnityEngine.GameObject subContext233 ContextPropertySwitchInterpreter
+				if(subContext233 != null)
+				{
+					
+					{
+						Blackboards.node_connections subContext234 = (Blackboards.node_connections)subContext233.GetComponent(typeof(Blackboards.node_connections)); //IsContext = True IsNew = False
+						//ContextStatement Blackboards.node_connections subContext234 ContextSwitchInterpreter
+						if(subContext234 != null)
+						{
+							UnityEngine.GameObject OperandVar235 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
+							OperandVar235 = r_node;
+							subContext234.Nodes.Add( (OperandVar235));
+						}
+					}
+				}
+			}
+		}
+        }
+    }
 }
