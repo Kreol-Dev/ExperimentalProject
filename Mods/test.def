@@ -221,38 +221,95 @@ story_start =
 		markers.set_marker = story_set
 		generate(s_node) =
 		{
+			tale_node = yes
 			story_node = yes
 			markers = yes
 		}
+		s_node.tale_node.is_active = yes
 
 	}
 }
 
 story_basic_decomposition = 
 {
-	scope = markers.story_node.fit(not has_marker(decomposed))
+	scope = markers.story_node.tale_node.fit(not has_marker(decomposed) and is_active)
 	utility = 1
 	action = 
 	{
 		markers.set_marker = decomposed
 		generate(c_node) = 
 		{
+			markers = yes
+			tale_node = yes
 			conflict_node = yes
-			node_connections =
+		}
+		generate(c_r_node) = 
+		{
+			markers = yes
+			tale_node = yes
+			conflict_resolution_node =
 			{
-				add_to(nodes) = root
+				conflict = c_node
 			}
 		}
 		generate(r_node) =
 		{
-			result_node = yes
-			node_connections = 
+			markers = yes
+			tale_node = yes
+			result_node = 
 			{
-				add_to(nodes) = root
-				add_to(nodes) = c_node
+				resolution = c_r_node
 			}
 		} 
+		generate(s_node) =
+		{
+			markers = yes
+			tale_node = yes
+			solution_node = 
+			{
+				cause = c_r_node
+			}
+		}
+		generate(cris_node) =
+		{
+			markers = yes
+			tale_node = yes
+			crisis_node = 
+			{
+				solution = s_node
+				cause = r_node
+			}
+		}
 
-		c_node.node_connections.add_to(nodes) = r_node
+		r_node.tale_node.is_active = yes
+		c_node = 
+		{
+			tale_node.is_active = yes
+		}
 	}
 }
+
+conflict_basic_decomposition = 
+{
+	scope = markers.conflict_node.tale_node.fit(not has_marker(decomposed) and is_active)
+	utility = 1
+	action = 
+	{
+		repeat(2) =
+		{
+			generate(f_node) =
+			{
+				tale_node = yes
+				faction_node = 
+				{
+					conflict = root
+				}
+				markers = yes
+			}
+			f_node.tale_node.is_active = yes
+		}
+		
+		markers.set_marker = decomposed
+	}
+}
+

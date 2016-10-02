@@ -21,6 +21,7 @@ public abstract class EventAction
 
 	public GameObject Root { get { return root; } set { root = value; } }
 
+
 	public virtual void Init ()
 	{
 		

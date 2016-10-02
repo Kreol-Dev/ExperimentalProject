@@ -9,7 +9,10 @@ public abstract class CardsHolderAdapter<T> : MonoBehaviour
 	void Start ()
 	{
 		holder = GetComponent<CardsHolder> ();
-		holder.CardDropped = OnCardDropped;
+		holder.CardDropped = c =>{
+			if (holder.Closed)
+				return false;
+			return OnCardDropped (c);};
 		holder.CardRemoved += OnCardRemoved;
 		Init ();
 	}

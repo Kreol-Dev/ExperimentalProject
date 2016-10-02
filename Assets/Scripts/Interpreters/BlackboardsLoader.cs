@@ -17,7 +17,9 @@ public class BlackboardsLoader  : ScriptInterpreter
 	Dictionary<string, Type> types = new Dictionary<string, Type> ();
 	CodeNamespace cNamespace = new CodeNamespace ();
 	Dictionary<string, CodeTypeDeclaration> codeTypes = new Dictionary<string, CodeTypeDeclaration> ();
+	//TODO: Actually create loaders
 	ScriptsLoader loader;
+	CodeTypeDeclaration loaderType = new CodeTypeDeclaration ("ResourcesManager");
 
 	public void Init ()
 	{
@@ -52,7 +54,12 @@ public class BlackboardsLoader  : ScriptInterpreter
 			if (!codeTypes.TryGetValue (entry.Identifier as string, out bbType))
 			{
 				bbType = new CodeTypeDeclaration (entry.Identifier as string);
-				bbType.BaseTypes.Add (new CodeTypeReference (typeof(MonoBehaviour)));
+				if (entry.Args.Count == 1)
+				{
+					bbType.BaseTypes.Add (new CodeTypeReference (typeof(ScriptableObject)));
+
+				} else
+					bbType.BaseTypes.Add (new CodeTypeReference (typeof(MonoBehaviour)));
 				cNamespace.Types.Add (bbType);
 				codeTypes.Add (entry.Identifier as string, bbType);
 			}

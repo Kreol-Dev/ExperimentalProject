@@ -17,7 +17,7 @@ public class Script
 	ScriptInterpreter interpreter;
 	ScriptEngine engine;
 
-	public Script (string name, ScriptInterpreter interpreter, ScriptEngine engine)
+	public Script (string name, ScriptInterpreter interpreter = null, ScriptEngine engine = null)
 	{
 		this.engine = engine;
 		Name = name;
@@ -50,8 +50,6 @@ public class Script
 			root.Init ();
 			for (int i = 0; i < root.Operators.Count; i++)
 			{
-				if (!engine.Working)
-					Thread.CurrentThread.Abort ();
 				Entries.Add (root.Operators [i]);
 			}
 		} catch (Exception e)

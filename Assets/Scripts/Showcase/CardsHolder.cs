@@ -6,13 +6,13 @@ using UnityEngine.Events;
 
 public class CardsHolder : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPointerExitHandler
 {
-	public Transform DragOverZone;
+	public RectTransform DragOverZone;
 	public bool Closed;
 
 	void Start ()
 	{
 		if (DragOverZone == null)
-			DragOverZone = GameObject.Find ("Canvas").transform;
+			DragOverZone = GameObject.Find ("Canvas").GetComponent<RectTransform> ();
 	}
 
 	public void OnPointerExit (PointerEventData eventData)

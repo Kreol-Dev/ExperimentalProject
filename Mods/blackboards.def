@@ -59,15 +59,40 @@ aged_generation = {
 historical_person = yes
 send_team_event = yes
 
-node_connections =
-{
-	nodes = list(gameobject)
-}
 story_node = yes
 conflict_node = yes
-result_node = yes
-faction_node = yes
+conflict_resolution_node = 
+{
+	conflict = gameobject
+}
+result_node = 
+{
+	resolution = gameobject
+}
+solution_node =
+{
+	cause = gameobject
+}
+crisis_node = 
+{
+	solution = gameobject
+	cause = gameobject
+}
+faction_node = 
+{
+	conflict = gameobject
+}
+
 goal_node = yes
+call_the_old_ones = 
+{
+	old_one = string
+}
+old_one_name(old_one_names) = 
+{
+	name = string
+}
+
 heroes_node = yes
 hero_node = yes
 state_node = yes
