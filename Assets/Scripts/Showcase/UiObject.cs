@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class UiObject : MonoBehaviour
 {
@@ -8,7 +9,37 @@ public class UiObject : MonoBehaviour
 	GameObject showedObject;
 
 
-	public GameObject ShowedObject { get { return showedObject; } set { showedObject = value; } }
+	public GameObject ShowedObject {
+		get { return showedObject; }
+		set
+		{
+			showedObject = value;
+			var ent = showedObject.GetComponent<Entity> ();
+			if (ent != null)
+			{
+				ent.OnDestruction (OnGODestoryed);
+			}
+		}
+	}
+
+	void OnGODestoryed (GameObject go)
+	{
+		showedObject = null;
+		Destroy (gameObject);
+	}
+
+	LayoutElement layout;
+
+	public LayoutElement Layout {
+		get
+		{
+			if (layout == null)
+				layout = gameObject.AddComponent<LayoutElement> ();
+			return layout;
+		}
+	}
+
+
 
 	void Awake ()
 	{

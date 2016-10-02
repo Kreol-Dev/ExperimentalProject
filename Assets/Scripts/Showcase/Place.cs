@@ -64,4 +64,9 @@ public class Place : MonoBehaviour
 public class PlaceMarker : MonoBehaviour
 {
 	public Place CurrentPlace { get; set; }
+
+	void OnDestroy ()
+	{
+		CurrentPlace.Detach (GetComponent<Agent> ());
+	}
 }

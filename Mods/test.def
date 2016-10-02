@@ -11,13 +11,7 @@ locations_filler =
 			{
 				generate(loc) = 
 				{
-					entity = 
-					{
-						on_destruction = 
-						{
-							entity.space_marker.current_space.detach = place
-						}
-					}
+					entity = yes
 					place = 
 					{
 						size = random(1, 3)
@@ -100,11 +94,7 @@ agents_pool_filler = {
 			size = 5
 			repeat(random(1,4)) = {
 				generate(ag) = {
-					entity = {
-						on_destruction = {
-							entity.place_marker.current_place.detach = agent
-						}
-					}
+					entity = yes
 					agent = yes
 					human = {
 						age = random(20, 45)
@@ -154,15 +144,7 @@ historical_persons =
 			size = 10
 			repeat(random(4,10)) = {
 				generate(old_ag) = {
-					entity = {
-						on_destruction = {
-							log = "detaching"
-							entity = {
-								e_agent = agent
-								place_marker.current_place.detach = e_agent
-							}
-						}
-					}
+					entity = yes
 					agent = yes
 					historical_person = yes
 					human = {
@@ -202,7 +184,7 @@ location_log =
 destroy_self = 
 {
 	scope = entity.agent.fit(act = yes and not dead)
-	utility = 0.00001
+	utility = 0.01
 	action = 
 	{
 		log = "Destroying self " + root
@@ -280,12 +262,12 @@ story_basic_decomposition =
 				cause = r_node
 			}
 		}
-
+		c_node.tale_node.is_active = yes
+		c_r_node.tale_node.is_active = yes
 		r_node.tale_node.is_active = yes
-		c_node = 
-		{
-			tale_node.is_active = yes
-		}
+		s_node.tale_node.is_active = yes
+		cris_node.tale_node.is_active = yes
+		
 	}
 }
 
@@ -313,3 +295,26 @@ conflict_basic_decomposition =
 	}
 }
 
+tale_ui_enlisting = 
+{
+	scope = markers.tale_node.fit(not has_marker(tale_enlisted))
+	utility = 1
+	action = 
+	{
+		generate(ui) =
+		{
+			ui_object =
+			{
+				showed_object = root
+				layout.min_height = 30
+			}
+			text_field =
+			{
+				layout.min_height = 20
+				show = stringify(root)
+			}
+		}
+		tales_ui_enlist = ui
+		markers.set_marker = tale_enlisted
+	}
+}

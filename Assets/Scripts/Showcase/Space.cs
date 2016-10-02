@@ -46,4 +46,9 @@ public class Space : MonoBehaviour
 public class SpaceMarker : MonoBehaviour
 {
 	public Space CurrentSpace { get; set; }
+
+	void OnDestroy ()
+	{
+		CurrentSpace.Detach (GetComponent<Place> ());
+	}
 }

@@ -35,8 +35,9 @@ namespace InternalDSL
 
 		public void Show ()
 		{
-			for (int i = 0; i < Operators.Count; i++)
-				Debug.Log (Operators [i]);
+			if (ScriptEngine.ParseDebug)
+				for (int i = 0; i < Operators.Count; i++)
+					Debug.Log (Operators [i]);
 		}
 	}
 
@@ -121,7 +122,8 @@ namespace InternalDSL
 				Content = Atom.FromNode (firstChild);
 			} else
 			{
-				Debug.Log (exprNode);
+				if (ScriptEngine.ParseDebug)
+					Debug.Log (exprNode);
 				Content = new Expression (exprNode, false);
 			}
 		}
@@ -281,7 +283,8 @@ namespace InternalDSL
 				Operands = new object[]{ atom };
 			} else
 			{
-				Debug.Log ("EXPR PARSE: " + exprNode);
+				if (ScriptEngine.ParseDebug)
+					Debug.Log ("EXPR PARSE: " + exprNode);
 				int childrenCount = exprNode.Count;
 				Operands = new object[childrenCount];
 				bool op = false;
@@ -296,7 +299,8 @@ namespace InternalDSL
 					} else
 					{
 						Operands [i] = new ExprAtom (childNode);
-						Debug.Log ((Operands [i] as ExprAtom).Content);
+						if (ScriptEngine.ParseDebug)
+							Debug.Log ((Operands [i] as ExprAtom).Content);
 						op = true;
 					}
 				}
@@ -377,7 +381,8 @@ namespace InternalDSL
 					return false;
 				}
 			}
-			Debug.Log (n);
+			if (ScriptEngine.ParseDebug)
+				Debug.Log (n);
 			return n;
 		}
 	}
@@ -399,12 +404,14 @@ namespace InternalDSL
 			var firstChild = n.GetChildAt (0);
 			if (firstChild.Id == (int)DefConstants.OPEN_TABLE)
 			{
-				Debug.Log ("It's a table");
+				if (ScriptEngine.ParseDebug)
+					Debug.Log ("It's a table");
 				//It's a table
 				if (argsNode != null)
 				{
 					//Input context is a value, while others - args
-					Debug.Log ("Input context is a value, while others - args");
+					if (ScriptEngine.ParseDebug)
+						Debug.Log ("Input context is a value, while others - args");
 					Operator op = new Operator ();
 					op.Identifier = "value";
 					op.Context = new Context (null, n);
@@ -417,25 +424,29 @@ namespace InternalDSL
 					if (listNode.GetChildAt (0).Id == (int)DefConstants.OPEN_TABLE)
 					{
 						//it's a list of structs
-						Debug.Log ("it's a list of structs");
+						if (ScriptEngine.ParseDebug)
+							Debug.Log ("it's a list of structs");
 					} else
 					{
 						int childrenCount = listNode.Count / 3;
 						if (listNode.Count > 1 && listNode.GetChildAt (1).Id == (int)DefConstants.EQUALS)
 						{
-							Debug.Log ("It's about operators");
+							if (ScriptEngine.ParseDebug)
+								Debug.Log ("It's about operators");
 							//It's about operators
 							for (int i = 0; i < childrenCount; i++)
 							{
 								var idNode = listNode.GetChildAt (i * 3);
 								var contextNode = listNode.GetChildAt (i * 3 + 2);
-								Debug.LogFormat ("{0} {1} {2} {3}", idNode, contextNode, i * 3, i * 3 + 2);
+								if (ScriptEngine.ParseDebug)
+									Debug.LogFormat ("{0} {1} {2} {3}", idNode, contextNode, i * 3, i * 3 + 2);
 								Operator op = new Operator (idNode, contextNode);
 								Entries.Add (op);
 							}
 						} else
 						{
-							Debug.Log ("It's about atoms");
+							if (ScriptEngine.ParseDebug)
+								Debug.Log ("It's about atoms");
 							//It's about atoms
 							//						Operator op = new Operator ();
 							//						op.Identifier = "list";
@@ -457,14 +468,15 @@ namespace InternalDSL
 			} else if (firstChild.Id == (int)DefConstants.EXPRESSION)
 			{
 
-				Debug.Log ("It's an expressions");
+				if (ScriptEngine.ParseDebug)
+					Debug.Log ("It's an expressions");
 //				if (argsNode == null)
 //					Entries.Add (new Expression (firstChild));
 //				else
 //				{
 				Entries.Add (new Expression (firstChild));
 //				}
-			} else
+			} else if (ScriptEngine.ParseDebug)
 				Debug.LogWarning ("It's a bug: " + firstChild);
 		}
 
@@ -508,31 +520,40 @@ namespace InternalDSL
 
 		public Operator (Node idNode, Node n)
 		{
-			Debug.Log ("Enter operator node:" + idNode.ToString () + n);
-			Debug.Log (idNode);
+			if (ScriptEngine.ParseDebug)
+				Debug.Log ("Enter operator node:" + idNode.ToString () + n);
+			if (ScriptEngine.ParseDebug)
+				Debug.Log (idNode);
 			var scopeSize = idNode.GetChildCount ();
 
 			if (scopeSize == 1)
 			{
 				var idOrCall = idNode.GetChildAt (0);
-				var stringWriter = new StringWriter ();
-				idOrCall.PrintTo (stringWriter);
-				Debug.Log (stringWriter);
+
+				if (ScriptEngine.ParseDebug)
+				{
+					var stringWriter = new StringWriter ();
+					idOrCall.PrintTo (stringWriter);
+					Debug.Log (stringWriter);
+				}
 				if (idOrCall.Count == 0)
 				{
-					Debug.Log ("It's a simple operator:" + idOrCall);
+					if (ScriptEngine.ParseDebug)
+						Debug.Log ("It's a simple operator:" + idOrCall);
 					//It's a simple operator
 					Identifier = (idOrCall as Token).Image;
 				} else
 				{
-					Debug.Log ("It's a function operator:" + idOrCall);
+					if (ScriptEngine.ParseDebug)
+						Debug.Log ("It's a function operator:" + idOrCall);
 					//It's a function-operator
 					Args = new List<Expression> ();
 					Identifier = (idOrCall.GetChildAt (0) as Token).Image;
 					var argsNode = idOrCall.GetChildAt (2);
 					if (argsNode != null)
 					{
-						Debug.Log ("Args: " + argsNode);
+						if (ScriptEngine.ParseDebug)
+							Debug.Log ("Args: " + argsNode);
 						//It's a function call with some arguments
 						if (argsNode.Id != (int)DefConstants.CLOSE_PARENT)
 						{
@@ -540,7 +561,8 @@ namespace InternalDSL
 							for (int i = 0; i < argsCount; i++)
 							{
 								var argNode = argsNode.GetChildAt (i * 2);
-								Debug.LogFormat ("Context arg: {0} in {1}", argNode, argsNode);
+								if (ScriptEngine.ParseDebug)
+									Debug.LogFormat ("Context arg: {0} in {1}", argNode, argsNode);
 								Expression expr = new Expression (argNode);
 								Args.Add (expr);
 							}
@@ -550,20 +572,24 @@ namespace InternalDSL
 				}
 			} else
 			{
-				Debug.Log ("Parsing scope: " + idNode);
+				if (ScriptEngine.ParseDebug)
+					Debug.Log ("Parsing scope: " + idNode);
 				var idScope = new Scope (idNode);
 				Identifier = idScope;
 			}
-			Debug.Log ("Now creating context");
+			if (ScriptEngine.ParseDebug)
+				Debug.Log ("Now creating context");
 			Context = new Context (null, n);
 			Init ();
 		}
 
 		public Operator (Node n)
 		{
-			Debug.Log ("Enter operator node:" + n);
+			if (ScriptEngine.ParseDebug)
+				Debug.Log ("Enter operator node:" + n);
 			var idNode = n.GetChildAt (0);
-			Debug.Log (idNode);
+			if (ScriptEngine.ParseDebug)
+				Debug.Log (idNode);
 			var scopeSize = idNode.GetChildCount ();
 			if (scopeSize == 1)
 			{
@@ -571,12 +597,14 @@ namespace InternalDSL
 				//Debug.Log (idOrCall);
 				if (idOrCall.Count == 1)
 				{
-					Debug.Log ("It's a simple operator:" + idOrCall.GetChildAt (0));
+					if (ScriptEngine.ParseDebug)
+						Debug.Log ("It's a simple operator:" + idOrCall.GetChildAt (0));
 					//It's a simple operator
 					Identifier = (idOrCall.GetChildAt (0) as Token).Image;
 				} else
 				{
-					Debug.Log ("It's a function operator:" + idOrCall.GetChildAt (0));
+					if (ScriptEngine.ParseDebug)
+						Debug.Log ("It's a function operator:" + idOrCall.GetChildAt (0));
 					//It's a function-operator
 					Identifier = (idOrCall.GetChildAt (0) as Token).Image;
 					var argsNode = idOrCall.GetChildAt (2);
@@ -595,12 +623,14 @@ namespace InternalDSL
 				}
 			} else
 			{
-				Debug.Log ("Parsing scope: " + idNode);
+				if (ScriptEngine.ParseDebug)
+					Debug.Log ("Parsing scope: " + idNode);
 				var idScope = new Scope (idNode);
 				Identifier = idScope;
 			}
 
-			Debug.Log ("Now creating context");
+			if (ScriptEngine.ParseDebug)
+				Debug.Log ("Now creating context");
 			Context = new Context (null, n.GetChildAt (2));
 			Init ();
 			//ctx.Entries = (valueOp.Context as Context).

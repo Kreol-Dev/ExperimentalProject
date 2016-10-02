@@ -87,7 +87,8 @@ public abstract class CardsUI<T> : MonoBehaviour
 	void OnPlaceDetached (GameObject go)
 	{
 		var cardGo = uiByPlace [go];
-		cardGo.transform.SetParent (temporaryCardsHolder);
+		if (cardGo != null)
+			cardGo.transform.SetParent (temporaryCardsHolder);
 		uiByPlace.Remove (go);
 	}
 }

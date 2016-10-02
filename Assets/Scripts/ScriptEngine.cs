@@ -10,6 +10,9 @@ using System.Linq;
 public class ScriptEngine
 {
 	public bool Working = true;
+	public const bool ParseDebug = false;
+	public const bool AnalyzeDebug = false;
+	public const bool CompileDebug = true;
 	List<Type> allTypes = new List<Type> ();
 
 	public IEnumerable<Assembly> Addons { get; internal set; }
