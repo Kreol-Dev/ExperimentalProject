@@ -1,0 +1,12 @@
+type=country_name
+
+Sordenne 
+Varnland 
+Terkanistan
+Liridia 
+Giranchia 
+Fursaya 
+Takkemaa 
+Sibitovya 
+Sheng-huan
+Errecia

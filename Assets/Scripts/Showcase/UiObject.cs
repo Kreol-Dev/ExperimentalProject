@@ -7,7 +7,7 @@ public class UiObject : MonoBehaviour
 {
 	[SerializeField]
 	GameObject showedObject;
-
+	static Generators gens;
 
 	public GameObject ShowedObject {
 		get { return showedObject; }
@@ -18,8 +18,17 @@ public class UiObject : MonoBehaviour
 			if (ent != null)
 			{
 				ent.OnDestruction (OnGODestoryed);
+				ent.ComponentAddedEvent += EntComponentAdded;
 			}
 		}
+	}
+
+	void EntComponentAdded ()
+	{
+		Debug.Log ("Regenerating ui for ", ShowedObject);
+		if (gens == null)
+			gens = FindObjectOfType<Generators> ();
+		gens.Generate (gameObject);
 	}
 
 	void OnGODestoryed (GameObject go)

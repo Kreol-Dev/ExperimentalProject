@@ -6,9 +6,10 @@ public delegate void GODelegate (GameObject entity);
 public class Entity : MonoBehaviour
 {
 
+	public event VoidDelegate ComponentAddedEvent;
+
 	void Awake ()
 	{
-		gameObject.AddComponent<CircleCollider2D> ().radius = 1;
 	}
 
 	public bool Dead { get; internal set; }
@@ -34,5 +35,11 @@ public class Entity : MonoBehaviour
 			onDestoryDelegate (gameObject);
 		onDestoryDelegate = null;
 		Destroy (gameObject);
+	}
+
+	public void ComponentAdded ()
+	{
+		if (ComponentAddedEvent != null)
+			ComponentAddedEvent ();
 	}
 }

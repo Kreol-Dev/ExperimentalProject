@@ -93,9 +93,23 @@ old_one_name(old_one_names) =
 	name = string
 }
 
-heroes_node = yes
+kingdom_node = yes
+
+heroes_node = 
+{
+	heroes = list(gameobject)
+}
 hero_node = yes
-state_node = yes
+state_node =
+{
+	head = gameobject
+	past_heads = list(gameobject)
+}
+head_of_state_node = 
+{
+	state = gameobject
+	previous = gameobject
+}
 location_node = yes
 myth_source_node = yes
 person_node = yes

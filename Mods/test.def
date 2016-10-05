@@ -19,7 +19,7 @@ locations_filler =
 					named = 
 					{
 						set("prefix", 0) = "Location of: "
-						set("main_name", 1) = random_name
+						set("main_name", 1) = random_name(human_name)
 					}
 				}
 
@@ -101,7 +101,7 @@ agents_pool_filler = {
 					}
 					named = {
 						set("prefix", 0) = "Agent: "
-						set("main_name", 1) = random_name
+						set("main_name", 1) = random_name(human_name)
 					}
 				}
 
@@ -152,7 +152,7 @@ historical_persons =
 					}
 					named = {
 						set("prefix", 0) = "Historical person: "
-						set("main_name", 1) = random_name
+						set("main_name", 1) = random_name(human_name)
 					}
 				}
 
@@ -167,7 +167,7 @@ change_name_historical_action =
 	scope = entity.historical_person.named.agent.fit(act = yes and not dead)
 	utility = 0.5
 	action = {
-		named.switch("main_name") = random_name
+		named.switch("main_name") = random_name(human_name)
 	}
 }
 
@@ -316,5 +316,74 @@ tale_ui_enlisting =
 		}
 		tales_ui_enlist = ui
 		markers.set_marker = tale_enlisted
+	}
+}
+
+
+faction_is_a_state = 
+{
+	scope = faction_node.markers.fit(not has_marker(faction_is_a_state))
+	utility = 1
+	action = 
+	{
+		create = state_node
+		markers.set_marker = faction_is_a_state
+	}
+}
+
+state_name = 
+{
+	scope = state_node.fit(not has(named))
+	utility = 1
+	action = 
+	{
+		create(named) = 
+		{
+			set("main_name", 0) = random_name(country_name)
+		}
+	}
+}
+
+state_head = 
+{
+	scope = state_node.tale_node.fit(not has(head) and is_active)
+	utility = 1
+	action = 
+	{
+		state_node = 
+		{
+			generate(head_of_state) = 
+			{	
+				markers = yes
+				person_node = yes
+				tale_node = yes
+				head_of_state_node = 
+				{
+					state = root
+				}
+				entity = 
+				{
+					on_destruction = 
+					{
+						add_to(past_heads) = head_of_state
+						root.state_node.head = no_one
+					}
+				}
+			}
+			head_of_state.tale_node.is_active = yes
+			head = head_of_state
+		}
+	}
+}
+
+state_head_name = 
+{
+	scope = head_of_state_node.fit(not has(named))
+	utility = 1
+	action = {
+		create(named) =
+		{
+			set(main_name, 0) = random_name(human_name)
+		}
 	}
 }

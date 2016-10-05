@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System;
 
 [CommonFunctionOperator ("create")]
-public class AddInterpreter : FunctionOperatorInterpreter
+public class CreationInterpreter : FunctionOperatorInterpreter
 {
 	EventFunctionOperators ops;
 	ContextSwitchesPlugin switches;
@@ -90,6 +90,28 @@ public class AddInterpreter : FunctionOperatorInterpreter
 			}
 		}
 
+
+		var entVar = block.FindStatement<DeclareVariableStatement> (v => v.ctxEntity == ctxVar && v.Type == typeof(Entity));
+		if (entVar == null)
+		{
+			entVar = new DeclareVariableStatement ();
+			entVar.Name = "EntVar" + DeclareVariableStatement.VariableId++;
+			entVar.Type = typeof(Entity);
+			entVar.ctxEntity = ctxVar;
+
+			entVar.InitExpression = String.Format ("(Entity){0}.GetComponent(typeof(Entity));", ctxVar);
+			block.Statements.Add (entVar);
+			var updateSt = new StatementStringContainer (String.Format ("if({0} != null) {0}.ComponentAdded();", entVar.Name));
+			entVar.Cnt = updateSt;
+			block.Statements.Add (updateSt);
+		} else
+		{
+			var updateSt = new StatementStringContainer (entVar.Cnt.Data);
+			entVar.Cnt.Data = "";
+			entVar.Cnt = updateSt;
+			block.Statements.Add (updateSt);
+		}
+
 		if (cmpVar != null)
 			cmpVar.IsContext = false;
 
@@ -100,6 +122,21 @@ public class AddInterpreter : FunctionOperatorInterpreter
 	public override bool Match (InternalDSL.Operator op, FunctionBlock block)
 	{
 		return false;
+	}
+}
+
+public class StatementStringContainer
+{
+	public string Data;
+
+	public StatementStringContainer (string data)
+	{
+		Data = data;
+	}
+
+	public override string ToString ()
+	{
+		return Data;
 	}
 }
 

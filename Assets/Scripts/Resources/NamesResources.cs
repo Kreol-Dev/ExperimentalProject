@@ -7,26 +7,44 @@ using System.IO;
 public class NamesResources : MonoBehaviour
 {
 
-	List<string> firstNames = new List<string> ();
-	List<string> secondNames = new List<string> ();
+	Dictionary<string, List<string>> names = new Dictionary<string, List<string>> ();
 
 	void Awake ()
 	{
-		var names = File.ReadAllLines ("Mods/names.txt");
-		foreach (var name in names)
-			firstNames.Add (name);
 
-		names = File.ReadAllLines ("Mods/second_names.txt");
-		foreach (var name in names)
-			secondNames.Add (name);
+		var nameFiles = Directory.GetFiles ("Mods/names");
+		foreach (var nameFile in nameFiles)
+		{
+			var lines = File.ReadAllLines (nameFile);
+
+			var typeLine = lines [0];
+			var typePart = typeLine.Split ('=') [1];
+
+			List<string> list = null;
+			if (!names.TryGetValue (typePart, out list))
+			{
+				list = new List<string> ();
+				names.Add (typePart, list);
+			}
+			for (int i = 1; i < lines.Length; i++)
+			{
+				if (lines [i] != "")
+					list.Add (lines [i]);
+			}
+		}
+
 		FindObjectOfType<BasicLoader> ().EFunctions.Add (new BasicLoader.ExternalFunctions (this, "RandomName"));
 	}
 
 	System.Random random = new System.Random ();
 
-	public string RandomName ()
+	public string RandomName (string type)
 	{
-		return firstNames [random.Next (0, firstNames.Count)];
+		List<string> list = null;
+		if (!names.TryGetValue (type, out list))
+			return "no_such_category " + type;
+		
+		return list [random.Next (0, list.Count)];
 	}
 }
 

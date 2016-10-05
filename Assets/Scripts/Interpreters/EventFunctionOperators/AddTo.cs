@@ -25,7 +25,7 @@ public class AddToListOperator : FunctionOperatorInterpreter
 				return;
 			}
 			var listName = NameTranslator.CSharpNameFromScript (part as string);
-			DeclareVariableStatement declareVar = block.FindStatement<DeclareVariableStatement> (v => v.IsContext);
+			DeclareVariableStatement declareVar = block.FindStatement<DeclareVariableStatement> (v => v.IsContext && v.Type.GetProperty (listName) != null);
 			//Debug.Log (declareVar.DebugString ());
 			if (declareVar == null)
 			{

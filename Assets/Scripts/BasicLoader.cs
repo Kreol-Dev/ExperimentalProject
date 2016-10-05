@@ -142,7 +142,14 @@ public class BasicLoader : MonoBehaviour
 			bbloader = new BlackboardsLoader (Engine);
 			bbloader.Init ();
 			eaBar = FindObjectOfType<ProgressBarSet> ().CreateBar (Color.green);
-			compileThread = new Thread (() => ExternalFunctions.Setup (OnExternalsCompiled));
+			compileThread = new Thread (() => {
+				try
+				{
+					ExternalFunctions.Setup (OnExternalsCompiled);
+				} catch (Exception e)
+				{
+					Debug.LogException (e);
+				}});
 			compileThread.Start ();
 		} else
 		{
