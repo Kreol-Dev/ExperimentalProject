@@ -50,7 +50,8 @@ public class Card : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
 
 	public void OnDrag (PointerEventData eventData)
 	{
-		
+		if (!Movable)
+			return;
 		//transform.position = eventData.position;
 		transform.position += (Vector3)eventData.delta;
 	}

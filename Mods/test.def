@@ -205,6 +205,7 @@ story_start =
 		{
 			tale_node = yes
 			story_node = yes
+			entity = yes
 			markers = yes
 		}
 		s_node.tale_node.is_active = yes
@@ -223,12 +224,14 @@ story_basic_decomposition =
 		{
 			markers = yes
 			tale_node = yes
+			entity = yes
 			conflict_node = yes
 		}
 		generate(c_r_node) = 
 		{
 			markers = yes
 			tale_node = yes
+			entity = yes
 			conflict_resolution_node =
 			{
 				conflict = c_node
@@ -246,6 +249,7 @@ story_basic_decomposition =
 		generate(s_node) =
 		{
 			markers = yes
+			entity = yes
 			tale_node = yes
 			solution_node = 
 			{
@@ -254,6 +258,7 @@ story_basic_decomposition =
 		}
 		generate(cris_node) =
 		{
+			entity = yes
 			markers = yes
 			tale_node = yes
 			crisis_node = 
@@ -282,6 +287,7 @@ conflict_basic_decomposition =
 			generate(f_node) =
 			{
 				tale_node = yes
+				entity = yes
 				faction_node = 
 				{
 					conflict = root

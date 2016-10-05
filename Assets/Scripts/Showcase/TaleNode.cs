@@ -26,6 +26,7 @@ public class TaleNode : MonoBehaviour
 		{
 			gens.GenerateMostUseful (gameObject, 0.1f);
 			yield return null;
+
 		}
 	}
 
