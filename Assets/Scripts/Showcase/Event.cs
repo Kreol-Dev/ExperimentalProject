@@ -1,37 +1,31 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System.Collections.Generic;
+
+public static class Event<T> where T : MonoBehaviour
+{
+	public static T Invoke (GameObject context)
+	{
+		GameObject eventObject = new GameObject ();
+		eventObject.AddComponent<Event> ().Context = context;
+		eventObject.AddComponent<Markers> ();
+		var t = eventObject.AddComponent<T> ();
+		return t;
+	}
+}
 
 public class Event : MonoBehaviour
 {
+	public GameObject Context { get; set; }
 
-	public string Description { get; internal set; }
+	static Generators gens;
 
-	public List<Reaction> Reactions = new List<Reaction> ();
-
-	public void Reaction (GameObject reaction)
+	void Start ()
 	{
-		Reactions.Add (reaction.GetComponent<Reaction> ());
+		if (gens == null)
+			gens = FindObjectOfType<Generators> ();
+		gens.Generate (gameObject);
+		Destroy (gameObject);
 	}
 }
 
-public class Reaction : MonoBehaviour
-{
-	public string Id { get; internal set; }
-
-	public string Description { get; internal set; }
-
-	VoidDelegate act;
-
-	public void OnChosen (VoidDelegate act)
-	{
-		this.act = act;
-	}
-
-	public void React ()
-	{
-		act ();
-	}
-		
-}
 

@@ -8,6 +8,7 @@ public class UiObject : MonoBehaviour
 	[SerializeField]
 	GameObject showedObject;
 	static Generators gens;
+	public bool ShoudFit = true;
 
 	public GameObject ShowedObject {
 		get { return showedObject; }
@@ -17,7 +18,7 @@ public class UiObject : MonoBehaviour
 			var ent = showedObject.GetComponent<Entity> ();
 			if (ent != null)
 			{
-				ent.OnDestruction (OnGODestoryed);
+				ent.Destoryed += OnGODestoryed;
 				ent.ComponentAddedEvent += EntComponentAdded;
 			}
 		}
@@ -56,6 +57,13 @@ public class UiObject : MonoBehaviour
 			gameObject.AddComponent<Markers> ();
 	}
 
+	void Start ()
+	{
+		if (gameObject.GetComponent<LayoutElement> () == null && ShoudFit)
+		{
+			gameObject.AddComponent<ContentSizeFitter> ().verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+		}
+	}
 }
 
 public delegate bool BoolDelegate ();

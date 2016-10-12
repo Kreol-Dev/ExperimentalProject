@@ -46,7 +46,6 @@ named_ui =
 				}
 				layout.min_height = 20
 			}
-			
 		}
 	}
 }
@@ -312,7 +311,6 @@ tale_ui_enlisting =
 			ui_object =
 			{
 				showed_object = root
-				layout.min_height = 30
 			}
 			text_field =
 			{
@@ -367,14 +365,7 @@ state_head =
 				{
 					state = root
 				}
-				entity = 
-				{
-					on_destruction = 
-					{
-						add_to(past_heads) = head_of_state
-						root.state_node.head = no_one
-					}
-				}
+				entity = yes
 			}
 			head_of_state.tale_node.is_active = yes
 			head = head_of_state
@@ -382,6 +373,16 @@ state_head =
 	}
 }
 
+state_head_death = 
+{
+	scope = event.markers.entity_death_event.fit(context.fit(has(head_of_state_node)) and not has_marker(state_head_death_reacted))
+	utility = 1
+	action = 
+	{
+		markers.set_marker = state_head_death_reacted
+		event.context.head_of_state_node.state.state_node.head = no_one
+	}
+}
 state_head_name = 
 {
 	scope = head_of_state_node.fit(not has(named))

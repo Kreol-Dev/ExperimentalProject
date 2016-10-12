@@ -20,20 +20,17 @@ public class Entity : MonoBehaviour
 		StartCoroutine (DeathCoroutine ());
 	}
 
-	event GODelegate onDestoryDelegate;
-
-	public void OnDestruction (GODelegate del)
-	{
-		onDestoryDelegate += del;
-	}
+	public event GODelegate Destoryed;
 
 	IEnumerator DeathCoroutine ()
 	{
 		yield return null;
 		Debug.Log ("Death " + gameObject, gameObject);
-		if (onDestoryDelegate != null)
-			onDestoryDelegate (gameObject);
-		onDestoryDelegate = null;
+		Event<EntityDeathEvent>.Invoke (gameObject);
+		if (Destoryed != null)
+			Destoryed (gameObject);
+
+		yield return null;
 		Destroy (gameObject);
 	}
 
@@ -43,3 +40,10 @@ public class Entity : MonoBehaviour
 			ComponentAddedEvent ();
 	}
 }
+
+
+public class EntityDeathEvent : MonoBehaviour
+{
+	
+}
+

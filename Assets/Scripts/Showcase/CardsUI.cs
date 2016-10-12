@@ -68,7 +68,7 @@ public abstract class CardsUI<T> : MonoBehaviour
 			gens.Generate (placeUIGO);
 			uiByPlace.Add (go, placeUIGO);
 			cardsByCreation.Add (go, placeUIGO);
-			go.GetComponent<Entity> ().OnDestruction (OnEntityDestroyed);
+			go.GetComponent<Entity> ().Destoryed += OnEntityDestroyed;
 		} else
 		{
 

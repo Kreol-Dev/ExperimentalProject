@@ -12,6 +12,7 @@ public class Named : MonoBehaviour
 	public string FullName {
 		get
 		{
+			//should localise here
 			if (changed || cachedName == null)
 			{
 				nameBuilder.Length = 0;
