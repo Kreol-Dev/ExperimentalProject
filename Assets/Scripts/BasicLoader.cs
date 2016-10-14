@@ -68,7 +68,7 @@ public class BasicLoader : MonoBehaviour
 			((GameObject)obj).GetComponent<Entity> ().Destroy ();
 		} else if (obj is MonoBehaviour)
 		{
-			UnityEngine.Object.Destroy ((obj as MonoBehaviour).gameObject);
+			((MonoBehaviour)obj).GetComponent<Entity> ().Destroy ();
 		}
 	}
 

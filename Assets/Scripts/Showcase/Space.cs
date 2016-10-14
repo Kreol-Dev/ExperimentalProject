@@ -51,4 +51,11 @@ public class SpaceMarker : MonoBehaviour
 	{
 		CurrentSpace.Detach (GetComponent<Place> ());
 	}
+
+	void Start ()
+	{
+		var place = GetComponent<Place> ();
+		if (!CurrentSpace.Places.Contains (place))
+			CurrentSpace.Attach (place);
+	}
 }

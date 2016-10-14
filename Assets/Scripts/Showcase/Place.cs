@@ -69,4 +69,11 @@ public class PlaceMarker : MonoBehaviour
 	{
 		CurrentPlace.Detach (GetComponent<Agent> ());
 	}
+
+	void Start ()
+	{
+		var agent = GetComponent<Agent> ();
+		if (!CurrentPlace.Agents.Contains (agent))
+			CurrentPlace.Attach (agent);
+	}
 }

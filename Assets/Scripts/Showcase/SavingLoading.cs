@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.IO;
+using System.Linq.Expressions;
 
 public class SavingLoading : MonoBehaviour
 {
@@ -40,7 +41,6 @@ public class SavingLoading : MonoBehaviour
 	{
 		loadedObjects.Clear ();
 		JObject saveFileObject = new JObject ();
-
 		foreach (var obj in savedObjects)
 		{
 			var token = Serialize (obj);
@@ -73,13 +73,134 @@ public class SavingLoading : MonoBehaviour
 		return srz.Serialize (obj);
 
 	}
+
+	public void PostResolveRequest (Serializer.ResolveReferenceRequest request)
+	{
+		
+	}
+
+	public int SetAsRef (Object obj)
+	{
+		int refId = nextId++;
+		objectToRef.Add (obj, refId);
+		return refId;
+	}
 }
 
 public class Serializer
 {
+	static ScriptEngine engine;
+	static SavingLoading savingLoading;
+
 	public Serializer (System.Type type)
 	{
+		InitByType (type);
+	}
+
+	public delegate void TargetNodeDelegate (Object target, JObject node);
+
+
+	public delegate void ResolveReference (Object target, Object resolvedRef);
+
+	public class ResolveReferenceRequest
+	{
+		public Object Target;
+		public int RefID;
+		public ResolveReference ResolveLambda;
+
+		public ResolveReferenceRequest (Object target, int refId, ResolveReference resolveLambda)
+		{
+			Target = target;
+			RefID = refId;
+			ResolveLambda = resolveLambda;
+		}
+
+		public void Resolve (Object resolvedRef)
+		{
+			ResolveLambda (Target, resolvedRef);
+		}
+	}
+
+	public Serializer (string typeName)
+	{
+		if (engine == null)
+			engine = Object.FindObjectOfType<BasicLoader> ().Engine;
+		var type = engine.FindType (typeName);
+		InitByType (type);
 		
+	}
+
+	void InitByType (System.Type type)
+	{
+		var props = type.GetProperties ();
+		var targetArg = Expression.Parameter (typeof(Object), "target");
+		var nodeArg = Expression.Parameter (typeof(JObject), "node");
+		var convertTargetArg = Expression.Convert (targetArg, type);
+		//loading
+		List<TargetNodeDelegate> loadingDelegates = new List<TargetNodeDelegate> ();
+		List<TargetNodeDelegate> savingDelegates = new List<TargetNodeDelegate> ();
+		foreach (var prop in props)
+		{
+
+			Expression exprBody = null;
+
+			if (!prop.PropertyType.IsClass || prop.PropertyType == typeof(string))
+			{
+				//load directly
+
+				var nodeGetValue = Expression.Convert (Expression.ArrayIndex (nodeArg, Expression.Constant (prop.Name)), prop.PropertyType);
+				var assignProp = Expression.Call (convertTargetArg, prop.GetSetMethod (), nodeGetValue);
+				exprBody = assignProp;
+			} else
+			{
+				//load indirectly
+				var refArg = Expression.Parameter (typeof(Object), "ref");
+				var convertRefArg = Expression.Convert (refArg, prop.PropertyType);
+
+				var assignProp = Expression.Call (convertTargetArg, prop.GetSetMethod (), convertRefArg);
+
+				var resolveLambda = Expression.Lambda<ResolveReference> (assignProp, targetArg, refArg).Compile ();
+
+				var nodeGetValue = Expression.Call (typeof(int), "Parse", new System.Type[]{ typeof(string) }, Expression.ArrayIndex (nodeArg, Expression.Constant (prop.Name)));
+
+				var createRequest = Expression.New (typeof(ResolveReferenceRequest).GetConstructor (new System.Type[] { }), new Expression[] {
+					targetArg,
+					nodeGetValue,
+					Expression.Constant (resolveLambda)
+				});
+
+				var postRequest = Expression.Call (Expression.Constant (savingLoading), typeof(SavingLoading).GetMethod ("PostResolveRequest"), createRequest);
+				exprBody = postRequest;
+			}
+
+			var loadLambda = Expression.Lambda<TargetNodeDelegate> (exprBody, targetArg, nodeArg);
+			var loadCall = loadLambda.Compile ();
+			loadingDelegates.Add (loadCall);
+		}
+
+	
+
+		//saving
+		foreach (var prop in props)
+		{
+
+			Expression exprBody = null;
+
+			if (!prop.PropertyType.IsClass || prop.PropertyType == typeof(string))
+			{
+				var nodeGetValue = Expression.Call (convertTargetArg, prop.GetGetMethod ());//Expression.Convert (Expression.ArrayIndex (nodeArg, Expression.Constant (prop.Name)), prop.PropertyType);
+				var addToNode = Expression.Call (nodeArg, "Add", new System.Type[] { typeof(string), typeof(JToken) }, Expression.Constant (prop.Name), nodeGetValue);
+				exprBody = addToNode;
+			} else
+			{
+				
+			}
+			var saveLambda = Expression.Lambda<TargetNodeDelegate> (exprBody, targetArg, nodeArg);
+			var saveCall = saveLambda.Compile ();
+			savingDelegates.Add (saveCall);
+		}
+
+
 	}
 
 	public Object Deserialize (JObject data)
@@ -89,6 +210,7 @@ public class Serializer
 
 	public JObject Serialize (Object obj)
 	{
-		
+		return null;
 	}
 }
+

@@ -109,6 +109,14 @@ public class ScriptEngine
 		return types;
 	}
 
+	public Type FindType (string name)
+	{
+		foreach (var type in allTypes)
+			if (type.FullName == name)
+				return type;
+		return null;
+	}
+
 	int count = 0;
 
 	public void AddAssembly (Assembly asm)

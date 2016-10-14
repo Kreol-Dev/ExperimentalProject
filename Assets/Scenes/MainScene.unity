@@ -288,6 +288,48 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   showedObject: {fileID: 1701650310}
   ShoudFit: 0
+--- !u!1 &282835527
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 282835529}
+  - 114: {fileID: 282835528}
+  m_Layer: 0
+  m_Name: SavingLoading
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &282835528
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 282835527}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: baf1ca7e81a390c4293e8aa2a42424a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IsLoading: 0
+  SaveFilePath: 
+--- !u!4 &282835529
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 282835527}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 362.79443, y: 403.16934, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
 --- !u!1 &361815121
 GameObject:
   m_ObjectHideFlags: 0
@@ -1319,7 +1361,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Height: 20
-  Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+  Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 3}
 --- !u!222 &1423411640
 CanvasRenderer:
   m_ObjectHideFlags: 0
