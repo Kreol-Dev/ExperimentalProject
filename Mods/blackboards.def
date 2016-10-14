@@ -1,6 +1,6 @@
 personality =
 {
-	brave = float
+	brave = int
 	rational = float
 	optimistic = float
 	cruel = float

@@ -26,7 +26,7 @@ public class UiObject : MonoBehaviour
 
 	void EntComponentAdded ()
 	{
-		Debug.Log ("Regenerating ui for ", ShowedObject);
+		Debug.LogFormat ("Regenerating ui for {0}", ShowedObject);
 		if (gens == null)
 			gens = FindObjectOfType<Generators> ();
 		gens.Generate (gameObject);
@@ -53,6 +53,7 @@ public class UiObject : MonoBehaviour
 
 	void Awake ()
 	{
+		
 		if (GetComponent<Markers> () == null)
 			gameObject.AddComponent<Markers> ();
 	}
