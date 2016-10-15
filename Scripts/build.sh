@@ -69,7 +69,8 @@ chmod +x ./butler
 touch butler_creds
 
 echo -n "QJ52f9O5QV0Zyz20Vk6i30U4Lc70QrNq1bix0z3w" > butler_creds
-
+echo butler_creds
+chmod +0600 butler_creds
 sudo ./butler push windows_build.zip avras-chismar/experimentalproject:windows -i butler_creds
 sudo ./butler push osx_build.zip avras-chismar/experimentalproject:mac -i butler_creds
 sudo ./butler push linux_build.zip avras-chismar/experimentalproject:linux -i butler_creds
