@@ -113,7 +113,7 @@ public class BasicLoader : MonoBehaviour
 
 		List<Assembly> addons = new List<Assembly> ();
 		Engine.Init (addons);
-		var dirInfo = new DirectoryInfo ("Mods");
+		var dirInfo = new DirectoryInfo ("StreamingAssets/Mods");
 		DateTime lastWriteTime = DateTime.MinValue;
 		var ExternalFunctions = Engine.GetPlugin<ExternalFunctionsPlugin> ();
 		var bars = FindObjectOfType<ProgressBarSet> ();
@@ -159,11 +159,11 @@ public class BasicLoader : MonoBehaviour
 			Debug.Log ("Loading dlls");
 			yield return null;
 			//Load dlls
-			var asm = Assembly.LoadFile ("DLLs/ExternalCode.dll");
+			var asm = Assembly.LoadFile ("StreamingAssets/DLLs/ExternalCode.dll");
 			ExternalFunctions.OnCompiled (asm);
-			asm = Assembly.LoadFile ("DLLs/BlackboardsData.dll");
+			asm = Assembly.LoadFile ("StreamingAssets/DLLs/BlackboardsData.dll");
 			Engine.AddAssembly (asm);
-			asm = Assembly.LoadFile ("DLLs/Content.dll");
+			asm = Assembly.LoadFile ("StreamingAssets/DLLs/Content.dll");
 			Engine.AddAssembly (asm);
 
 			yield return null;
@@ -205,7 +205,7 @@ public class BasicLoader : MonoBehaviour
 			}
 		};
 		genScript.Progress.MaxProgressResolved += x => genBar.MaxValue = x;
-		genScript.LoadFile ("Mods/test.def");
+		genScript.LoadFile ("StreamingAssets/Mods/test.def");
 
 	
 
@@ -215,7 +215,7 @@ public class BasicLoader : MonoBehaviour
 		bbloader.AddType (typeof(string), "string");
 		bbloader.AddType (typeof(bool), "bool");
 		Script blackboardsScript = new Script ("blackboards", bbloader, Engine);
-		blackboardsScript.LoadFile ("Mods/blackboards.def");
+		blackboardsScript.LoadFile ("StreamingAssets/Mods/blackboards.def");
 
 		foreach (var entry in genScript.Entries)
 			Debug.Log (entry);

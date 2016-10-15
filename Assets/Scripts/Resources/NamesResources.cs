@@ -12,7 +12,7 @@ public class NamesResources : MonoBehaviour
 	void Awake ()
 	{
 
-		var nameFiles = Directory.GetFiles ("Mods/names");
+		var nameFiles = Directory.GetFiles ("StreamingAssets/Mods/names");
 		foreach (var nameFile in nameFiles)
 		{
 			var lines = File.ReadAllLines (nameFile);

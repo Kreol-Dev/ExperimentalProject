@@ -48,7 +48,7 @@ public class ObjectsLoader<T> where T : ScriptableObject
 
 	public void Load ()
 	{
-		var files = Directory.GetFiles ("Mods/" + dir);
+		var files = Directory.GetFiles ("StreamingAssets/Mods/" + dir);
 		Script dataScript = new Script ("data");
 		foreach (var file in files)
 		{
