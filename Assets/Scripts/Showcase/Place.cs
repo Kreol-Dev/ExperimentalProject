@@ -67,13 +67,22 @@ public class PlaceMarker : MonoBehaviour
 
 	void OnDestroy ()
 	{
-		CurrentPlace.Detach (GetComponent<Agent> ());
+		if (CurrentPlace != null)
+			CurrentPlace.Detach (GetComponent<Agent> ());
 	}
 
 	void Start ()
 	{
 		var agent = GetComponent<Agent> ();
 		if (!CurrentPlace.Agents.Contains (agent))
-			CurrentPlace.Attach (agent);
+		if (!CurrentPlace.Attach (agent))
+		{
+			CurrentPlace = null;
+			var ent = GetComponent<Entity> ();
+			if (ent != null)
+				ent.Destroy ();
+			else
+				Destroy (gameObject);
+		}
 	}
 }

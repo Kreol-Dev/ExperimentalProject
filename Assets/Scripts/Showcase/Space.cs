@@ -49,13 +49,22 @@ public class SpaceMarker : MonoBehaviour
 
 	void OnDestroy ()
 	{
-		CurrentSpace.Detach (GetComponent<Place> ());
+		if (CurrentSpace != null)
+			CurrentSpace.Detach (GetComponent<Place> ());
 	}
 
 	void Start ()
 	{
 		var place = GetComponent<Place> ();
 		if (!CurrentSpace.Places.Contains (place))
-			CurrentSpace.Attach (place);
+		if (!CurrentSpace.Attach (place))
+		{
+			CurrentSpace = null;
+			var ent = GetComponent<Entity> ();
+			if (ent != null)
+				ent.Destroy ();
+			else
+				Destroy (gameObject);
+		}
 	}
 }
