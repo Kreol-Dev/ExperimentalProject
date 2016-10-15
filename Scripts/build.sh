@@ -15,7 +15,7 @@ echo "Attempting to build $project for Windows"
   -nographics \
   -silent-crashes \
   -logFile ./unity.log \
-  -projectPath ./ \
+  -projectPath "./" \
   -buildWindowsPlayer "./Build/windows/$project.exe" \
   -quit
 rm -r "./Build/windows/DLLs"
@@ -32,7 +32,7 @@ echo "Attempting to build $project for OS X"
   -nographics \
   -silent-crashes \
   -logFile ./unity.log \
-  -projectPath ./ \
+  -projectPath "./" \
   -buildOSXUniversalPlayer "./Build/osx/$project.app" \
   -quit
 rm -r "./Build/osx/DLLs"
@@ -50,7 +50,7 @@ echo "Attempting to build $project for Linux"
   -nographics \
   -silent-crashes \
   -logFile ./unity.log \
-  -projectPath ./ \
+  -projectPath "./" \
   -buildLinuxUniversalPlayer "./Build/linux/$project" \
   -quit
 rm -r "./Build/linux/DLLs"
@@ -68,7 +68,7 @@ wget https://dl.itch.ovh/butler/darwin-amd64/head/butler
 chmod +x ./butler
 touch butler_creds
 
-echo -n "fNu0R940tzoUPhX12NK73i2d3FA3yueXAWt4t5l4" > butler_creds
+echo -n "QJ52f9O5QV0Zyz20Vk6i30U4Lc70QrNq1bix0z3w" > butler_creds
 
 sudo ./butler push windows_build.zip avras-chismar/experimentalproject:windows -i butler_creds
 sudo ./butler push osx_build.zip avras-chismar/experimentalproject:mac -i butler_creds
