@@ -1,6 +1,6 @@
 language: objective-c
 install:
- - sudo apt-get update
+ - sudo apt-get -qq update
  - sudo apt-get install libc6:i386 libstdc++6:i386
  - ./Scripts/install.sh
 script:

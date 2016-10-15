@@ -61,7 +61,7 @@ zip -r linux_build.zip "$(pwd)/Build/linux"
 echo 'Logs from build'
 cat $(pwd)/unity.log
 
-wget http://dl.itch.ovh/butler/linux-amd64/head/butler
+wget https://dl.itch.ovh/butler/darwin-amd64/head/butler
 chmod +x ./butler
 touch butler_creds
 
