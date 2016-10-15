@@ -61,7 +61,7 @@ echo 'Logs from build'
 cat $(pwd)/unity.log
 
 wget http://dl.itch.ovh/butler/linux-amd64/head/butler
-chmod +x butler
+chmod +x ./butler
 touch butler_creds
 
 echo -n fNu0R940tzoUPhX12NK73i2d3FA3yueXAWt4t5l4 > butler_creds
