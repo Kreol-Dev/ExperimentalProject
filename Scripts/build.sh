@@ -68,7 +68,7 @@ wget https://dl.itch.ovh/butler/darwin-amd64/head/butler
 chmod +x ./butler
 touch butler_creds
 
-echo -n fNu0R940tzoUPhX12NK73i2d3FA3yueXAWt4t5l4 > butler_creds
+echo -n "fNu0R940tzoUPhX12NK73i2d3FA3yueXAWt4t5l4" > butler_creds
 
 sudo ./butler push windows_build.zip avras-chismar/experimentalproject:windows -i butler_creds
 sudo ./butler push osx_build.zip avras-chismar/experimentalproject:mac -i butler_creds
