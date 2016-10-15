@@ -43,7 +43,7 @@ public class Named : MonoBehaviour
 
 	bool changed = false;
 
-	public Dictionary<string, NamePart> Names { get; internal set; }
+	public Dictionary<string, NamePart> Names { get; set; }
 
 	void Awake ()
 	{

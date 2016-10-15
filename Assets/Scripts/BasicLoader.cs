@@ -19,7 +19,9 @@ public class BasicLoader : MonoBehaviour
 {
 
 	// Use this for initialization
-	public ScriptEngine Engine { get; private set; }
+	ScriptEngine engine = new ScriptEngine ();
+
+	public ScriptEngine Engine { get { return engine; } }
 
 	List<ProgressBar> pluginBars = new List<ProgressBar> ();
 	System.Random random = new System.Random ();
@@ -45,7 +47,8 @@ public class BasicLoader : MonoBehaviour
 
 	void Awake ()
 	{
-
+		var loader = FindObjectOfType<SavingLoading> ();
+		Loaded += () => loader.IsLoading = false;
 	}
 
 
@@ -109,7 +112,7 @@ public class BasicLoader : MonoBehaviour
 	{
 
 		List<Assembly> addons = new List<Assembly> ();
-		Engine = new ScriptEngine (addons);
+		Engine.Init (addons);
 		var dirInfo = new DirectoryInfo ("Mods");
 		DateTime lastWriteTime = DateTime.MinValue;
 		var ExternalFunctions = Engine.GetPlugin<ExternalFunctionsPlugin> ();

@@ -12,11 +12,17 @@ using System.Reflection;
 public class SavingLoading : MonoBehaviour
 {
 	Dictionary<int, Object> loadedObjects = new Dictionary<int, Object> ();
+
+	public void Loaded (Object obj, int refId)
+	{
+		loadedObjects.Add (refId, obj);
+	}
+
 	List<Object> savedObjects = new List<Object> ();
 	Dictionary<Object, int> objectToRef = new Dictionary<Object, int> ();
 	Dictionary<System.Type, ISerializer> serializers = new Dictionary<System.Type, ISerializer> ();
 
-	public bool IsLoading = false;
+	public bool IsLoading = true;
 
 	public string SaveFilePath;
 
@@ -31,23 +37,44 @@ public class SavingLoading : MonoBehaviour
 		serializers.Add (typeof(GameObject), new GameobjectSerializer ());
 	}
 
+	List<ObjectSerializer.ResolveReferenceRequest> refRequests = new List<ObjectSerializer.ResolveReferenceRequest> ();
 
 	public void Load ()
 	{
+		refRequests.Clear ();
 		loadedObjects.Clear ();
 		TextReader textReader = new StreamReader (SaveFilePath);
 		JsonReader jsonReader = new JsonTextReader (textReader);
 		JObject saveFileObject = JObject.Load (jsonReader);
+		var engine = FindObjectOfType<BasicLoader> ().Engine;
 		foreach (var child in saveFileObject)
 		{
 			int refId = int.Parse (child.Key);
 			JObject objData = child.Value as JObject;
-			var typeValue = objData ["type"] as JValue;
-			System.Type type = null;
-			ISerializer srz = serializers [type];
-			loadedObjects.Add (refId, srz.Deserialize (objData));
-		}
+			ISerializer srz = serializers [typeof(GameObject)];
+			GameObject go = new GameObject ();
 
+			srz.Deserialize (go, objData);
+			Loaded (go, refId);
+		}
+		foreach (var refRequest in refRequests)
+		{
+			if (refRequest.RefID == "null")
+				continue;
+			int refID = 0;
+			if (int.TryParse (refRequest.RefID, out refID))
+			{
+				Object resolvedRef = null;
+				loadedObjects.TryGetValue (refID, out resolvedRef);
+				refRequest.ResolveLambda (refRequest.Target, resolvedRef);
+			} else
+			{
+				if (refRequest.CmpType == typeof(GameObject))
+					refRequest.ResolveLambda (refRequest.Target, GameObject.Find (refRequest.RefID));
+				else
+					refRequest.ResolveLambda (refRequest.Target, GameObject.Find (refRequest.RefID).GetComponent (refRequest.CmpType));
+			}
+		}
 	}
 
 	int nextId = 0;
@@ -96,7 +123,7 @@ public class SavingLoading : MonoBehaviour
 
 	public void PostResolveRequest (ObjectSerializer.ResolveReferenceRequest request)
 	{
-		
+		refRequests.Add (request);
 	}
 
 	public int SetAsRef (Object obj)
@@ -108,6 +135,26 @@ public class SavingLoading : MonoBehaviour
 		int refId = nextId++;
 		objectToRef.Add (obj, refId);
 		return refId;
+	}
+
+	public string SaveAsRef (Object obj)
+	{
+		if (obj == null)
+			return "null";
+		if (obj is GameObject)
+		{
+			if ((obj as GameObject).GetComponent<NonSerializable> () != null)
+				return (obj as GameObject).name;
+		} else if (obj is MonoBehaviour)
+		{
+			if ((obj as MonoBehaviour).GetComponent<NonSerializable> () != null)
+				return (obj as MonoBehaviour).name;
+		}
+		if (objectToRef.ContainsKey (obj))
+			return objectToRef [obj].ToString ();
+		int refId = nextId++;
+		objectToRef.Add (obj, refId);
+		return refId.ToString ();
 	}
 
 	public ISerializer GetSerializer (System.Type type)
@@ -126,7 +173,7 @@ public class SavingLoading : MonoBehaviour
 
 public interface ISerializer
 {
-	Object Deserialize (JObject data);
+	void Deserialize (Object obj, JObject data);
 
 	JObject Serialize (Object obj);
 }
@@ -155,14 +202,16 @@ public class ObjectSerializer : ISerializer
 	public class ResolveReferenceRequest
 	{
 		public Object Target;
-		public int RefID;
+		public string RefID;
 		public ResolveReference ResolveLambda;
+		public System.Type CmpType;
 
-		public ResolveReferenceRequest (Object target, int refId, ResolveReference resolveLambda)
+		public ResolveReferenceRequest (Object target, string refId, ResolveReference resolveLambda, System.Type cmpType)
 		{
 			Target = target;
 			RefID = refId;
 			ResolveLambda = resolveLambda;
+			CmpType = cmpType;
 		}
 
 		public void Resolve (Object resolvedRef)
@@ -186,6 +235,12 @@ public class ObjectSerializer : ISerializer
 	List<TargetNodeDelegate> loadingDelegates;
 	List<TargetNodeDelegate> savingDelegates;
 
+	JValue LogValueType (JValue v)
+	{
+		Debug.Log (v.Value.GetType ());
+		return v;
+	}
+
 	void InitByType (System.Type type)
 	{
 		this.type = type;
@@ -200,55 +255,89 @@ public class ObjectSerializer : ISerializer
 		//loading
 		loadingDelegates = new List<TargetNodeDelegate> ();
 		savingDelegates = new List<TargetNodeDelegate> ();
-//		foreach (var prop in props)
-//		{
-//
-//			Expression exprBody = null;
-//
-//			if (!prop.PropertyType.IsSubclassOf (typeof(UnityEngine.Object)))
-//			{
-//				//load directly
-//
-//				var nodeGetValue = Expression.Call (Expression.Call (nodeArg, typeof(JObject).GetMethod ("GetValue", new System.Type[]{ typeof(string) }), Expression.Constant (prop.Name)), prop.PropertyType);
-//				var setMethod = prop.GetSetMethod ();
-//				if (setMethod == null)
-//					continue;
-//				var assignProp = Expression.Call (convertTargetArg, setMethod, nodeGetValue);
-//				exprBody = assignProp;
-//			} else
-//			{
-//				//load indirectly
-//				var refArg = Expression.Parameter (typeof(Object), "ref");
-//				var convertRefArg = Expression.Convert (refArg, prop.PropertyType);
-//				var setMethod = prop.GetSetMethod ();
-//				if (setMethod == null)
-//					continue;
-//				var assignProp = Expression.Call (convertTargetArg, setMethod, convertRefArg);
-//
-//				var resolveLambda = Expression.Lambda<ResolveReference> (assignProp, targetArg, refArg).Compile ();
-//
-//				var nodeGetValue = Expression.Call (typeof(int), "Parse", new System.Type[]{ typeof(string) }, Expression.Call (nodeArg, typeof(JObject).GetMethod ("GetValue", new System.Type[]{ typeof(string) }), Expression.Constant (prop.Name)));
-//
-//				var createRequest = Expression.New (typeof(ResolveReferenceRequest).GetConstructor (new System.Type[] { }), new Expression[] {
-//					targetArg,
-//					nodeGetValue,
-//					Expression.Constant (resolveLambda)
-//				});
-//
-//				var postRequest = Expression.Call (Expression.Constant (savingLoading), typeof(SavingLoading).GetMethod ("PostResolveRequest"), createRequest);
-//				exprBody = postRequest;
-//			}
-//
-//			var loadLambda = Expression.Lambda<TargetNodeDelegate> (exprBody, targetArg, nodeArg);
-//			var loadCall = loadLambda.Compile ();
-//			loadingDelegates.Add (loadCall);
-//		}
+		foreach (var prop in props)
+		{
+			if (!prop.CanWrite)
+				continue;
+			Expression exprBody = null;
+
+			if (!prop.PropertyType.IsSubclassOf (typeof(UnityEngine.Object)))
+			{
+				//load directly
+				Expression nodeGetValue = null;
+				if (prop.PropertyType == typeof(string) || prop.PropertyType == typeof(float) ||
+				    prop.PropertyType == typeof(bool) || prop.PropertyType == typeof(int))
+				{
+					Debug.LogFormat ("{0} - {1} primitive", type, prop);
+					var getValueMethod = typeof(JObject).GetMethod ("GetValue", new System.Type[]{ typeof(string) });
+					var call = Expression.Call (nodeArg, getValueMethod, Expression.Constant (prop.Name, typeof(string)));
+					var convert = Expression.Convert (Expression.TypeAs (call, typeof(JValue)), prop.PropertyType);
+					nodeGetValue = convert;
+
+				} else
+				{
+					Debug.LogFormat ("{0} - {1} object", type, prop);
+					var getValueMethod = typeof(JObject).GetMethod ("GetValue", new System.Type[]{ typeof(string) });
+					var getValueCall = Expression.Call (nodeArg, getValueMethod, Expression.Constant (prop.Name, typeof(string)));
+					var toObjectMethod = typeof(JToken).GetMethod ("ToObject", new [] { typeof(System.Type) });
+					var toObjectCall = Expression.Call (getValueCall, toObjectMethod, Expression.Constant (prop.PropertyType, typeof(System.Type)));
+					var convert = Expression.Convert (toObjectCall, prop.PropertyType);
+					nodeGetValue = convert;
+				}
+
+				var setMethod = prop.GetSetMethod ();
+				if (setMethod == null)
+					continue;
+				var assignProp = Expression.Call (convertTargetArg, setMethod, nodeGetValue);
+				exprBody = assignProp;
+			} else
+			{
+				//load indirectly
+				Debug.LogFormat ("{0} - {1} ref", type, prop);
+				var refArg = Expression.Parameter (typeof(Object), "ref");
+				var convertRefArg = Expression.Convert (refArg, prop.PropertyType);
+				var setMethod = prop.GetSetMethod ();
+				if (setMethod == null)
+					continue;
+				var assignProp = Expression.Call (convertTargetArg, setMethod, convertRefArg);
+
+				var resolveLambda = Expression.Lambda<ResolveReference> (assignProp, targetArg, refArg).Compile ();
+
+				var parseMethod = typeof(int).GetMethod ("Parse", new System.Type[]{ typeof(string) });
+				var getValueMethod = typeof(JObject).GetMethod ("GetValue", new System.Type[]{ typeof(string) });
+				var getValueCall = Expression.Call (nodeArg, getValueMethod, Expression.Constant (prop.Name, typeof(string)));
+				var convert = Expression.Convert (Expression.Property (Expression.Convert (getValueCall, typeof(JValue)), "Value"), typeof(string));
+
+				var ctor = typeof(ResolveReferenceRequest).GetConstructor (new System.Type[] {
+					typeof(UnityEngine.Object),
+					typeof(string),
+					typeof(ResolveReference),
+					typeof(System.Type)
+				});
+				var createRequest = Expression.New (ctor, new Expression[] {
+					targetArg,
+					convert,
+					Expression.Constant (resolveLambda),
+					Expression.Constant (prop.PropertyType, typeof(System.Type))
+				});
+
+				var postRequest = Expression.Call (Expression.Constant (savingLoading), typeof(SavingLoading).GetMethod ("PostResolveRequest"), createRequest);
+				exprBody = postRequest;
+			}
+
+			var loadLambda = Expression.Lambda<TargetNodeDelegate> (exprBody, targetArg, nodeArg);
+			var loadCall = loadLambda.Compile ();
+			loadingDelegates.Add (loadCall);
+
+		}
 
 
 		//saving
 	
 		foreach (var prop in props)
 		{
+			if (!prop.CanWrite)
+				continue;
 			debugBuilder.AppendLine (prop.Name);
 			Expression exprBody = null;
 
@@ -285,7 +374,7 @@ public class ObjectSerializer : ISerializer
 
 				Debug.LogWarning ("as ref prop " + prop.Name, savingLoading);
 				Debug.Log (savingLoading);
-				var postId = Expression.Call (Expression.Constant (savingLoading, typeof(SavingLoading)), typeof(SavingLoading).GetMethod ("SetAsRef"), Expression.Call (convertTargetArg, prop.GetGetMethod ()));
+				var postId = Expression.Call (Expression.Constant (savingLoading, typeof(SavingLoading)), typeof(SavingLoading).GetMethod ("SaveAsRef"), Expression.Call (convertTargetArg, prop.GetGetMethod ()));
 				var addToNode = Expression.Call (nodeArg, typeof(JObject).GetMethod ("Add", new System.Type[] {
 					typeof(string),
 					typeof(JToken)
@@ -308,15 +397,18 @@ public class ObjectSerializer : ISerializer
 		Debug.Log (debugBuilder);
 	}
 
-	public Object Deserialize (JObject data)
+	public void Deserialize (Object obj, JObject data)
 	{
-		return null;
+		foreach (var loadLambda in loadingDelegates)
+			loadLambda (obj, data);
+	
+
 	}
 
 	public JObject Serialize (Object obj)
 	{
 		JObject jObj = new JObject ();
-		jObj.Add ("lambda", type.FullName);
+		jObj.Add ("type", type.FullName);
 		foreach (var saveLambda in savingDelegates)
 			saveLambda (obj, jObj);
 		return jObj;
@@ -326,15 +418,34 @@ public class ObjectSerializer : ISerializer
 public class GameobjectSerializer : ISerializer
 {
 	SavingLoading savingLoading;
+	ScriptEngine engine;
 
 	public GameobjectSerializer ()
 	{
+		engine = Object.FindObjectOfType<BasicLoader> ().Engine;
 		savingLoading = Object.FindObjectOfType<SavingLoading> ();
 	}
 
-	public Object Deserialize (JObject data)
+	public void Deserialize (Object obj, JObject data)
 	{
-		return null;
+		GameObject go = obj as GameObject;
+		go.name = (data ["name"] as JValue).Value as string;
+		foreach (var childPair in data)
+		{
+			int refId = 0;
+			if (int.TryParse (childPair.Key, out refId))
+			{
+				var cmpData = childPair.Value as JObject;
+				//it's a component! We need to instantiate it. But first - find the type
+				var typeName = (cmpData ["type"] as JValue).Value as string;
+				var type = engine.FindType (typeName);
+				var cmp = go.AddComponent (type);
+				var ser = savingLoading.GetSerializer (type);
+
+				savingLoading.Loaded (cmp, refId);
+				ser.Deserialize (cmp, cmpData);
+			} 
+		}
 	}
 
 	List<MonoBehaviour> components = new List<MonoBehaviour> ();

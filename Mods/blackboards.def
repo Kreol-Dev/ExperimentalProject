@@ -1,6 +1,6 @@
 personality =
 {
-	brave = int
+	brave = float
 	rational = float
 	optimistic = float
 	cruel = float
@@ -42,7 +42,6 @@ event_marker = {
 	cur_event = gameobject
 }
 
-named_ui_marker = yes
 human = {
 	age = int
 }

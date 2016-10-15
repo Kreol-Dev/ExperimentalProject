@@ -46,6 +46,7 @@ public class Story : MonoBehaviour
 		var saver = FindObjectOfType<SavingLoading> ();
 		saver.SaveFilePath = "TestSave.json";
 		saver.Save ();
+		saver.Load ();
 	}
 }
 

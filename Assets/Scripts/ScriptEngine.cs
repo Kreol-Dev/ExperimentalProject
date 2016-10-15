@@ -21,10 +21,17 @@ public class ScriptEngine
 
 	public Dictionary<Type, ScriptEnginePlugin>.ValueCollection Plugins { get { return plugins.Values; } }
 
-	public ScriptEngine (IEnumerable<Assembly> addons)
+	public ScriptEngine ()
+	{
+		
+
+
+	}
+
+	public void Init (IEnumerable<Assembly> addons)
 	{
 		this.Addons = addons;
-		foreach (var plugin in addons)
+		foreach (var plugin in Addons)
 		{
 			var asm = AppDomain.CurrentDomain.Load (plugin.GetName ());
 			var pluginTypes = asm.GetTypes ();
@@ -43,8 +50,6 @@ public class ScriptEngine
 			pluginInstance.SetEngine (this);
 			plugins.Add (enginePlugins [i], pluginInstance);
 		}
-
-
 	}
 
 	public void InitPlugins ()

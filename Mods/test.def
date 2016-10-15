@@ -31,11 +31,11 @@ locations_filler =
 
 named_ui = 
 {
-	scope = ui_object.fit(showed_object.fit(has(named)) and not has(named_ui_marker))
+	scope = ui_object.markers.fit(showed_object.fit(has(named)) and not has_marker(named_ui_marker))
 	utility = 1 
 	action = 
 	{
-		create = named_ui_marker
+		markers.set_ui_marker = named_ui_marker
 		ui_object = 
 		{
 			showed_named = showed_object.named
@@ -56,7 +56,7 @@ place_ui =
 	utility = 1
 	action = 
 	{
-		markers.set_marker = place_ui_set
+		markers.set_ui_marker = place_ui_set
 		ui_object = 
 		{
 			pl = showed_object.place
@@ -147,7 +147,7 @@ historical_persons =
 					agent = yes
 					historical_person = yes
 					human = {
-						age = random(20, 45)
+						age = random(30, 45)
 					}
 					named = {
 						set("prefix", 0) = "Historical person: "
@@ -319,7 +319,7 @@ tale_ui_enlisting =
 			}
 		}
 		tales_ui_enlist = ui
-		markers.set_marker = tale_enlisted
+		markers.set_ui_marker = tale_enlisted
 	}
 }
 
