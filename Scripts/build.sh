@@ -18,6 +18,7 @@ echo "Attempting to build $project for Windows"
 rm -r "$(pwd)/Build/windows/DLLs"
 rm -r "$(pwd)/Build/windows/Code"
 rm -r "$(pwd)/Build/windows/Mods"
+mkdir -p "$(pwd)/Build/windows"
 cp -r "$(pwd)/DLLs" "$(pwd)/Build/windows"
 cp -r "$(pwd)/Code" "$(pwd)/Build/windows"
 cp -r "$(pwd)/Mods" "$(pwd)/Build/windows"
@@ -35,6 +36,7 @@ echo "Attempting to build $project for OS X"
 rm -r "$(pwd)/Build/osx/DLLs"
 rm -r "$(pwd)/Build/osx/Code"
 rm -r "$(pwd)/Build/osx/Mods"
+mkdir -p "$(pwd)/Build/osx"
 cp -r "$(pwd)/DLLs" "$(pwd)/Build/osx"
 cp -r "$(pwd)/Code" "$(pwd)/Build/osx"
 cp -r "$(pwd)/Mods" "$(pwd)/Build/osx"
@@ -48,11 +50,12 @@ echo "Attempting to build $project for Linux"
   -silent-crashes \
   -logFile $(pwd)/unity.log \
   -projectPath $(pwd) \
-  -buildLinuxUniversalPlayer "$(pwd)/Build/linux/$project.exe" \
+  -buildLinuxUniversalPlayer "$(pwd)/Build/linux/$project" \
   -quit
 rm -r "$(pwd)/Build/linux/DLLs"
 rm -r "$(pwd)/Build/linux/Code"
 rm -r "$(pwd)/Build/linux/Mods"
+mkdir -p "$(pwd)/Build/linux"
 cp -r "$(pwd)/DLLs" "$(pwd)/Build/linux"
 cp -r "$(pwd)/Code" "$(pwd)/Build/linux"
 cp -r "$(pwd)/Mods" "$(pwd)/Build/linux"
