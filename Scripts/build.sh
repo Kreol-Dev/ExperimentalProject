@@ -5,42 +5,43 @@
 # Change this the name of your project. This will be the name of the final executables as well.
 project="ExperimentalProject"
 
-ls -r $(pwd)
+ls -r ./
+mkdir -p "./Build/osx"
+mkdir -p "./Build/windows"
+mkdir -p "./Build/linux"
 echo "Attempting to build $project for Windows"
 /Applications/Unity/Unity.app/Contents/MacOS/Unity \
   -batchmode \
   -nographics \
   -silent-crashes \
-  -logFile $(pwd)/unity.log \
-  -projectPath $(pwd) \
-  -buildWindowsPlayer "$(pwd)/Build/windows/$project.exe" \
+  -logFile ./unity.log \
+  -projectPath . \
+  -buildWindowsPlayer "./Build/windows/$project.exe" \
   -quit
-rm -r "$(pwd)/Build/windows/DLLs"
-rm -r "$(pwd)/Build/windows/Code"
-rm -r "$(pwd)/Build/windows/Mods"
-mkdir -p "$(pwd)/Build/windows"
-cp -r "$(pwd)/DLLs" "$(pwd)/Build/windows"
-cp -r "$(pwd)/Code" "$(pwd)/Build/windows"
-cp -r "$(pwd)/Mods" "$(pwd)/Build/windows"
-zip -r windows_build.zip "$(pwd)/Build/windows"
+rm -r "./Build/windows/DLLs"
+rm -r "./Build/windows/Code"
+rm -r "./Build/windows/Mods"
+cp -r "./DLLs" "./Build/windows"
+cp -r "./Code" "./Build/windows"
+cp -r "./Mods" "./Build/windows"
+zip -r windows_build.zip "./Build/windows"
 
 echo "Attempting to build $project for OS X"
 /Applications/Unity/Unity.app/Contents/MacOS/Unity \
   -batchmode \
   -nographics \
   -silent-crashes \
-  -logFile $(pwd)/unity.log \
-  -projectPath $(pwd) \
-  -buildOSXUniversalPlayer "$(pwd)/Build/osx/$project.app" \
+  -logFile ./unity.log \
+  -projectPath . \
+  -buildOSXUniversalPlayer "./Build/osx/$project.app" \
   -quit
-rm -r "$(pwd)/Build/osx/DLLs"
-rm -r "$(pwd)/Build/osx/Code"
-rm -r "$(pwd)/Build/osx/Mods"
-mkdir -p "$(pwd)/Build/osx"
-cp -r "$(pwd)/DLLs" "$(pwd)/Build/osx"
-cp -r "$(pwd)/Code" "$(pwd)/Build/osx"
-cp -r "$(pwd)/Mods" "$(pwd)/Build/osx"
-zip -r osx_build.zip "$(pwd)/Build/osx"
+rm -r "./Build/osx/DLLs"
+rm -r "./Build/osx/Code"
+rm -r "./Build/osx/Mods"
+cp -r "./DLLs" "./Build/osx"
+cp -r "./Code" "./Build/osx"
+cp -r "./Mods" "./Build/osx"
+zip -r osx_build.zip "./Build/osx"
 
 
 echo "Attempting to build $project for Linux"
@@ -48,21 +49,20 @@ echo "Attempting to build $project for Linux"
   -batchmode \
   -nographics \
   -silent-crashes \
-  -logFile $(pwd)/unity.log \
-  -projectPath $(pwd) \
-  -buildLinuxUniversalPlayer "$(pwd)/Build/linux/$project" \
+  -logFile ./unity.log \
+  -projectPath . \
+  -buildLinuxUniversalPlayer "./Build/linux/$project" \
   -quit
-rm -r "$(pwd)/Build/linux/DLLs"
-rm -r "$(pwd)/Build/linux/Code"
-rm -r "$(pwd)/Build/linux/Mods"
-mkdir -p "$(pwd)/Build/linux"
-cp -r "$(pwd)/DLLs" "$(pwd)/Build/linux"
-cp -r "$(pwd)/Code" "$(pwd)/Build/linux"
-cp -r "$(pwd)/Mods" "$(pwd)/Build/linux"
-zip -r linux_build.zip "$(pwd)/Build/linux"
+rm -r "./Build/linux/DLLs"
+rm -r "./Build/linux/Code"
+rm -r "./Build/linux/Mods"
+cp -r "./DLLs" "./Build/linux"
+cp -r "./Code" "./Build/linux"
+cp -r "./Mods" "./Build/linux"
+zip -r linux_build.zip "./Build/linux"
 
 echo 'Logs from build'
-cat $(pwd)/unity.log
+cat ./unity.log
 
 wget https://dl.itch.ovh/butler/darwin-amd64/head/butler
 chmod +x ./butler
