@@ -67,9 +67,9 @@ touch butler_creds
 
 echo -n fNu0R940tzoUPhX12NK73i2d3FA3yueXAWt4t5l4 > butler_creds
 
-./butler push windows_build.zip avras-chismar/experimentalproject:windows -i butler_creds
-./butler push osx_build.zip avras-chismar/experimentalproject:mac -i butler_creds
-./butler push linux_build.zip avras-chismar/experimentalproject:linux -i butler_creds
+sudo ./butler push windows_build.zip avras-chismar/experimentalproject:windows -i butler_creds
+sudo ./butler push osx_build.zip avras-chismar/experimentalproject:mac -i butler_creds
+sudo ./butler push linux_build.zip avras-chismar/experimentalproject:linux -i butler_creds
 
 ./butler logout  -i butler_creds --assume-yes
 rm butler
