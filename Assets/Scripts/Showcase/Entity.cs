@@ -6,6 +6,8 @@ public delegate void GODelegate (GameObject entity);
 public class Entity : MonoBehaviour
 {
 
+	public Vector3 Position { get { return transform.position; } set { transform.position = value; } }
+
 	public event VoidDelegate ComponentAddedEvent;
 
 	void Awake ()

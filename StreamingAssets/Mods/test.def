@@ -11,18 +11,22 @@ locations_filler =
 			{
 				generate(loc) = 
 				{
-					entity = yes
+					entity = 
+					{
+						position = vec(random(0, 100), random(0, 100))
+					}
 					place = 
 					{
 						size = random(1, 3)
 					}
+					markers = yes
 					named = 
 					{
 						set("prefix", 0) = "Location of: "
 						set("main_name", 1) = random_name(human_name)
 					}
 				}
-
+				loc.markers.set_marker = history_place
 				attach = loc.place
 			}
 		}
@@ -392,5 +396,15 @@ state_head_name =
 		{
 			set(main_name, 0) = random_name(human_name)
 		}
+	}
+}
+
+map_anchored = 
+{
+	scope = place.markers.fit(not has_marker(map_anchored) and has_marker(history_place))
+	utility = 1
+	action = {
+		markers.set_ui_marker = map_anchored
+		map_enlist = root
 	}
 }

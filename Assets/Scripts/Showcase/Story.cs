@@ -43,10 +43,10 @@ public class Story : MonoBehaviour
 			CurrentStep++;
 			yield return seconds;
 		}
-		var saver = FindObjectOfType<SavingLoading> ();
-		saver.SaveFilePath = "TestSave.json";
-		saver.Save ();
-		saver.Load ();
+		//var saver = FindObjectOfType<SavingLoading> ();
+		//saver.SaveFilePath = "TestSave.json";
+		//saver.Save ();
+		//saver.Load ();
 	}
 }
 

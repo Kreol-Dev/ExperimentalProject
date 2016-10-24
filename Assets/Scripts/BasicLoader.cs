@@ -75,6 +75,11 @@ public class BasicLoader : MonoBehaviour
 		}
 	}
 
+	public Vector3 Vec (float x, float y)
+	{
+		return new Vector3 (x, 0, y);
+	}
+
 	public float Random (float min, float max)
 	{
 		return Mathf.Lerp (min, max, (float)random.NextDouble ());
@@ -123,7 +128,7 @@ public class BasicLoader : MonoBehaviour
 		ExternalFunctions.Load ();
 		foreach (var eFunctions in EFunctions)
 			ExternalFunctions.AddProvider (eFunctions.Provider, eFunctions.Functions);
-		ExternalFunctions.AddProvider (this, "Random", "Dsix", "AbstractCamp", "Has", "GetWorld", "GetEventsController", "SelectFrom", "Log", "String", "GetPlayer", "Destroy", "NoOne");
+		ExternalFunctions.AddProvider (this, "Random", "Dsix", "AbstractCamp", "Has", "Vec", "GetWorld", "GetEventsController", "SelectFrom", "Log", "String", "GetPlayer", "Destroy", "NoOne");
 		foreach (var fileInfo in dirInfo.GetFiles ())
 		{
 			if (fileInfo.LastWriteTimeUtc > lastWriteTime)
