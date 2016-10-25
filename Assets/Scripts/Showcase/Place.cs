@@ -12,6 +12,8 @@ public class Place : MonoBehaviour
 
 	public int Size { get; set; }
 
+	public bool ShouldAct = true;
+
 	void Awake ()
 	{
 		Act = false;
@@ -21,20 +23,27 @@ public class Place : MonoBehaviour
 
 	void Start ()
 	{
-		Act = true;
-		StartCoroutine (EventsCoroutine ());
+		Act = ShouldAct;
+		FindObjectOfType<NextTurn> ().NewTurnListener (NewTurn);
+	}
+
+	void OnDestroy ()
+	{
+		var nt = FindObjectOfType<NextTurn> ();
+		if (nt != null)
+			nt.RemoveNewTurnListener (NewTurn);
+	}
+
+	void NewTurn (VoidDelegate callback)
+	{
+
+		generators.GenerateMostUseful (gameObject, 0.15f);
+		callback ();
 	}
 
 	WaitForSeconds seconds = new WaitForSeconds (1f);
 
-	IEnumerator EventsCoroutine ()
-	{
-		while (true)
-		{
-			generators.GenerateMostUseful (gameObject, 0.15f);
-			yield return seconds;
-		}
-	}
+
 
 	public bool Attach (Agent agent)
 	{

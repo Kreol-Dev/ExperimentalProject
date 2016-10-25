@@ -13,20 +13,22 @@ locations_filler =
 				{
 					entity = 
 					{
-						position = vec(random(0, 100), random(0, 100))
+						position = vec(random(0, map_x), random(0, map_x))
 					}
 					place = 
 					{
 						size = random(1, 3)
 					}
-					markers = yes
+					markers =
+					{
+						set_marker = history_place
+					}
 					named = 
 					{
 						set("prefix", 0) = "Location of: "
 						set("main_name", 1) = random_name(human_name)
 					}
 				}
-				loc.markers.set_marker = history_place
 				attach = loc.place
 			}
 		}
