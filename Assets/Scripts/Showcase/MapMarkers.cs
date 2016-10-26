@@ -13,9 +13,11 @@ public class MapMarkers : MonoBehaviour
 	public void MapEnlist (GameObject go)
 	{
 		var markerGo = Instantiate (Marker) as GameObject;
+		markerGo.transform.SetParent (transform, false);
 		var mapMarker = markerGo.GetComponent<MapMarker> ();
-
-		markerGo.transform.SetParent (go.transform, false);
+		var mapAnchor = markerGo.GetComponent<AnchoredUI> ();
+		mapAnchor.Anchor = go;
+		//markerGo.transform.SetParent (go.transform, false);
 		//markerGo.GetComponent<RectTransform> ().position = Vector3.zero;
 		mapMarker.ShowedObject = go;
 
