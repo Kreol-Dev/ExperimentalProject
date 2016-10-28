@@ -7,6 +7,8 @@ using System.Collections.Generic;
 
 public class EncounterUI : MonoBehaviour
 {
+
+    static GameObject ReactionPrefab;
 	static Generators gens;
 	public RectTransform ReactionsList;
 	public Text NameText;
@@ -34,6 +36,10 @@ public class EncounterUI : MonoBehaviour
 
     void Start ()
 	{
+        if(ReactionPrefab == null)
+        {
+            ReactionPrefab = Resources.Load<GameObject>("UIPrefabs/ReactionButton");
+        }
 		if (gens == null)
 			gens = FindObjectOfType<Generators> ();
 		gens.Generate (gameObject);
@@ -51,16 +57,33 @@ public class EncounterUI : MonoBehaviour
         }
 
         DescriptionText.text = Description;
+
+        var ename = encounter.GetComponent<Named>();
+        Name = ename.FullName;
+        ename.Updated += () => Name = ename.FullName;
 	}
 
 	void Encounter_NewReaction (GameObject reaction)
 	{
-		GameObject uiGO = new GameObject (reaction.name + "ui_reaction");
+        GameObject uiGO = GameObject.Instantiate(ReactionPrefab);
+        if (reaction != null)
+            uiGO.name = reaction.name + "_ui_reaction";
+        else
+            uiGO.name = "deafult_ui_reaction";
 
-		var uiObject = uiGO.AddComponent<UiObject> ();
-		uiObject.ShowedObject = reaction;
+        if(reaction != null)
+        {
+            var uiObject = uiGO.AddComponent<UiObject>();
+            uiObject.ShowedObject = reaction;
+        }
+		else
+        {
+            var textField = uiGO.AddComponent<TextField>();
+            textField.text.alignment = TextAnchor.MiddleCenter;
+            textField.Show("OK");
+        }
 
-		var reactButton = uiGO.AddComponent<ReactionButton> ();
+		var reactButton = uiGO.GetComponent<ReactionButton> ();
 		reactButton.Proto = reaction;
 
 		uiGO.transform.SetParent (ReactionsList);

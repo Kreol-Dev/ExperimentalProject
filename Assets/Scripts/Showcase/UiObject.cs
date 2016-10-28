@@ -35,6 +35,7 @@ public class UiObject : MonoBehaviour
 	void OnGODestoryed (GameObject go)
 	{
 		showedObject = null;
+        if(this!=null)
 		Destroy (gameObject);
 	}
 

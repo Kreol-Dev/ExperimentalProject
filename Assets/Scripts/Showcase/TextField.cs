@@ -4,8 +4,8 @@ using UnityEngine.UI;
 
 public class TextField : MonoBehaviour
 {
-	Text text;
-
+	public Text text;
+    
 	public LayoutElement Layout { get; internal set; }
 
 	string label;

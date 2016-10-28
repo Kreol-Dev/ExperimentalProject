@@ -11,7 +11,7 @@ public class ReactionButton : MonoBehaviour
 	{
 		if (gens == null)
 			gens = FindObjectOfType<Generators> ();
-		GetComponent<Button> ().onClick.AddListener (OnClick);
+		gameObject.GetComponent<Button> ().onClick.AddListener (OnClick);
 	}
 
 	void OnClick ()

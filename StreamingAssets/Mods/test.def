@@ -167,14 +167,6 @@ historical_persons =
 	}
 }
 
-change_name_historical_action = 
-{
-	scope = entity.historical_person.named.agent.fit(act = yes and not dead)
-	utility = 0.5
-	action = {
-		named.switch("main_name") = random_name(human_name)
-	}
-}
 
 location_log = 
 {
@@ -408,5 +400,38 @@ map_anchored =
 	action = {
 		markers.set_ui_marker = map_anchored
 		map_enlist = root
+	}
+}
+
+encounter_ui_enlist = 
+{
+	scope = encounter.markers.fit(not has_marker(encounter_ui_enlist))
+	utility = 1
+	action = 
+	{
+		markers.set_ui_marker = encounter_ui_enlist
+		enlist_encounter = root
+	}
+}
+
+location_test_encounter = 
+{
+	scope = place.named.fit(act = yes)
+	utility = 0.4
+	action  = 
+	{
+		generate(enc) = 
+		{
+			encounter = 
+			{
+				context = root
+			}
+			markers = yes
+			entity = yes
+			named = 
+			{
+				set(main_name, 0) = "Basic encounter"
+			}
+		}
 	}
 }

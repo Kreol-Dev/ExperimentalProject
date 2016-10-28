@@ -31,6 +31,8 @@ public class CardsHolder : MonoBehaviour, IDropHandler, IPointerEnterHandler, IP
 		bool accepted = false;
 		//Card c = eventData.pointerDrag.GetComponent<Card> ();
 		var card = eventData.pointerDrag.GetComponent<Card> ();
+        if (card == null)
+            return;
 		if (!card.Movable)
 			return;
 		card.transform.SetParent (transform);

@@ -6,7 +6,7 @@ using System.Text;
 public class Encounter : MonoBehaviour
 {
     
-    
+    public GameObject Context { get; set; }
 	public List<GameObject> reactProtos = new List<GameObject> ();
 
 	public event GODelegate NewReaction;
