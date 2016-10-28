@@ -713,9 +713,9 @@ RectTransform:
   - {fileID: 258425048}
   - {fileID: 778366749}
   - {fileID: 1423411637}
-  - {fileID: 1694788105}
   - {fileID: 891458687}
   - {fileID: 1428299072}
+  - {fileID: 1694788105}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_AnchorMin: {x: 0, y: 0}
@@ -988,7 +988,7 @@ Prefab:
     - target: {fileID: 224000013670942240, guid: d4291cd84e5bb9741a0f163da492446b,
         type: 2}
       propertyPath: m_RootOrder
-      value: 8
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 224000013670942240, guid: d4291cd84e5bb9741a0f163da492446b,
         type: 2}
@@ -1500,7 +1500,7 @@ Prefab:
     - target: {fileID: 224000013040137380, guid: 54e03384ca537f94eb935dc62f7d58cf,
         type: 2}
       propertyPath: m_RootOrder
-      value: 9
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 224000013040137380, guid: 54e03384ca537f94eb935dc62f7d58cf,
         type: 2}
@@ -1761,7 +1761,7 @@ RectTransform:
   m_Children:
   - {fileID: 472716166}
   m_Father: {fileID: 669760589}
-  m_RootOrder: 6
+  m_RootOrder: 8
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
