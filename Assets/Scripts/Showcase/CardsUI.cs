@@ -75,6 +75,7 @@ public abstract class CardsUI<T> : MonoBehaviour
 
 			Debug.LogFormat ("UI:{0} OnPlaceAttached - FoundOld {1}", this, go);
 			uiByPlace.Add (go, found);
+            found.transform.SetParent(gameObject.transform);
 		}
 
 	}

@@ -397,3 +397,19 @@ place_ui_cards_list =
 		}
 	}
 }
+
+place_ui_size = 
+{
+	scope = ui_object.markers.fit(showed_object.fit(has(place)) and not has_marker(place_ui_size))
+	utility = 1
+	action = 
+	{
+		markers.set_marker = place_ui_size
+		create(text_field) = 
+		{
+			label = "size"
+			show = ui_object.showed_object.place.size
+			layout.min_height = 20
+		}
+	}
+}

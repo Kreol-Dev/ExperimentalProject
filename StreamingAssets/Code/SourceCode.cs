@@ -2279,4 +2279,135 @@ namespace generators {
 		}
         }
     }
+    
+    public class place_ui_size : EventAction {
+        
+        public override bool Filter() {
+
+		{
+			var root = this.root;
+			
+			//ContextStatement External External ContextSwitchInterpreter
+			System.Boolean applicable = false; //IsContext = False IsNew = False
+			
+			System.Boolean OperandVar395 = default(System.Boolean); //IsContext = False IsNew = False
+			UiObject StoredVariable382 = ((UiObject)root.GetComponent(typeof(UiObject))); //IsContext = False IsNew = False
+			if(StoredVariable382 != null)
+			{
+				Markers StoredVariable383 = ((Markers)StoredVariable382.GetComponent(typeof(Markers))); //IsContext = False IsNew = False
+				if(StoredVariable383 != null)
+				{
+					System.Boolean ifResult384; //IsContext = False IsNew = False
+					
+					System.Boolean OperandVar391 = default(System.Boolean); //IsContext = False IsNew = False
+					if(StoredVariable382 != null)
+					{
+						UnityEngine.GameObject prop385 = StoredVariable382.ShowedObject; //IsContext = False IsNew = False
+						if(prop385 != null)
+						{
+							System.Boolean ifResult386; //IsContext = False IsNew = False
+							System.Boolean OperandVar390 = default(System.Boolean); //IsContext = False IsNew = False
+							Place OperandVar388 = default(Place); //IsContext = False IsNew = False
+							Place StoredVariable387 = ((Place)prop385.GetComponent(typeof(Place))); //IsContext = False IsNew = False
+							if(StoredVariable387 != null)
+							{
+								OperandVar388 = StoredVariable387;
+							}
+							System.Boolean prop389 = External.Has( (OperandVar388)); //IsContext = False IsNew = False
+							OperandVar390 = prop389;
+							if(ifResult386 =  (OperandVar390))
+							{
+								OperandVar391 = ifResult386;
+							}
+						}
+					}
+					
+					System.Boolean OperandVar394 = default(System.Boolean); //IsContext = False IsNew = False
+					System.String OperandVar392 = default(System.String); //IsContext = False IsNew = False
+					OperandVar392 = "place_ui_size";
+					System.Boolean prop393 = StoredVariable383.HasMarker( (OperandVar392)); //IsContext = False IsNew = False
+					OperandVar394 = prop393;
+					if(ifResult384 = ( ( (OperandVar391))) && ( (!(OperandVar394))))
+					{
+						applicable = true;
+						OperandVar395 = applicable;
+					}
+				}
+			}
+			return (System.Boolean) (OperandVar395);
+		}
+        }
+        
+        public override float Utility() {
+
+		{
+			var root = this.root;
+			
+			//ContextStatement External External ContextSwitchInterpreter
+			System.Single ut = 0; //IsContext = False IsNew = False
+			
+			
+			return (System.Single) (1f);
+		}
+        }
+        
+        public override void Action() {
+
+		{
+			var root = this.root;
+			
+			//ContextStatement External External ContextSwitchInterpreter
+			
+			
+			{
+				Markers subContext396 = (Markers)root.GetComponent(typeof(Markers)); //IsContext = True IsNew = False
+				//ContextStatement Markers subContext396 ContextSwitchInterpreter
+				if(subContext396 != null)
+				{
+					System.String OperandVar397 = default(System.String); //IsContext = False IsNew = False
+					OperandVar397 = "place_ui_size";
+					subContext396.SetMarker(( (OperandVar397)).ToString());
+				}
+			}
+			TextField ContextVar398 = root.AddComponent<TextField>();; //IsContext = False IsNew = True
+			
+			{
+				//ContextStatement TextField ContextVar398 ContextSwitchInterpreter
+				if(ContextVar398 != null)
+				{
+					
+					ContextVar398.Label = (System.String)( ("size"));
+					System.Int32 OperandVar403 = default(System.Int32); //IsContext = False IsNew = False
+					UiObject StoredVariable399 = ((UiObject)ContextVar398.GetComponent(typeof(UiObject))); //IsContext = False IsNew = False
+					if(StoredVariable399 != null)
+					{
+						UnityEngine.GameObject prop400 = StoredVariable399.ShowedObject; //IsContext = False IsNew = False
+						if(prop400 != null)
+						{
+							Place StoredVariable401 = ((Place)prop400.GetComponent(typeof(Place))); //IsContext = False IsNew = False
+							if(StoredVariable401 != null)
+							{
+								System.Int32 prop402 = StoredVariable401.Size; //IsContext = False IsNew = False
+								OperandVar403 = prop402;
+							}
+						}
+					}
+					ContextVar398.Show(( (OperandVar403)).ToString());
+					
+					{
+						UnityEngine.UI.LayoutElement subContext404 = ContextVar398.Layout; //IsContext = True IsNew = False
+						//ContextStatement UnityEngine.UI.LayoutElement subContext404 ContextPropertySwitchInterpreter
+						if(subContext404 != null)
+						{
+							
+							subContext404.minHeight = (System.Single)( (20f));
+						}
+					}
+				}
+			}
+			Entity EntVar405 = (Entity)root.GetComponent(typeof(Entity));; //IsContext = False IsNew = False
+			if(EntVar405 != null) EntVar405.ComponentAdded();
+		}
+        }
+    }
 }
