@@ -24,11 +24,6 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
         GetComponent<CanvasGroup>().blocksRaycasts = false;
         
-        //		Vector2 dragPos = eventData.position;
-        //		if (!RectTransformUtility.ScreenPointToLocalPointInRectangle (
-        //			    ReturnToParent, eventData.position, eventData.pressEventCamera, out dragPos))
-        //			return;
-        //		transform.position = new Vector3 (dragPos.x, dragPos.y, transform.localPosition.z);
     }
 
 

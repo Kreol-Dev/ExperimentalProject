@@ -56,40 +56,6 @@ named_ui =
 	}
 }
 
-place_ui = 
-{
-	scope = markers.ui_object.fit(showed_object.fit(has(place)) and not has_marker(place_ui_set))
-	utility = 1
-	action = 
-	{
-		markers.set_ui_marker = place_ui_set
-		ui_object = 
-		{
-			pl = showed_object.place
-			create(puidata) = place_ui_data
-			puidata.last_size = pl.size
-			create(text_field) = {
-				show = pl.size
-				if(not has(updated)) = 
-				{
-					create = updated
-				}
-				text_field.label = "size"
-				layout.min_height = 20
-				updated = {
-					on_update.pl.puidata =
-					{
-						if(not (size = last_size)) = 
-						{
-							last_size = size
-							show = size
-						}
-					}
-				}
-			}
-		}
-	}
-}
 
 agents_pool_filler = {
 	scope = markers.place.fit(agents = 0 and has_marker(agents_pool))
@@ -298,28 +264,7 @@ conflict_basic_decomposition =
 	}
 }
 
-tale_ui_enlisting = 
-{
-	scope = markers.tale_node.fit(not has_marker(tale_enlisted))
-	utility = 1
-	action = 
-	{
-		generate(ui) =
-		{
-			ui_object =
-			{
-				showed_object = root
-			}
-			text_field =
-			{
-				layout.min_height = 20
-				show = stringify(root)
-			}
-		}
-		tales_ui_enlist = ui
-		markers.set_ui_marker = tale_enlisted
-	}
-}
+
 
 
 faction_is_a_state = 
@@ -432,6 +377,23 @@ location_test_encounter =
 			{
 				set(main_name, 0) = "Basic encounter"
 			}
+		}
+	}
+}
+
+place_ui_cards_list = 
+{
+	scope = ui_object.markers.fit(showed_object.fit(has(place)) and not has_marker (place_ui_cards_list))
+	utility = 1
+	action = 
+	{
+		markers.set_ui_marker = place_ui_cards_list
+		pl = ui_object.showed_object.place
+		spawn_prefab(place_cards) = 
+		{
+			agents_u_i.target_place = pl
+			cards_holder_agents_adapter.target_place = pl
+			set_parent(this) = root
 		}
 	}
 }

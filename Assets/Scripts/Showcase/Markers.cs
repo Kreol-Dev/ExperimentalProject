@@ -8,7 +8,10 @@ public class Markers : MonoBehaviour
 
 	public List<string> markers;
 	List<string> uiMarkers = new List<string> ();
-
+    public void ClearUIMarkers()
+    {
+        uiMarkers.Clear();
+    }
 	void Awake ()
 	{
 		if (markers == null)

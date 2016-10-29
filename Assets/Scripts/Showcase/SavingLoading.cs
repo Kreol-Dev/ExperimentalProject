@@ -41,7 +41,8 @@ public class SavingLoading : MonoBehaviour
 
 	public void Load ()
 	{
-		refRequests.Clear ();
+        listRequests.Clear();
+        refRequests.Clear ();
 		loadedObjects.Clear ();
 		TextReader textReader = new StreamReader (SaveFilePath);
 		JsonReader jsonReader = new JsonTextReader (textReader);
@@ -75,6 +76,22 @@ public class SavingLoading : MonoBehaviour
 					refRequest.ResolveLambda (refRequest.Target, GameObject.Find (refRequest.RefID).GetComponent (refRequest.CmpType));
 			}
 		}
+
+        foreach (var listRequest in listRequests)
+        {
+            foreach (var id in listRequest.IDs)
+            {
+                int refIntID = 0;
+                UnityEngine.Object resolvedObject = null;
+                var refID = id.ToString();
+                if (refID == "null")
+                    listRequest.TargetList.Add(null);
+                else if (int.TryParse(refID, out refIntID) && loadedObjects.TryGetValue(refIntID, out resolvedObject))
+                    listRequest.TargetList.Add(resolvedObject);
+                else
+                    listRequest.TargetList.Add(GameObject.Find(refID));
+            }
+        }
 	}
 
 	int nextId = 0;
@@ -169,6 +186,11 @@ public class SavingLoading : MonoBehaviour
 		}
 		return ser;
 	}
+    List<ResolveListRequest> listRequests = new List<ResolveListRequest>();
+    public void PostResolveListRequest(ResolveListRequest request)
+    {
+        listRequests.Add(request);
+    }
 }
 
 public interface ISerializer
@@ -478,4 +500,70 @@ public class GameobjectSerializer : ISerializer
 public class NonSerializable : MonoBehaviour
 {
 	
+}
+
+
+public class ObjectRefConverter : JsonConverter
+{
+
+    SavingLoading loader;
+    public ObjectRefConverter(SavingLoading loader)
+    {
+        this.loader = loader;
+    }
+    public override bool CanConvert(System.Type objectType)
+    {
+        var isGenericList = objectType.IsGenericType && objectType.GetGenericTypeDefinition() == typeof(List<>);
+        if(isGenericList)
+        {
+            var contentIsUnityObject = objectType.GetGenericArguments()[0].IsSubclassOf(typeof(UnityEngine.Object));
+            if (contentIsUnityObject)
+                return true;
+        }
+        return false;
+    }
+
+    public override System.Object ReadJson(JsonReader reader, System.Type objectType, System.Object existingValue, JsonSerializer serializer)
+    {
+        IList list = System.Activator.CreateInstance(objectType) as IList;
+        JArray arrayList = JArray.Load(reader);
+        ResolveListRequest request = new ResolveListRequest();
+        request.TargetList = list;
+        request.IDs = arrayList;
+        return list;
+    }
+
+    public override void WriteJson(JsonWriter writer, System.Object value, JsonSerializer serializer)
+    {
+        IList list = value as IList;
+        JArray arrayList = new JArray();
+        foreach ( var val in list)
+        {
+            string id = loader.SaveAsRef(val as UnityEngine.Object);
+            arrayList.Add(id);
+        }
+        arrayList.WriteTo(writer);
+    }
+
+    public override bool CanRead
+    {
+        get
+        {
+            return true;
+        }
+    }
+
+    public override bool CanWrite
+    {
+        get
+        {
+            return true;
+        }
+    }
+}
+
+public class ResolveListRequest
+{
+    public IList TargetList;
+    public JArray IDs;
 }

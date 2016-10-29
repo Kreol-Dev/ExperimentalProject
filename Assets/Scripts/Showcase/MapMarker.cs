@@ -10,7 +10,7 @@ public class MapMarker : MonoBehaviour
 	Text TargetText;
 	[SerializeField]
 	RectTransform TextImageTransform;
-
+    
 	public string Text {
 		get { return TargetText.text; }
 		set
@@ -20,7 +20,6 @@ public class MapMarker : MonoBehaviour
 	}
 
 	public Portrait Portrait { get { return TargetPortrait.TargetPortrait; } set { TargetPortrait.TargetPortrait = value; } }
-
-	public GameObject ShowedObject { get; set; }
+    
 }
 

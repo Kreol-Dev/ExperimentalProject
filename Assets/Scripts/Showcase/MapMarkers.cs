@@ -19,7 +19,7 @@ public class MapMarkers : MonoBehaviour
 		mapAnchor.Anchor = go;
 		//markerGo.transform.SetParent (go.transform, false);
 		//markerGo.GetComponent<RectTransform> ().position = Vector3.zero;
-		mapMarker.ShowedObject = go;
+		markerGo.GetComponent<UiObject>().ShowedObject = go;
 
 		var named = go.GetComponent<Named> ();
 		if (named != null)

@@ -22,6 +22,33 @@ public class Entity : MonoBehaviour
 		StartCoroutine (DeathCoroutine ());
 	}
 
+    static ObjectPool<List<Transform>> pool = new ObjectPool<List<Transform>>();
+    public void ClearSiblings()
+    {
+        var list = pool.Get();
+        list.Clear();
+        var childrenCount = transform.childCount;
+        for ( int i = 0; i < childrenCount; i++)
+        {
+            var child = transform.GetChild(i);
+            child.GetComponentsInChildren<Transform>(list);
+            foreach (var t in list)
+            {
+                t.DetachChildren();
+            }
+            foreach (var t in list)
+            {
+                var e = t.GetComponent<Entity>();
+                if (e == null)
+                    Destroy(t.gameObject);
+                else
+                    e.Destroy();
+            }
+            list.Clear();
+        }
+        transform.DetachChildren();
+        pool.Return(list);
+    }
 	public event GODelegate Destoryed;
 
 	IEnumerator DeathCoroutine ()
@@ -31,8 +58,8 @@ public class Entity : MonoBehaviour
 		Event<EntityDeathEvent>.Invoke (gameObject);
 		if (Destoryed != null)
 			Destoryed (gameObject);
-
-		yield return null;
+        ClearSiblings();
+        yield return null;
 		Destroy (gameObject);
 	}
 

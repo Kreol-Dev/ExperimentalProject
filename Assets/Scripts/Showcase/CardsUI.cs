@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public abstract class CardsUI<T> : MonoBehaviour
 {
-	public T TargetContainer;
+    public T TargetContainer;
 	public GameObject CardUI;
 	Dictionary<GameObject, GameObject> uiByPlace = new Dictionary<GameObject, GameObject> ();
 	Dictionary<GameObject, GameObject> cardsByCreation = new Dictionary<GameObject, GameObject> ();
@@ -63,6 +63,7 @@ public abstract class CardsUI<T> : MonoBehaviour
 		{
 			Debug.LogFormat ("UI:{0} OnPlaceAttached - CreateNew {1}", this, go);
 			var placeUIGO = GameObject.Instantiate (CardUI);
+            
 			placeUIGO.transform.SetParent (gameObject.transform);
 			placeUIGO.GetComponent<UiObject> ().ShowedObject = go;
 			gens.Generate (placeUIGO);

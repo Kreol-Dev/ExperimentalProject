@@ -40,6 +40,20 @@ public class BasicLoader : MonoBehaviour
 
 	public List<ExternalFunctions> EFunctions = new List<ExternalFunctions> ();
 
+    Dictionary<string, GameObject> prefabs = new Dictionary<string, GameObject>();
+
+    public GameObject SpawnPrefab(string name)
+    {
+        GameObject prefab = null;
+        if(!prefabs.TryGetValue(name, out prefab))
+        {
+            var csharpname = NameTranslator.CSharpNameFromScript(name);
+            prefab = Resources.Load("UIPrefabs/" + csharpname) as GameObject;
+            prefabs.Add(name, prefab);
+        }
+        return GameObject.Instantiate(prefab);
+
+    }
 	public void Log (object log)
 	{
 		Debug.Log (log);
@@ -90,6 +104,10 @@ public class BasicLoader : MonoBehaviour
 		return null;
 	}
 
+    public void SetParent(GameObject go, GameObject parent)
+    {
+        go.transform.SetParent(parent.transform, false);
+    }
 	public bool Has (object obj)
 	{
 		return !(ReferenceEquals (obj, null) || obj.Equals (null));
@@ -128,7 +146,7 @@ public class BasicLoader : MonoBehaviour
 		ExternalFunctions.Load ();
 		foreach (var eFunctions in EFunctions)
 			ExternalFunctions.AddProvider (eFunctions.Provider, eFunctions.Functions);
-		ExternalFunctions.AddProvider (this, "Random", "Dsix", "AbstractCamp", "Has", "Vec", "GetWorld", "GetEventsController", "SelectFrom", "Log", "String", "GetPlayer", "Destroy", "NoOne");
+		ExternalFunctions.AddProvider (this, "Random", "Dsix", "SetParent", "AbstractCamp", "SpawnPrefab","Has", "Vec", "GetWorld", "GetEventsController", "SelectFrom", "Log", "String", "GetPlayer", "Destroy", "NoOne");
 		foreach (var fileInfo in dirInfo.GetFiles ())
 		{
 			if (fileInfo.LastWriteTimeUtc > lastWriteTime)

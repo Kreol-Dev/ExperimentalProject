@@ -5,7 +5,6 @@ public abstract class CardsHolderAdapter<T> : MonoBehaviour
 {
 	CardsHolder holder;
 	public T Container;
-
 	void Start ()
 	{
 		holder = GetComponent<CardsHolder> ();

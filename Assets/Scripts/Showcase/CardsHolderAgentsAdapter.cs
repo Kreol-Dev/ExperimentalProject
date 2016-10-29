@@ -3,9 +3,12 @@ using System.Collections;
 
 public class CardsHolderAgentsAdapter : CardsHolderAdapter<Place>
 {
-	protected override void Init ()
+    public Place TargetPlace { get { return Container; } set { Container = value; } }
+    protected override void Init ()
 	{
-		this.Container = GetComponent<UiObject> ().ShowedObject.GetComponent<Place> ();
+        var ui = GetComponent<UiObject>();
+        if (ui != null)
+		    this.Container = ui.ShowedObject.GetComponent<Place> ();
 	}
 
 	protected override bool OnCardDropped (Card card)

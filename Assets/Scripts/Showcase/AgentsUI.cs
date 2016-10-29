@@ -4,9 +4,12 @@ using System.Linq;
 
 public class AgentsUI : CardsUI<Place>
 {
-	protected override void Init ()
+    public Place TargetPlace { get { return TargetContainer; } set { TargetContainer = value; } }
+    protected override void Init ()
 	{
-		TargetContainer = GetComponent<UiObject> ().ShowedObject.GetComponent<Place> ();
+        var uiObject = GetComponent<UiObject>();
+        if(uiObject != null)
+            TargetContainer = uiObject.ShowedObject.GetComponent<Place> ();
 		Debug.Log (TargetContainer);
 	}
 

@@ -39,6 +39,8 @@ GameObject:
   - 114: {fileID: 114000012221015140}
   - 114: {fileID: 114000012605242624}
   - 114: {fileID: 114000012760534458}
+  - 114: {fileID: 114000013153585458}
+  - 114: {fileID: 114000010502008942}
   m_Layer: 0
   m_Name: MapMarker
   m_TagString: Untagged
@@ -101,6 +103,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &114000010502008942
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000011552443076}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f628b073a6a4ce24497c087f282565e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  showedObject: {fileID: 0}
+  ShoudFit: 0
 --- !u!114 &114000010902825336
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -288,6 +303,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   anchorT: {fileID: 0}
+--- !u!114 &114000013153585458
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000011552443076}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 417fb8b211661a143bd01f6df6ce4667, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uiObject: {fileID: 114000010502008942}
 --- !u!114 &114000013800039758
 MonoBehaviour:
   m_ObjectHideFlags: 1
