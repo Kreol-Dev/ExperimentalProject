@@ -1,3 +1,0 @@
-constvalA = 12
-constvalB = 15 + 2
-constvalC = constvalA + constvalB * 3

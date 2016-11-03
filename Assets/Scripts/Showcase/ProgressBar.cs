@@ -27,9 +27,10 @@ public class ProgressBar : MonoBehaviour
 			curValue = value;
 		}
 	}
-
+    string parentName;
 	void Awake ()
 	{
+        parentName = transform.parent.parent.name;
 		go = gameObject;
 		barImage = GetComponent<Image> ();
 		parentTransform = transform.parent.GetComponent<RectTransform> ();
@@ -58,7 +59,7 @@ public class ProgressBar : MonoBehaviour
 
 	public void Expire ()
 	{
-		
+        Debug.Log(parentName + " expires");
 		if (OnBarExpired != null)
 			OnBarExpired (go);
 	}

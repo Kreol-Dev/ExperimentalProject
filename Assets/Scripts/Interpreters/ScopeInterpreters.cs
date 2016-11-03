@@ -52,8 +52,9 @@ public class FitScopeInterpreter : ScopeInterpreter
 	public Type Type;
 
 	public override void Interpret (Expression[] args, FunctionBlock block, Type contextType, string exprVal, out string newExprVal, out FunctionBlock newCurBlock, out Type newContextType, bool isLast)
-	{
-		Debug.Log ("fit scope");
+    {
+        if (ScriptEngine.AnalyzeDebug)
+            Debug.Log ("fit scope");
 		IfStatement ifStatement = new IfStatement ();
 //		DeclareVariableStatement cmpStmt = new DeclareVariableStatement ();
 //		ExprInter.CleanUpContextes.Add (cmpStmt);

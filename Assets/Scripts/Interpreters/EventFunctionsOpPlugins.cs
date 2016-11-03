@@ -43,7 +43,8 @@ public class EventFunctionOperators : ScriptEnginePlugin
 		if (op.Identifier as string == null)
 		{
 			exprInter.TransformScopedOperator (op, block);
-			Debug.Log ("Transformed op " + op.ToString ());
+            if (ScriptEngine.AnalyzeDebug)
+                Debug.Log ("Transformed op " + op.ToString ());
 		}
 		interpreters.TryGetValue (op.Identifier as string, out inter);
 
@@ -58,10 +59,14 @@ public class EventFunctionOperators : ScriptEnginePlugin
 						return interPair.Value;
 				}
 				var context = block.FindStatement<ContextStatement> (c => (inter = c.InterpretInContext (op, block)) != null);
-				if (context != null)
-					Debug.LogFormat ("{0} is not an operator of context, found one {1}", op.Identifier, context.ContextVar);
-				else
-					Debug.LogWarningFormat ("{0} is not an operator of context, not found one", op.Identifier);
+                if (ScriptEngine.AnalyzeDebug)
+                {
+                    if (context != null)
+                        Debug.LogFormat("{0} is not an operator of context, found one {1}", op.Identifier, context.ContextVar);
+                    else
+                        Debug.LogWarningFormat("{0} is not an operator of context, not found one", op.Identifier);
+                }
+                    
 //				if (context != null)
 //					inter = context.InterpretInContext (op, block);
 				if (inter == null && op.Context is Expression)
@@ -90,7 +95,8 @@ public class EventFunctionOperators : ScriptEnginePlugin
 			}
 		}
 
-		Debug.LogFormat ("{0} - {1}", op, inter);
+        if (ScriptEngine.AnalyzeDebug)
+            Debug.LogFormat ("{0} - {1}", op, inter);
 		return inter;
 	}
 
@@ -128,7 +134,8 @@ public class VarDeclareInterpreter : FunctionOperatorInterpreter
 		var expr = Inter.InterpretExpression (op.Context as Expression, block);
 		stmt.InitExpression = expr.ExprString;
 		stmt.Type = expr.Type;
-		Debug.Log (stmt);
+        if(ScriptEngine.AnalyzeDebug)
+		    Debug.Log (stmt);
 		block.Statements.Add (stmt);
 	}
 }

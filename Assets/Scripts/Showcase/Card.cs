@@ -12,7 +12,6 @@ public class Card : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
 	public RectTransform ReturnToParent;
 	RectTransform transform;
 	public CardsHolder currentHolder;
-
 	void Awake ()
 	{
 		uiObject = gameObject.GetComponent<UiObject> ();

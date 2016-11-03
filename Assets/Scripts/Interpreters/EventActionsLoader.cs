@@ -20,9 +20,11 @@ public abstract class EventAction
 	protected GameObject root;
 
 	public GameObject Root { get { return root; } set { root = value; } }
+    public string Category { get; set; }
+    public bool ShouldHaveMaxUtility { get; set; }
 
-
-	public virtual void Init ()
+    public bool OncePerObject { get; set; }
+    public virtual void Init ()
 	{
 		
 	}
@@ -31,6 +33,14 @@ public abstract class EventAction
 	{
 
 	}
+}
+
+public class EventActionAttribute : Attribute
+{
+    public string Category { get; set; }
+    public bool ShouldHaveMaxUtility { get; set; }
+    
+    public bool OncePerObject { get; set; }
 }
 
 public class EventActionsLoader : ScriptInterpreter
@@ -59,6 +69,7 @@ public class EventActionsLoader : ScriptInterpreter
 			CurProgress = i;
 			var entry = script.Entries [i];
 			CodeTypeDeclaration codeType = new CodeTypeDeclaration ();
+            //codeType.CustomAttributes.
 			codeType.BaseTypes.Add (new CodeTypeReference (typeof(EventAction)));
 			codeType.Name = entry.Identifier as string;
 			codeTypes.Add (codeType);
@@ -69,16 +80,38 @@ public class EventActionsLoader : ScriptInterpreter
 			var actionMethod = typeof(EventAction).GetMethod ("Action");
 			var utMethod = typeof(EventAction).GetMethod ("Utility");
 			var scopeMethod = typeof(EventAction).GetMethod ("Filter");
-			for (int j = 0; j < ctx.Entries.Count; j++)
+            CodeAttributeDeclaration attr = new CodeAttributeDeclaration("EventActionAttribute");
+            codeType.CustomAttributes.Add(attr);
+            CodeAttributeArgument maxArg = new CodeAttributeArgument("ShouldHaveMaxUtility", new CodeSnippetExpression("false"));
+            CodeAttributeArgument catArg = new CodeAttributeArgument("Category", new CodeSnippetExpression("\"basic\""));
+            CodeAttributeArgument onceArg = new CodeAttributeArgument("OncePerObject", new CodeSnippetExpression("false"));
+            attr.Arguments.Add(maxArg);
+            attr.Arguments.Add(catArg);
+            attr.Arguments.Add(onceArg);
+            for (int j = 0; j < ctx.Entries.Count; j++)
 			{
 				var op = ctx.Entries [j] as Operator;
 				if (op == null)
 					continue;
-				if (op.Identifier as string == "scope")
+                if (op.Identifier as string == "only_max_utility")
+                {
+                    maxArg.Value = new CodeSnippetExpression((op.Context as InternalDSL.Expression).Operands[0].ToString());
+                    
+                }
+                else if(op.Identifier as string == "category")
+                {
+                    catArg.Value = new CodeSnippetExpression(String.Format("\"{0}\"", (((op.Context as Expression).Operands[0] as ExprAtom).Content as Scope).Parts[0]));
+                }
+                else if (op.Identifier as string == "once_per_object")
+                {
+                    onceArg.Value = new CodeSnippetExpression("true");
+                }
+                else if (op.Identifier as string == "scope")
 				{
-					//It's a filter function
-					//					Debug.Log (op.Context.GetType ());
-					Debug.Log ((op.Context as Expression).Operands [0].GetType ());
+                    //It's a filter function
+                    //					Debug.Log (op.Context.GetType ());
+                    if (ScriptEngine.AnalyzeDebug)
+                        Debug.Log ((op.Context as Expression).Operands [0].GetType ());
 
 					(((op.Context as Expression).Operands [0] as ExprAtom).Content as Scope).Parts.Add ("true");
 					DeclareVariableStatement retVal = new DeclareVariableStatement ();

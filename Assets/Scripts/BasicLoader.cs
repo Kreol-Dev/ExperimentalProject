@@ -140,14 +140,14 @@ public class BasicLoader : MonoBehaviour
 		DateTime lastWriteTime = DateTime.MinValue;
 		var ExternalFunctions = Engine.GetPlugin<ExternalFunctionsPlugin> ();
 		var bars = FindObjectOfType<ProgressBarSet> ();
-		genBar = bars.CreateBar (Color.yellow);
+		genBar = bars.CreateBar (Color.yellow, "gen");
 		for (int i = 0; i < Engine.PluginsCount; i++)
-			pluginBars.Add (bars.CreateBar (Color.blue));
+			pluginBars.Add (bars.CreateBar (Color.blue, i.ToString()));
 		ExternalFunctions.Load ();
 		foreach (var eFunctions in EFunctions)
 			ExternalFunctions.AddProvider (eFunctions.Provider, eFunctions.Functions);
 		ExternalFunctions.AddProvider (this, "Random", "Dsix", "SetParent", "AbstractCamp", "SpawnPrefab","Has", "Vec", "GetWorld", "GetEventsController", "SelectFrom", "Log", "String", "GetPlayer", "Destroy", "NoOne");
-		foreach (var fileInfo in dirInfo.GetFiles ())
+		foreach (var fileInfo in dirInfo.GetFiles ("*", SearchOption.AllDirectories))
 		{
 			if (fileInfo.LastWriteTimeUtc > lastWriteTime)
 				lastWriteTime = fileInfo.LastWriteTimeUtc;
@@ -167,7 +167,7 @@ public class BasicLoader : MonoBehaviour
 			loadedAsms.Add ("BlackboardsData");
 			bbloader = new BlackboardsLoader (Engine);
 			bbloader.Init ();
-			eaBar = FindObjectOfType<ProgressBarSet> ().CreateBar (Color.green);
+			eaBar = FindObjectOfType<ProgressBarSet> ().CreateBar (Color.green, "eaBar");
 			compileThread = new Thread (() => {
 				try
 				{
@@ -207,7 +207,7 @@ public class BasicLoader : MonoBehaviour
 	BlackboardsLoader bbloader;
 	ProgressBar eaBar;
 	ProgressBar genBar;
-
+    
 	void OnExternalsCompiled ()
 	{
 		var loader = new EventActionsLoader ("generators", Engine);
@@ -219,28 +219,37 @@ public class BasicLoader : MonoBehaviour
 			}
 		};
 		loader.MaxProgressResolved += x => eaBar.MaxValue = x;
-		Script genScript = new Script ("generators", loader, Engine);
-		genScript.Progress.CurProgressUpdated += x => genBar.CurValue = x;
+        Script genScript = new Script ("generators", loader, Engine);
+        var scriptFiles = Directory.GetFiles("StreamingAssets/Mods/Scripts");
+        genScript.Progress.CurProgressUpdated += x => genBar.CurValue = x;
+        int filesLoaded = 0;
 		genScript.Progress.CurProgressUpdated += x => {
-			if (x == genBar.MaxValue)
+			if (x == genBar.MaxValue && filesLoaded == scriptFiles.Length - 1)
 			{
 				genBar.Expire ();
 			}
 		};
 		genScript.Progress.MaxProgressResolved += x => genBar.MaxValue = x;
-		genScript.LoadFile ("StreamingAssets/Mods/test.def");
+        foreach (var file in scriptFiles)
+        {
+            genScript.LoadFile(file);
+            filesLoaded++;
+        }
 
-	
 
-		bbloader.AddType (typeof(GameObject), "gameobject");
+
+
+        bbloader.AddType (typeof(GameObject), "gameobject");
 		bbloader.AddType (typeof(int), "int");
 		bbloader.AddType (typeof(float), "float");
 		bbloader.AddType (typeof(string), "string");
 		bbloader.AddType (typeof(bool), "bool");
 		Script blackboardsScript = new Script ("blackboards", bbloader, Engine);
-		blackboardsScript.LoadFile ("StreamingAssets/Mods/blackboards.def");
-
-		foreach (var entry in genScript.Entries)
+        scriptFiles = Directory.GetFiles("StreamingAssets/Mods/Blackboards");
+        foreach (var file in scriptFiles)
+            blackboardsScript.LoadFile(file);
+        if (ScriptEngine.AnalyzeDebug)
+            foreach (var entry in genScript.Entries)
 			Debug.Log (entry);
 
 		blackboardsScript.Interpret ();
@@ -278,13 +287,15 @@ public class BasicLoader : MonoBehaviour
 
 	Assembly Resolver (object sender, ResolveEventArgs args)
 	{
+        if(ScriptEngine.AnalyzeDebug)
 		Debug.LogWarning (string.Format ("RESOLVE {0} = {1}", args.Name, loadedAsms.Contains (args.Name)));
 
 		var asms = AppDomain.CurrentDomain.GetAssemblies ();
 		builder.Length = 0;
 		foreach (var a in asms)
 			builder.AppendLine (a.GetName ().Name);
-		Debug.LogWarning (builder.ToString ());
+        if (ScriptEngine.AnalyzeDebug)
+            Debug.LogWarning (builder.ToString ());
 		if (loadedAsms.Contains (args.Name))
 			return asms.First (x => x.GetName ().Name == args.Name);
 		else

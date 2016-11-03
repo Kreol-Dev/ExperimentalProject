@@ -1,0 +1,11 @@
+war_conflict = 
+{
+	only_max_utility = yes
+	category = conflict_decomposition
+	scope = conflict.markers.fit(not has_marker(conflict_decomposed))
+	utility = 1
+	action = 
+	{
+		markers.set_marker = conflict_decomposed
+	}
+}

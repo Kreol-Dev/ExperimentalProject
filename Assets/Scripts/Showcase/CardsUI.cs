@@ -75,6 +75,7 @@ public abstract class CardsUI<T> : MonoBehaviour
 
 			Debug.LogFormat ("UI:{0} OnPlaceAttached - FoundOld {1}", this, go);
 			uiByPlace.Add (go, found);
+            gens.Generate(found);
             found.transform.SetParent(gameObject.transform);
 		}
 
@@ -90,8 +91,28 @@ public abstract class CardsUI<T> : MonoBehaviour
 	{
 		var cardGo = uiByPlace [go];
 		if (cardGo != null)
-			cardGo.transform.SetParent (temporaryCardsHolder);
+        {
+            cardGo.transform.SetParent(temporaryCardsHolder);
+            
+        }
 		uiByPlace.Remove (go);
 	}
+
+
+    static WaitForSeconds clearTime = new WaitForSeconds(120);
+    IEnumerator ClearCardIfNotUsed(GameObject go)
+    {
+        yield return clearTime;
+        if(go.transform.parent == temporaryCardsHolder)
+        {
+            yield return null;
+            if (go.transform.parent == temporaryCardsHolder)
+            {
+                go.GetComponent<Entity>().Destroy();
+                go.transform.SetParent(null);
+            }
+        }
+        
+    }
 }
 

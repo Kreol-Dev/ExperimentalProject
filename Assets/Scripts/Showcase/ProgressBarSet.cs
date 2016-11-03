@@ -6,16 +6,17 @@ using System.Collections.Generic;
 public class ProgressBarSet : MonoBehaviour
 {
 	public int Height = 0;
+    [SerializeField]
 	int barsCount = 0;
 	public Font Font;
 
-	public ProgressBar CreateBar (Color color)
+	public ProgressBar CreateBar (Color color, string name)
 	{
 
 		barsCount++;
 		gameObject.SetActive (true);
 
-		GameObject go = new GameObject ("progress bar");
+		GameObject go = new GameObject ("progress bar " + name);
 		var rect = go.AddComponent<RectTransform> ();
 		rect.SetParent (transform);
 		var layout = go.AddComponent<LayoutElement> ();
@@ -50,16 +51,35 @@ public class ProgressBarSet : MonoBehaviour
 		lock (entitiesToDestroy)
 		{
 			entitiesToDestroy.Push (entity);
-		}
-		barsCount--;
+        }
 	}
 
 	void Update ()
 	{
 		lock (entitiesToDestroy)
 		{
-			while (entitiesToDestroy.Count > 0)
-				Destroy (parentOfBars [entitiesToDestroy.Pop ()]);
+           /* var stack = new Stack<GameObject>();
+            while (entitiesToDestroy.Count > 0)
+            {
+                var e = entitiesToDestroy.Pop();
+                stack.Push(e);
+                var parent = parentOfBars[e];
+                Debug.LogWarning(parent.name + " expires");
+            }
+            entitiesToDestroy = stack;*/
+                while (entitiesToDestroy.Count > 0)
+            {
+                var e = entitiesToDestroy.Pop();
+                GameObject parent;
+                parentOfBars.TryGetValue(e, out parent);
+                if(parent != null)
+                {
+                    barsCount--;
+                    parentOfBars.Remove(e);
+                    Destroy(parent);
+                }
+                
+            }
 		}
 		if (barsCount == 0)
 			gameObject.SetActive (false);

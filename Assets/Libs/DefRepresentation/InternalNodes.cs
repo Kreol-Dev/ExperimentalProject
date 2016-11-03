@@ -311,7 +311,7 @@ namespace InternalDSL
 		public override string ToString ()
 		{
 			StringBuilder builder = new StringBuilder (100);
-			builder.Append ("EXPR:");
+			builder.Append ("/*EXPR:*/");
 			for (int i = 0; i < Operands.Length; i++)
 			{
 				if (i % 2 == 0)
@@ -725,12 +725,12 @@ namespace InternalDSL
 		public override string ToString ()
 		{
 			StringBuilder builder = new StringBuilder (100);
-			builder.Append ("SCOPE<");
+			builder.Append ("/*SCOPE<*/");
 			for (int i = 0; i < Parts.Count; i++)
 				builder.Append (Parts [i]).Append (".");
 			if (builder.Length > 0)
 				builder.Length -= 1;
-			builder.Append (">");
+			builder.Append ("/*>*/");
 			return builder.ToString ();
 		}
 	}

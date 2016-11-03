@@ -83,14 +83,16 @@ public class BlackboardsLoader  : ScriptInterpreter
 						var listFunc = (((op.Context as Expression).Operands [0] as ExprAtom).Content as Scope).Parts [0] as FunctionCall;
 						typeName = ((listFunc.Args [0].Operands [0] as ExprAtom).Content as Scope).Parts [0] as string;
 
-						Debug.Log ("LIST: " + typeName);
+                        if (ScriptEngine.AnalyzeDebug)
+                            Debug.Log ("LIST: " + typeName);
 						var listType = String.Format ("System.Collections.Generic.List<{0}>", types [typeName]);
 						field = new CodeMemberField (new CodeTypeReference (listType), op.Identifier as string);
 						field.InitExpression = new CodeSnippetExpression (String.Format ("new {0}()", listType));
 					} else
 					{
 
-						Debug.Log (typeName);
+                        if (ScriptEngine.AnalyzeDebug)
+                            Debug.Log (typeName);
 						field = new CodeMemberField (types [typeName], op.Identifier as string);
 					}
 					field.Attributes = MemberAttributes.Public;
@@ -114,12 +116,14 @@ public class BlackboardsLoader  : ScriptInterpreter
 
 	void OnCompiled (Assembly asm)
 	{
-		//AppDomain.CurrentDomain.Load (asm.GetName ());
-		//asm.GetName ().SetPublicKeyToken (new byte[]{ 12, 13, 48, 2 });
+        //AppDomain.CurrentDomain.Load (asm.GetName ());
+        //asm.GetName ().SetPublicKeyToken (new byte[]{ 12, 13, 48, 2 });
 
-		Debug.LogWarning (asm.FullName);
+        if (ScriptEngine.AnalyzeDebug)
+            Debug.LogWarning (asm.FullName);
 		Engine.AddAssembly (asm);
-		foreach (var key in codeTypes.Keys)
+        if (ScriptEngine.AnalyzeDebug)
+            foreach (var key in codeTypes.Keys)
 			Debug.Log (Engine.GetType (key));
 		
 

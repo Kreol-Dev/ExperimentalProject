@@ -195,11 +195,13 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 				break;
 			default:
 				throw new ArgumentOutOfRangeException ();
-			}
-			Debug.Log (expression);
+            }
+            if (ScriptEngine.AnalyzeDebug)
+                Debug.Log (expression);
 			for (int i = 0; i < expression.Operands.Length; i += 2)
-			{
-				Debug.Log ("OPERAND " + expression.Operands [i]);
+            {
+                if (ScriptEngine.AnalyzeDebug)
+                    Debug.Log ("OPERAND " + expression.Operands [i]);
 				builder.Append ("(");
 				int stackSize = CleanUpContextes.Count;
 				builder.Append (ProcessOperand (expression.Operands [i], block, isBool).ExprString);
@@ -261,7 +263,8 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 			var contextVar = block.FindStatement<DeclareVariableStatement> (v => v.Name == scope [0] as string);
 			if (contextVariable = (contextVar == null))
 				contextVar = block.FindStatement<DeclareVariableStatement> (v => v.IsContext);
-			Debug.LogWarningFormat ("S_CTX {0} {1}", contextVar, operand);
+            if (ScriptEngine.AnalyzeDebug)
+                Debug.LogWarningFormat ("S_CTX {0} {1}", contextVar, operand);
 			string contextName = null; //!contextVariable ? "root" : contextVar.Name;
 			Type contextType = null; //!contextVariable ? typeof(GameObject) : contextVar.Type;
 			if (contextVar == null)
@@ -280,7 +283,8 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 			for (int i = contextVariable ? 0 : 1; i < scope.Count; i++)
 			{
 
-				Debug.LogWarningFormat ("scope part {0} {1} {2}", scope [i], contextType.IsGenericType, contextType.IsGenericType ? (contextType.GetGenericTypeDefinition () == typeof(List<>)).ToString () : "");
+                if (ScriptEngine.AnalyzeDebug)
+                    Debug.LogWarningFormat ("scope part {0} {1} {2}", scope [i], contextType.IsGenericType, contextType.IsGenericType ? (contextType.GetGenericTypeDefinition () == typeof(List<>)).ToString () : "");
 				if (contextType.IsGenericType && contextType.GetGenericTypeDefinition () == typeof(List<>))
 				{
 					if (firstTimeList)
@@ -377,21 +381,25 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 							if (otherContext != null)
 							{
 								exprBuilder.Length = hasSign ? 1 : 0;
-								Debug.LogWarning ("OTHER CONTEXT" + otherContext.DebugString ());
+                                if (ScriptEngine.AnalyzeDebug)
+                                    Debug.LogWarning ("OTHER CONTEXT" + otherContext.DebugString ());
 								exprBuilder.Append (otherContext.Name).Append ('.');
 								contextType = otherContext.Type;
 							} else
 							{
 
-								Debug.LogWarning ("Can't find context for method " + methodName);
+                                if (ScriptEngine.AnalyzeDebug)
+                                    Debug.LogWarning ("Can't find context for method " + methodName);
 								block.FindStatement<DeclareVariableStatement> (v => {
-									Debug.LogFormat ("{0} {1} {3}                  ||||{2}", v.Name, v.Type, IfStatement.AntiMergeValue++, v.IsContext || v.IsArg);
+                                    if (ScriptEngine.AnalyzeDebug)
+                                        Debug.LogFormat ("{0} {1} {3}                  ||||{2}", v.Name, v.Type, IfStatement.AntiMergeValue++, v.IsContext || v.IsArg);
 									return false; });
 							}
 						}
 						if (method == null)
-						{
-							Debug.LogFormat ("Can't find {0} in {1}", NameTranslator.CSharpNameFromScript (callName), contextType);
+                        {
+                            if (ScriptEngine.AnalyzeDebug)
+                                Debug.LogFormat ("Can't find {0} in {1}", NameTranslator.CSharpNameFromScript (callName), contextType);
 						} else
 						{
 							exprBuilder.Append (method.Name).Append ("(");
@@ -479,8 +487,10 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 									curBlock.Statements.Add (ifSt);
 									curBlock = ifSt.TrueBlock;
 								}
-							} else
-								Debug.LogWarning ("Can't find context for property " + propName);
+							}
+                            else
+                                if (ScriptEngine.AnalyzeDebug)
+                                    Debug.LogWarning ("Can't find context for property " + propName);
 						} else
 						{
 							exprBuilder.Length = hasSign ? 1 : 0;
@@ -497,12 +507,14 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 						}
 
 
-					}
-					Debug.LogWarning (prop);
+                    }
+                    if (ScriptEngine.AnalyzeDebug)
+                        Debug.LogWarning (prop);
 					if (prop == null && components.ContainsKey (scope [i] as string))
 					{
 						var type = components [scope [i] as string];
-						Debug.LogWarning ("Component found " + type);
+                        if (ScriptEngine.AnalyzeDebug)
+                            Debug.LogWarning ("Component found " + type);
 						var storedVar = curBlock.FindStatement<DeclareVariableStatement> (v => v.Type == type);
 						contextType = type;
 						if (storedVar == null)
@@ -566,8 +578,9 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 						}
 
 					} else if (prop == null && scope.Count == 1)
-					{
-						Debug.LogWarningFormat ("Can't find {0} in {1}, interpreting as a string", propName, contextType);
+                    {
+                        if (ScriptEngine.AnalyzeDebug)
+                            Debug.LogWarningFormat ("Can't find {0} in {1}, interpreting as a string", propName, contextType);
 						contextType = typeof(string);
 						exprBuilder.Length = 0;
 						exprBuilder.Append ("\"").Append (scope [i]).Append ("\"");

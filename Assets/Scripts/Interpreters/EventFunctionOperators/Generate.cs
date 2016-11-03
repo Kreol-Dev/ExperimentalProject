@@ -42,7 +42,8 @@ public class GenerateOperator : FunctionOperatorInterpreter
 		{
 			var subOp = entry as Operator;
 			var subContext = subOp.Context as Context;
-			Debug.Log (subOp.Identifier.GetType ());
+            if (ScriptEngine.AnalyzeDebug)
+                Debug.Log (subOp.Identifier.GetType ());
 			if (subOp.Identifier is string)
 			{
 

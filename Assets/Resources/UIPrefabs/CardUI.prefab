@@ -26,6 +26,7 @@ GameObject:
   - 114: {fileID: 114000010695668440}
   - 225: {fileID: 225000013832065028}
   - 114: {fileID: 114000013559023716}
+  - 114: {fileID: 114000010283814738}
   m_Layer: 5
   m_Name: CardUI
   m_TagString: Untagged
@@ -53,6 +54,17 @@ MonoBehaviour:
   m_Spacing: 5
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
+--- !u!114 &114000010283814738
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012299323770}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d644e950bff924380aab1c660d8ac2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114000010695668440
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -110,6 +122,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   showedObject: {fileID: 0}
+  ShoudFit: 1
 --- !u!114 &114000013813963382
 MonoBehaviour:
   m_ObjectHideFlags: 1

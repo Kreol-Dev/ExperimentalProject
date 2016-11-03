@@ -12,7 +12,8 @@ public static class TypeName
 		if (type == null)
 			return "NullType";
 		Type genType;
-		Debug.Log ("NameOf " + type);
+        if (ScriptEngine.AnalyzeDebug)
+            Debug.Log ("NameOf " + type);
 		if (type.IsGenericType && (genType = type.GetGenericTypeDefinition ()) == typeof(List<>))
 		{
 			return String.Format ("System.Collections.Generic.List<{0}>", type.GetGenericArguments () [0]);

@@ -5,21 +5,23 @@ using System.Collections.Generic;
 public delegate void GODelegate (GameObject entity);
 public class Entity : MonoBehaviour
 {
-
+    static Entity DeathHandler;
 	public Vector3 Position { get { return transform.position; } set { transform.position = value; } }
 
 	public event VoidDelegate ComponentAddedEvent;
 
 	void Awake ()
 	{
+        if (DeathHandler == null)
+            DeathHandler = GameObject.Find("DeathHandler").GetComponent<Entity>();
 	}
 
-	public bool Dead { get; internal set; }
+	public bool Dead { get { return !gameObject.activeInHierarchy;  } }
 
 	public void Destroy ()
 	{
-		Dead = true;
-		StartCoroutine (DeathCoroutine ());
+        gameObject.SetActive(false);
+		DeathHandler.StartCoroutine (DeathCoroutine ());
 	}
 
     static ObjectPool<List<Transform>> pool = new ObjectPool<List<Transform>>();

@@ -160,6 +160,7 @@ GameObject:
   - 114: {fileID: 258425054}
   - 114: {fileID: 258425055}
   - 114: {fileID: 258425056}
+  - 114: {fileID: 258425057}
   m_Layer: 5
   m_Name: SpaceUI
   m_TagString: Untagged
@@ -180,11 +181,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 669760589}
   m_RootOrder: 2
-  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.192, y: 0.7402841}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 83.70001, y: 116.48102}
-  m_SizeDelta: {x: -167.40002, y: -232.96204}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &258425049
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -301,6 +302,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   text: Tooltip!
+--- !u!114 &258425057
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 258425047}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1741964061, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalFit: 0
+  m_VerticalFit: 2
 --- !u!1 &282835527
 GameObject:
   m_ObjectHideFlags: 0
@@ -1491,6 +1505,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Height: 20
+  barsCount: 0
   Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 3}
 --- !u!222 &1423411640
 CanvasRenderer:
@@ -1946,6 +1961,46 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e8cfef8e04b91b4ab91993e1620b4ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1697040459
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1697040461}
+  - 114: {fileID: 1697040460}
+  m_Layer: 0
+  m_Name: DeathHandler
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1697040460
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1697040459}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d644e950bff924380aab1c660d8ac2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1697040461
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1697040459}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 211.3617, y: 111.54475, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 13
 --- !u!1 &1701650310
 GameObject:
   m_ObjectHideFlags: 0
@@ -2072,11 +2127,12 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1767707234}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a2197e672ec2f07479c7c13eddf1d3a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gens: {fileID: 0}
   IntensityCurve:
     serializedVersion: 2
     m_Curve:
