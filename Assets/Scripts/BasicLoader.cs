@@ -65,6 +65,10 @@ public class BasicLoader : MonoBehaviour
 		Loaded += () => loader.IsLoading = false;
 	}
 
+    public GameObject Gameobject(MonoBehaviour cmp)
+    {
+        return cmp.gameObject;
+    }
 
 
 
@@ -113,7 +117,10 @@ public class BasicLoader : MonoBehaviour
 		return !(ReferenceEquals (obj, null) || obj.Equals (null));
 	}
 
-
+    public bool Contains(IList collection, object obj)
+    {
+        return collection.Contains(obj);
+    }
 	public int Dsix { get { return random.Next (0, 10); } internal set { } }
 
 	public event VoidDelegate Loaded;
@@ -125,7 +132,7 @@ public class BasicLoader : MonoBehaviour
 	}
 
 	Thread compileThread;
-
+    
 	void OnDestroy ()
 	{
 		Engine.Working = false;
@@ -146,7 +153,7 @@ public class BasicLoader : MonoBehaviour
 		ExternalFunctions.Load ();
 		foreach (var eFunctions in EFunctions)
 			ExternalFunctions.AddProvider (eFunctions.Provider, eFunctions.Functions);
-		ExternalFunctions.AddProvider (this, "Random", "Dsix", "SetParent", "AbstractCamp", "SpawnPrefab","Has", "Vec", "GetWorld", "GetEventsController", "SelectFrom", "Log", "String", "GetPlayer", "Destroy", "NoOne");
+		ExternalFunctions.AddProvider (this, "Random", "Dsix", "SetParent", "AbstractCamp", "Gameobject", "Contains" ,"SpawnPrefab","Has", "Vec", "GetWorld", "GetEventsController", "SelectFrom", "Log", "String", "GetPlayer", "Destroy", "NoOne");
 		foreach (var fileInfo in dirInfo.GetFiles ("*", SearchOption.AllDirectories))
 		{
 			if (fileInfo.LastWriteTimeUtc > lastWriteTime)

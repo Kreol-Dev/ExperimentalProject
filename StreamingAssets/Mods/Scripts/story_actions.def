@@ -2,10 +2,287 @@ war_conflict =
 {
 	only_max_utility = yes
 	category = conflict_decomposition
-	scope = conflict.markers.fit(not has_marker(conflict_decomposed))
+	once_per_object = yes
+	scope = conflict
 	utility = 1
 	action = 
 	{
-		markers.set_marker = conflict_decomposed
+		generate(first) = 
+		{
+			entity = yes
+			foe_role = yes
+			actor = yes
+		}
+
+		generate(second) =
+		{
+			entity = yes
+			actor = yes
+			foe_role = 
+			{
+				enemy = first
+			}
+		}
+
+		first.foe_role.enemy = second
 	}
 }
+
+foe_is_ruler = 
+{
+	only_max_utility = yes
+	category = foe_decomposition
+	once_per_object = yes
+	scope = foe_role
+	utility = 1
+	action = 
+	{
+		create(ruler_role) = 
+		{
+			forces = random(10, 20)
+			people = 1
+		}
+	}
+}
+
+ruler_vs_ruler = 
+{
+	once_per_turn = yes
+	scope = actor.foe_role.ruler_role.fit(enemy.ruler_role.true and not is_active)
+	utility = 1
+	action = 
+	{
+		my_forces = ruler_role.forces
+		enemy_forces = foe_role.enemy.ruler_role.forces
+		foe_role = {
+			if(not (my_forces = 0)).threat_level = enemy_forces / my_forces
+			if(my_forces = 0 or threat_level > 1000).threat_level = 1000
+		}
+		
+	}
+}
+
+
+start_a_war = 
+{
+	scope = actor.foe_role.ruler_role.fit(enemy.fit(has(ruler_role)) and not contains(at_war_with, enemy) and is_active)
+	utility = 1
+	action = 
+	{
+		foe_role =
+		{
+			ruler_role.add_to(at_war_with) = enemy
+			enemy.ruler_role = 
+			{
+				add_to(at_war_with) = root
+			}
+		}
+		
+
+		generate(event_war_declaration) = 
+		{
+			event = {
+				context = root
+			}
+			war_declaration = yes
+			targeted_event = 
+			{
+				target = root.foe_role.enemy
+			}
+		}
+	}
+}
+
+gather_reinforcements = 
+{
+	scope = actor.foe_role.ruler_role.fit(is_active)
+	utility = ruler_role.people - 0.3
+	action = 
+	{
+		generate(act) = 
+		{
+			notify_event = 
+			{
+				who = root
+				data = "gather_reinforcements"
+			}
+		}
+		ruler_role = 
+		{
+			forces = forces + 7
+			people = people - 0.1
+		}
+	}
+}
+
+growth = 
+{
+	scope = actor.ruler_role.fit(people < 1 and not is_active)
+	utility = 1
+	once_per_turn = yes
+	action = 
+	{
+		ruler_role.people = people * 1.2
+	}
+}
+order_a_wunderwaffe = 
+{
+	once_per_object = yes
+	scope = actor.ruler_role.foe_role.fit(is_active and contains(at_war_with, enemy))
+	utility = foe_role.threat_level * 0.3
+	action = 
+	{
+		generate(wunder_waffe) = 
+		{
+			actor = yes
+			buildable = 
+			{
+				cost = 20
+			}
+			old_weapon = yes
+		}
+		ruler_role.wunderwaffe = wunder_waffe
+	}
+}
+
+genius_found = 
+{
+	once_per_object = yes
+	scope = actor.ruler_role.fit(wunderwaffe.old_weapon.buildable.true and not is_active)
+	utility = 1
+	action = 
+	{
+		generate(genius) = 
+		{
+			actor = yes
+			worker = 
+			{
+				works_for = root
+			}
+			builder = yes
+		}
+	}
+}
+
+commence_battle = 
+{
+	scope = actor.ruler_role.foe_role.fit(is_active and contains(at_war_with, enemy) and enemy.ruler_role.true)
+	utility = 1.0 / foe_role.threat_level
+	action = 
+	{
+		generate(battle_event) = 
+		{
+			event = {
+				context = root
+			}
+			targeted_event = 
+			{
+				target = root.foe_role.enemy
+			}
+			battle_event = yes
+		}
+	}
+}
+
+battle_calculation = 
+{
+	once_per_object = yes
+	utility = 1
+	scope = event.battle_event.targeted_event.fit(event.context.ruler_role.true and targeted_event.target.ruler_role.true)
+	action = 
+	{	
+
+		intensity_multiplier = 1 + intensity * 4
+		first = event.context.ruler_role
+		second = targeted_event.target.ruler_role
+		pre_battle_first = first.forces
+		pre_battle_second = second.forces
+		if(first.forces > second.forces) = 
+		{
+			second = 
+			{
+				forces = forces / 2 / intensity_multiplier
+			}
+			first = 
+			{
+				forces = forces / intensity_multiplier
+			}
+			battle_event = 
+			{
+				won = gameobject(first)
+				lost = gameobject(second)
+				winner_forces_lost = pre_battle_first - first.forces
+				looser_forces_lost = pre_battle_second - second.forces
+			}
+		}
+		if(first.forces < second.forces) = 
+		{
+			first = 
+			{
+				forces = forces / 2 / intensity_multiplier
+			}
+			second = 
+			{
+				forces = forces / intensity_multiplier
+			}
+			battle_event = 
+			{
+				won = gameobject(second)
+				lost = gameobject(first)
+				looser_forces_lost = pre_battle_first - first.forces
+				winner_forces_lost = pre_battle_second - second.forces
+			}
+		}
+		if(first.forces = second.forces).battle_event.tie = yes
+	}
+}
+
+build_wunderwaffe = 
+{
+	scope = actor.builder.worker.fit(is_active and 
+		works_for.ruler_role.fit(wunderwaffer.buildable.true and not wunderwaffe.buildable.finished))
+	utility = 1
+	action = 
+	{
+		generate(act) = 
+		{
+			notify_event = {
+				who = root
+				data = "build_wunderwaffe"
+			}
+		}
+		worker.works_for.ruler_role.wunderwaffe.buildable =
+		{
+			current_investment = current_investment + 5
+			if(current_investment >= cost).finished = yes
+		}
+		
+	}
+}
+
+test_wunderwaffe = 
+{
+	scope = actor.ruler_role.foe_role.fit(
+		is_active and contains(at_war_with, enemy) and
+		enemy.ruler_role.true and has(wunderwaffe) and
+		wunderwaffe.buildable.finished)
+	once_per_object = yes
+	utility = foe_role.threat_level * 0.5
+	action = 
+	{
+		generate(act) = 
+		{
+			notify_event = 
+			{
+				who = root
+				data = "test_wunderwaffe"
+			}
+		}
+		foe_role.enemy.ruler_role = {
+			forces = forces - 10
+			people = 0
+		}
+	}
+
+}
+

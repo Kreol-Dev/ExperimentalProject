@@ -142,7 +142,8 @@ public class ExternalFunctionsPlugin : ScriptEnginePlugin
 		{
 			Debug.LogWarning (provider.Name);
 			//Debug.LogWarning (provider.Instance);
-			type.GetField (provider.Name, BindingFlags.NonPublic | BindingFlags.Static).SetValue (null, provider.Instance);
+                type.GetField(provider.Name, BindingFlags.NonPublic | BindingFlags.Static).SetValue(null, provider.Instance);
+            
 			//Debug.LogWarning (type.GetField (provider.Name, BindingFlags.NonPublic | BindingFlags.Static).GetValue (null));
 		}
 

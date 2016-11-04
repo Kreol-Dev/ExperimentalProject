@@ -54,8 +54,8 @@ public class ContextSwitchesPlugin : ScriptEnginePlugin
 		{
 			CurProgress++;
 			ContextSwitchInterpreter inter = new ContextSwitchInterpreter (cmp, Engine);
-            if (ScriptEngine.AnalyzeDebug)
-                Debug.Log ("context " + inter.Engine);
+            //if (ScriptEngine.AnalyzeDebug)
+            //    Debug.Log ("context " + inter.Engine);
 			ops.AddInterpreter (NameTranslator.ScriptNameFromCSharp (cmp.Name), inter);
 		}
 		CurProgress = MaxProgress;
@@ -178,8 +178,8 @@ public class ContextSwitchInterpreter : FunctionOperatorInterpreter
 	{
 		this.Engine = engine;
 		engine.GetPlugin<ContextSwitchesPlugin> ().AddInterToType (type, this);
-        if (ScriptEngine.AnalyzeDebug)
-            Debug.Log ("Context switch " + type);
+        //if (ScriptEngine.AnalyzeDebug)
+        //    Debug.Log ("Context switch " + type);
 		contextType = type;
 		if (type == typeof(GameObject))
 			return;
@@ -196,17 +196,17 @@ public class ContextSwitchInterpreter : FunctionOperatorInterpreter
 				contextSwitches.Add (NameTranslator.ScriptNameFromCSharp (prop.Name), inter);
 
 				inter.Engine = Engine;
-                if (ScriptEngine.AnalyzeDebug)
-                    Debug.Log ("SubContext " + NameTranslator.ScriptNameFromCSharp (prop.Name));
+                //if (ScriptEngine.AnalyzeDebug)
+                //    Debug.Log ("SubContext " + NameTranslator.ScriptNameFromCSharp (prop.Name));
 			} else
 			{
 				ContextPropertyInterpreter inter = new ContextPropertyInterpreter (prop.Name, prop.PropertyType, Engine);
 				inter.Engine = Engine;
-                if (ScriptEngine.AnalyzeDebug)
-                    Debug.Log (inter.Engine);
+                //if (ScriptEngine.AnalyzeDebug)
+                //    Debug.Log (inter.Engine);
 				properties.Add (NameTranslator.ScriptNameFromCSharp (prop.Name), inter);
-                if (ScriptEngine.AnalyzeDebug)
-                    Debug.Log (NameTranslator.ScriptNameFromCSharp (prop.Name));
+                //if (ScriptEngine.AnalyzeDebug)
+                //    Debug.Log (NameTranslator.ScriptNameFromCSharp (prop.Name));
 			}
 
 		}
@@ -215,8 +215,8 @@ public class ContextSwitchInterpreter : FunctionOperatorInterpreter
 		{
 			if (method.GetCustomAttributes (typeof(CompilerGeneratedAttribute), false).Length > 0)
 				continue;
-            if (ScriptEngine.AnalyzeDebug)
-                Debug.Log ("Context method " + method.Name);
+           // if (ScriptEngine.AnalyzeDebug)
+           //     Debug.Log ("Context method " + method.Name);
 			ContextFunctionCallInterpreter inter = new ContextFunctionCallInterpreter (method, Engine);
 			functions.Add (NameTranslator.ScriptNameFromCSharp (method.Name), inter);
 		}
@@ -438,6 +438,7 @@ public class ContextPropertyInterpreter : FunctionOperatorInterpreter
 
 	public override void Interpret (Operator op, FunctionBlock block)
 	{
+        interpret = false;
 		if (exprInter == null)
 		{
 			switches = Engine.GetPlugin<ContextSwitchesPlugin> ();
@@ -567,19 +568,19 @@ public class ContextPropertySwitchInterpreter : ContextPropertyInterpreter
 		this.propName = propName;
 		propType = type;
 		this.Engine = engine;
-        if (ScriptEngine.AnalyzeDebug)
-            Debug.Log ("Context switch " + type);
+       // if (ScriptEngine.AnalyzeDebug)
+      //      Debug.Log ("Context switch " + type);
 		var props = type.GetProperties (BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
 		var methods = type.GetMethods (BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
-        if (ScriptEngine.AnalyzeDebug)
-            Debug.Log ("Methods count " + methods.Length);
+       // if (ScriptEngine.AnalyzeDebug)
+       //     Debug.Log ("Methods count " + methods.Length);
 		var thisKey = new PropKey (type, propName);
 		if (!allPropSwitches.ContainsKey (thisKey))
 			allPropSwitches.Add (thisKey, this);
 		if (typeof(MonoBehaviour).IsAssignableFrom (type) && type != typeof(MonoBehaviour))
         {
-            if (ScriptEngine.AnalyzeDebug)
-                Debug.Log ("It's a component! " + type);
+            //if (ScriptEngine.AnalyzeDebug)
+            //    Debug.Log ("It's a component! " + type);
 			foreach (var prop in props)
 			{
 				//Debug.Log (prop.Name);
@@ -597,17 +598,17 @@ public class ContextPropertySwitchInterpreter : ContextPropertyInterpreter
 						inter.Engine = Engine;
 					}
 
-                    if (ScriptEngine.AnalyzeDebug)
-                        Debug.Log ("SubContext " + NameTranslator.ScriptNameFromCSharp (prop.Name));
+                   // if (ScriptEngine.AnalyzeDebug)
+                  //      Debug.Log ("SubContext " + NameTranslator.ScriptNameFromCSharp (prop.Name));
 				} else
 				{
 					ContextPropertyInterpreter inter = new ContextPropertyInterpreter (prop.Name, prop.PropertyType, engine);
 					inter.Engine = Engine;
-                    if (ScriptEngine.AnalyzeDebug)
-                        Debug.Log (inter.Engine);
+                  //  if (ScriptEngine.AnalyzeDebug)
+                  //      Debug.Log (inter.Engine);
 					properties.Add (NameTranslator.ScriptNameFromCSharp (prop.Name), inter);
-                    if (ScriptEngine.AnalyzeDebug)
-                        Debug.Log (NameTranslator.ScriptNameFromCSharp (prop.Name));
+                 //   if (ScriptEngine.AnalyzeDebug)
+                  //      Debug.Log (NameTranslator.ScriptNameFromCSharp (prop.Name));
 				}
 
 			}
@@ -616,8 +617,8 @@ public class ContextPropertySwitchInterpreter : ContextPropertyInterpreter
 			{
 				if (method.GetCustomAttributes (typeof(CompilerGeneratedAttribute), false).Length > 0)
 					continue;
-                if (ScriptEngine.AnalyzeDebug)
-                    Debug.Log ("Context method " + method.Name);
+               // if (ScriptEngine.AnalyzeDebug)
+                //    Debug.Log ("Context method " + method.Name);
 				ContextFunctionCallInterpreter inter = new ContextFunctionCallInterpreter (method, Engine);
 				functions.Add (NameTranslator.ScriptNameFromCSharp (method.Name), inter);
 			}
@@ -635,10 +636,20 @@ public class ContextPropertySwitchInterpreter : ContextPropertyInterpreter
 	{
 		base.Interpret (op, block);
 		if (interpret)
-			return;
+        {
+
+            if (ScriptEngine.AnalyzeDebug)
+                Debug.LogFormat("Property {0} was interpreted by ContextPropertyInterpreter {1} already", op, propName);
+            return;
+        }
 		if (!(op.Context is Context))
-			return;
-		if (ops == null)
+        {
+
+            if (ScriptEngine.AnalyzeDebug)
+                Debug.LogFormat("Property context switch {0} has no context", op);
+            return;
+        }
+        if (ops == null)
 			ops = Engine.GetPlugin<EventFunctionOperators> ();
 		var varName = op.Identifier as string;
 
@@ -672,6 +683,7 @@ public class ContextPropertySwitchInterpreter : ContextPropertyInterpreter
 		contextBlock = isNotNull.TrueBlock;
 		foreach (var entry in (op.Context as Context).Entries)
 		{
+            Debug.LogFormat("Interpreting {0} as part of {1} context", (entry as Operator).Identifier, op.Identifier);
 			var subOp = entry as Operator;
 			if (subOp == null)
 				continue;

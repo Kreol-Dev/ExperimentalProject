@@ -122,9 +122,9 @@ public class BlackboardsLoader  : ScriptInterpreter
         if (ScriptEngine.AnalyzeDebug)
             Debug.LogWarning (asm.FullName);
 		Engine.AddAssembly (asm);
-        if (ScriptEngine.AnalyzeDebug)
-            foreach (var key in codeTypes.Keys)
-			Debug.Log (Engine.GetType (key));
+       // if (ScriptEngine.AnalyzeDebug)
+       //     foreach (var key in codeTypes.Keys)
+		//	Debug.Log (Engine.GetType (key));
 		
 
 //		Ctx = new ContextSwitchInterpreter (type, Engine);

@@ -461,6 +461,7 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 					var propName = NameTranslator.CSharpNameFromScript (scope [i] as string);
 
 					var prop = contextType.GetProperty (propName);
+
 					if (i == 0 && prop == null)
 					{
 						var customVar = block.FindStatement<DeclareVariableStatement> (v => v.Name == scope [i] as string);
@@ -515,7 +516,8 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 						var type = components [scope [i] as string];
                         if (ScriptEngine.AnalyzeDebug)
                             Debug.LogWarning ("Component found " + type);
-						var storedVar = curBlock.FindStatement<DeclareVariableStatement> (v => v.Type == type);
+                        //var storedVar = curBlock.FindStatement<DeclareVariableStatement> (v => v.Type == type);
+                        DeclareVariableStatement storedVar = null;
 						contextType = type;
 						if (storedVar == null)
 						{

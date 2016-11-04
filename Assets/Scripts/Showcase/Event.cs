@@ -6,8 +6,10 @@ public static class Event<T> where T : MonoBehaviour
 	public static T Invoke (GameObject context)
 	{
 		GameObject eventObject = new GameObject ();
-		eventObject.AddComponent<Event> ().Context = context;
-		eventObject.AddComponent<Markers> ();
+        var e = eventObject.AddComponent<Event>();
+        e.Context = context;
+        e.ShouldBeDestroyed = true;
+        eventObject.AddComponent<Markers> ();
 		var t = eventObject.AddComponent<T> ();
 		return t;
 	}
@@ -16,15 +18,20 @@ public static class Event<T> where T : MonoBehaviour
 public class Event : MonoBehaviour
 {
 	public GameObject Context { get; set; }
-
+    public bool ShouldBeDestroyed { get; set; }
 	static Generators gens;
 
+    void Awake()
+    {
+        ShouldBeDestroyed = false;
+    }
 	void Start ()
 	{
 		if (gens == null)
 			gens = FindObjectOfType<Generators> ();
 		gens.Generate (gameObject);
-		Destroy (gameObject);
+        if(ShouldBeDestroyed)
+		    Destroy (gameObject);
 	}
 }
 

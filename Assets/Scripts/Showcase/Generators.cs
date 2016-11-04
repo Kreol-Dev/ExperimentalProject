@@ -48,14 +48,12 @@ public class Generators : MonoBehaviour
             var ea = Activator.CreateInstance(type) as EventAction;
             actions.Add(ea);
             var eaa = type.GetCustomAttributes(typeof(EventActionAttribute), false)[0] as EventActionAttribute;
-            ea.Category = eaa.Category;
-            ea.ShouldHaveMaxUtility = eaa.ShouldHaveMaxUtility;
-            ea.OncePerObject = eaa.OncePerObject;
+            ea.Meta = eaa;
             List<EventAction> catList = null;
-            if(!actionsByCategory.TryGetValue(ea.Category, out catList))
+            if(!actionsByCategory.TryGetValue(ea.Meta.Category, out catList))
             {
                 catList = new List<EventAction>();
-                actionsByCategory.Add(ea.Category, catList);
+                actionsByCategory.Add(ea.Meta.Category, catList);
             }
             catList.Add(ea);
         }
@@ -64,26 +62,35 @@ public class Generators : MonoBehaviour
 		Loaded = true;
 	}
     List<EventAction> maximizeActions = new List<EventAction>();
-	public void Generate (GameObject go)
+    ObjectPool<HashSet<EventAction>> eaPool = new ObjectPool<HashSet<EventAction>>();
+	public void Generate (GameObject go, float fuzzy = 0f)
 	{
+        var performedActions = eaPool.Get();
+        performedActions.Clear();
 		bool oneMoreRun = true;
-		while (oneMoreRun)
+        int iterations = 0;
+        while (oneMoreRun)
 		{
-			oneMoreRun = false;
+            if (Application.isEditor)
+                if (iterations++ > 20)
+                    break;
+            oneMoreRun = false;
             foreach (var category in actionsByCategory.Values)
             {
                 maximizeActions.Clear();
                 foreach ( var action in category)
                 {
-                    if (ActedThisWayAndShouldNoMore(go, action))
+                    if (ActedThisWayAndShouldNoMore(go, action) || (action.Meta.OncePerTurn && performedActions.Contains(action)))
                         continue;
-                    if (!action.ShouldHaveMaxUtility)
+                    if (!action.Meta.ShouldHaveMaxUtility)
                     {
                         var cachedRoot = action.Root;
                         action.Root = go;
                         if (action.Filter())
                             if (oneMoreRun |= (action.Utility() > 0))
                             {
+                                if(action.Meta.OncePerTurn)
+                                    performedActions.Add(action);
                                 action.Action();
                                 NotifyOfAct(go, action);
                             }
@@ -91,32 +98,40 @@ public class Generators : MonoBehaviour
                     }
                     else
                         maximizeActions.Add(action);
-                    oneMoreRun |= GenerateMostUseful(go, 0, maximizeActions);
+                    var act = GenerateMostUseful(go, fuzzy, maximizeActions, performedActions);
+                    if(act != null)
+                    {
+                        if (action.Meta.OncePerTurn)
+                            performedActions.Add(action);
+                        oneMoreRun = true;
+                    }
                 }
             }
-			
+            eaPool.Return(performedActions);
 		}
 	}
     void NotifyOfAct(GameObject go, EventAction action)
     {
-        if(action.OncePerObject)
+        if(action.Meta.OncePerObject)
         {
-            HashSet<EventAction> markers = null;
-            if (!oncePerObjectMarkers.TryGetValue(go, out markers))
-            {
-                markers = new HashSet<EventAction>();
-                oncePerObjectMarkers.Add(go, markers);
-            }
-            markers.Add(action);
+
+            Markers markers = go.GetComponent<Markers>();
+            if (markers == null)
+                markers = go.AddComponent<Markers>();
+            if (action.Meta.Category == "ui")
+                markers.SetUiMarker(action.GetType().Name);
+            else
+                markers.SetMarker(action.GetType().Name);
+
         }
     }
     private bool ActedThisWayAndShouldNoMore(GameObject go, EventAction action)
     {
-        if(action.OncePerObject)
+        if(action.Meta.OncePerObject)
         {
-            HashSet<EventAction> markers = null;
-            if (oncePerObjectMarkers.TryGetValue(go, out markers))
-                return markers.Contains(action);
+            Markers markers = go.GetComponent<Markers>();
+            if (markers != null)
+                return markers.HasMarker(action.GetType().Name);
         }
         
         return false;
@@ -124,7 +139,7 @@ public class Generators : MonoBehaviour
 
     System.Random random = new System.Random ();
 
-	public bool GenerateMostUseful (GameObject go, float fuzzy = 0f, List<EventAction> customActions = null)
+	public EventAction GenerateMostUseful (GameObject go, float fuzzy = 0f, List<EventAction> customActions = null, HashSet<EventAction> performedActions = null)
 	{
 		if (fuzzy < 0f)
 			fuzzy = -fuzzy;
@@ -136,7 +151,7 @@ public class Generators : MonoBehaviour
         {
             var cachedRoot = action.Root;
             action.Root = go;
-			if (!ActedThisWayAndShouldNoMore(go, action) && action.Filter ())
+			if (!ActedThisWayAndShouldNoMore(go, action) && action.Filter () && !(action.Meta.OncePerTurn && performedActions != null && performedActions.Contains(action)))
 			{
 				var baseUt = action.Utility ();
 				if (baseUt > 0)
@@ -158,12 +173,13 @@ public class Generators : MonoBehaviour
         }
 		if (act != null)
         {
+            Debug.LogFormat("{0} has chosen to do {1}", gameObject, act.GetType().Name);
             act.Action();
             act.Root = maxCachedRoot;
             NotifyOfAct(go, act);
 
         }
-        return act != null;
+        return act;
 
 	}
 

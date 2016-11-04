@@ -1,0 +1,45 @@
+foe_role = 
+{
+	enemy = gameobject
+	threat_level = float
+}
+
+ruler_role = 
+{
+	at_war_with = list(gameobject)
+	forces = float
+	wunderwaffe = gameobject
+	people = float
+}
+war_declaration = yes
+targeted_event = 
+{
+	target = gameobject
+}
+
+old_weapon = yes
+builder = yes
+buildable = 
+{
+	cost = float
+	current_investment = float
+	finished = bool
+}
+worker = 
+{
+	works_for = gameobject
+}
+battle_event = 
+{
+	won = gameobject
+	lost = gameobject
+	tie = bool
+	winner_forces_lost = float
+	looser_forces_lost = float
+}
+
+notify_event = 
+{
+	who = gameobject
+	data = string
+}

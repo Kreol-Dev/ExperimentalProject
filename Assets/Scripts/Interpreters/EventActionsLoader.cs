@@ -20,10 +20,7 @@ public abstract class EventAction
 	protected GameObject root;
 
 	public GameObject Root { get { return root; } set { root = value; } }
-    public string Category { get; set; }
-    public bool ShouldHaveMaxUtility { get; set; }
-
-    public bool OncePerObject { get; set; }
+    public EventActionAttribute Meta { get; set;  }
     public virtual void Init ()
 	{
 		
@@ -41,6 +38,7 @@ public class EventActionAttribute : Attribute
     public bool ShouldHaveMaxUtility { get; set; }
     
     public bool OncePerObject { get; set; }
+    public bool OncePerTurn { get; set; }
 }
 
 public class EventActionsLoader : ScriptInterpreter
@@ -74,7 +72,10 @@ public class EventActionsLoader : ScriptInterpreter
 			codeType.Name = entry.Identifier as string;
 			codeTypes.Add (codeType);
 
-			var ctx = entry.Context as Context;
+            if (ScriptEngine.AnalyzeDebug)
+                Debug.LogWarning((entry.Identifier as string).ToUpper());
+
+            var ctx = entry.Context as Context;
 			if (ctx == null)
 				continue;
 			var actionMethod = typeof(EventAction).GetMethod ("Action");
@@ -85,9 +86,11 @@ public class EventActionsLoader : ScriptInterpreter
             CodeAttributeArgument maxArg = new CodeAttributeArgument("ShouldHaveMaxUtility", new CodeSnippetExpression("false"));
             CodeAttributeArgument catArg = new CodeAttributeArgument("Category", new CodeSnippetExpression("\"basic\""));
             CodeAttributeArgument onceArg = new CodeAttributeArgument("OncePerObject", new CodeSnippetExpression("false"));
+            CodeAttributeArgument oncePerTurnArg = new CodeAttributeArgument("OncePerTurn", new CodeSnippetExpression("false"));
             attr.Arguments.Add(maxArg);
             attr.Arguments.Add(catArg);
             attr.Arguments.Add(onceArg);
+            attr.Arguments.Add(oncePerTurnArg);
             for (int j = 0; j < ctx.Entries.Count; j++)
 			{
 				var op = ctx.Entries [j] as Operator;
@@ -105,6 +108,10 @@ public class EventActionsLoader : ScriptInterpreter
                 else if (op.Identifier as string == "once_per_object")
                 {
                     onceArg.Value = new CodeSnippetExpression("true");
+                }
+                else if (op.Identifier as string == "once_per_turn")
+                {
+                    oncePerTurnArg.Value = new CodeSnippetExpression("true");
                 }
                 else if (op.Identifier as string == "scope")
 				{

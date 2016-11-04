@@ -218,7 +218,8 @@ place_ui_cards_list =
 place_ui_size = 
 {
 	once_per_object = yes
-	scope = ui_object.markers.fit(showed_object.fit(has(place)))
+	category = ui
+	scope = ui_object.fit(showed_object.place.true)
 	utility = 1
 	action = 
 	{
