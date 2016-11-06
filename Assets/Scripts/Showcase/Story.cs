@@ -40,19 +40,20 @@ public class Story : MonoBehaviour
     
     IEnumerator GenerationCoroutine()
     {
+        yield return null;
         Debug.Log("Started generation");
         int index = 0;
         while(CurrentStep < StepsCount)
         {
             float startTime = Time.realtimeSinceStartup - Time.time;//time since this iteration started
-            Debug.Log("Step number: " + CurrentStep);
+            //Debug.Log("Step number: " + CurrentStep);
             while (CurrentStep < StepsCount && actors.Count > 0 && Time.realtimeSinceStartup - Time.time - startTime < 5f)
             {
                 while(actors.Count > 0)
                 {
                     if (index >= actors.Count)
                     {
-                        Debug.Log(actors.Count);
+                        //Debug.Log(actors.Count);
                         CurrentStep++;
                         index = 0;
                         break;
@@ -63,7 +64,7 @@ public class Story : MonoBehaviour
                         actors.RemoveAt(index);
                         break;
                     }
-                    Debug.Log(index, this);
+                    //Debug.Log(index, this);
                     var a = actor.GetComponent<Actor>();
                     a.IsActive = false;
                     gens.Generate(actor, 0.1f);

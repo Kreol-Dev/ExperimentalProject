@@ -7,24 +7,24 @@ war_conflict =
 	utility = 1
 	action = 
 	{
-		generate(first) = 
+		generate(first_foe) = 
 		{
 			entity = yes
 			foe_role = yes
 			actor = yes
 		}
 
-		generate(second) =
+		generate(second_foe) =
 		{
 			entity = yes
 			actor = yes
 			foe_role = 
 			{
-				enemy = first
+				enemy = first_foe
 			}
 		}
 
-		first.foe_role.enemy = second
+		first_foe.foe_role.enemy = second_foe
 	}
 }
 
@@ -42,6 +42,56 @@ foe_is_ruler =
 			forces = random(10, 20)
 			people = 1
 		}
+	}
+}
+
+ruler_as_person = 
+{
+	once_per_object = yes
+	utility = 1
+	scope = ruler_role.markers
+	action = {
+		markers.set_marker = is_person
+	}
+}
+genius_as_person = 
+{
+	once_per_object = yes
+	utility = 1
+	scope = worker.builder.markers
+	action = {
+		markers.set_marker = is_person
+	}
+}
+as_person = 
+{
+	once_per_object = yes
+	utility = 1
+	scope = markers.fit(has_marker(is_person))
+	action = 
+	{
+		create(aged) = 
+		{
+			age = random(30, 60)
+		}
+		create(attributes) = 
+		{
+			charisma = random(1, 10)
+			intellect = random(1, 10)
+			military = random(1, 10)
+			mental = random(1, 10)
+			health = random(1, 10)
+		}
+		create(personality) =
+		{
+			brave = random(0, 0.1)
+			rational = random(0, 0.1)
+			optimistic = random(0, 0.1)
+			cruel = random(0, 0.1)
+			ambitious = random(0, 0.1)
+			reckless = random(0, 0.1)
+		}
+
 	}
 }
 
@@ -99,7 +149,7 @@ gather_reinforcements =
 	utility = ruler_role.people - 0.3
 	action = 
 	{
-		generate(act) = 
+		spawn(gather_reinforcements) = 
 		{
 			notify_event = 
 			{
@@ -154,6 +204,7 @@ genius_found =
 	{
 		generate(genius) = 
 		{
+			markers = yes
 			actor = yes
 			worker = 
 			{
@@ -244,7 +295,7 @@ build_wunderwaffe =
 	utility = 1
 	action = 
 	{
-		generate(act) = 
+		spawn(build_wunderwaffe) = 
 		{
 			notify_event = {
 				who = root
@@ -270,7 +321,7 @@ test_wunderwaffe =
 	utility = foe_role.threat_level * 0.5
 	action = 
 	{
-		generate(act) = 
+		spawn(test_wunderwaffe) = 
 		{
 			notify_event = 
 			{

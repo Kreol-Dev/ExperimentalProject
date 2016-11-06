@@ -66,7 +66,7 @@ public class GenerateOperator : FunctionOperatorInterpreter
 					inter.Interpret (subOp, subBlock);
 			}
 		}
-		block.Statements.Add (String.Format ("UnityEngine.Object.FindObjectOfType<Generators>().Generate({0});", varName));
+		block.Statements.Add (String.Format ("UnityEngine.Object.FindObjectOfType<Generators>().Generate({0}, 0.1f);", varName));
 	}
 
 

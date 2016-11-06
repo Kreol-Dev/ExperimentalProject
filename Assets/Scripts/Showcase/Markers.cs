@@ -4,29 +4,23 @@ using System.Collections.Generic;
 
 public class Markers : MonoBehaviour
 {
-	public List<string> Flags { get { return markers; } set { markers = value; } }
+	public List<string> Flags { get { return new List<string>(markers); } set { markers = new HashSet<string>(value); } }
 
-	public List<string> markers;
-	List<string> uiMarkers = new List<string> ();
+	public HashSet<string> markers = new HashSet<string>();
+    HashSet<string> uiMarkers = new HashSet<string> ();
     public void ClearUIMarkers()
     {
         uiMarkers.Clear();
     }
 	void Awake ()
 	{
-		if (markers == null)
-			markers = new List<string> ();
 		
 	}
 
 	public bool HasMarker (string marker)
 	{
-		bool found = false;
-		if (markers != null)
-			found = markers.FindIndex (x => x == marker) >= 0;
-		if (!found)
-			found = uiMarkers.FindIndex (x => x == marker) >= 0;
-		return found;
+        return markers.Contains(marker) || uiMarkers.Contains(marker);
+		
 	}
 
 	public void SetMarker (string marker)
@@ -38,5 +32,10 @@ public class Markers : MonoBehaviour
 	{
 		uiMarkers.Add (marker);
 	}
+
+    public void RemoveMarker(string marker)
+    {
+        markers.Remove(marker);
+    }
 }
 

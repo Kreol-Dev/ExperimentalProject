@@ -63,18 +63,27 @@ public class BlackboardsLoader  : ScriptInterpreter
 				cNamespace.Types.Add (bbType);
 				codeTypes.Add (entry.Identifier as string, bbType);
 			}
-			if (entry.Context is Context)
-			{
-				foreach (var fieldOp in (entry.Context as Context).Entries)
-				{
-					var op = fieldOp as Operator;
-					var typeName = (((op.Context as Expression).Operands [0] as ExprAtom).Content as Scope).Parts [0] as string;
-					CodeMemberField field = null;
-					CodeMemberProperty prop = new CodeMemberProperty ();
-					prop.HasGet = true;
-					prop.HasSet = true;
-					prop.GetStatements.Add (new CodeSnippetStatement (String.Format ("return {0}; ", op.Identifier)));
-					prop.SetStatements.Add (new CodeSnippetStatement (String.Format ("{0} = value; ", op.Identifier)));
+            if (entry.Context is Context)
+            {
+                foreach (var fieldOp in (entry.Context as Context).Entries)
+                {
+                    var op = fieldOp as Operator;
+                    var typeName = (((op.Context as Expression).Operands[0] as ExprAtom).Content as Scope).Parts[0] as string;
+                    CodeMemberField field = null;
+                    CodeMemberProperty prop = new CodeMemberProperty();
+                    prop.HasGet = true;
+                    prop.HasSet = true;
+                    prop.GetStatements.Add(new CodeSnippetStatement(String.Format("return {0}; ", op.Identifier)));
+                    if ((typeName == "float" || typeName == "int") && op.Args.Count == 2)
+                    {
+                       
+                        var clampMin = op.Args[0].ToString();
+                        var clampMax = op.Args[1].ToString();
+                        prop.SetStatements.Add(new CodeSnippetStatement(String.Format("{0} = ({3})UnityEngine.Mathf.Clamp(value, {1}, {2}); ", op.Identifier, clampMin, clampMax, typeName)));
+
+                    }
+                    else
+					    prop.SetStatements.Add (new CodeSnippetStatement (String.Format ("{0} = value; ", op.Identifier)));
 					prop.Name = NameTranslator.CSharpNameFromScript (op.Identifier as string);
 
 					bbType.Members.Add (prop);
@@ -99,6 +108,8 @@ public class BlackboardsLoader  : ScriptInterpreter
 					prop.Type = field.Type;
 					prop.Attributes = MemberAttributes.Public;
 					bbType.Members.Add (field);
+
+                    
 				}
 			}
 

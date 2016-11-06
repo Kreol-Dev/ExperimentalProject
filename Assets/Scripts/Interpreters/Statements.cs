@@ -61,6 +61,7 @@ public class LambdaStatement
 
 public class DeclareVariableStatement
 {
+    public string storedOf = null;
 	public static int VariableId = 0;
 	public string ctxEntity = null;
 	public StatementStringContainer Cnt = null;

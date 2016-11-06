@@ -11,8 +11,8 @@ public class GenerateMarker : MonoBehaviour
 	{
 		gens = FindObjectOfType<Generators> ();
 		saver = FindObjectOfType<SavingLoading> ();
+        //wait = Random.Range(1, 4);
 	}
-
 	void Update ()
 	{
 		if (gens.Loaded && !saver.IsLoading)

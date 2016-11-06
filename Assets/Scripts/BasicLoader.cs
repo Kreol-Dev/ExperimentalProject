@@ -41,7 +41,10 @@ public class BasicLoader : MonoBehaviour
 	public List<ExternalFunctions> EFunctions = new List<ExternalFunctions> ();
 
     Dictionary<string, GameObject> prefabs = new Dictionary<string, GameObject>();
-
+    public float Clamp(float min, float max, float value)
+    {
+        return Mathf.Clamp(value, min, max);
+    }
     public GameObject SpawnPrefab(string name)
     {
         GameObject prefab = null;
@@ -153,7 +156,7 @@ public class BasicLoader : MonoBehaviour
 		ExternalFunctions.Load ();
 		foreach (var eFunctions in EFunctions)
 			ExternalFunctions.AddProvider (eFunctions.Provider, eFunctions.Functions);
-		ExternalFunctions.AddProvider (this, "Random", "Dsix", "SetParent", "AbstractCamp", "Gameobject", "Contains" ,"SpawnPrefab","Has", "Vec", "GetWorld", "GetEventsController", "SelectFrom", "Log", "String", "GetPlayer", "Destroy", "NoOne");
+		ExternalFunctions.AddProvider (this, "Random", "Dsix", "SetParent", "AbstractCamp", "Clamp", "Gameobject", "Contains" ,"SpawnPrefab","Has", "Vec", "GetWorld", "GetEventsController", "SelectFrom", "Log", "String", "GetPlayer", "Destroy", "NoOne");
 		foreach (var fileInfo in dirInfo.GetFiles ("*", SearchOption.AllDirectories))
 		{
 			if (fileInfo.LastWriteTimeUtc > lastWriteTime)

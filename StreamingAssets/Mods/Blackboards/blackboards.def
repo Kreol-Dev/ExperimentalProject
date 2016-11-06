@@ -1,11 +1,11 @@
 personality =
 {
-	brave = float
-	rational = float
-	optimistic = float
-	cruel = float
-	ambitious = float
-	reckless = float
+	brave(0, 1) = float
+	rational(0, 1) = float
+	optimistic(0, 1) = float
+	cruel(0, 1) = float
+	ambitious(0, 1) = float
+	reckless(0, 1) = float
 }
 
 attributes = 

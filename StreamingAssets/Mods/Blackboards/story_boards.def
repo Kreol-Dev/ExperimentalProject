@@ -43,3 +43,9 @@ notify_event =
 	who = gameobject
 	data = string
 }
+
+aged = 
+{
+	age = int
+	cur_age = int
+}

@@ -1,0 +1,170 @@
+beaten_as_a_kid =
+{
+	once_per_turn = yes
+	once_per_object = yes
+	category = person_generation
+	only_max_utility = yes
+	scope = markers.personality.aged.fit(cur_age < 6)
+	utility = 1
+	action = 
+	{
+		spawn(beaten_as_a_kid).targeted_event.target = root
+		aged.cur_age = cur_age + 3
+		personality =
+		{
+			cruel = cruel + 0.1
+			reckless = reckless + 0.1
+		}
+	}
+}
+
+cherished_as_a_kid =
+{
+	once_per_turn = yes
+	once_per_object = yes
+	category = person_generation
+	only_max_utility = yes
+	scope = markers.personality.aged.fit(cur_age < 6)
+	utility = 1
+	action = 
+	{
+		spawn(cherished_as_a_kid).targeted_event.target = root
+		aged.cur_age = cur_age + 3
+		personality =
+		{
+			brave = brave - 0.1
+			optimistic = optimistic + 0.2
+			if(random(0, 1) > 0.9).cruel = cruel + 0.1
+			ambitious = ambitious - 0.03
+		}
+	}
+}
+
+inspired_as_a_kid =
+{
+	once_per_turn = yes
+	once_per_object = yes
+	category = person_generation
+	only_max_utility = yes
+	scope = markers.personality.aged.fit(cur_age < 6)
+	utility = 1
+	action = 
+	{
+		spawn(inspired_as_a_kid).targeted_event.target = root
+		aged.cur_age = cur_age + 3
+		personality =
+		{
+			brave = brave + 0.2
+			optimistic = optimistic + 0.5
+			ambitious = ambitious + 0.2
+		}
+	}
+}
+
+taught_as_a_kid =
+{
+	once_per_turn = yes
+	once_per_object = yes
+	category = person_generation
+	only_max_utility = yes
+	scope = markers.personality.aged.fit(cur_age < 6)
+	utility = 1
+	action = 
+	{
+		spawn(teached_as_a_kid).targeted_event.target = root
+		aged.cur_age = cur_age + 3
+		personality =
+		{
+			rational = rational + 0.1
+			ambitious = ambitious + 0.05
+		}
+	}
+}
+
+
+
+
+pushy_teen =
+{
+	once_per_turn = yes
+	once_per_object = yes
+	category = person_generation
+	only_max_utility = yes
+	scope = markers.personality.aged.fit(cur_age < 15)
+	utility = 0.3 + personality.brave + personality.ambitious - personality.cruel
+	action = 
+	{
+		spawn(pushy_teen).targeted_event.target = root
+		aged.cur_age = cur_age + random(3, 5)
+		personality =
+		{
+
+			brave = brave + 0.3
+			rational = rational - 0.1
+			optimistic = optimistic + 0.3
+			ambitious = ambitious + 0.1
+		}
+	}
+}
+
+nerd_teen =
+{
+	once_per_turn = yes
+	once_per_object = yes
+	category = person_generation
+	only_max_utility = yes
+	scope = markers.personality.aged.fit(cur_age < 15)
+	utility = 0.3 + personality.rational - personality.brave
+	action = 
+	{
+		spawn(nerd_teen).targeted_event.target = root
+		aged.cur_age = cur_age + random(3, 5)
+		personality =
+		{
+			brave = brave - 0.1
+			rational = rational + 0.5
+		}
+	}
+}
+
+manipulative_teen =
+{
+	once_per_turn = yes
+	once_per_object = yes
+	category = person_generation
+	only_max_utility = yes
+	scope = markers.personality.aged.fit(cur_age < 15)
+	utility = 0.2 + personality.rational + personality.ambitious * 2
+	action = 
+	{
+		spawn(manipulative_teen).targeted_event.target = root
+		aged.cur_age = cur_age + random(3, 5)
+		personality =
+		{
+			brave = brave - 0.2
+			ambitious = ambitious + 0.3
+			reckless = reckless + 0.2
+		}
+	}
+}
+
+tortured_pets_teen =
+{
+	once_per_turn = yes
+	once_per_object = yes
+	category = person_generation
+	only_max_utility = yes
+	scope = markers.personality.aged.fit(cur_age < 15)
+	utility = personality.cruel * 0.8
+	action = 
+	{
+		spawn(tortured_pets_teen).targeted_event.target = root
+		aged.cur_age = cur_age + random(3, 5)
+		personality =
+		{
+			rational = rational - 0.1
+			cruel = cruel + 0.5
+			reckless = reckless + 0.5
+		}
+	}
+}

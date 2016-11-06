@@ -72,7 +72,7 @@ public class Generators : MonoBehaviour
         while (oneMoreRun)
 		{
             if (Application.isEditor)
-                if (iterations++ > 20)
+                if (iterations++ > 50)
                     break;
             oneMoreRun = false;
             foreach (var category in actionsByCategory.Values)
@@ -97,12 +97,15 @@ public class Generators : MonoBehaviour
                         action.Root = cachedRoot;
                     }
                     else
-                        maximizeActions.Add(action);
+                        maximizeActions.Add(action);                    
+                }
+                if (maximizeActions.Count > 0)
+                {
                     var act = GenerateMostUseful(go, fuzzy, maximizeActions, performedActions);
-                    if(act != null)
+                    if (act != null)
                     {
-                        if (action.Meta.OncePerTurn)
-                            performedActions.Add(action);
+                        if (act.Meta.OncePerTurn)
+                            performedActions.Add(act);
                         oneMoreRun = true;
                     }
                 }
@@ -137,11 +140,18 @@ public class Generators : MonoBehaviour
         return false;
     }
 
-    System.Random random = new System.Random ();
+    System.Random random = new System.Random (2);
 
 	public EventAction GenerateMostUseful (GameObject go, float fuzzy = 0f, List<EventAction> customActions = null, HashSet<EventAction> performedActions = null)
-	{
-		if (fuzzy < 0f)
+    {
+        //if (customActions != null)
+        //{
+        //    Debug.Log("Most useful for " + go);
+        //    foreach (var action in customActions)
+        //        Debug.Log(action.GetType().Name + " ");
+        //}
+            
+        if (fuzzy < 0f)
 			fuzzy = -fuzzy;
 		float maxUt = 0;
 		EventAction act = null;
@@ -151,13 +161,15 @@ public class Generators : MonoBehaviour
         {
             var cachedRoot = action.Root;
             action.Root = go;
-			if (!ActedThisWayAndShouldNoMore(go, action) && action.Filter () && !(action.Meta.OncePerTurn && performedActions != null && performedActions.Contains(action)))
+			if (!ActedThisWayAndShouldNoMore(go, action) && !(action.Meta.OncePerTurn && performedActions != null && performedActions.Contains(action)) && action.Filter () )
 			{
 				var baseUt = action.Utility ();
 				if (baseUt > 0)
 				{
 					var ut = baseUt * (1f + fuzzy * ((float)random.NextDouble () - 0.5f) * 2f);
-					if (ut > maxUt)
+                    //if (customActions != null)
+                    //    Debug.LogFormat("Action {0} with ut = {1} is considered", action.GetType().Name, ut);
+                    if (ut > maxUt)
 					{
 						maxUt = ut;
 						act = action;
@@ -173,7 +185,7 @@ public class Generators : MonoBehaviour
         }
 		if (act != null)
         {
-            Debug.LogFormat("{0} has chosen to do {1}", gameObject, act.GetType().Name);
+            //Debug.LogFormat("{0} has chosen to do {1} with ut {2}", go, act.GetType().Name, maxUt);
             act.Action();
             act.Root = maxCachedRoot;
             NotifyOfAct(go, act);

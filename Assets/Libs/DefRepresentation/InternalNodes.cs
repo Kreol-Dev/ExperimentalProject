@@ -311,7 +311,6 @@ namespace InternalDSL
 		public override string ToString ()
 		{
 			StringBuilder builder = new StringBuilder (100);
-			builder.Append ("EXPR:");
 			for (int i = 0; i < Operands.Length; i++)
 			{
 				if (i % 2 == 0)

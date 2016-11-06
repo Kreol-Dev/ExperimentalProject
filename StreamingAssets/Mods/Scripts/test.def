@@ -105,55 +105,7 @@ aged_generation_add = {
 	}
 }
 
-historical_persons = 
-{
-	scope = markers.lore.place.fit(agents = 0 and has_marker(lore_pool))
-	utility = 1 
-	action = 
-	{
-		place = {
-			size = 10
-			repeat(random(4,10)) = {
-				generate(old_ag) = {
-					entity = yes
-					agent = yes
-					historical_person = yes
-					human = {
-						age = random(30, 45)
-					}
-					named = {
-						set("prefix", 0) = "Historical person: "
-						set("main_name", 1) = random_name(human_name)
-					}
-				}
 
-				attach = old_ag.agent
-			}
-		}
-	}
-}
-
-
-location_log = 
-{
-	scope = place.named.fit(act = yes)
-	utility = 0.3
-	action  = 
-	{
-		log = named.get(main_name)
-	}
-}
-
-destroy_self = 
-{
-	scope = entity.agent.fit(act = yes and not dead)
-	utility = 0.01
-	action = 
-	{
-		log = "Destroying self " + root
-		destroy = root
-	}
-}
 
 map_anchored = 
 {

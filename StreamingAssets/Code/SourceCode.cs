@@ -1,8 +1,8 @@
 namespace generators {
     
     
-    [EventActionAttribute(ShouldHaveMaxUtility=true, Category="conflict_decomposition", OncePerObject=true, OncePerTurn=false)]
-    public class war_conflict : EventAction {
+    [EventActionAttribute(ShouldHaveMaxUtility=true, Category="person_generation", OncePerObject=true, OncePerTurn=true)]
+    public class beaten_as_a_kid : EventAction {
         
         public override bool Filter() {
 
@@ -12,205 +12,32 @@ namespace generators {
 			//ContextStatement External External ContextSwitchInterpreter
 			System.Boolean applicable = false; //IsContext = False IsNew = False
 			
-			System.Boolean OperandVar1 = default(System.Boolean); //IsContext = False IsNew = False
-			Conflict StoredVariable0 = ((Conflict)root.GetComponent(typeof(Conflict))); //IsContext = False IsNew = False
+			System.Boolean OperandVar6 = default(System.Boolean); //IsContext = False IsNew = False
+			Markers StoredVariable0 = ((Markers)root.GetComponent(typeof(Markers))); //IsContext = False IsNew = False
 			if(StoredVariable0 != null)
 			{
-				applicable = true;
-				OperandVar1 = applicable;
-			}
-			return (System.Boolean) (OperandVar1);
-		}
-        }
-        
-        public override float Utility() {
-
-		{
-			var root = this.root;
-			
-			//ContextStatement External External ContextSwitchInterpreter
-			System.Single ut = 0; //IsContext = False IsNew = False
-			
-			
-			return (System.Single) (1f);
-		}
-        }
-        
-        public override void Action() {
-
-		{
-			var root = this.root;
-			
-			//ContextStatement External External ContextSwitchInterpreter
-			
-			UnityEngine.GameObject first = new UnityEngine.GameObject("first"); //IsContext = False IsNew = False
-			
-			{
-				UnityEngine.GameObject first2 = first; //IsContext = True IsNew = False
-				Entity AddContext3 = (Entity)first.AddComponent(typeof(Entity)); //IsContext = True IsNew = True
-				Blackboards.foe_role AddContext4 = (Blackboards.foe_role)first.AddComponent(typeof(Blackboards.foe_role)); //IsContext = True IsNew = True
-				Actor AddContext5 = (Actor)first.AddComponent(typeof(Actor)); //IsContext = True IsNew = True
-			}
-			UnityEngine.Object.FindObjectOfType<Generators>().Generate(first);
-			UnityEngine.GameObject second = new UnityEngine.GameObject("second"); //IsContext = False IsNew = False
-			
-			{
-				UnityEngine.GameObject second6 = second; //IsContext = True IsNew = False
-				Entity AddContext7 = (Entity)second.AddComponent(typeof(Entity)); //IsContext = True IsNew = True
-				Actor AddContext8 = (Actor)second.AddComponent(typeof(Actor)); //IsContext = True IsNew = True
-				Blackboards.foe_role AddContext9 = (Blackboards.foe_role)second.AddComponent(typeof(Blackboards.foe_role)); //IsContext = True IsNew = True
-				
+				Blackboards.personality StoredVariable1 = ((Blackboards.personality)StoredVariable0.GetComponent(typeof(Blackboards.personality))); //IsContext = False IsNew = False
+				if(StoredVariable1 != null)
 				{
-					//ContextStatement Blackboards.foe_role AddContext9 ContextSwitchInterpreter
-					if(AddContext9 != null)
+					Blackboards.aged StoredVariable2 = ((Blackboards.aged)StoredVariable1.GetComponent(typeof(Blackboards.aged))); //IsContext = False IsNew = False
+					if(StoredVariable2 != null)
 					{
-						UnityEngine.GameObject OperandVar10 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
-						OperandVar10 = first;
-						AddContext9.Enemy = (UnityEngine.GameObject)( (OperandVar10));
-					}
-				}
-			}
-			UnityEngine.Object.FindObjectOfType<Generators>().Generate(second);
-			
-			{
-				UnityEngine.GameObject subContext11 = first; //IsContext = True IsNew = False
-				//ContextStatement UnityEngine.GameObject subContext11 ContextPropertySwitchInterpreter
-				if(subContext11 != null)
-				{
-					
-					{
-						Blackboards.foe_role subContext12 = (Blackboards.foe_role)subContext11.GetComponent(typeof(Blackboards.foe_role)); //IsContext = True IsNew = False
-						//ContextStatement Blackboards.foe_role subContext12 ContextSwitchInterpreter
-						if(subContext12 != null)
-						{
-							UnityEngine.GameObject OperandVar13 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
-							OperandVar13 = second;
-							subContext12.Enemy = (UnityEngine.GameObject)( (OperandVar13));
-						}
-					}
-				}
-			}
-		}
-        }
-    }
-    
-    [EventActionAttribute(ShouldHaveMaxUtility=true, Category="foe_decomposition", OncePerObject=true, OncePerTurn=false)]
-    public class foe_is_ruler : EventAction {
-        
-        public override bool Filter() {
-
-		{
-			var root = this.root;
-			
-			//ContextStatement External External ContextSwitchInterpreter
-			System.Boolean applicable = false; //IsContext = False IsNew = False
-			
-			System.Boolean OperandVar15 = default(System.Boolean); //IsContext = False IsNew = False
-			Blackboards.foe_role StoredVariable14 = ((Blackboards.foe_role)root.GetComponent(typeof(Blackboards.foe_role))); //IsContext = False IsNew = False
-			if(StoredVariable14 != null)
-			{
-				applicable = true;
-				OperandVar15 = applicable;
-			}
-			return (System.Boolean) (OperandVar15);
-		}
-        }
-        
-        public override float Utility() {
-
-		{
-			var root = this.root;
-			
-			//ContextStatement External External ContextSwitchInterpreter
-			System.Single ut = 0; //IsContext = False IsNew = False
-			
-			
-			return (System.Single) (1f);
-		}
-        }
-        
-        public override void Action() {
-
-		{
-			var root = this.root;
-			
-			//ContextStatement External External ContextSwitchInterpreter
-			
-			Blackboards.ruler_role ContextVar16 = root.AddComponent<Blackboards.ruler_role>();; //IsContext = False IsNew = True
-			
-			{
-				//ContextStatement Blackboards.ruler_role ContextVar16 ContextSwitchInterpreter
-				if(ContextVar16 != null)
-				{
-					System.Single OperandVar18 = default(System.Single); //IsContext = False IsNew = False
-					
-					
-					System.Single prop17 = External.Random( (10f), (20f)); //IsContext = False IsNew = False
-					OperandVar18 = prop17;
-					ContextVar16.Forces = (System.Single)( (OperandVar18));
-					
-					ContextVar16.People = (System.Single)( (1f));
-				}
-			}
-			Entity EntVar19 = (Entity)root.GetComponent(typeof(Entity));; //IsContext = False IsNew = False
-			if(EntVar19 != null) EntVar19.ComponentAdded();
-		}
-        }
-    }
-    
-    [EventActionAttribute(ShouldHaveMaxUtility=false, Category="basic", OncePerObject=false, OncePerTurn=true)]
-    public class ruler_vs_ruler : EventAction {
-        
-        public override bool Filter() {
-
-		{
-			var root = this.root;
-			
-			//ContextStatement External External ContextSwitchInterpreter
-			System.Boolean applicable = false; //IsContext = False IsNew = False
-			
-			System.Boolean OperandVar29 = default(System.Boolean); //IsContext = False IsNew = False
-			Actor StoredVariable20 = ((Actor)root.GetComponent(typeof(Actor))); //IsContext = False IsNew = False
-			if(StoredVariable20 != null)
-			{
-				Blackboards.foe_role StoredVariable21 = ((Blackboards.foe_role)StoredVariable20.GetComponent(typeof(Blackboards.foe_role))); //IsContext = False IsNew = False
-				if(StoredVariable21 != null)
-				{
-					Blackboards.ruler_role StoredVariable22 = ((Blackboards.ruler_role)StoredVariable21.GetComponent(typeof(Blackboards.ruler_role))); //IsContext = False IsNew = False
-					if(StoredVariable22 != null)
-					{
-						System.Boolean ifResult23; //IsContext = False IsNew = False
+						System.Boolean ifResult3; //IsContext = False IsNew = False
 						
-						System.Boolean OperandVar26 = default(System.Boolean); //IsContext = False IsNew = False
-						if(StoredVariable21 != null)
-						{
-							UnityEngine.GameObject prop24 = StoredVariable21.Enemy; //IsContext = False IsNew = False
-							if(prop24 != null)
-							{
-								Blackboards.ruler_role StoredVariable25 = ((Blackboards.ruler_role)prop24.GetComponent(typeof(Blackboards.ruler_role))); //IsContext = False IsNew = False
-								if(StoredVariable25 != null)
-								{
-									applicable = true;
-									OperandVar26 = applicable;
-								}
-							}
-						}
+						System.Int32 OperandVar5 = default(System.Int32); //IsContext = False IsNew = False
+						System.Int32 prop4 = StoredVariable2.CurAge; //IsContext = False IsNew = False
+						OperandVar5 = prop4;
 						
-						System.Boolean OperandVar28 = default(System.Boolean); //IsContext = False IsNew = False
-						if(StoredVariable20 != null)
-						{
-							System.Boolean prop27 = StoredVariable20.IsActive; //IsContext = False IsNew = False
-							OperandVar28 = prop27;
-						}
-						if(ifResult23 = ( ( (OperandVar26))) && ( (!(OperandVar28))))
+						
+						if(ifResult3 = ( ( (OperandVar5))) < ( ( (6f))))
 						{
 							applicable = true;
-							OperandVar29 = applicable;
+							OperandVar6 = applicable;
 						}
 					}
 				}
 			}
-			return (System.Boolean) (OperandVar29);
+			return (System.Boolean) (OperandVar6);
 		}
         }
         
@@ -234,76 +61,65 @@ namespace generators {
 			
 			//ContextStatement External External ContextSwitchInterpreter
 			
-			System.Single OperandVar32 = default(System.Single); //IsContext = False IsNew = False
-			Blackboards.ruler_role StoredVariable30 = ((Blackboards.ruler_role)root.GetComponent(typeof(Blackboards.ruler_role))); //IsContext = False IsNew = False
-			if(StoredVariable30 != null)
+			UnityEngine.GameObject beaten_as_a_kid = new UnityEngine.GameObject("beaten_as_a_kid"); //IsContext = False IsNew = False
+			
 			{
-				System.Single prop31 = StoredVariable30.Forces; //IsContext = False IsNew = False
-				OperandVar32 = prop31;
-			}
-			System.Single my_forces =  (OperandVar32); //IsContext = False IsNew = False
-			System.Single OperandVar37 = default(System.Single); //IsContext = False IsNew = False
-			Blackboards.foe_role StoredVariable33 = ((Blackboards.foe_role)root.GetComponent(typeof(Blackboards.foe_role))); //IsContext = False IsNew = False
-			if(StoredVariable33 != null)
-			{
-				UnityEngine.GameObject prop34 = StoredVariable33.Enemy; //IsContext = False IsNew = False
-				if(prop34 != null)
+				UnityEngine.GameObject beaten_as_a_kid7 = beaten_as_a_kid; //IsContext = True IsNew = False
+				Blackboards.targeted_event AddContext8 = (Blackboards.targeted_event)beaten_as_a_kid.AddComponent(typeof(Blackboards.targeted_event)); //IsContext = True IsNew = True
+				
 				{
-					Blackboards.ruler_role StoredVariable35 = ((Blackboards.ruler_role)prop34.GetComponent(typeof(Blackboards.ruler_role))); //IsContext = False IsNew = False
-					if(StoredVariable35 != null)
+					//ContextStatement Blackboards.targeted_event AddContext8 ContextSwitchInterpreter
+					if(AddContext8 != null)
 					{
-						System.Single prop36 = StoredVariable35.Forces; //IsContext = False IsNew = False
-						OperandVar37 = prop36;
+						UnityEngine.GameObject OperandVar9 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
+						OperandVar9 = root;
+						AddContext8.Target = (UnityEngine.GameObject)( (OperandVar9));
 					}
 				}
 			}
-			System.Single enemy_forces =  (OperandVar37); //IsContext = False IsNew = False
 			
 			{
-				Blackboards.foe_role subContext38 = (Blackboards.foe_role)root.GetComponent(typeof(Blackboards.foe_role)); //IsContext = True IsNew = False
-				//ContextStatement Blackboards.foe_role subContext38 ContextSwitchInterpreter
-				if(subContext38 != null)
+				Blackboards.aged subContext10 = (Blackboards.aged)root.GetComponent(typeof(Blackboards.aged)); //IsContext = True IsNew = False
+				//ContextStatement Blackboards.aged subContext10 ContextSwitchInterpreter
+				if(subContext10 != null)
 				{
 					
-					
-					System.Single OperandVar39 = default(System.Single); //IsContext = False IsNew = False
-					OperandVar39 = my_forces;
-					
-					
-					if(!(( ( (OperandVar39))) == ( ( (0f)))))
-					{
-						System.Single OperandVar40 = default(System.Single); //IsContext = False IsNew = False
-						OperandVar40 = enemy_forces;
-						System.Single OperandVar41 = default(System.Single); //IsContext = False IsNew = False
-						OperandVar41 = my_forces;
-						subContext38.ThreatLevel = (System.Single)(( (OperandVar40)) / ( (OperandVar41)));
-					}
+					System.Int32 OperandVar12 = default(System.Int32); //IsContext = False IsNew = False
+					System.Int32 prop11 = subContext10.CurAge; //IsContext = False IsNew = False
+					OperandVar12 = prop11;
 					
 					
-					System.Single OperandVar42 = default(System.Single); //IsContext = False IsNew = False
-					OperandVar42 = my_forces;
+					subContext10.CurAge = (System.Int32)(( ( (OperandVar12))) + ( ( (3f))));
+				}
+			}
+			
+			{
+				Blackboards.personality subContext13 = (Blackboards.personality)root.GetComponent(typeof(Blackboards.personality)); //IsContext = True IsNew = False
+				//ContextStatement Blackboards.personality subContext13 ContextSwitchInterpreter
+				if(subContext13 != null)
+				{
+					
+					System.Single OperandVar15 = default(System.Single); //IsContext = False IsNew = False
+					System.Single prop14 = subContext13.Cruel; //IsContext = False IsNew = False
+					OperandVar15 = prop14;
 					
 					
+					subContext13.Cruel = (System.Single)(( ( (OperandVar15))) + ( ( (0.1f))));
+					
+					System.Single OperandVar17 = default(System.Single); //IsContext = False IsNew = False
+					System.Single prop16 = subContext13.Reckless; //IsContext = False IsNew = False
+					OperandVar17 = prop16;
 					
 					
-					System.Single OperandVar44 = default(System.Single); //IsContext = False IsNew = False
-					System.Single prop43 = subContext38.ThreatLevel; //IsContext = False IsNew = False
-					OperandVar44 = prop43;
-					
-					
-					if(( (( ( (OperandVar42))) == ( ( (0f))))) || ( (( ( (OperandVar44))) > ( ( (1000f))))))
-					{
-						
-						subContext38.ThreatLevel = (System.Single)( (1000f));
-					}
+					subContext13.Reckless = (System.Single)(( ( (OperandVar17))) + ( ( (0.1f))));
 				}
 			}
 		}
         }
     }
     
-    [EventActionAttribute(ShouldHaveMaxUtility=false, Category="basic", OncePerObject=false, OncePerTurn=false)]
-    public class start_a_war : EventAction {
+    [EventActionAttribute(ShouldHaveMaxUtility=true, Category="person_generation", OncePerObject=true, OncePerTurn=true)]
+    public class cherished_as_a_kid : EventAction {
         
         public override bool Filter() {
 
@@ -313,75 +129,32 @@ namespace generators {
 			//ContextStatement External External ContextSwitchInterpreter
 			System.Boolean applicable = false; //IsContext = False IsNew = False
 			
-			System.Boolean OperandVar64 = default(System.Boolean); //IsContext = False IsNew = False
-			Actor StoredVariable45 = ((Actor)root.GetComponent(typeof(Actor))); //IsContext = False IsNew = False
-			if(StoredVariable45 != null)
+			System.Boolean OperandVar24 = default(System.Boolean); //IsContext = False IsNew = False
+			Markers StoredVariable18 = ((Markers)root.GetComponent(typeof(Markers))); //IsContext = False IsNew = False
+			if(StoredVariable18 != null)
 			{
-				Blackboards.foe_role StoredVariable46 = ((Blackboards.foe_role)StoredVariable45.GetComponent(typeof(Blackboards.foe_role))); //IsContext = False IsNew = False
-				if(StoredVariable46 != null)
+				Blackboards.personality StoredVariable19 = ((Blackboards.personality)StoredVariable18.GetComponent(typeof(Blackboards.personality))); //IsContext = False IsNew = False
+				if(StoredVariable19 != null)
 				{
-					Blackboards.ruler_role StoredVariable47 = ((Blackboards.ruler_role)StoredVariable46.GetComponent(typeof(Blackboards.ruler_role))); //IsContext = False IsNew = False
-					if(StoredVariable47 != null)
+					Blackboards.aged StoredVariable20 = ((Blackboards.aged)StoredVariable19.GetComponent(typeof(Blackboards.aged))); //IsContext = False IsNew = False
+					if(StoredVariable20 != null)
 					{
-						System.Boolean ifResult48; //IsContext = False IsNew = False
+						System.Boolean ifResult21; //IsContext = False IsNew = False
 						
-						System.Boolean OperandVar55 = default(System.Boolean); //IsContext = False IsNew = False
-						if(StoredVariable46 != null)
-						{
-							UnityEngine.GameObject prop49 = StoredVariable46.Enemy; //IsContext = False IsNew = False
-							if(prop49 != null)
-							{
-								System.Boolean ifResult50; //IsContext = False IsNew = False
-								System.Boolean OperandVar54 = default(System.Boolean); //IsContext = False IsNew = False
-								Blackboards.ruler_role OperandVar52 = default(Blackboards.ruler_role); //IsContext = False IsNew = False
-								Blackboards.ruler_role StoredVariable51 = ((Blackboards.ruler_role)prop49.GetComponent(typeof(Blackboards.ruler_role))); //IsContext = False IsNew = False
-								if(StoredVariable51 != null)
-								{
-									OperandVar52 = StoredVariable51;
-								}
-								System.Boolean prop53 = External.Has( (OperandVar52)); //IsContext = False IsNew = False
-								OperandVar54 = prop53;
-								if(ifResult50 =  (OperandVar54))
-								{
-									OperandVar55 = ifResult50;
-								}
-							}
-						}
+						System.Int32 OperandVar23 = default(System.Int32); //IsContext = False IsNew = False
+						System.Int32 prop22 = StoredVariable20.CurAge; //IsContext = False IsNew = False
+						OperandVar23 = prop22;
 						
-						System.Boolean OperandVar61 = default(System.Boolean); //IsContext = False IsNew = False
-						System.Collections.Generic.List<UnityEngine.GameObject> OperandVar57 = default(System.Collections.Generic.List<UnityEngine.GameObject>); //IsContext = False IsNew = False
-						System.Collections.Generic.List<UnityEngine.GameObject> prop56 = StoredVariable47.AtWarWith; //IsContext = False IsNew = False
-						if(prop56 != null)
-						{
-							OperandVar57 = prop56;
-						}
-						UnityEngine.GameObject OperandVar59 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
-						if(StoredVariable46 != null)
-						{
-							UnityEngine.GameObject prop58 = StoredVariable46.Enemy; //IsContext = False IsNew = False
-							if(prop58 != null)
-							{
-								OperandVar59 = prop58;
-							}
-						}
-						System.Boolean prop60 = External.Contains( (OperandVar57), (OperandVar59)); //IsContext = False IsNew = False
-						OperandVar61 = prop60;
 						
-						System.Boolean OperandVar63 = default(System.Boolean); //IsContext = False IsNew = False
-						if(StoredVariable45 != null)
-						{
-							System.Boolean prop62 = StoredVariable45.IsActive; //IsContext = False IsNew = False
-							OperandVar63 = prop62;
-						}
-						if(ifResult48 = ( ( (OperandVar55))) && ( (!(OperandVar61))) && ( ( (OperandVar63))))
+						if(ifResult21 = ( ( (OperandVar23))) < ( ( (6f))))
 						{
 							applicable = true;
-							OperandVar64 = applicable;
+							OperandVar24 = applicable;
 						}
 					}
 				}
 			}
-			return (System.Boolean) (OperandVar64);
+			return (System.Boolean) (OperandVar24);
 		}
         }
         
@@ -405,94 +178,331 @@ namespace generators {
 			
 			//ContextStatement External External ContextSwitchInterpreter
 			
+			UnityEngine.GameObject cherished_as_a_kid = new UnityEngine.GameObject("cherished_as_a_kid"); //IsContext = False IsNew = False
 			
 			{
-				Blackboards.foe_role subContext65 = (Blackboards.foe_role)root.GetComponent(typeof(Blackboards.foe_role)); //IsContext = True IsNew = False
-				//ContextStatement Blackboards.foe_role subContext65 ContextSwitchInterpreter
-				if(subContext65 != null)
+				UnityEngine.GameObject cherished_as_a_kid25 = cherished_as_a_kid; //IsContext = True IsNew = False
+				Blackboards.targeted_event AddContext26 = (Blackboards.targeted_event)cherished_as_a_kid.AddComponent(typeof(Blackboards.targeted_event)); //IsContext = True IsNew = True
+				
 				{
-					
+					//ContextStatement Blackboards.targeted_event AddContext26 ContextSwitchInterpreter
+					if(AddContext26 != null)
 					{
-						Blackboards.ruler_role subContext66 = (Blackboards.ruler_role)root.GetComponent(typeof(Blackboards.ruler_role)); //IsContext = True IsNew = False
-						//ContextStatement Blackboards.ruler_role subContext66 ContextSwitchInterpreter
-						if(subContext66 != null)
-						{
-							UnityEngine.GameObject OperandVar68 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
-							if(subContext65 != null)
-							{
-								UnityEngine.GameObject prop67 = subContext65.Enemy; //IsContext = False IsNew = False
-								if(prop67 != null)
-								{
-									OperandVar68 = prop67;
-								}
-							}
-							subContext66.AtWarWith.Add( (OperandVar68));
-						}
-					}
-					
-					{
-						UnityEngine.GameObject subContext69 = subContext65.Enemy; //IsContext = True IsNew = False
-						//ContextStatement UnityEngine.GameObject subContext69 ContextPropertySwitchInterpreter
-						if(subContext69 != null)
-						{
-							
-							{
-								Blackboards.ruler_role subContext70 = (Blackboards.ruler_role)subContext69.GetComponent(typeof(Blackboards.ruler_role)); //IsContext = True IsNew = False
-								//ContextStatement Blackboards.ruler_role subContext70 ContextSwitchInterpreter
-								if(subContext70 != null)
-								{
-									UnityEngine.GameObject OperandVar71 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
-									OperandVar71 = root;
-									subContext70.AtWarWith.Add( (OperandVar71));
-								}
-							}
-						}
+						UnityEngine.GameObject OperandVar27 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
+						OperandVar27 = root;
+						AddContext26.Target = (UnityEngine.GameObject)( (OperandVar27));
 					}
 				}
 			}
-			UnityEngine.GameObject event_war_declaration = new UnityEngine.GameObject("event_war_declaration"); //IsContext = False IsNew = False
 			
 			{
-				UnityEngine.GameObject event_war_declaration72 = event_war_declaration; //IsContext = True IsNew = False
-				Event AddContext73 = (Event)event_war_declaration.AddComponent(typeof(Event)); //IsContext = True IsNew = True
-				
+				Blackboards.aged subContext28 = (Blackboards.aged)root.GetComponent(typeof(Blackboards.aged)); //IsContext = True IsNew = False
+				//ContextStatement Blackboards.aged subContext28 ContextSwitchInterpreter
+				if(subContext28 != null)
 				{
-					//ContextStatement Event AddContext73 ContextSwitchInterpreter
-					if(AddContext73 != null)
-					{
-						UnityEngine.GameObject OperandVar74 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
-						OperandVar74 = root;
-						AddContext73.Context = (UnityEngine.GameObject)( (OperandVar74));
-					}
-				}
-				Blackboards.war_declaration AddContext75 = (Blackboards.war_declaration)event_war_declaration.AddComponent(typeof(Blackboards.war_declaration)); //IsContext = True IsNew = True
-				Blackboards.targeted_event AddContext76 = (Blackboards.targeted_event)event_war_declaration.AddComponent(typeof(Blackboards.targeted_event)); //IsContext = True IsNew = True
-				
-				{
-					//ContextStatement Blackboards.targeted_event AddContext76 ContextSwitchInterpreter
-					if(AddContext76 != null)
-					{
-						UnityEngine.GameObject OperandVar79 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
-						Blackboards.foe_role StoredVariable77 = ((Blackboards.foe_role)root.GetComponent(typeof(Blackboards.foe_role))); //IsContext = False IsNew = False
-						if(StoredVariable77 != null)
-						{
-							UnityEngine.GameObject prop78 = StoredVariable77.Enemy; //IsContext = False IsNew = False
-							if(prop78 != null)
-							{
-								OperandVar79 = prop78;
-							}
-						}
-						AddContext76.Target = (UnityEngine.GameObject)( (OperandVar79));
-					}
+					
+					System.Int32 OperandVar30 = default(System.Int32); //IsContext = False IsNew = False
+					System.Int32 prop29 = subContext28.CurAge; //IsContext = False IsNew = False
+					OperandVar30 = prop29;
+					
+					
+					subContext28.CurAge = (System.Int32)(( ( (OperandVar30))) + ( ( (3f))));
 				}
 			}
-			UnityEngine.Object.FindObjectOfType<Generators>().Generate(event_war_declaration);
+			
+			{
+				Blackboards.personality subContext31 = (Blackboards.personality)root.GetComponent(typeof(Blackboards.personality)); //IsContext = True IsNew = False
+				//ContextStatement Blackboards.personality subContext31 ContextSwitchInterpreter
+				if(subContext31 != null)
+				{
+					
+					System.Single OperandVar33 = default(System.Single); //IsContext = False IsNew = False
+					System.Single prop32 = subContext31.Brave; //IsContext = False IsNew = False
+					OperandVar33 = prop32;
+					
+					
+					subContext31.Brave = (System.Single)(( ( (OperandVar33))) - ( ( (0.1f))));
+					
+					System.Single OperandVar35 = default(System.Single); //IsContext = False IsNew = False
+					System.Single prop34 = subContext31.Optimistic; //IsContext = False IsNew = False
+					OperandVar35 = prop34;
+					
+					
+					subContext31.Optimistic = (System.Single)(( ( (OperandVar35))) + ( ( (0.2f))));
+					
+					System.Single OperandVar37 = default(System.Single); //IsContext = False IsNew = False
+					
+					
+					System.Single prop36 = External.Random( (0f), (1f)); //IsContext = False IsNew = False
+					OperandVar37 = prop36;
+					
+					
+					if(( ( (OperandVar37))) > ( ( (0.9f))))
+					{
+						
+						System.Single OperandVar39 = default(System.Single); //IsContext = False IsNew = False
+						System.Single prop38 = subContext31.Cruel; //IsContext = False IsNew = False
+						OperandVar39 = prop38;
+						
+						
+						subContext31.Cruel = (System.Single)(( ( (OperandVar39))) + ( ( (0.1f))));
+					}
+					
+					System.Single OperandVar41 = default(System.Single); //IsContext = False IsNew = False
+					System.Single prop40 = subContext31.Ambitious; //IsContext = False IsNew = False
+					OperandVar41 = prop40;
+					
+					
+					subContext31.Ambitious = (System.Single)(( ( (OperandVar41))) - ( ( (0.03f))));
+				}
+			}
 		}
         }
     }
     
-    [EventActionAttribute(ShouldHaveMaxUtility=false, Category="basic", OncePerObject=false, OncePerTurn=false)]
-    public class gather_reinforcements : EventAction {
+    [EventActionAttribute(ShouldHaveMaxUtility=true, Category="person_generation", OncePerObject=true, OncePerTurn=true)]
+    public class inspired_as_a_kid : EventAction {
+        
+        public override bool Filter() {
+
+		{
+			var root = this.root;
+			
+			//ContextStatement External External ContextSwitchInterpreter
+			System.Boolean applicable = false; //IsContext = False IsNew = False
+			
+			System.Boolean OperandVar48 = default(System.Boolean); //IsContext = False IsNew = False
+			Markers StoredVariable42 = ((Markers)root.GetComponent(typeof(Markers))); //IsContext = False IsNew = False
+			if(StoredVariable42 != null)
+			{
+				Blackboards.personality StoredVariable43 = ((Blackboards.personality)StoredVariable42.GetComponent(typeof(Blackboards.personality))); //IsContext = False IsNew = False
+				if(StoredVariable43 != null)
+				{
+					Blackboards.aged StoredVariable44 = ((Blackboards.aged)StoredVariable43.GetComponent(typeof(Blackboards.aged))); //IsContext = False IsNew = False
+					if(StoredVariable44 != null)
+					{
+						System.Boolean ifResult45; //IsContext = False IsNew = False
+						
+						System.Int32 OperandVar47 = default(System.Int32); //IsContext = False IsNew = False
+						System.Int32 prop46 = StoredVariable44.CurAge; //IsContext = False IsNew = False
+						OperandVar47 = prop46;
+						
+						
+						if(ifResult45 = ( ( (OperandVar47))) < ( ( (6f))))
+						{
+							applicable = true;
+							OperandVar48 = applicable;
+						}
+					}
+				}
+			}
+			return (System.Boolean) (OperandVar48);
+		}
+        }
+        
+        public override float Utility() {
+
+		{
+			var root = this.root;
+			
+			//ContextStatement External External ContextSwitchInterpreter
+			System.Single ut = 0; //IsContext = False IsNew = False
+			
+			
+			return (System.Single) (1f);
+		}
+        }
+        
+        public override void Action() {
+
+		{
+			var root = this.root;
+			
+			//ContextStatement External External ContextSwitchInterpreter
+			
+			UnityEngine.GameObject inspired_as_a_kid = new UnityEngine.GameObject("inspired_as_a_kid"); //IsContext = False IsNew = False
+			
+			{
+				UnityEngine.GameObject inspired_as_a_kid49 = inspired_as_a_kid; //IsContext = True IsNew = False
+				Blackboards.targeted_event AddContext50 = (Blackboards.targeted_event)inspired_as_a_kid.AddComponent(typeof(Blackboards.targeted_event)); //IsContext = True IsNew = True
+				
+				{
+					//ContextStatement Blackboards.targeted_event AddContext50 ContextSwitchInterpreter
+					if(AddContext50 != null)
+					{
+						UnityEngine.GameObject OperandVar51 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
+						OperandVar51 = root;
+						AddContext50.Target = (UnityEngine.GameObject)( (OperandVar51));
+					}
+				}
+			}
+			
+			{
+				Blackboards.aged subContext52 = (Blackboards.aged)root.GetComponent(typeof(Blackboards.aged)); //IsContext = True IsNew = False
+				//ContextStatement Blackboards.aged subContext52 ContextSwitchInterpreter
+				if(subContext52 != null)
+				{
+					
+					System.Int32 OperandVar54 = default(System.Int32); //IsContext = False IsNew = False
+					System.Int32 prop53 = subContext52.CurAge; //IsContext = False IsNew = False
+					OperandVar54 = prop53;
+					
+					
+					subContext52.CurAge = (System.Int32)(( ( (OperandVar54))) + ( ( (3f))));
+				}
+			}
+			
+			{
+				Blackboards.personality subContext55 = (Blackboards.personality)root.GetComponent(typeof(Blackboards.personality)); //IsContext = True IsNew = False
+				//ContextStatement Blackboards.personality subContext55 ContextSwitchInterpreter
+				if(subContext55 != null)
+				{
+					
+					System.Single OperandVar57 = default(System.Single); //IsContext = False IsNew = False
+					System.Single prop56 = subContext55.Brave; //IsContext = False IsNew = False
+					OperandVar57 = prop56;
+					
+					
+					subContext55.Brave = (System.Single)(( ( (OperandVar57))) + ( ( (0.2f))));
+					
+					System.Single OperandVar59 = default(System.Single); //IsContext = False IsNew = False
+					System.Single prop58 = subContext55.Optimistic; //IsContext = False IsNew = False
+					OperandVar59 = prop58;
+					
+					
+					subContext55.Optimistic = (System.Single)(( ( (OperandVar59))) + ( ( (0.5f))));
+					
+					System.Single OperandVar61 = default(System.Single); //IsContext = False IsNew = False
+					System.Single prop60 = subContext55.Ambitious; //IsContext = False IsNew = False
+					OperandVar61 = prop60;
+					
+					
+					subContext55.Ambitious = (System.Single)(( ( (OperandVar61))) + ( ( (0.2f))));
+				}
+			}
+		}
+        }
+    }
+    
+    [EventActionAttribute(ShouldHaveMaxUtility=true, Category="person_generation", OncePerObject=true, OncePerTurn=true)]
+    public class taught_as_a_kid : EventAction {
+        
+        public override bool Filter() {
+
+		{
+			var root = this.root;
+			
+			//ContextStatement External External ContextSwitchInterpreter
+			System.Boolean applicable = false; //IsContext = False IsNew = False
+			
+			System.Boolean OperandVar68 = default(System.Boolean); //IsContext = False IsNew = False
+			Markers StoredVariable62 = ((Markers)root.GetComponent(typeof(Markers))); //IsContext = False IsNew = False
+			if(StoredVariable62 != null)
+			{
+				Blackboards.personality StoredVariable63 = ((Blackboards.personality)StoredVariable62.GetComponent(typeof(Blackboards.personality))); //IsContext = False IsNew = False
+				if(StoredVariable63 != null)
+				{
+					Blackboards.aged StoredVariable64 = ((Blackboards.aged)StoredVariable63.GetComponent(typeof(Blackboards.aged))); //IsContext = False IsNew = False
+					if(StoredVariable64 != null)
+					{
+						System.Boolean ifResult65; //IsContext = False IsNew = False
+						
+						System.Int32 OperandVar67 = default(System.Int32); //IsContext = False IsNew = False
+						System.Int32 prop66 = StoredVariable64.CurAge; //IsContext = False IsNew = False
+						OperandVar67 = prop66;
+						
+						
+						if(ifResult65 = ( ( (OperandVar67))) < ( ( (6f))))
+						{
+							applicable = true;
+							OperandVar68 = applicable;
+						}
+					}
+				}
+			}
+			return (System.Boolean) (OperandVar68);
+		}
+        }
+        
+        public override float Utility() {
+
+		{
+			var root = this.root;
+			
+			//ContextStatement External External ContextSwitchInterpreter
+			System.Single ut = 0; //IsContext = False IsNew = False
+			
+			
+			return (System.Single) (1f);
+		}
+        }
+        
+        public override void Action() {
+
+		{
+			var root = this.root;
+			
+			//ContextStatement External External ContextSwitchInterpreter
+			
+			UnityEngine.GameObject teached_as_a_kid = new UnityEngine.GameObject("teached_as_a_kid"); //IsContext = False IsNew = False
+			
+			{
+				UnityEngine.GameObject teached_as_a_kid69 = teached_as_a_kid; //IsContext = True IsNew = False
+				Blackboards.targeted_event AddContext70 = (Blackboards.targeted_event)teached_as_a_kid.AddComponent(typeof(Blackboards.targeted_event)); //IsContext = True IsNew = True
+				
+				{
+					//ContextStatement Blackboards.targeted_event AddContext70 ContextSwitchInterpreter
+					if(AddContext70 != null)
+					{
+						UnityEngine.GameObject OperandVar71 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
+						OperandVar71 = root;
+						AddContext70.Target = (UnityEngine.GameObject)( (OperandVar71));
+					}
+				}
+			}
+			
+			{
+				Blackboards.aged subContext72 = (Blackboards.aged)root.GetComponent(typeof(Blackboards.aged)); //IsContext = True IsNew = False
+				//ContextStatement Blackboards.aged subContext72 ContextSwitchInterpreter
+				if(subContext72 != null)
+				{
+					
+					System.Int32 OperandVar74 = default(System.Int32); //IsContext = False IsNew = False
+					System.Int32 prop73 = subContext72.CurAge; //IsContext = False IsNew = False
+					OperandVar74 = prop73;
+					
+					
+					subContext72.CurAge = (System.Int32)(( ( (OperandVar74))) + ( ( (3f))));
+				}
+			}
+			
+			{
+				Blackboards.personality subContext75 = (Blackboards.personality)root.GetComponent(typeof(Blackboards.personality)); //IsContext = True IsNew = False
+				//ContextStatement Blackboards.personality subContext75 ContextSwitchInterpreter
+				if(subContext75 != null)
+				{
+					
+					System.Single OperandVar77 = default(System.Single); //IsContext = False IsNew = False
+					System.Single prop76 = subContext75.Rational; //IsContext = False IsNew = False
+					OperandVar77 = prop76;
+					
+					
+					subContext75.Rational = (System.Single)(( ( (OperandVar77))) + ( ( (0.1f))));
+					
+					System.Single OperandVar79 = default(System.Single); //IsContext = False IsNew = False
+					System.Single prop78 = subContext75.Ambitious; //IsContext = False IsNew = False
+					OperandVar79 = prop78;
+					
+					
+					subContext75.Ambitious = (System.Single)(( ( (OperandVar79))) + ( ( (0.05f))));
+				}
+			}
+		}
+        }
+    }
+    
+    [EventActionAttribute(ShouldHaveMaxUtility=true, Category="person_generation", OncePerObject=true, OncePerTurn=true)]
+    public class pushy_teen : EventAction {
         
         public override bool Filter() {
 
@@ -503,23 +513,23 @@ namespace generators {
 			System.Boolean applicable = false; //IsContext = False IsNew = False
 			
 			System.Boolean OperandVar86 = default(System.Boolean); //IsContext = False IsNew = False
-			Actor StoredVariable80 = ((Actor)root.GetComponent(typeof(Actor))); //IsContext = False IsNew = False
+			Markers StoredVariable80 = ((Markers)root.GetComponent(typeof(Markers))); //IsContext = False IsNew = False
 			if(StoredVariable80 != null)
 			{
-				Blackboards.foe_role StoredVariable81 = ((Blackboards.foe_role)StoredVariable80.GetComponent(typeof(Blackboards.foe_role))); //IsContext = False IsNew = False
+				Blackboards.personality StoredVariable81 = ((Blackboards.personality)StoredVariable80.GetComponent(typeof(Blackboards.personality))); //IsContext = False IsNew = False
 				if(StoredVariable81 != null)
 				{
-					Blackboards.ruler_role StoredVariable82 = ((Blackboards.ruler_role)StoredVariable81.GetComponent(typeof(Blackboards.ruler_role))); //IsContext = False IsNew = False
+					Blackboards.aged StoredVariable82 = ((Blackboards.aged)StoredVariable81.GetComponent(typeof(Blackboards.aged))); //IsContext = False IsNew = False
 					if(StoredVariable82 != null)
 					{
 						System.Boolean ifResult83; //IsContext = False IsNew = False
-						System.Boolean OperandVar85 = default(System.Boolean); //IsContext = False IsNew = False
-						if(StoredVariable80 != null)
-						{
-							System.Boolean prop84 = StoredVariable80.IsActive; //IsContext = False IsNew = False
-							OperandVar85 = prop84;
-						}
-						if(ifResult83 =  (OperandVar85))
+						
+						System.Int32 OperandVar85 = default(System.Int32); //IsContext = False IsNew = False
+						System.Int32 prop84 = StoredVariable82.CurAge; //IsContext = False IsNew = False
+						OperandVar85 = prop84;
+						
+						
+						if(ifResult83 = ( ( (OperandVar85))) < ( ( (15f))))
 						{
 							applicable = true;
 							OperandVar86 = applicable;
@@ -540,16 +550,30 @@ namespace generators {
 			System.Single ut = 0; //IsContext = False IsNew = False
 			
 			
+			
+			
 			System.Single OperandVar89 = default(System.Single); //IsContext = False IsNew = False
-			Blackboards.ruler_role StoredVariable87 = ((Blackboards.ruler_role)root.GetComponent(typeof(Blackboards.ruler_role))); //IsContext = False IsNew = False
+			Blackboards.personality StoredVariable87 = ((Blackboards.personality)root.GetComponent(typeof(Blackboards.personality))); //IsContext = False IsNew = False
 			if(StoredVariable87 != null)
 			{
-				System.Single prop88 = StoredVariable87.People; //IsContext = False IsNew = False
+				System.Single prop88 = StoredVariable87.Brave; //IsContext = False IsNew = False
 				OperandVar89 = prop88;
 			}
 			
+			System.Single OperandVar91 = default(System.Single); //IsContext = False IsNew = False
+			if(StoredVariable87 != null)
+			{
+				System.Single prop90 = StoredVariable87.Ambitious; //IsContext = False IsNew = False
+				OperandVar91 = prop90;
+			}
 			
-			return (System.Single)( ( (OperandVar89))) - ( ( (0.3f)));
+			System.Single OperandVar93 = default(System.Single); //IsContext = False IsNew = False
+			if(StoredVariable87 != null)
+			{
+				System.Single prop92 = StoredVariable87.Cruel; //IsContext = False IsNew = False
+				OperandVar93 = prop92;
+			}
+			return (System.Single)( ( (0.3f))) + ( ( (OperandVar89))) + ( ( (OperandVar91))) - ( ( (OperandVar93)));
 		}
         }
         
@@ -560,53 +584,83 @@ namespace generators {
 			
 			//ContextStatement External External ContextSwitchInterpreter
 			
-			UnityEngine.GameObject act = new UnityEngine.GameObject("act"); //IsContext = False IsNew = False
+			UnityEngine.GameObject pushy_teen = new UnityEngine.GameObject("pushy_teen"); //IsContext = False IsNew = False
 			
 			{
-				UnityEngine.GameObject act90 = act; //IsContext = True IsNew = False
-				Blackboards.notify_event AddContext91 = (Blackboards.notify_event)act.AddComponent(typeof(Blackboards.notify_event)); //IsContext = True IsNew = True
+				UnityEngine.GameObject pushy_teen94 = pushy_teen; //IsContext = True IsNew = False
+				Blackboards.targeted_event AddContext95 = (Blackboards.targeted_event)pushy_teen.AddComponent(typeof(Blackboards.targeted_event)); //IsContext = True IsNew = True
 				
 				{
-					//ContextStatement Blackboards.notify_event AddContext91 ContextSwitchInterpreter
-					if(AddContext91 != null)
+					//ContextStatement Blackboards.targeted_event AddContext95 ContextSwitchInterpreter
+					if(AddContext95 != null)
 					{
-						UnityEngine.GameObject OperandVar92 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
-						OperandVar92 = root;
-						AddContext91.Who = (UnityEngine.GameObject)( (OperandVar92));
-						
-						AddContext91.Data = (System.String)( ("gather_reinforcements"));
+						UnityEngine.GameObject OperandVar96 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
+						OperandVar96 = root;
+						AddContext95.Target = (UnityEngine.GameObject)( (OperandVar96));
 					}
 				}
 			}
-			UnityEngine.Object.FindObjectOfType<Generators>().Generate(act);
 			
 			{
-				Blackboards.ruler_role subContext93 = (Blackboards.ruler_role)root.GetComponent(typeof(Blackboards.ruler_role)); //IsContext = True IsNew = False
-				//ContextStatement Blackboards.ruler_role subContext93 ContextSwitchInterpreter
-				if(subContext93 != null)
+				Blackboards.aged subContext97 = (Blackboards.aged)root.GetComponent(typeof(Blackboards.aged)); //IsContext = True IsNew = False
+				//ContextStatement Blackboards.aged subContext97 ContextSwitchInterpreter
+				if(subContext97 != null)
 				{
 					
-					System.Single OperandVar95 = default(System.Single); //IsContext = False IsNew = False
-					System.Single prop94 = subContext93.Forces; //IsContext = False IsNew = False
-					OperandVar95 = prop94;
+					System.Int32 OperandVar99 = default(System.Int32); //IsContext = False IsNew = False
+					System.Int32 prop98 = subContext97.CurAge; //IsContext = False IsNew = False
+					OperandVar99 = prop98;
+					
+					System.Single OperandVar101 = default(System.Single); //IsContext = False IsNew = False
 					
 					
-					subContext93.Forces = (System.Single)(( ( (OperandVar95))) + ( ( (7f))));
+					System.Single prop100 = External.Random( (3f), (5f)); //IsContext = False IsNew = False
+					OperandVar101 = prop100;
+					subContext97.CurAge = (System.Int32)(( ( (OperandVar99))) + ( ( (OperandVar101))));
+				}
+			}
+			
+			{
+				Blackboards.personality subContext102 = (Blackboards.personality)root.GetComponent(typeof(Blackboards.personality)); //IsContext = True IsNew = False
+				//ContextStatement Blackboards.personality subContext102 ContextSwitchInterpreter
+				if(subContext102 != null)
+				{
 					
-					System.Single OperandVar97 = default(System.Single); //IsContext = False IsNew = False
-					System.Single prop96 = subContext93.People; //IsContext = False IsNew = False
-					OperandVar97 = prop96;
+					System.Single OperandVar104 = default(System.Single); //IsContext = False IsNew = False
+					System.Single prop103 = subContext102.Brave; //IsContext = False IsNew = False
+					OperandVar104 = prop103;
 					
 					
-					subContext93.People = (System.Single)(( ( (OperandVar97))) - ( ( (0.1f))));
+					subContext102.Brave = (System.Single)(( ( (OperandVar104))) + ( ( (0.3f))));
+					
+					System.Single OperandVar106 = default(System.Single); //IsContext = False IsNew = False
+					System.Single prop105 = subContext102.Rational; //IsContext = False IsNew = False
+					OperandVar106 = prop105;
+					
+					
+					subContext102.Rational = (System.Single)(( ( (OperandVar106))) - ( ( (0.1f))));
+					
+					System.Single OperandVar108 = default(System.Single); //IsContext = False IsNew = False
+					System.Single prop107 = subContext102.Optimistic; //IsContext = False IsNew = False
+					OperandVar108 = prop107;
+					
+					
+					subContext102.Optimistic = (System.Single)(( ( (OperandVar108))) + ( ( (0.3f))));
+					
+					System.Single OperandVar110 = default(System.Single); //IsContext = False IsNew = False
+					System.Single prop109 = subContext102.Ambitious; //IsContext = False IsNew = False
+					OperandVar110 = prop109;
+					
+					
+					subContext102.Ambitious = (System.Single)(( ( (OperandVar110))) + ( ( (0.1f))));
 				}
 			}
 		}
         }
     }
     
-    [EventActionAttribute(ShouldHaveMaxUtility=false, Category="basic", OncePerObject=false, OncePerTurn=true)]
-    public class growth : EventAction {
+    [EventActionAttribute(ShouldHaveMaxUtility=true, Category="person_generation", OncePerObject=true, OncePerTurn=true)]
+    public class nerd_teen : EventAction {
         
         public override bool Filter() {
 
@@ -616,36 +670,1074 @@ namespace generators {
 			//ContextStatement External External ContextSwitchInterpreter
 			System.Boolean applicable = false; //IsContext = False IsNew = False
 			
-			System.Boolean OperandVar105 = default(System.Boolean); //IsContext = False IsNew = False
-			Actor StoredVariable98 = ((Actor)root.GetComponent(typeof(Actor))); //IsContext = False IsNew = False
-			if(StoredVariable98 != null)
+			System.Boolean OperandVar117 = default(System.Boolean); //IsContext = False IsNew = False
+			Markers StoredVariable111 = ((Markers)root.GetComponent(typeof(Markers))); //IsContext = False IsNew = False
+			if(StoredVariable111 != null)
 			{
-				Blackboards.ruler_role StoredVariable99 = ((Blackboards.ruler_role)StoredVariable98.GetComponent(typeof(Blackboards.ruler_role))); //IsContext = False IsNew = False
-				if(StoredVariable99 != null)
+				Blackboards.personality StoredVariable112 = ((Blackboards.personality)StoredVariable111.GetComponent(typeof(Blackboards.personality))); //IsContext = False IsNew = False
+				if(StoredVariable112 != null)
 				{
-					System.Boolean ifResult100; //IsContext = False IsNew = False
-					
-					
-					System.Single OperandVar102 = default(System.Single); //IsContext = False IsNew = False
-					System.Single prop101 = StoredVariable99.People; //IsContext = False IsNew = False
-					OperandVar102 = prop101;
-					
-					
-					
-					System.Boolean OperandVar104 = default(System.Boolean); //IsContext = False IsNew = False
-					if(StoredVariable98 != null)
+					Blackboards.aged StoredVariable113 = ((Blackboards.aged)StoredVariable112.GetComponent(typeof(Blackboards.aged))); //IsContext = False IsNew = False
+					if(StoredVariable113 != null)
 					{
-						System.Boolean prop103 = StoredVariable98.IsActive; //IsContext = False IsNew = False
-						OperandVar104 = prop103;
-					}
-					if(ifResult100 = ( (( ( (OperandVar102))) < ( ( (1f))))) && ( (!(OperandVar104))))
-					{
-						applicable = true;
-						OperandVar105 = applicable;
+						System.Boolean ifResult114; //IsContext = False IsNew = False
+						
+						System.Int32 OperandVar116 = default(System.Int32); //IsContext = False IsNew = False
+						System.Int32 prop115 = StoredVariable113.CurAge; //IsContext = False IsNew = False
+						OperandVar116 = prop115;
+						
+						
+						if(ifResult114 = ( ( (OperandVar116))) < ( ( (15f))))
+						{
+							applicable = true;
+							OperandVar117 = applicable;
+						}
 					}
 				}
 			}
-			return (System.Boolean) (OperandVar105);
+			return (System.Boolean) (OperandVar117);
+		}
+        }
+        
+        public override float Utility() {
+
+		{
+			var root = this.root;
+			
+			//ContextStatement External External ContextSwitchInterpreter
+			System.Single ut = 0; //IsContext = False IsNew = False
+			
+			
+			
+			
+			System.Single OperandVar120 = default(System.Single); //IsContext = False IsNew = False
+			Blackboards.personality StoredVariable118 = ((Blackboards.personality)root.GetComponent(typeof(Blackboards.personality))); //IsContext = False IsNew = False
+			if(StoredVariable118 != null)
+			{
+				System.Single prop119 = StoredVariable118.Rational; //IsContext = False IsNew = False
+				OperandVar120 = prop119;
+			}
+			
+			System.Single OperandVar122 = default(System.Single); //IsContext = False IsNew = False
+			if(StoredVariable118 != null)
+			{
+				System.Single prop121 = StoredVariable118.Brave; //IsContext = False IsNew = False
+				OperandVar122 = prop121;
+			}
+			return (System.Single)( ( (0.3f))) + ( ( (OperandVar120))) - ( ( (OperandVar122)));
+		}
+        }
+        
+        public override void Action() {
+
+		{
+			var root = this.root;
+			
+			//ContextStatement External External ContextSwitchInterpreter
+			
+			UnityEngine.GameObject nerd_teen = new UnityEngine.GameObject("nerd_teen"); //IsContext = False IsNew = False
+			
+			{
+				UnityEngine.GameObject nerd_teen123 = nerd_teen; //IsContext = True IsNew = False
+				Blackboards.targeted_event AddContext124 = (Blackboards.targeted_event)nerd_teen.AddComponent(typeof(Blackboards.targeted_event)); //IsContext = True IsNew = True
+				
+				{
+					//ContextStatement Blackboards.targeted_event AddContext124 ContextSwitchInterpreter
+					if(AddContext124 != null)
+					{
+						UnityEngine.GameObject OperandVar125 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
+						OperandVar125 = root;
+						AddContext124.Target = (UnityEngine.GameObject)( (OperandVar125));
+					}
+				}
+			}
+			
+			{
+				Blackboards.aged subContext126 = (Blackboards.aged)root.GetComponent(typeof(Blackboards.aged)); //IsContext = True IsNew = False
+				//ContextStatement Blackboards.aged subContext126 ContextSwitchInterpreter
+				if(subContext126 != null)
+				{
+					
+					System.Int32 OperandVar128 = default(System.Int32); //IsContext = False IsNew = False
+					System.Int32 prop127 = subContext126.CurAge; //IsContext = False IsNew = False
+					OperandVar128 = prop127;
+					
+					System.Single OperandVar130 = default(System.Single); //IsContext = False IsNew = False
+					
+					
+					System.Single prop129 = External.Random( (3f), (5f)); //IsContext = False IsNew = False
+					OperandVar130 = prop129;
+					subContext126.CurAge = (System.Int32)(( ( (OperandVar128))) + ( ( (OperandVar130))));
+				}
+			}
+			
+			{
+				Blackboards.personality subContext131 = (Blackboards.personality)root.GetComponent(typeof(Blackboards.personality)); //IsContext = True IsNew = False
+				//ContextStatement Blackboards.personality subContext131 ContextSwitchInterpreter
+				if(subContext131 != null)
+				{
+					
+					System.Single OperandVar133 = default(System.Single); //IsContext = False IsNew = False
+					System.Single prop132 = subContext131.Brave; //IsContext = False IsNew = False
+					OperandVar133 = prop132;
+					
+					
+					subContext131.Brave = (System.Single)(( ( (OperandVar133))) - ( ( (0.1f))));
+					
+					System.Single OperandVar135 = default(System.Single); //IsContext = False IsNew = False
+					System.Single prop134 = subContext131.Rational; //IsContext = False IsNew = False
+					OperandVar135 = prop134;
+					
+					
+					subContext131.Rational = (System.Single)(( ( (OperandVar135))) + ( ( (0.5f))));
+				}
+			}
+		}
+        }
+    }
+    
+    [EventActionAttribute(ShouldHaveMaxUtility=true, Category="person_generation", OncePerObject=true, OncePerTurn=true)]
+    public class manipulative_teen : EventAction {
+        
+        public override bool Filter() {
+
+		{
+			var root = this.root;
+			
+			//ContextStatement External External ContextSwitchInterpreter
+			System.Boolean applicable = false; //IsContext = False IsNew = False
+			
+			System.Boolean OperandVar142 = default(System.Boolean); //IsContext = False IsNew = False
+			Markers StoredVariable136 = ((Markers)root.GetComponent(typeof(Markers))); //IsContext = False IsNew = False
+			if(StoredVariable136 != null)
+			{
+				Blackboards.personality StoredVariable137 = ((Blackboards.personality)StoredVariable136.GetComponent(typeof(Blackboards.personality))); //IsContext = False IsNew = False
+				if(StoredVariable137 != null)
+				{
+					Blackboards.aged StoredVariable138 = ((Blackboards.aged)StoredVariable137.GetComponent(typeof(Blackboards.aged))); //IsContext = False IsNew = False
+					if(StoredVariable138 != null)
+					{
+						System.Boolean ifResult139; //IsContext = False IsNew = False
+						
+						System.Int32 OperandVar141 = default(System.Int32); //IsContext = False IsNew = False
+						System.Int32 prop140 = StoredVariable138.CurAge; //IsContext = False IsNew = False
+						OperandVar141 = prop140;
+						
+						
+						if(ifResult139 = ( ( (OperandVar141))) < ( ( (15f))))
+						{
+							applicable = true;
+							OperandVar142 = applicable;
+						}
+					}
+				}
+			}
+			return (System.Boolean) (OperandVar142);
+		}
+        }
+        
+        public override float Utility() {
+
+		{
+			var root = this.root;
+			
+			//ContextStatement External External ContextSwitchInterpreter
+			System.Single ut = 0; //IsContext = False IsNew = False
+			
+			
+			
+			
+			System.Single OperandVar145 = default(System.Single); //IsContext = False IsNew = False
+			Blackboards.personality StoredVariable143 = ((Blackboards.personality)root.GetComponent(typeof(Blackboards.personality))); //IsContext = False IsNew = False
+			if(StoredVariable143 != null)
+			{
+				System.Single prop144 = StoredVariable143.Rational; //IsContext = False IsNew = False
+				OperandVar145 = prop144;
+			}
+			
+			System.Single OperandVar147 = default(System.Single); //IsContext = False IsNew = False
+			if(StoredVariable143 != null)
+			{
+				System.Single prop146 = StoredVariable143.Ambitious; //IsContext = False IsNew = False
+				OperandVar147 = prop146;
+			}
+			
+			return (System.Single)( ( (0.2f))) + ( ( (OperandVar145))) + ( (( (OperandVar147)) * ( (2f))));
+		}
+        }
+        
+        public override void Action() {
+
+		{
+			var root = this.root;
+			
+			//ContextStatement External External ContextSwitchInterpreter
+			
+			UnityEngine.GameObject manipulative_teen = new UnityEngine.GameObject("manipulative_teen"); //IsContext = False IsNew = False
+			
+			{
+				UnityEngine.GameObject manipulative_teen148 = manipulative_teen; //IsContext = True IsNew = False
+				Blackboards.targeted_event AddContext149 = (Blackboards.targeted_event)manipulative_teen.AddComponent(typeof(Blackboards.targeted_event)); //IsContext = True IsNew = True
+				
+				{
+					//ContextStatement Blackboards.targeted_event AddContext149 ContextSwitchInterpreter
+					if(AddContext149 != null)
+					{
+						UnityEngine.GameObject OperandVar150 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
+						OperandVar150 = root;
+						AddContext149.Target = (UnityEngine.GameObject)( (OperandVar150));
+					}
+				}
+			}
+			
+			{
+				Blackboards.aged subContext151 = (Blackboards.aged)root.GetComponent(typeof(Blackboards.aged)); //IsContext = True IsNew = False
+				//ContextStatement Blackboards.aged subContext151 ContextSwitchInterpreter
+				if(subContext151 != null)
+				{
+					
+					System.Int32 OperandVar153 = default(System.Int32); //IsContext = False IsNew = False
+					System.Int32 prop152 = subContext151.CurAge; //IsContext = False IsNew = False
+					OperandVar153 = prop152;
+					
+					System.Single OperandVar155 = default(System.Single); //IsContext = False IsNew = False
+					
+					
+					System.Single prop154 = External.Random( (3f), (5f)); //IsContext = False IsNew = False
+					OperandVar155 = prop154;
+					subContext151.CurAge = (System.Int32)(( ( (OperandVar153))) + ( ( (OperandVar155))));
+				}
+			}
+			
+			{
+				Blackboards.personality subContext156 = (Blackboards.personality)root.GetComponent(typeof(Blackboards.personality)); //IsContext = True IsNew = False
+				//ContextStatement Blackboards.personality subContext156 ContextSwitchInterpreter
+				if(subContext156 != null)
+				{
+					
+					System.Single OperandVar158 = default(System.Single); //IsContext = False IsNew = False
+					System.Single prop157 = subContext156.Brave; //IsContext = False IsNew = False
+					OperandVar158 = prop157;
+					
+					
+					subContext156.Brave = (System.Single)(( ( (OperandVar158))) - ( ( (0.2f))));
+					
+					System.Single OperandVar160 = default(System.Single); //IsContext = False IsNew = False
+					System.Single prop159 = subContext156.Ambitious; //IsContext = False IsNew = False
+					OperandVar160 = prop159;
+					
+					
+					subContext156.Ambitious = (System.Single)(( ( (OperandVar160))) + ( ( (0.3f))));
+					
+					System.Single OperandVar162 = default(System.Single); //IsContext = False IsNew = False
+					System.Single prop161 = subContext156.Reckless; //IsContext = False IsNew = False
+					OperandVar162 = prop161;
+					
+					
+					subContext156.Reckless = (System.Single)(( ( (OperandVar162))) + ( ( (0.2f))));
+				}
+			}
+		}
+        }
+    }
+    
+    [EventActionAttribute(ShouldHaveMaxUtility=true, Category="person_generation", OncePerObject=true, OncePerTurn=true)]
+    public class tortured_pets_teen : EventAction {
+        
+        public override bool Filter() {
+
+		{
+			var root = this.root;
+			
+			//ContextStatement External External ContextSwitchInterpreter
+			System.Boolean applicable = false; //IsContext = False IsNew = False
+			
+			System.Boolean OperandVar169 = default(System.Boolean); //IsContext = False IsNew = False
+			Markers StoredVariable163 = ((Markers)root.GetComponent(typeof(Markers))); //IsContext = False IsNew = False
+			if(StoredVariable163 != null)
+			{
+				Blackboards.personality StoredVariable164 = ((Blackboards.personality)StoredVariable163.GetComponent(typeof(Blackboards.personality))); //IsContext = False IsNew = False
+				if(StoredVariable164 != null)
+				{
+					Blackboards.aged StoredVariable165 = ((Blackboards.aged)StoredVariable164.GetComponent(typeof(Blackboards.aged))); //IsContext = False IsNew = False
+					if(StoredVariable165 != null)
+					{
+						System.Boolean ifResult166; //IsContext = False IsNew = False
+						
+						System.Int32 OperandVar168 = default(System.Int32); //IsContext = False IsNew = False
+						System.Int32 prop167 = StoredVariable165.CurAge; //IsContext = False IsNew = False
+						OperandVar168 = prop167;
+						
+						
+						if(ifResult166 = ( ( (OperandVar168))) < ( ( (15f))))
+						{
+							applicable = true;
+							OperandVar169 = applicable;
+						}
+					}
+				}
+			}
+			return (System.Boolean) (OperandVar169);
+		}
+        }
+        
+        public override float Utility() {
+
+		{
+			var root = this.root;
+			
+			//ContextStatement External External ContextSwitchInterpreter
+			System.Single ut = 0; //IsContext = False IsNew = False
+			
+			System.Single OperandVar172 = default(System.Single); //IsContext = False IsNew = False
+			Blackboards.personality StoredVariable170 = ((Blackboards.personality)root.GetComponent(typeof(Blackboards.personality))); //IsContext = False IsNew = False
+			if(StoredVariable170 != null)
+			{
+				System.Single prop171 = StoredVariable170.Cruel; //IsContext = False IsNew = False
+				OperandVar172 = prop171;
+			}
+			
+			return (System.Single)( (OperandVar172)) * ( (0.8f));
+		}
+        }
+        
+        public override void Action() {
+
+		{
+			var root = this.root;
+			
+			//ContextStatement External External ContextSwitchInterpreter
+			
+			UnityEngine.GameObject tortured_pets_teen = new UnityEngine.GameObject("tortured_pets_teen"); //IsContext = False IsNew = False
+			
+			{
+				UnityEngine.GameObject tortured_pets_teen173 = tortured_pets_teen; //IsContext = True IsNew = False
+				Blackboards.targeted_event AddContext174 = (Blackboards.targeted_event)tortured_pets_teen.AddComponent(typeof(Blackboards.targeted_event)); //IsContext = True IsNew = True
+				
+				{
+					//ContextStatement Blackboards.targeted_event AddContext174 ContextSwitchInterpreter
+					if(AddContext174 != null)
+					{
+						UnityEngine.GameObject OperandVar175 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
+						OperandVar175 = root;
+						AddContext174.Target = (UnityEngine.GameObject)( (OperandVar175));
+					}
+				}
+			}
+			
+			{
+				Blackboards.aged subContext176 = (Blackboards.aged)root.GetComponent(typeof(Blackboards.aged)); //IsContext = True IsNew = False
+				//ContextStatement Blackboards.aged subContext176 ContextSwitchInterpreter
+				if(subContext176 != null)
+				{
+					
+					System.Int32 OperandVar178 = default(System.Int32); //IsContext = False IsNew = False
+					System.Int32 prop177 = subContext176.CurAge; //IsContext = False IsNew = False
+					OperandVar178 = prop177;
+					
+					System.Single OperandVar180 = default(System.Single); //IsContext = False IsNew = False
+					
+					
+					System.Single prop179 = External.Random( (3f), (5f)); //IsContext = False IsNew = False
+					OperandVar180 = prop179;
+					subContext176.CurAge = (System.Int32)(( ( (OperandVar178))) + ( ( (OperandVar180))));
+				}
+			}
+			
+			{
+				Blackboards.personality subContext181 = (Blackboards.personality)root.GetComponent(typeof(Blackboards.personality)); //IsContext = True IsNew = False
+				//ContextStatement Blackboards.personality subContext181 ContextSwitchInterpreter
+				if(subContext181 != null)
+				{
+					
+					System.Single OperandVar183 = default(System.Single); //IsContext = False IsNew = False
+					System.Single prop182 = subContext181.Rational; //IsContext = False IsNew = False
+					OperandVar183 = prop182;
+					
+					
+					subContext181.Rational = (System.Single)(( ( (OperandVar183))) - ( ( (0.1f))));
+					
+					System.Single OperandVar185 = default(System.Single); //IsContext = False IsNew = False
+					System.Single prop184 = subContext181.Cruel; //IsContext = False IsNew = False
+					OperandVar185 = prop184;
+					
+					
+					subContext181.Cruel = (System.Single)(( ( (OperandVar185))) + ( ( (0.5f))));
+					
+					System.Single OperandVar187 = default(System.Single); //IsContext = False IsNew = False
+					System.Single prop186 = subContext181.Reckless; //IsContext = False IsNew = False
+					OperandVar187 = prop186;
+					
+					
+					subContext181.Reckless = (System.Single)(( ( (OperandVar187))) + ( ( (0.5f))));
+				}
+			}
+		}
+        }
+    }
+    
+    [EventActionAttribute(ShouldHaveMaxUtility=true, Category="conflict_decomposition", OncePerObject=true, OncePerTurn=false)]
+    public class war_conflict : EventAction {
+        
+        public override bool Filter() {
+
+		{
+			var root = this.root;
+			
+			//ContextStatement External External ContextSwitchInterpreter
+			System.Boolean applicable = false; //IsContext = False IsNew = False
+			
+			System.Boolean OperandVar189 = default(System.Boolean); //IsContext = False IsNew = False
+			Conflict StoredVariable188 = ((Conflict)root.GetComponent(typeof(Conflict))); //IsContext = False IsNew = False
+			if(StoredVariable188 != null)
+			{
+				applicable = true;
+				OperandVar189 = applicable;
+			}
+			return (System.Boolean) (OperandVar189);
+		}
+        }
+        
+        public override float Utility() {
+
+		{
+			var root = this.root;
+			
+			//ContextStatement External External ContextSwitchInterpreter
+			System.Single ut = 0; //IsContext = False IsNew = False
+			
+			
+			return (System.Single) (1f);
+		}
+        }
+        
+        public override void Action() {
+
+		{
+			var root = this.root;
+			
+			//ContextStatement External External ContextSwitchInterpreter
+			
+			UnityEngine.GameObject first_foe = new UnityEngine.GameObject("first_foe"); //IsContext = False IsNew = False
+			
+			{
+				UnityEngine.GameObject first_foe190 = first_foe; //IsContext = True IsNew = False
+				Entity AddContext191 = (Entity)first_foe.AddComponent(typeof(Entity)); //IsContext = True IsNew = True
+				Blackboards.foe_role AddContext192 = (Blackboards.foe_role)first_foe.AddComponent(typeof(Blackboards.foe_role)); //IsContext = True IsNew = True
+				Actor AddContext193 = (Actor)first_foe.AddComponent(typeof(Actor)); //IsContext = True IsNew = True
+			}
+			UnityEngine.Object.FindObjectOfType<Generators>().Generate(first_foe, 0.1f);
+			UnityEngine.GameObject second_foe = new UnityEngine.GameObject("second_foe"); //IsContext = False IsNew = False
+			
+			{
+				UnityEngine.GameObject second_foe194 = second_foe; //IsContext = True IsNew = False
+				Entity AddContext195 = (Entity)second_foe.AddComponent(typeof(Entity)); //IsContext = True IsNew = True
+				Actor AddContext196 = (Actor)second_foe.AddComponent(typeof(Actor)); //IsContext = True IsNew = True
+				Blackboards.foe_role AddContext197 = (Blackboards.foe_role)second_foe.AddComponent(typeof(Blackboards.foe_role)); //IsContext = True IsNew = True
+				
+				{
+					//ContextStatement Blackboards.foe_role AddContext197 ContextSwitchInterpreter
+					if(AddContext197 != null)
+					{
+						UnityEngine.GameObject OperandVar198 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
+						OperandVar198 = first_foe;
+						AddContext197.Enemy = (UnityEngine.GameObject)( (OperandVar198));
+					}
+				}
+			}
+			UnityEngine.Object.FindObjectOfType<Generators>().Generate(second_foe, 0.1f);
+			
+			{
+				UnityEngine.GameObject subContext199 = first_foe; //IsContext = True IsNew = False
+				//ContextStatement UnityEngine.GameObject subContext199 ContextPropertySwitchInterpreter
+				if(subContext199 != null)
+				{
+					
+					{
+						Blackboards.foe_role subContext200 = (Blackboards.foe_role)subContext199.GetComponent(typeof(Blackboards.foe_role)); //IsContext = True IsNew = False
+						//ContextStatement Blackboards.foe_role subContext200 ContextSwitchInterpreter
+						if(subContext200 != null)
+						{
+							UnityEngine.GameObject OperandVar201 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
+							OperandVar201 = second_foe;
+							subContext200.Enemy = (UnityEngine.GameObject)( (OperandVar201));
+						}
+					}
+				}
+			}
+		}
+        }
+    }
+    
+    [EventActionAttribute(ShouldHaveMaxUtility=true, Category="foe_decomposition", OncePerObject=true, OncePerTurn=false)]
+    public class foe_is_ruler : EventAction {
+        
+        public override bool Filter() {
+
+		{
+			var root = this.root;
+			
+			//ContextStatement External External ContextSwitchInterpreter
+			System.Boolean applicable = false; //IsContext = False IsNew = False
+			
+			System.Boolean OperandVar203 = default(System.Boolean); //IsContext = False IsNew = False
+			Blackboards.foe_role StoredVariable202 = ((Blackboards.foe_role)root.GetComponent(typeof(Blackboards.foe_role))); //IsContext = False IsNew = False
+			if(StoredVariable202 != null)
+			{
+				applicable = true;
+				OperandVar203 = applicable;
+			}
+			return (System.Boolean) (OperandVar203);
+		}
+        }
+        
+        public override float Utility() {
+
+		{
+			var root = this.root;
+			
+			//ContextStatement External External ContextSwitchInterpreter
+			System.Single ut = 0; //IsContext = False IsNew = False
+			
+			
+			return (System.Single) (1f);
+		}
+        }
+        
+        public override void Action() {
+
+		{
+			var root = this.root;
+			
+			//ContextStatement External External ContextSwitchInterpreter
+			
+			Blackboards.ruler_role ContextVar204 = root.AddComponent<Blackboards.ruler_role>();; //IsContext = False IsNew = True
+			
+			{
+				//ContextStatement Blackboards.ruler_role ContextVar204 ContextSwitchInterpreter
+				if(ContextVar204 != null)
+				{
+					System.Single OperandVar206 = default(System.Single); //IsContext = False IsNew = False
+					
+					
+					System.Single prop205 = External.Random( (10f), (20f)); //IsContext = False IsNew = False
+					OperandVar206 = prop205;
+					ContextVar204.Forces = (System.Single)( (OperandVar206));
+					
+					ContextVar204.People = (System.Single)( (1f));
+				}
+			}
+			Entity EntVar207 = (Entity)root.GetComponent(typeof(Entity));; //IsContext = False IsNew = False
+			if(EntVar207 != null) EntVar207.ComponentAdded();
+		}
+        }
+    }
+    
+    [EventActionAttribute(ShouldHaveMaxUtility=false, Category="basic", OncePerObject=true, OncePerTurn=false)]
+    public class ruler_as_person : EventAction {
+        
+        public override float Utility() {
+
+		{
+			var root = this.root;
+			
+			//ContextStatement External External ContextSwitchInterpreter
+			System.Single ut = 0; //IsContext = False IsNew = False
+			
+			
+			return (System.Single) (1f);
+		}
+        }
+        
+        public override bool Filter() {
+
+		{
+			var root = this.root;
+			
+			//ContextStatement External External ContextSwitchInterpreter
+			System.Boolean applicable = false; //IsContext = False IsNew = False
+			
+			System.Boolean OperandVar210 = default(System.Boolean); //IsContext = False IsNew = False
+			Blackboards.ruler_role StoredVariable208 = ((Blackboards.ruler_role)root.GetComponent(typeof(Blackboards.ruler_role))); //IsContext = False IsNew = False
+			if(StoredVariable208 != null)
+			{
+				Markers StoredVariable209 = ((Markers)StoredVariable208.GetComponent(typeof(Markers))); //IsContext = False IsNew = False
+				if(StoredVariable209 != null)
+				{
+					applicable = true;
+					OperandVar210 = applicable;
+				}
+			}
+			return (System.Boolean) (OperandVar210);
+		}
+        }
+        
+        public override void Action() {
+
+		{
+			var root = this.root;
+			
+			//ContextStatement External External ContextSwitchInterpreter
+			
+			
+			{
+				Markers subContext211 = (Markers)root.GetComponent(typeof(Markers)); //IsContext = True IsNew = False
+				//ContextStatement Markers subContext211 ContextSwitchInterpreter
+				if(subContext211 != null)
+				{
+					System.String OperandVar212 = default(System.String); //IsContext = False IsNew = False
+					OperandVar212 = "is_person";
+					subContext211.SetMarker(( (OperandVar212)).ToString());
+				}
+			}
+		}
+        }
+    }
+    
+    [EventActionAttribute(ShouldHaveMaxUtility=false, Category="basic", OncePerObject=true, OncePerTurn=false)]
+    public class genius_as_person : EventAction {
+        
+        public override float Utility() {
+
+		{
+			var root = this.root;
+			
+			//ContextStatement External External ContextSwitchInterpreter
+			System.Single ut = 0; //IsContext = False IsNew = False
+			
+			
+			return (System.Single) (1f);
+		}
+        }
+        
+        public override bool Filter() {
+
+		{
+			var root = this.root;
+			
+			//ContextStatement External External ContextSwitchInterpreter
+			System.Boolean applicable = false; //IsContext = False IsNew = False
+			
+			System.Boolean OperandVar216 = default(System.Boolean); //IsContext = False IsNew = False
+			Blackboards.worker StoredVariable213 = ((Blackboards.worker)root.GetComponent(typeof(Blackboards.worker))); //IsContext = False IsNew = False
+			if(StoredVariable213 != null)
+			{
+				Blackboards.builder StoredVariable214 = ((Blackboards.builder)StoredVariable213.GetComponent(typeof(Blackboards.builder))); //IsContext = False IsNew = False
+				if(StoredVariable214 != null)
+				{
+					Markers StoredVariable215 = ((Markers)StoredVariable214.GetComponent(typeof(Markers))); //IsContext = False IsNew = False
+					if(StoredVariable215 != null)
+					{
+						applicable = true;
+						OperandVar216 = applicable;
+					}
+				}
+			}
+			return (System.Boolean) (OperandVar216);
+		}
+        }
+        
+        public override void Action() {
+
+		{
+			var root = this.root;
+			
+			//ContextStatement External External ContextSwitchInterpreter
+			
+			
+			{
+				Markers subContext217 = (Markers)root.GetComponent(typeof(Markers)); //IsContext = True IsNew = False
+				//ContextStatement Markers subContext217 ContextSwitchInterpreter
+				if(subContext217 != null)
+				{
+					System.String OperandVar218 = default(System.String); //IsContext = False IsNew = False
+					OperandVar218 = "is_person";
+					subContext217.SetMarker(( (OperandVar218)).ToString());
+				}
+			}
+		}
+        }
+    }
+    
+    [EventActionAttribute(ShouldHaveMaxUtility=false, Category="basic", OncePerObject=true, OncePerTurn=false)]
+    public class as_person : EventAction {
+        
+        public override float Utility() {
+
+		{
+			var root = this.root;
+			
+			//ContextStatement External External ContextSwitchInterpreter
+			System.Single ut = 0; //IsContext = False IsNew = False
+			
+			
+			return (System.Single) (1f);
+		}
+        }
+        
+        public override bool Filter() {
+
+		{
+			var root = this.root;
+			
+			//ContextStatement External External ContextSwitchInterpreter
+			System.Boolean applicable = false; //IsContext = False IsNew = False
+			
+			System.Boolean OperandVar224 = default(System.Boolean); //IsContext = False IsNew = False
+			Markers StoredVariable219 = ((Markers)root.GetComponent(typeof(Markers))); //IsContext = False IsNew = False
+			if(StoredVariable219 != null)
+			{
+				System.Boolean ifResult220; //IsContext = False IsNew = False
+				System.Boolean OperandVar223 = default(System.Boolean); //IsContext = False IsNew = False
+				System.String OperandVar221 = default(System.String); //IsContext = False IsNew = False
+				OperandVar221 = "is_person";
+				System.Boolean prop222 = StoredVariable219.HasMarker( (OperandVar221)); //IsContext = False IsNew = False
+				OperandVar223 = prop222;
+				if(ifResult220 =  (OperandVar223))
+				{
+					applicable = true;
+					OperandVar224 = applicable;
+				}
+			}
+			return (System.Boolean) (OperandVar224);
+		}
+        }
+        
+        public override void Action() {
+
+		{
+			var root = this.root;
+			
+			//ContextStatement External External ContextSwitchInterpreter
+			
+			Blackboards.aged ContextVar225 = root.AddComponent<Blackboards.aged>();; //IsContext = False IsNew = True
+			
+			{
+				//ContextStatement Blackboards.aged ContextVar225 ContextSwitchInterpreter
+				if(ContextVar225 != null)
+				{
+					System.Single OperandVar227 = default(System.Single); //IsContext = False IsNew = False
+					
+					
+					System.Single prop226 = External.Random( (30f), (60f)); //IsContext = False IsNew = False
+					OperandVar227 = prop226;
+					ContextVar225.Age = (System.Int32)( (OperandVar227));
+				}
+			}
+			Entity EntVar228 = (Entity)root.GetComponent(typeof(Entity));; //IsContext = False IsNew = False
+			
+			Blackboards.attributes ContextVar229 = root.AddComponent<Blackboards.attributes>();; //IsContext = False IsNew = True
+			
+			{
+				//ContextStatement Blackboards.attributes ContextVar229 ContextSwitchInterpreter
+				if(ContextVar229 != null)
+				{
+					System.Single OperandVar231 = default(System.Single); //IsContext = False IsNew = False
+					
+					
+					System.Single prop230 = External.Random( (1f), (10f)); //IsContext = False IsNew = False
+					OperandVar231 = prop230;
+					ContextVar229.Charisma = (System.Int32)( (OperandVar231));
+					System.Single OperandVar233 = default(System.Single); //IsContext = False IsNew = False
+					
+					
+					System.Single prop232 = External.Random( (1f), (10f)); //IsContext = False IsNew = False
+					OperandVar233 = prop232;
+					ContextVar229.Intellect = (System.Int32)( (OperandVar233));
+					System.Single OperandVar235 = default(System.Single); //IsContext = False IsNew = False
+					
+					
+					System.Single prop234 = External.Random( (1f), (10f)); //IsContext = False IsNew = False
+					OperandVar235 = prop234;
+					ContextVar229.Military = (System.Int32)( (OperandVar235));
+					System.Single OperandVar237 = default(System.Single); //IsContext = False IsNew = False
+					
+					
+					System.Single prop236 = External.Random( (1f), (10f)); //IsContext = False IsNew = False
+					OperandVar237 = prop236;
+					ContextVar229.Mental = (System.Int32)( (OperandVar237));
+					System.Single OperandVar239 = default(System.Single); //IsContext = False IsNew = False
+					
+					
+					System.Single prop238 = External.Random( (1f), (10f)); //IsContext = False IsNew = False
+					OperandVar239 = prop238;
+					ContextVar229.Health = (System.Int32)( (OperandVar239));
+				}
+			}
+			
+			Blackboards.personality ContextVar240 = root.AddComponent<Blackboards.personality>();; //IsContext = False IsNew = True
+			
+			{
+				//ContextStatement Blackboards.personality ContextVar240 ContextSwitchInterpreter
+				if(ContextVar240 != null)
+				{
+					System.Single OperandVar242 = default(System.Single); //IsContext = False IsNew = False
+					
+					
+					System.Single prop241 = External.Random( (0f), (0.1f)); //IsContext = False IsNew = False
+					OperandVar242 = prop241;
+					ContextVar240.Brave = (System.Single)( (OperandVar242));
+					System.Single OperandVar244 = default(System.Single); //IsContext = False IsNew = False
+					
+					
+					System.Single prop243 = External.Random( (0f), (0.1f)); //IsContext = False IsNew = False
+					OperandVar244 = prop243;
+					ContextVar240.Rational = (System.Single)( (OperandVar244));
+					System.Single OperandVar246 = default(System.Single); //IsContext = False IsNew = False
+					
+					
+					System.Single prop245 = External.Random( (0f), (0.1f)); //IsContext = False IsNew = False
+					OperandVar246 = prop245;
+					ContextVar240.Optimistic = (System.Single)( (OperandVar246));
+					System.Single OperandVar248 = default(System.Single); //IsContext = False IsNew = False
+					
+					
+					System.Single prop247 = External.Random( (0f), (0.1f)); //IsContext = False IsNew = False
+					OperandVar248 = prop247;
+					ContextVar240.Cruel = (System.Single)( (OperandVar248));
+					System.Single OperandVar250 = default(System.Single); //IsContext = False IsNew = False
+					
+					
+					System.Single prop249 = External.Random( (0f), (0.1f)); //IsContext = False IsNew = False
+					OperandVar250 = prop249;
+					ContextVar240.Ambitious = (System.Single)( (OperandVar250));
+					System.Single OperandVar252 = default(System.Single); //IsContext = False IsNew = False
+					
+					
+					System.Single prop251 = External.Random( (0f), (0.1f)); //IsContext = False IsNew = False
+					OperandVar252 = prop251;
+					ContextVar240.Reckless = (System.Single)( (OperandVar252));
+				}
+			}
+			if(EntVar228 != null) EntVar228.ComponentAdded();
+		}
+        }
+    }
+    
+    [EventActionAttribute(ShouldHaveMaxUtility=false, Category="basic", OncePerObject=false, OncePerTurn=true)]
+    public class ruler_vs_ruler : EventAction {
+        
+        public override bool Filter() {
+
+		{
+			var root = this.root;
+			
+			//ContextStatement External External ContextSwitchInterpreter
+			System.Boolean applicable = false; //IsContext = False IsNew = False
+			
+			System.Boolean OperandVar262 = default(System.Boolean); //IsContext = False IsNew = False
+			Actor StoredVariable253 = ((Actor)root.GetComponent(typeof(Actor))); //IsContext = False IsNew = False
+			if(StoredVariable253 != null)
+			{
+				Blackboards.foe_role StoredVariable254 = ((Blackboards.foe_role)StoredVariable253.GetComponent(typeof(Blackboards.foe_role))); //IsContext = False IsNew = False
+				if(StoredVariable254 != null)
+				{
+					Blackboards.ruler_role StoredVariable255 = ((Blackboards.ruler_role)StoredVariable254.GetComponent(typeof(Blackboards.ruler_role))); //IsContext = False IsNew = False
+					if(StoredVariable255 != null)
+					{
+						System.Boolean ifResult256; //IsContext = False IsNew = False
+						
+						System.Boolean OperandVar259 = default(System.Boolean); //IsContext = False IsNew = False
+						if(StoredVariable254 != null)
+						{
+							UnityEngine.GameObject prop257 = StoredVariable254.Enemy; //IsContext = False IsNew = False
+							if(prop257 != null)
+							{
+								Blackboards.ruler_role StoredVariable258 = ((Blackboards.ruler_role)prop257.GetComponent(typeof(Blackboards.ruler_role))); //IsContext = False IsNew = False
+								if(StoredVariable258 != null)
+								{
+									applicable = true;
+									OperandVar259 = applicable;
+								}
+							}
+						}
+						
+						System.Boolean OperandVar261 = default(System.Boolean); //IsContext = False IsNew = False
+						if(StoredVariable253 != null)
+						{
+							System.Boolean prop260 = StoredVariable253.IsActive; //IsContext = False IsNew = False
+							OperandVar261 = prop260;
+						}
+						if(ifResult256 = ( ( (OperandVar259))) && ( (!(OperandVar261))))
+						{
+							applicable = true;
+							OperandVar262 = applicable;
+						}
+					}
+				}
+			}
+			return (System.Boolean) (OperandVar262);
+		}
+        }
+        
+        public override float Utility() {
+
+		{
+			var root = this.root;
+			
+			//ContextStatement External External ContextSwitchInterpreter
+			System.Single ut = 0; //IsContext = False IsNew = False
+			
+			
+			return (System.Single) (1f);
+		}
+        }
+        
+        public override void Action() {
+
+		{
+			var root = this.root;
+			
+			//ContextStatement External External ContextSwitchInterpreter
+			
+			System.Single OperandVar265 = default(System.Single); //IsContext = False IsNew = False
+			Blackboards.ruler_role StoredVariable263 = ((Blackboards.ruler_role)root.GetComponent(typeof(Blackboards.ruler_role))); //IsContext = False IsNew = False
+			if(StoredVariable263 != null)
+			{
+				System.Single prop264 = StoredVariable263.Forces; //IsContext = False IsNew = False
+				OperandVar265 = prop264;
+			}
+			System.Single my_forces =  (OperandVar265); //IsContext = False IsNew = False
+			System.Single OperandVar270 = default(System.Single); //IsContext = False IsNew = False
+			Blackboards.foe_role StoredVariable266 = ((Blackboards.foe_role)root.GetComponent(typeof(Blackboards.foe_role))); //IsContext = False IsNew = False
+			if(StoredVariable266 != null)
+			{
+				UnityEngine.GameObject prop267 = StoredVariable266.Enemy; //IsContext = False IsNew = False
+				if(prop267 != null)
+				{
+					Blackboards.ruler_role StoredVariable268 = ((Blackboards.ruler_role)prop267.GetComponent(typeof(Blackboards.ruler_role))); //IsContext = False IsNew = False
+					if(StoredVariable268 != null)
+					{
+						System.Single prop269 = StoredVariable268.Forces; //IsContext = False IsNew = False
+						OperandVar270 = prop269;
+					}
+				}
+			}
+			System.Single enemy_forces =  (OperandVar270); //IsContext = False IsNew = False
+			
+			{
+				Blackboards.foe_role subContext271 = (Blackboards.foe_role)root.GetComponent(typeof(Blackboards.foe_role)); //IsContext = True IsNew = False
+				//ContextStatement Blackboards.foe_role subContext271 ContextSwitchInterpreter
+				if(subContext271 != null)
+				{
+					
+					
+					System.Single OperandVar272 = default(System.Single); //IsContext = False IsNew = False
+					OperandVar272 = my_forces;
+					
+					
+					if(!(( ( (OperandVar272))) == ( ( (0f)))))
+					{
+						System.Single OperandVar273 = default(System.Single); //IsContext = False IsNew = False
+						OperandVar273 = enemy_forces;
+						System.Single OperandVar274 = default(System.Single); //IsContext = False IsNew = False
+						OperandVar274 = my_forces;
+						subContext271.ThreatLevel = (System.Single)(( (OperandVar273)) / ( (OperandVar274)));
+					}
+					
+					
+					System.Single OperandVar275 = default(System.Single); //IsContext = False IsNew = False
+					OperandVar275 = my_forces;
+					
+					
+					
+					
+					System.Single OperandVar277 = default(System.Single); //IsContext = False IsNew = False
+					System.Single prop276 = subContext271.ThreatLevel; //IsContext = False IsNew = False
+					OperandVar277 = prop276;
+					
+					
+					if(( (( ( (OperandVar275))) == ( ( (0f))))) || ( (( ( (OperandVar277))) > ( ( (1000f))))))
+					{
+						
+						subContext271.ThreatLevel = (System.Single)( (1000f));
+					}
+				}
+			}
+		}
+        }
+    }
+    
+    [EventActionAttribute(ShouldHaveMaxUtility=false, Category="basic", OncePerObject=false, OncePerTurn=false)]
+    public class start_a_war : EventAction {
+        
+        public override bool Filter() {
+
+		{
+			var root = this.root;
+			
+			//ContextStatement External External ContextSwitchInterpreter
+			System.Boolean applicable = false; //IsContext = False IsNew = False
+			
+			System.Boolean OperandVar297 = default(System.Boolean); //IsContext = False IsNew = False
+			Actor StoredVariable278 = ((Actor)root.GetComponent(typeof(Actor))); //IsContext = False IsNew = False
+			if(StoredVariable278 != null)
+			{
+				Blackboards.foe_role StoredVariable279 = ((Blackboards.foe_role)StoredVariable278.GetComponent(typeof(Blackboards.foe_role))); //IsContext = False IsNew = False
+				if(StoredVariable279 != null)
+				{
+					Blackboards.ruler_role StoredVariable280 = ((Blackboards.ruler_role)StoredVariable279.GetComponent(typeof(Blackboards.ruler_role))); //IsContext = False IsNew = False
+					if(StoredVariable280 != null)
+					{
+						System.Boolean ifResult281; //IsContext = False IsNew = False
+						
+						System.Boolean OperandVar288 = default(System.Boolean); //IsContext = False IsNew = False
+						if(StoredVariable279 != null)
+						{
+							UnityEngine.GameObject prop282 = StoredVariable279.Enemy; //IsContext = False IsNew = False
+							if(prop282 != null)
+							{
+								System.Boolean ifResult283; //IsContext = False IsNew = False
+								System.Boolean OperandVar287 = default(System.Boolean); //IsContext = False IsNew = False
+								Blackboards.ruler_role OperandVar285 = default(Blackboards.ruler_role); //IsContext = False IsNew = False
+								Blackboards.ruler_role StoredVariable284 = ((Blackboards.ruler_role)prop282.GetComponent(typeof(Blackboards.ruler_role))); //IsContext = False IsNew = False
+								if(StoredVariable284 != null)
+								{
+									OperandVar285 = StoredVariable284;
+								}
+								System.Boolean prop286 = External.Has( (OperandVar285)); //IsContext = False IsNew = False
+								OperandVar287 = prop286;
+								if(ifResult283 =  (OperandVar287))
+								{
+									OperandVar288 = ifResult283;
+								}
+							}
+						}
+						
+						System.Boolean OperandVar294 = default(System.Boolean); //IsContext = False IsNew = False
+						System.Collections.Generic.List<UnityEngine.GameObject> OperandVar290 = default(System.Collections.Generic.List<UnityEngine.GameObject>); //IsContext = False IsNew = False
+						System.Collections.Generic.List<UnityEngine.GameObject> prop289 = StoredVariable280.AtWarWith; //IsContext = False IsNew = False
+						if(prop289 != null)
+						{
+							OperandVar290 = prop289;
+						}
+						UnityEngine.GameObject OperandVar292 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
+						if(StoredVariable279 != null)
+						{
+							UnityEngine.GameObject prop291 = StoredVariable279.Enemy; //IsContext = False IsNew = False
+							if(prop291 != null)
+							{
+								OperandVar292 = prop291;
+							}
+						}
+						System.Boolean prop293 = External.Contains( (OperandVar290), (OperandVar292)); //IsContext = False IsNew = False
+						OperandVar294 = prop293;
+						
+						System.Boolean OperandVar296 = default(System.Boolean); //IsContext = False IsNew = False
+						if(StoredVariable278 != null)
+						{
+							System.Boolean prop295 = StoredVariable278.IsActive; //IsContext = False IsNew = False
+							OperandVar296 = prop295;
+						}
+						if(ifResult281 = ( ( (OperandVar288))) && ( (!(OperandVar294))) && ( ( (OperandVar296))))
+						{
+							applicable = true;
+							OperandVar297 = applicable;
+						}
+					}
+				}
+			}
+			return (System.Boolean) (OperandVar297);
 		}
         }
         
@@ -671,15 +1763,278 @@ namespace generators {
 			
 			
 			{
-				Blackboards.ruler_role subContext106 = (Blackboards.ruler_role)root.GetComponent(typeof(Blackboards.ruler_role)); //IsContext = True IsNew = False
-				//ContextStatement Blackboards.ruler_role subContext106 ContextSwitchInterpreter
-				if(subContext106 != null)
+				Blackboards.foe_role subContext298 = (Blackboards.foe_role)root.GetComponent(typeof(Blackboards.foe_role)); //IsContext = True IsNew = False
+				//ContextStatement Blackboards.foe_role subContext298 ContextSwitchInterpreter
+				if(subContext298 != null)
 				{
-					System.Single OperandVar108 = default(System.Single); //IsContext = False IsNew = False
-					System.Single prop107 = subContext106.People; //IsContext = False IsNew = False
-					OperandVar108 = prop107;
 					
-					subContext106.People = (System.Single)(( (OperandVar108)) * ( (1.2f)));
+					{
+						Blackboards.ruler_role subContext299 = (Blackboards.ruler_role)root.GetComponent(typeof(Blackboards.ruler_role)); //IsContext = True IsNew = False
+						//ContextStatement Blackboards.ruler_role subContext299 ContextSwitchInterpreter
+						if(subContext299 != null)
+						{
+							UnityEngine.GameObject OperandVar301 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
+							if(subContext298 != null)
+							{
+								UnityEngine.GameObject prop300 = subContext298.Enemy; //IsContext = False IsNew = False
+								if(prop300 != null)
+								{
+									OperandVar301 = prop300;
+								}
+							}
+							subContext299.AtWarWith.Add( (OperandVar301));
+						}
+					}
+					
+					{
+						UnityEngine.GameObject subContext302 = subContext298.Enemy; //IsContext = True IsNew = False
+						//ContextStatement UnityEngine.GameObject subContext302 ContextPropertySwitchInterpreter
+						if(subContext302 != null)
+						{
+							
+							{
+								Blackboards.ruler_role subContext303 = (Blackboards.ruler_role)subContext302.GetComponent(typeof(Blackboards.ruler_role)); //IsContext = True IsNew = False
+								//ContextStatement Blackboards.ruler_role subContext303 ContextSwitchInterpreter
+								if(subContext303 != null)
+								{
+									UnityEngine.GameObject OperandVar304 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
+									OperandVar304 = root;
+									subContext303.AtWarWith.Add( (OperandVar304));
+								}
+							}
+						}
+					}
+				}
+			}
+			UnityEngine.GameObject event_war_declaration = new UnityEngine.GameObject("event_war_declaration"); //IsContext = False IsNew = False
+			
+			{
+				UnityEngine.GameObject event_war_declaration305 = event_war_declaration; //IsContext = True IsNew = False
+				Event AddContext306 = (Event)event_war_declaration.AddComponent(typeof(Event)); //IsContext = True IsNew = True
+				
+				{
+					//ContextStatement Event AddContext306 ContextSwitchInterpreter
+					if(AddContext306 != null)
+					{
+						UnityEngine.GameObject OperandVar307 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
+						OperandVar307 = root;
+						AddContext306.Context = (UnityEngine.GameObject)( (OperandVar307));
+					}
+				}
+				Blackboards.war_declaration AddContext308 = (Blackboards.war_declaration)event_war_declaration.AddComponent(typeof(Blackboards.war_declaration)); //IsContext = True IsNew = True
+				Blackboards.targeted_event AddContext309 = (Blackboards.targeted_event)event_war_declaration.AddComponent(typeof(Blackboards.targeted_event)); //IsContext = True IsNew = True
+				
+				{
+					//ContextStatement Blackboards.targeted_event AddContext309 ContextSwitchInterpreter
+					if(AddContext309 != null)
+					{
+						UnityEngine.GameObject OperandVar312 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
+						Blackboards.foe_role StoredVariable310 = ((Blackboards.foe_role)root.GetComponent(typeof(Blackboards.foe_role))); //IsContext = False IsNew = False
+						if(StoredVariable310 != null)
+						{
+							UnityEngine.GameObject prop311 = StoredVariable310.Enemy; //IsContext = False IsNew = False
+							if(prop311 != null)
+							{
+								OperandVar312 = prop311;
+							}
+						}
+						AddContext309.Target = (UnityEngine.GameObject)( (OperandVar312));
+					}
+				}
+			}
+			UnityEngine.Object.FindObjectOfType<Generators>().Generate(event_war_declaration, 0.1f);
+		}
+        }
+    }
+    
+    [EventActionAttribute(ShouldHaveMaxUtility=false, Category="basic", OncePerObject=false, OncePerTurn=false)]
+    public class gather_reinforcements : EventAction {
+        
+        public override bool Filter() {
+
+		{
+			var root = this.root;
+			
+			//ContextStatement External External ContextSwitchInterpreter
+			System.Boolean applicable = false; //IsContext = False IsNew = False
+			
+			System.Boolean OperandVar319 = default(System.Boolean); //IsContext = False IsNew = False
+			Actor StoredVariable313 = ((Actor)root.GetComponent(typeof(Actor))); //IsContext = False IsNew = False
+			if(StoredVariable313 != null)
+			{
+				Blackboards.foe_role StoredVariable314 = ((Blackboards.foe_role)StoredVariable313.GetComponent(typeof(Blackboards.foe_role))); //IsContext = False IsNew = False
+				if(StoredVariable314 != null)
+				{
+					Blackboards.ruler_role StoredVariable315 = ((Blackboards.ruler_role)StoredVariable314.GetComponent(typeof(Blackboards.ruler_role))); //IsContext = False IsNew = False
+					if(StoredVariable315 != null)
+					{
+						System.Boolean ifResult316; //IsContext = False IsNew = False
+						System.Boolean OperandVar318 = default(System.Boolean); //IsContext = False IsNew = False
+						if(StoredVariable313 != null)
+						{
+							System.Boolean prop317 = StoredVariable313.IsActive; //IsContext = False IsNew = False
+							OperandVar318 = prop317;
+						}
+						if(ifResult316 =  (OperandVar318))
+						{
+							applicable = true;
+							OperandVar319 = applicable;
+						}
+					}
+				}
+			}
+			return (System.Boolean) (OperandVar319);
+		}
+        }
+        
+        public override float Utility() {
+
+		{
+			var root = this.root;
+			
+			//ContextStatement External External ContextSwitchInterpreter
+			System.Single ut = 0; //IsContext = False IsNew = False
+			
+			
+			System.Single OperandVar322 = default(System.Single); //IsContext = False IsNew = False
+			Blackboards.ruler_role StoredVariable320 = ((Blackboards.ruler_role)root.GetComponent(typeof(Blackboards.ruler_role))); //IsContext = False IsNew = False
+			if(StoredVariable320 != null)
+			{
+				System.Single prop321 = StoredVariable320.People; //IsContext = False IsNew = False
+				OperandVar322 = prop321;
+			}
+			
+			
+			return (System.Single)( ( (OperandVar322))) - ( ( (0.3f)));
+		}
+        }
+        
+        public override void Action() {
+
+		{
+			var root = this.root;
+			
+			//ContextStatement External External ContextSwitchInterpreter
+			
+			UnityEngine.GameObject gather_reinforcements = new UnityEngine.GameObject("gather_reinforcements"); //IsContext = False IsNew = False
+			
+			{
+				UnityEngine.GameObject gather_reinforcements323 = gather_reinforcements; //IsContext = True IsNew = False
+				Blackboards.notify_event AddContext324 = (Blackboards.notify_event)gather_reinforcements.AddComponent(typeof(Blackboards.notify_event)); //IsContext = True IsNew = True
+				
+				{
+					//ContextStatement Blackboards.notify_event AddContext324 ContextSwitchInterpreter
+					if(AddContext324 != null)
+					{
+						UnityEngine.GameObject OperandVar325 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
+						OperandVar325 = root;
+						AddContext324.Who = (UnityEngine.GameObject)( (OperandVar325));
+						
+						AddContext324.Data = (System.String)( ("gather_reinforcements"));
+					}
+				}
+			}
+			
+			{
+				Blackboards.ruler_role subContext326 = (Blackboards.ruler_role)root.GetComponent(typeof(Blackboards.ruler_role)); //IsContext = True IsNew = False
+				//ContextStatement Blackboards.ruler_role subContext326 ContextSwitchInterpreter
+				if(subContext326 != null)
+				{
+					
+					System.Single OperandVar328 = default(System.Single); //IsContext = False IsNew = False
+					System.Single prop327 = subContext326.Forces; //IsContext = False IsNew = False
+					OperandVar328 = prop327;
+					
+					
+					subContext326.Forces = (System.Single)(( ( (OperandVar328))) + ( ( (7f))));
+					
+					System.Single OperandVar330 = default(System.Single); //IsContext = False IsNew = False
+					System.Single prop329 = subContext326.People; //IsContext = False IsNew = False
+					OperandVar330 = prop329;
+					
+					
+					subContext326.People = (System.Single)(( ( (OperandVar330))) - ( ( (0.1f))));
+				}
+			}
+		}
+        }
+    }
+    
+    [EventActionAttribute(ShouldHaveMaxUtility=false, Category="basic", OncePerObject=false, OncePerTurn=true)]
+    public class growth : EventAction {
+        
+        public override bool Filter() {
+
+		{
+			var root = this.root;
+			
+			//ContextStatement External External ContextSwitchInterpreter
+			System.Boolean applicable = false; //IsContext = False IsNew = False
+			
+			System.Boolean OperandVar338 = default(System.Boolean); //IsContext = False IsNew = False
+			Actor StoredVariable331 = ((Actor)root.GetComponent(typeof(Actor))); //IsContext = False IsNew = False
+			if(StoredVariable331 != null)
+			{
+				Blackboards.ruler_role StoredVariable332 = ((Blackboards.ruler_role)StoredVariable331.GetComponent(typeof(Blackboards.ruler_role))); //IsContext = False IsNew = False
+				if(StoredVariable332 != null)
+				{
+					System.Boolean ifResult333; //IsContext = False IsNew = False
+					
+					
+					System.Single OperandVar335 = default(System.Single); //IsContext = False IsNew = False
+					System.Single prop334 = StoredVariable332.People; //IsContext = False IsNew = False
+					OperandVar335 = prop334;
+					
+					
+					
+					System.Boolean OperandVar337 = default(System.Boolean); //IsContext = False IsNew = False
+					if(StoredVariable331 != null)
+					{
+						System.Boolean prop336 = StoredVariable331.IsActive; //IsContext = False IsNew = False
+						OperandVar337 = prop336;
+					}
+					if(ifResult333 = ( (( ( (OperandVar335))) < ( ( (1f))))) && ( (!(OperandVar337))))
+					{
+						applicable = true;
+						OperandVar338 = applicable;
+					}
+				}
+			}
+			return (System.Boolean) (OperandVar338);
+		}
+        }
+        
+        public override float Utility() {
+
+		{
+			var root = this.root;
+			
+			//ContextStatement External External ContextSwitchInterpreter
+			System.Single ut = 0; //IsContext = False IsNew = False
+			
+			
+			return (System.Single) (1f);
+		}
+        }
+        
+        public override void Action() {
+
+		{
+			var root = this.root;
+			
+			//ContextStatement External External ContextSwitchInterpreter
+			
+			
+			{
+				Blackboards.ruler_role subContext339 = (Blackboards.ruler_role)root.GetComponent(typeof(Blackboards.ruler_role)); //IsContext = True IsNew = False
+				//ContextStatement Blackboards.ruler_role subContext339 ContextSwitchInterpreter
+				if(subContext339 != null)
+				{
+					System.Single OperandVar341 = default(System.Single); //IsContext = False IsNew = False
+					System.Single prop340 = subContext339.People; //IsContext = False IsNew = False
+					OperandVar341 = prop340;
+					
+					subContext339.People = (System.Single)(( (OperandVar341)) * ( (1.2f)));
 				}
 			}
 		}
@@ -697,52 +2052,52 @@ namespace generators {
 			//ContextStatement External External ContextSwitchInterpreter
 			System.Boolean applicable = false; //IsContext = False IsNew = False
 			
-			System.Boolean OperandVar121 = default(System.Boolean); //IsContext = False IsNew = False
-			Actor StoredVariable109 = ((Actor)root.GetComponent(typeof(Actor))); //IsContext = False IsNew = False
-			if(StoredVariable109 != null)
+			System.Boolean OperandVar354 = default(System.Boolean); //IsContext = False IsNew = False
+			Actor StoredVariable342 = ((Actor)root.GetComponent(typeof(Actor))); //IsContext = False IsNew = False
+			if(StoredVariable342 != null)
 			{
-				Blackboards.ruler_role StoredVariable110 = ((Blackboards.ruler_role)StoredVariable109.GetComponent(typeof(Blackboards.ruler_role))); //IsContext = False IsNew = False
-				if(StoredVariable110 != null)
+				Blackboards.ruler_role StoredVariable343 = ((Blackboards.ruler_role)StoredVariable342.GetComponent(typeof(Blackboards.ruler_role))); //IsContext = False IsNew = False
+				if(StoredVariable343 != null)
 				{
-					Blackboards.foe_role StoredVariable111 = ((Blackboards.foe_role)StoredVariable110.GetComponent(typeof(Blackboards.foe_role))); //IsContext = False IsNew = False
-					if(StoredVariable111 != null)
+					Blackboards.foe_role StoredVariable344 = ((Blackboards.foe_role)StoredVariable343.GetComponent(typeof(Blackboards.foe_role))); //IsContext = False IsNew = False
+					if(StoredVariable344 != null)
 					{
-						System.Boolean ifResult112; //IsContext = False IsNew = False
+						System.Boolean ifResult345; //IsContext = False IsNew = False
 						
-						System.Boolean OperandVar114 = default(System.Boolean); //IsContext = False IsNew = False
-						if(StoredVariable109 != null)
+						System.Boolean OperandVar347 = default(System.Boolean); //IsContext = False IsNew = False
+						if(StoredVariable342 != null)
 						{
-							System.Boolean prop113 = StoredVariable109.IsActive; //IsContext = False IsNew = False
-							OperandVar114 = prop113;
+							System.Boolean prop346 = StoredVariable342.IsActive; //IsContext = False IsNew = False
+							OperandVar347 = prop346;
 						}
 						
-						System.Boolean OperandVar120 = default(System.Boolean); //IsContext = False IsNew = False
-						System.Collections.Generic.List<UnityEngine.GameObject> OperandVar116 = default(System.Collections.Generic.List<UnityEngine.GameObject>); //IsContext = False IsNew = False
-						if(StoredVariable110 != null)
+						System.Boolean OperandVar353 = default(System.Boolean); //IsContext = False IsNew = False
+						System.Collections.Generic.List<UnityEngine.GameObject> OperandVar349 = default(System.Collections.Generic.List<UnityEngine.GameObject>); //IsContext = False IsNew = False
+						if(StoredVariable343 != null)
 						{
-							System.Collections.Generic.List<UnityEngine.GameObject> prop115 = StoredVariable110.AtWarWith; //IsContext = False IsNew = False
-							if(prop115 != null)
+							System.Collections.Generic.List<UnityEngine.GameObject> prop348 = StoredVariable343.AtWarWith; //IsContext = False IsNew = False
+							if(prop348 != null)
 							{
-								OperandVar116 = prop115;
+								OperandVar349 = prop348;
 							}
 						}
-						UnityEngine.GameObject OperandVar118 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
-						UnityEngine.GameObject prop117 = StoredVariable111.Enemy; //IsContext = False IsNew = False
-						if(prop117 != null)
+						UnityEngine.GameObject OperandVar351 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
+						UnityEngine.GameObject prop350 = StoredVariable344.Enemy; //IsContext = False IsNew = False
+						if(prop350 != null)
 						{
-							OperandVar118 = prop117;
+							OperandVar351 = prop350;
 						}
-						System.Boolean prop119 = External.Contains( (OperandVar116), (OperandVar118)); //IsContext = False IsNew = False
-						OperandVar120 = prop119;
-						if(ifResult112 = ( ( (OperandVar114))) && ( ( (OperandVar120))))
+						System.Boolean prop352 = External.Contains( (OperandVar349), (OperandVar351)); //IsContext = False IsNew = False
+						OperandVar353 = prop352;
+						if(ifResult345 = ( ( (OperandVar347))) && ( ( (OperandVar353))))
 						{
 							applicable = true;
-							OperandVar121 = applicable;
+							OperandVar354 = applicable;
 						}
 					}
 				}
 			}
-			return (System.Boolean) (OperandVar121);
+			return (System.Boolean) (OperandVar354);
 		}
         }
         
@@ -754,15 +2109,15 @@ namespace generators {
 			//ContextStatement External External ContextSwitchInterpreter
 			System.Single ut = 0; //IsContext = False IsNew = False
 			
-			System.Single OperandVar124 = default(System.Single); //IsContext = False IsNew = False
-			Blackboards.foe_role StoredVariable122 = ((Blackboards.foe_role)root.GetComponent(typeof(Blackboards.foe_role))); //IsContext = False IsNew = False
-			if(StoredVariable122 != null)
+			System.Single OperandVar357 = default(System.Single); //IsContext = False IsNew = False
+			Blackboards.foe_role StoredVariable355 = ((Blackboards.foe_role)root.GetComponent(typeof(Blackboards.foe_role))); //IsContext = False IsNew = False
+			if(StoredVariable355 != null)
 			{
-				System.Single prop123 = StoredVariable122.ThreatLevel; //IsContext = False IsNew = False
-				OperandVar124 = prop123;
+				System.Single prop356 = StoredVariable355.ThreatLevel; //IsContext = False IsNew = False
+				OperandVar357 = prop356;
 			}
 			
-			return (System.Single)( (OperandVar124)) * ( (0.3f));
+			return (System.Single)( (OperandVar357)) * ( (0.3f));
 		}
         }
         
@@ -776,30 +2131,30 @@ namespace generators {
 			UnityEngine.GameObject wunder_waffe = new UnityEngine.GameObject("wunder_waffe"); //IsContext = False IsNew = False
 			
 			{
-				UnityEngine.GameObject wunder_waffe125 = wunder_waffe; //IsContext = True IsNew = False
-				Actor AddContext126 = (Actor)wunder_waffe.AddComponent(typeof(Actor)); //IsContext = True IsNew = True
-				Blackboards.buildable AddContext127 = (Blackboards.buildable)wunder_waffe.AddComponent(typeof(Blackboards.buildable)); //IsContext = True IsNew = True
+				UnityEngine.GameObject wunder_waffe358 = wunder_waffe; //IsContext = True IsNew = False
+				Actor AddContext359 = (Actor)wunder_waffe.AddComponent(typeof(Actor)); //IsContext = True IsNew = True
+				Blackboards.buildable AddContext360 = (Blackboards.buildable)wunder_waffe.AddComponent(typeof(Blackboards.buildable)); //IsContext = True IsNew = True
 				
 				{
-					//ContextStatement Blackboards.buildable AddContext127 ContextSwitchInterpreter
-					if(AddContext127 != null)
+					//ContextStatement Blackboards.buildable AddContext360 ContextSwitchInterpreter
+					if(AddContext360 != null)
 					{
 						
-						AddContext127.Cost = (System.Single)( (20f));
+						AddContext360.Cost = (System.Single)( (20f));
 					}
 				}
-				Blackboards.old_weapon AddContext128 = (Blackboards.old_weapon)wunder_waffe.AddComponent(typeof(Blackboards.old_weapon)); //IsContext = True IsNew = True
+				Blackboards.old_weapon AddContext361 = (Blackboards.old_weapon)wunder_waffe.AddComponent(typeof(Blackboards.old_weapon)); //IsContext = True IsNew = True
 			}
-			UnityEngine.Object.FindObjectOfType<Generators>().Generate(wunder_waffe);
+			UnityEngine.Object.FindObjectOfType<Generators>().Generate(wunder_waffe, 0.1f);
 			
 			{
-				Blackboards.ruler_role subContext129 = (Blackboards.ruler_role)root.GetComponent(typeof(Blackboards.ruler_role)); //IsContext = True IsNew = False
-				//ContextStatement Blackboards.ruler_role subContext129 ContextSwitchInterpreter
-				if(subContext129 != null)
+				Blackboards.ruler_role subContext362 = (Blackboards.ruler_role)root.GetComponent(typeof(Blackboards.ruler_role)); //IsContext = True IsNew = False
+				//ContextStatement Blackboards.ruler_role subContext362 ContextSwitchInterpreter
+				if(subContext362 != null)
 				{
-					UnityEngine.GameObject OperandVar130 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
-					OperandVar130 = wunder_waffe;
-					subContext129.Wunderwaffe = (UnityEngine.GameObject)( (OperandVar130));
+					UnityEngine.GameObject OperandVar363 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
+					OperandVar363 = wunder_waffe;
+					subContext362.Wunderwaffe = (UnityEngine.GameObject)( (OperandVar363));
 				}
 			}
 		}
@@ -817,45 +2172,45 @@ namespace generators {
 			//ContextStatement External External ContextSwitchInterpreter
 			System.Boolean applicable = false; //IsContext = False IsNew = False
 			
-			System.Boolean OperandVar140 = default(System.Boolean); //IsContext = False IsNew = False
-			Actor StoredVariable131 = ((Actor)root.GetComponent(typeof(Actor))); //IsContext = False IsNew = False
-			if(StoredVariable131 != null)
+			System.Boolean OperandVar373 = default(System.Boolean); //IsContext = False IsNew = False
+			Actor StoredVariable364 = ((Actor)root.GetComponent(typeof(Actor))); //IsContext = False IsNew = False
+			if(StoredVariable364 != null)
 			{
-				Blackboards.ruler_role StoredVariable132 = ((Blackboards.ruler_role)StoredVariable131.GetComponent(typeof(Blackboards.ruler_role))); //IsContext = False IsNew = False
-				if(StoredVariable132 != null)
+				Blackboards.ruler_role StoredVariable365 = ((Blackboards.ruler_role)StoredVariable364.GetComponent(typeof(Blackboards.ruler_role))); //IsContext = False IsNew = False
+				if(StoredVariable365 != null)
 				{
-					System.Boolean ifResult133; //IsContext = False IsNew = False
+					System.Boolean ifResult366; //IsContext = False IsNew = False
 					
-					System.Boolean OperandVar137 = default(System.Boolean); //IsContext = False IsNew = False
-					UnityEngine.GameObject prop134 = StoredVariable132.Wunderwaffe; //IsContext = False IsNew = False
-					if(prop134 != null)
+					System.Boolean OperandVar370 = default(System.Boolean); //IsContext = False IsNew = False
+					UnityEngine.GameObject prop367 = StoredVariable365.Wunderwaffe; //IsContext = False IsNew = False
+					if(prop367 != null)
 					{
-						Blackboards.old_weapon StoredVariable135 = ((Blackboards.old_weapon)prop134.GetComponent(typeof(Blackboards.old_weapon))); //IsContext = False IsNew = False
-						if(StoredVariable135 != null)
+						Blackboards.old_weapon StoredVariable368 = ((Blackboards.old_weapon)prop367.GetComponent(typeof(Blackboards.old_weapon))); //IsContext = False IsNew = False
+						if(StoredVariable368 != null)
 						{
-							Blackboards.buildable StoredVariable136 = ((Blackboards.buildable)StoredVariable135.GetComponent(typeof(Blackboards.buildable))); //IsContext = False IsNew = False
-							if(StoredVariable136 != null)
+							Blackboards.buildable StoredVariable369 = ((Blackboards.buildable)StoredVariable368.GetComponent(typeof(Blackboards.buildable))); //IsContext = False IsNew = False
+							if(StoredVariable369 != null)
 							{
 								applicable = true;
-								OperandVar137 = applicable;
+								OperandVar370 = applicable;
 							}
 						}
 					}
 					
-					System.Boolean OperandVar139 = default(System.Boolean); //IsContext = False IsNew = False
-					if(StoredVariable131 != null)
+					System.Boolean OperandVar372 = default(System.Boolean); //IsContext = False IsNew = False
+					if(StoredVariable364 != null)
 					{
-						System.Boolean prop138 = StoredVariable131.IsActive; //IsContext = False IsNew = False
-						OperandVar139 = prop138;
+						System.Boolean prop371 = StoredVariable364.IsActive; //IsContext = False IsNew = False
+						OperandVar372 = prop371;
 					}
-					if(ifResult133 = ( ( (OperandVar137))) && ( (!(OperandVar139))))
+					if(ifResult366 = ( ( (OperandVar370))) && ( (!(OperandVar372))))
 					{
 						applicable = true;
-						OperandVar140 = applicable;
+						OperandVar373 = applicable;
 					}
 				}
 			}
-			return (System.Boolean) (OperandVar140);
+			return (System.Boolean) (OperandVar373);
 		}
         }
         
@@ -882,22 +2237,23 @@ namespace generators {
 			UnityEngine.GameObject genius = new UnityEngine.GameObject("genius"); //IsContext = False IsNew = False
 			
 			{
-				UnityEngine.GameObject genius141 = genius; //IsContext = True IsNew = False
-				Actor AddContext142 = (Actor)genius.AddComponent(typeof(Actor)); //IsContext = True IsNew = True
-				Blackboards.worker AddContext143 = (Blackboards.worker)genius.AddComponent(typeof(Blackboards.worker)); //IsContext = True IsNew = True
+				UnityEngine.GameObject genius374 = genius; //IsContext = True IsNew = False
+				Markers AddContext375 = (Markers)genius.AddComponent(typeof(Markers)); //IsContext = True IsNew = True
+				Actor AddContext376 = (Actor)genius.AddComponent(typeof(Actor)); //IsContext = True IsNew = True
+				Blackboards.worker AddContext377 = (Blackboards.worker)genius.AddComponent(typeof(Blackboards.worker)); //IsContext = True IsNew = True
 				
 				{
-					//ContextStatement Blackboards.worker AddContext143 ContextSwitchInterpreter
-					if(AddContext143 != null)
+					//ContextStatement Blackboards.worker AddContext377 ContextSwitchInterpreter
+					if(AddContext377 != null)
 					{
-						UnityEngine.GameObject OperandVar144 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
-						OperandVar144 = root;
-						AddContext143.WorksFor = (UnityEngine.GameObject)( (OperandVar144));
+						UnityEngine.GameObject OperandVar378 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
+						OperandVar378 = root;
+						AddContext377.WorksFor = (UnityEngine.GameObject)( (OperandVar378));
 					}
 				}
-				Blackboards.builder AddContext145 = (Blackboards.builder)genius.AddComponent(typeof(Blackboards.builder)); //IsContext = True IsNew = True
+				Blackboards.builder AddContext379 = (Blackboards.builder)genius.AddComponent(typeof(Blackboards.builder)); //IsContext = True IsNew = True
 			}
-			UnityEngine.Object.FindObjectOfType<Generators>().Generate(genius);
+			UnityEngine.Object.FindObjectOfType<Generators>().Generate(genius, 0.1f);
 		}
         }
     }
@@ -913,64 +2269,64 @@ namespace generators {
 			//ContextStatement External External ContextSwitchInterpreter
 			System.Boolean applicable = false; //IsContext = False IsNew = False
 			
-			System.Boolean OperandVar161 = default(System.Boolean); //IsContext = False IsNew = False
-			Actor StoredVariable146 = ((Actor)root.GetComponent(typeof(Actor))); //IsContext = False IsNew = False
-			if(StoredVariable146 != null)
+			System.Boolean OperandVar395 = default(System.Boolean); //IsContext = False IsNew = False
+			Actor StoredVariable380 = ((Actor)root.GetComponent(typeof(Actor))); //IsContext = False IsNew = False
+			if(StoredVariable380 != null)
 			{
-				Blackboards.ruler_role StoredVariable147 = ((Blackboards.ruler_role)StoredVariable146.GetComponent(typeof(Blackboards.ruler_role))); //IsContext = False IsNew = False
-				if(StoredVariable147 != null)
+				Blackboards.ruler_role StoredVariable381 = ((Blackboards.ruler_role)StoredVariable380.GetComponent(typeof(Blackboards.ruler_role))); //IsContext = False IsNew = False
+				if(StoredVariable381 != null)
 				{
-					Blackboards.foe_role StoredVariable148 = ((Blackboards.foe_role)StoredVariable147.GetComponent(typeof(Blackboards.foe_role))); //IsContext = False IsNew = False
-					if(StoredVariable148 != null)
+					Blackboards.foe_role StoredVariable382 = ((Blackboards.foe_role)StoredVariable381.GetComponent(typeof(Blackboards.foe_role))); //IsContext = False IsNew = False
+					if(StoredVariable382 != null)
 					{
-						System.Boolean ifResult149; //IsContext = False IsNew = False
+						System.Boolean ifResult383; //IsContext = False IsNew = False
 						
-						System.Boolean OperandVar151 = default(System.Boolean); //IsContext = False IsNew = False
-						if(StoredVariable146 != null)
+						System.Boolean OperandVar385 = default(System.Boolean); //IsContext = False IsNew = False
+						if(StoredVariable380 != null)
 						{
-							System.Boolean prop150 = StoredVariable146.IsActive; //IsContext = False IsNew = False
-							OperandVar151 = prop150;
+							System.Boolean prop384 = StoredVariable380.IsActive; //IsContext = False IsNew = False
+							OperandVar385 = prop384;
 						}
 						
-						System.Boolean OperandVar157 = default(System.Boolean); //IsContext = False IsNew = False
-						System.Collections.Generic.List<UnityEngine.GameObject> OperandVar153 = default(System.Collections.Generic.List<UnityEngine.GameObject>); //IsContext = False IsNew = False
-						if(StoredVariable147 != null)
+						System.Boolean OperandVar391 = default(System.Boolean); //IsContext = False IsNew = False
+						System.Collections.Generic.List<UnityEngine.GameObject> OperandVar387 = default(System.Collections.Generic.List<UnityEngine.GameObject>); //IsContext = False IsNew = False
+						if(StoredVariable381 != null)
 						{
-							System.Collections.Generic.List<UnityEngine.GameObject> prop152 = StoredVariable147.AtWarWith; //IsContext = False IsNew = False
-							if(prop152 != null)
+							System.Collections.Generic.List<UnityEngine.GameObject> prop386 = StoredVariable381.AtWarWith; //IsContext = False IsNew = False
+							if(prop386 != null)
 							{
-								OperandVar153 = prop152;
+								OperandVar387 = prop386;
 							}
 						}
-						UnityEngine.GameObject OperandVar155 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
-						UnityEngine.GameObject prop154 = StoredVariable148.Enemy; //IsContext = False IsNew = False
-						if(prop154 != null)
+						UnityEngine.GameObject OperandVar389 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
+						UnityEngine.GameObject prop388 = StoredVariable382.Enemy; //IsContext = False IsNew = False
+						if(prop388 != null)
 						{
-							OperandVar155 = prop154;
+							OperandVar389 = prop388;
 						}
-						System.Boolean prop156 = External.Contains( (OperandVar153), (OperandVar155)); //IsContext = False IsNew = False
-						OperandVar157 = prop156;
+						System.Boolean prop390 = External.Contains( (OperandVar387), (OperandVar389)); //IsContext = False IsNew = False
+						OperandVar391 = prop390;
 						
-						System.Boolean OperandVar160 = default(System.Boolean); //IsContext = False IsNew = False
-						UnityEngine.GameObject prop158 = StoredVariable148.Enemy; //IsContext = False IsNew = False
-						if(prop158 != null)
+						System.Boolean OperandVar394 = default(System.Boolean); //IsContext = False IsNew = False
+						UnityEngine.GameObject prop392 = StoredVariable382.Enemy; //IsContext = False IsNew = False
+						if(prop392 != null)
 						{
-							Blackboards.ruler_role StoredVariable159 = ((Blackboards.ruler_role)prop158.GetComponent(typeof(Blackboards.ruler_role))); //IsContext = False IsNew = False
-							if(StoredVariable159 != null)
+							Blackboards.ruler_role StoredVariable393 = ((Blackboards.ruler_role)prop392.GetComponent(typeof(Blackboards.ruler_role))); //IsContext = False IsNew = False
+							if(StoredVariable393 != null)
 							{
 								applicable = true;
-								OperandVar160 = applicable;
+								OperandVar394 = applicable;
 							}
 						}
-						if(ifResult149 = ( ( (OperandVar151))) && ( ( (OperandVar157))) && ( ( (OperandVar160))))
+						if(ifResult383 = ( ( (OperandVar385))) && ( ( (OperandVar391))) && ( ( (OperandVar394))))
 						{
 							applicable = true;
-							OperandVar161 = applicable;
+							OperandVar395 = applicable;
 						}
 					}
 				}
 			}
-			return (System.Boolean) (OperandVar161);
+			return (System.Boolean) (OperandVar395);
 		}
         }
         
@@ -983,14 +2339,14 @@ namespace generators {
 			System.Single ut = 0; //IsContext = False IsNew = False
 			
 			
-			System.Single OperandVar164 = default(System.Single); //IsContext = False IsNew = False
-			Blackboards.foe_role StoredVariable162 = ((Blackboards.foe_role)root.GetComponent(typeof(Blackboards.foe_role))); //IsContext = False IsNew = False
-			if(StoredVariable162 != null)
+			System.Single OperandVar398 = default(System.Single); //IsContext = False IsNew = False
+			Blackboards.foe_role StoredVariable396 = ((Blackboards.foe_role)root.GetComponent(typeof(Blackboards.foe_role))); //IsContext = False IsNew = False
+			if(StoredVariable396 != null)
 			{
-				System.Single prop163 = StoredVariable162.ThreatLevel; //IsContext = False IsNew = False
-				OperandVar164 = prop163;
+				System.Single prop397 = StoredVariable396.ThreatLevel; //IsContext = False IsNew = False
+				OperandVar398 = prop397;
 			}
-			return (System.Single)( (1f)) / ( (OperandVar164));
+			return (System.Single)( (1f)) / ( (OperandVar398));
 		}
         }
         
@@ -1004,40 +2360,40 @@ namespace generators {
 			UnityEngine.GameObject battle_event = new UnityEngine.GameObject("battle_event"); //IsContext = False IsNew = False
 			
 			{
-				UnityEngine.GameObject battle_event165 = battle_event; //IsContext = True IsNew = False
-				Event AddContext166 = (Event)battle_event.AddComponent(typeof(Event)); //IsContext = True IsNew = True
+				UnityEngine.GameObject battle_event399 = battle_event; //IsContext = True IsNew = False
+				Event AddContext400 = (Event)battle_event.AddComponent(typeof(Event)); //IsContext = True IsNew = True
 				
 				{
-					//ContextStatement Event AddContext166 ContextSwitchInterpreter
-					if(AddContext166 != null)
+					//ContextStatement Event AddContext400 ContextSwitchInterpreter
+					if(AddContext400 != null)
 					{
-						UnityEngine.GameObject OperandVar167 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
-						OperandVar167 = root;
-						AddContext166.Context = (UnityEngine.GameObject)( (OperandVar167));
+						UnityEngine.GameObject OperandVar401 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
+						OperandVar401 = root;
+						AddContext400.Context = (UnityEngine.GameObject)( (OperandVar401));
 					}
 				}
-				Blackboards.targeted_event AddContext168 = (Blackboards.targeted_event)battle_event.AddComponent(typeof(Blackboards.targeted_event)); //IsContext = True IsNew = True
+				Blackboards.targeted_event AddContext402 = (Blackboards.targeted_event)battle_event.AddComponent(typeof(Blackboards.targeted_event)); //IsContext = True IsNew = True
 				
 				{
-					//ContextStatement Blackboards.targeted_event AddContext168 ContextSwitchInterpreter
-					if(AddContext168 != null)
+					//ContextStatement Blackboards.targeted_event AddContext402 ContextSwitchInterpreter
+					if(AddContext402 != null)
 					{
-						UnityEngine.GameObject OperandVar171 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
-						Blackboards.foe_role StoredVariable169 = ((Blackboards.foe_role)root.GetComponent(typeof(Blackboards.foe_role))); //IsContext = False IsNew = False
-						if(StoredVariable169 != null)
+						UnityEngine.GameObject OperandVar405 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
+						Blackboards.foe_role StoredVariable403 = ((Blackboards.foe_role)root.GetComponent(typeof(Blackboards.foe_role))); //IsContext = False IsNew = False
+						if(StoredVariable403 != null)
 						{
-							UnityEngine.GameObject prop170 = StoredVariable169.Enemy; //IsContext = False IsNew = False
-							if(prop170 != null)
+							UnityEngine.GameObject prop404 = StoredVariable403.Enemy; //IsContext = False IsNew = False
+							if(prop404 != null)
 							{
-								OperandVar171 = prop170;
+								OperandVar405 = prop404;
 							}
 						}
-						AddContext168.Target = (UnityEngine.GameObject)( (OperandVar171));
+						AddContext402.Target = (UnityEngine.GameObject)( (OperandVar405));
 					}
 				}
-				Blackboards.battle_event AddContext172 = (Blackboards.battle_event)battle_event.AddComponent(typeof(Blackboards.battle_event)); //IsContext = True IsNew = True
+				Blackboards.battle_event AddContext406 = (Blackboards.battle_event)battle_event.AddComponent(typeof(Blackboards.battle_event)); //IsContext = True IsNew = True
 			}
-			UnityEngine.Object.FindObjectOfType<Generators>().Generate(battle_event);
+			UnityEngine.Object.FindObjectOfType<Generators>().Generate(battle_event, 0.1f);
 		}
         }
     }
@@ -1066,58 +2422,58 @@ namespace generators {
 			//ContextStatement External External ContextSwitchInterpreter
 			System.Boolean applicable = false; //IsContext = False IsNew = False
 			
-			System.Boolean OperandVar185 = default(System.Boolean); //IsContext = False IsNew = False
-			Event StoredVariable173 = ((Event)root.GetComponent(typeof(Event))); //IsContext = False IsNew = False
-			if(StoredVariable173 != null)
+			System.Boolean OperandVar419 = default(System.Boolean); //IsContext = False IsNew = False
+			Event StoredVariable407 = ((Event)root.GetComponent(typeof(Event))); //IsContext = False IsNew = False
+			if(StoredVariable407 != null)
 			{
-				Blackboards.battle_event StoredVariable174 = ((Blackboards.battle_event)StoredVariable173.GetComponent(typeof(Blackboards.battle_event))); //IsContext = False IsNew = False
-				if(StoredVariable174 != null)
+				Blackboards.battle_event StoredVariable408 = ((Blackboards.battle_event)StoredVariable407.GetComponent(typeof(Blackboards.battle_event))); //IsContext = False IsNew = False
+				if(StoredVariable408 != null)
 				{
-					Blackboards.targeted_event StoredVariable175 = ((Blackboards.targeted_event)StoredVariable174.GetComponent(typeof(Blackboards.targeted_event))); //IsContext = False IsNew = False
-					if(StoredVariable175 != null)
+					Blackboards.targeted_event StoredVariable409 = ((Blackboards.targeted_event)StoredVariable408.GetComponent(typeof(Blackboards.targeted_event))); //IsContext = False IsNew = False
+					if(StoredVariable409 != null)
 					{
-						System.Boolean ifResult176; //IsContext = False IsNew = False
+						System.Boolean ifResult410; //IsContext = False IsNew = False
 						
-						System.Boolean OperandVar180 = default(System.Boolean); //IsContext = False IsNew = False
-						Event StoredVariable177 = ((Event)StoredVariable175.GetComponent(typeof(Event))); //IsContext = False IsNew = False
-						if(StoredVariable177 != null)
+						System.Boolean OperandVar414 = default(System.Boolean); //IsContext = False IsNew = False
+						Event StoredVariable411 = ((Event)StoredVariable409.GetComponent(typeof(Event))); //IsContext = False IsNew = False
+						if(StoredVariable411 != null)
 						{
-							UnityEngine.GameObject prop178 = StoredVariable177.Context; //IsContext = False IsNew = False
-							if(prop178 != null)
+							UnityEngine.GameObject prop412 = StoredVariable411.Context; //IsContext = False IsNew = False
+							if(prop412 != null)
 							{
-								Blackboards.ruler_role StoredVariable179 = ((Blackboards.ruler_role)prop178.GetComponent(typeof(Blackboards.ruler_role))); //IsContext = False IsNew = False
-								if(StoredVariable179 != null)
+								Blackboards.ruler_role StoredVariable413 = ((Blackboards.ruler_role)prop412.GetComponent(typeof(Blackboards.ruler_role))); //IsContext = False IsNew = False
+								if(StoredVariable413 != null)
 								{
 									applicable = true;
-									OperandVar180 = applicable;
+									OperandVar414 = applicable;
 								}
 							}
 						}
 						
-						System.Boolean OperandVar184 = default(System.Boolean); //IsContext = False IsNew = False
-						Blackboards.targeted_event StoredVariable181 = ((Blackboards.targeted_event)StoredVariable175.GetComponent(typeof(Blackboards.targeted_event))); //IsContext = False IsNew = False
-						if(StoredVariable181 != null)
+						System.Boolean OperandVar418 = default(System.Boolean); //IsContext = False IsNew = False
+						Blackboards.targeted_event StoredVariable415 = ((Blackboards.targeted_event)StoredVariable409.GetComponent(typeof(Blackboards.targeted_event))); //IsContext = False IsNew = False
+						if(StoredVariable415 != null)
 						{
-							UnityEngine.GameObject prop182 = StoredVariable181.Target; //IsContext = False IsNew = False
-							if(prop182 != null)
+							UnityEngine.GameObject prop416 = StoredVariable415.Target; //IsContext = False IsNew = False
+							if(prop416 != null)
 							{
-								Blackboards.ruler_role StoredVariable183 = ((Blackboards.ruler_role)prop182.GetComponent(typeof(Blackboards.ruler_role))); //IsContext = False IsNew = False
-								if(StoredVariable183 != null)
+								Blackboards.ruler_role StoredVariable417 = ((Blackboards.ruler_role)prop416.GetComponent(typeof(Blackboards.ruler_role))); //IsContext = False IsNew = False
+								if(StoredVariable417 != null)
 								{
 									applicable = true;
-									OperandVar184 = applicable;
+									OperandVar418 = applicable;
 								}
 							}
 						}
-						if(ifResult176 = ( ( (OperandVar180))) && ( ( (OperandVar184))))
+						if(ifResult410 = ( ( (OperandVar414))) && ( ( (OperandVar418))))
 						{
 							applicable = true;
-							OperandVar185 = applicable;
+							OperandVar419 = applicable;
 						}
 					}
 				}
 			}
-			return (System.Boolean) (OperandVar185);
+			return (System.Boolean) (OperandVar419);
 		}
         }
         
@@ -1131,71 +2487,71 @@ namespace generators {
 			
 			
 			
-			System.Single OperandVar187 = default(System.Single); //IsContext = False IsNew = False
-			System.Single prop186 = External.Intensity(); //IsContext = False IsNew = False
-			OperandVar187 = prop186;
+			System.Single OperandVar421 = default(System.Single); //IsContext = False IsNew = False
+			System.Single prop420 = External.Intensity(); //IsContext = False IsNew = False
+			OperandVar421 = prop420;
 			
-			System.Single intensity_multiplier = ( ( (1f))) + ( (( (OperandVar187)) * ( (4f)))); //IsContext = False IsNew = False
-			Blackboards.ruler_role OperandVar191 = default(Blackboards.ruler_role); //IsContext = False IsNew = False
-			Event StoredVariable188 = ((Event)root.GetComponent(typeof(Event))); //IsContext = False IsNew = False
-			if(StoredVariable188 != null)
+			System.Single intensity_multiplier = ( ( (1f))) + ( (( (OperandVar421)) * ( (4f)))); //IsContext = False IsNew = False
+			Blackboards.ruler_role OperandVar425 = default(Blackboards.ruler_role); //IsContext = False IsNew = False
+			Event StoredVariable422 = ((Event)root.GetComponent(typeof(Event))); //IsContext = False IsNew = False
+			if(StoredVariable422 != null)
 			{
-				UnityEngine.GameObject prop189 = StoredVariable188.Context; //IsContext = False IsNew = False
-				if(prop189 != null)
+				UnityEngine.GameObject prop423 = StoredVariable422.Context; //IsContext = False IsNew = False
+				if(prop423 != null)
 				{
-					Blackboards.ruler_role StoredVariable190 = ((Blackboards.ruler_role)prop189.GetComponent(typeof(Blackboards.ruler_role))); //IsContext = False IsNew = False
-					if(StoredVariable190 != null)
+					Blackboards.ruler_role StoredVariable424 = ((Blackboards.ruler_role)prop423.GetComponent(typeof(Blackboards.ruler_role))); //IsContext = False IsNew = False
+					if(StoredVariable424 != null)
 					{
-						OperandVar191 = StoredVariable190;
+						OperandVar425 = StoredVariable424;
 					}
 				}
 			}
-			Blackboards.ruler_role first =  (OperandVar191); //IsContext = False IsNew = False
-			Blackboards.ruler_role OperandVar195 = default(Blackboards.ruler_role); //IsContext = False IsNew = False
-			Blackboards.targeted_event StoredVariable192 = ((Blackboards.targeted_event)root.GetComponent(typeof(Blackboards.targeted_event))); //IsContext = False IsNew = False
-			if(StoredVariable192 != null)
+			Blackboards.ruler_role first =  (OperandVar425); //IsContext = False IsNew = False
+			Blackboards.ruler_role OperandVar429 = default(Blackboards.ruler_role); //IsContext = False IsNew = False
+			Blackboards.targeted_event StoredVariable426 = ((Blackboards.targeted_event)root.GetComponent(typeof(Blackboards.targeted_event))); //IsContext = False IsNew = False
+			if(StoredVariable426 != null)
 			{
-				UnityEngine.GameObject prop193 = StoredVariable192.Target; //IsContext = False IsNew = False
-				if(prop193 != null)
+				UnityEngine.GameObject prop427 = StoredVariable426.Target; //IsContext = False IsNew = False
+				if(prop427 != null)
 				{
-					Blackboards.ruler_role StoredVariable194 = ((Blackboards.ruler_role)prop193.GetComponent(typeof(Blackboards.ruler_role))); //IsContext = False IsNew = False
-					if(StoredVariable194 != null)
+					Blackboards.ruler_role StoredVariable428 = ((Blackboards.ruler_role)prop427.GetComponent(typeof(Blackboards.ruler_role))); //IsContext = False IsNew = False
+					if(StoredVariable428 != null)
 					{
-						OperandVar195 = StoredVariable194;
+						OperandVar429 = StoredVariable428;
 					}
 				}
 			}
-			Blackboards.ruler_role second =  (OperandVar195); //IsContext = False IsNew = False
-			System.Single OperandVar197 = default(System.Single); //IsContext = False IsNew = False
-			System.Single prop196 = first.Forces; //IsContext = False IsNew = False
-			OperandVar197 = prop196;
-			System.Single pre_battle_first =  (OperandVar197); //IsContext = False IsNew = False
-			System.Single OperandVar199 = default(System.Single); //IsContext = False IsNew = False
-			System.Single prop198 = second.Forces; //IsContext = False IsNew = False
-			OperandVar199 = prop198;
-			System.Single pre_battle_second =  (OperandVar199); //IsContext = False IsNew = False
+			Blackboards.ruler_role second =  (OperandVar429); //IsContext = False IsNew = False
+			System.Single OperandVar431 = default(System.Single); //IsContext = False IsNew = False
+			System.Single prop430 = first.Forces; //IsContext = False IsNew = False
+			OperandVar431 = prop430;
+			System.Single pre_battle_first =  (OperandVar431); //IsContext = False IsNew = False
+			System.Single OperandVar433 = default(System.Single); //IsContext = False IsNew = False
+			System.Single prop432 = second.Forces; //IsContext = False IsNew = False
+			OperandVar433 = prop432;
+			System.Single pre_battle_second =  (OperandVar433); //IsContext = False IsNew = False
 			
-			System.Single OperandVar201 = default(System.Single); //IsContext = False IsNew = False
-			System.Single prop200 = first.Forces; //IsContext = False IsNew = False
-			OperandVar201 = prop200;
+			System.Single OperandVar435 = default(System.Single); //IsContext = False IsNew = False
+			System.Single prop434 = first.Forces; //IsContext = False IsNew = False
+			OperandVar435 = prop434;
 			
-			System.Single OperandVar203 = default(System.Single); //IsContext = False IsNew = False
-			System.Single prop202 = second.Forces; //IsContext = False IsNew = False
-			OperandVar203 = prop202;
-			if(( ( (OperandVar201))) > ( ( (OperandVar203))))
+			System.Single OperandVar437 = default(System.Single); //IsContext = False IsNew = False
+			System.Single prop436 = second.Forces; //IsContext = False IsNew = False
+			OperandVar437 = prop436;
+			if(( ( (OperandVar435))) > ( ( (OperandVar437))))
 			{
 				
 				{
 					//ContextStatement Blackboards.ruler_role second ContextSwitchInterpreter
 					if(second != null)
 					{
-						System.Single OperandVar205 = default(System.Single); //IsContext = False IsNew = False
-						System.Single prop204 = second.Forces; //IsContext = False IsNew = False
-						OperandVar205 = prop204;
+						System.Single OperandVar439 = default(System.Single); //IsContext = False IsNew = False
+						System.Single prop438 = second.Forces; //IsContext = False IsNew = False
+						OperandVar439 = prop438;
 						
-						System.Single OperandVar206 = default(System.Single); //IsContext = False IsNew = False
-						OperandVar206 = intensity_multiplier;
-						second.Forces = (System.Single)(( (OperandVar205)) / ( (2f)) / ( (OperandVar206)));
+						System.Single OperandVar440 = default(System.Single); //IsContext = False IsNew = False
+						OperandVar440 = intensity_multiplier;
+						second.Forces = (System.Single)(( (OperandVar439)) / ( (2f)) / ( (OperandVar440)));
 					}
 				}
 				
@@ -1203,79 +2559,79 @@ namespace generators {
 					//ContextStatement Blackboards.ruler_role first ContextSwitchInterpreter
 					if(first != null)
 					{
-						System.Single OperandVar208 = default(System.Single); //IsContext = False IsNew = False
-						System.Single prop207 = first.Forces; //IsContext = False IsNew = False
-						OperandVar208 = prop207;
-						System.Single OperandVar209 = default(System.Single); //IsContext = False IsNew = False
-						OperandVar209 = intensity_multiplier;
-						first.Forces = (System.Single)(( (OperandVar208)) / ( (OperandVar209)));
+						System.Single OperandVar442 = default(System.Single); //IsContext = False IsNew = False
+						System.Single prop441 = first.Forces; //IsContext = False IsNew = False
+						OperandVar442 = prop441;
+						System.Single OperandVar443 = default(System.Single); //IsContext = False IsNew = False
+						OperandVar443 = intensity_multiplier;
+						first.Forces = (System.Single)(( (OperandVar442)) / ( (OperandVar443)));
 					}
 				}
 				
 				{
-					Blackboards.battle_event subContext210 = (Blackboards.battle_event)root.GetComponent(typeof(Blackboards.battle_event)); //IsContext = True IsNew = False
-					//ContextStatement Blackboards.battle_event subContext210 ContextSwitchInterpreter
-					if(subContext210 != null)
+					Blackboards.battle_event subContext444 = (Blackboards.battle_event)root.GetComponent(typeof(Blackboards.battle_event)); //IsContext = True IsNew = False
+					//ContextStatement Blackboards.battle_event subContext444 ContextSwitchInterpreter
+					if(subContext444 != null)
 					{
-						UnityEngine.GameObject OperandVar213 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
-						Blackboards.ruler_role OperandVar211 = default(Blackboards.ruler_role); //IsContext = False IsNew = False
-						OperandVar211 = first;
-						UnityEngine.GameObject prop212 = External.Gameobject( (OperandVar211)); //IsContext = False IsNew = False
-						if(prop212 != null)
+						UnityEngine.GameObject OperandVar447 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
+						Blackboards.ruler_role OperandVar445 = default(Blackboards.ruler_role); //IsContext = False IsNew = False
+						OperandVar445 = first;
+						UnityEngine.GameObject prop446 = External.Gameobject( (OperandVar445)); //IsContext = False IsNew = False
+						if(prop446 != null)
 						{
-							OperandVar213 = prop212;
+							OperandVar447 = prop446;
 						}
-						subContext210.Won = (UnityEngine.GameObject)( (OperandVar213));
-						UnityEngine.GameObject OperandVar216 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
-						Blackboards.ruler_role OperandVar214 = default(Blackboards.ruler_role); //IsContext = False IsNew = False
-						OperandVar214 = second;
-						UnityEngine.GameObject prop215 = External.Gameobject( (OperandVar214)); //IsContext = False IsNew = False
-						if(prop215 != null)
+						subContext444.Won = (UnityEngine.GameObject)( (OperandVar447));
+						UnityEngine.GameObject OperandVar450 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
+						Blackboards.ruler_role OperandVar448 = default(Blackboards.ruler_role); //IsContext = False IsNew = False
+						OperandVar448 = second;
+						UnityEngine.GameObject prop449 = External.Gameobject( (OperandVar448)); //IsContext = False IsNew = False
+						if(prop449 != null)
 						{
-							OperandVar216 = prop215;
+							OperandVar450 = prop449;
 						}
-						subContext210.Lost = (UnityEngine.GameObject)( (OperandVar216));
+						subContext444.Lost = (UnityEngine.GameObject)( (OperandVar450));
 						
-						System.Single OperandVar217 = default(System.Single); //IsContext = False IsNew = False
-						OperandVar217 = pre_battle_first;
+						System.Single OperandVar451 = default(System.Single); //IsContext = False IsNew = False
+						OperandVar451 = pre_battle_first;
 						
-						System.Single OperandVar219 = default(System.Single); //IsContext = False IsNew = False
-						System.Single prop218 = first.Forces; //IsContext = False IsNew = False
-						OperandVar219 = prop218;
-						subContext210.WinnerForcesLost = (System.Single)(( ( (OperandVar217))) - ( ( (OperandVar219))));
+						System.Single OperandVar453 = default(System.Single); //IsContext = False IsNew = False
+						System.Single prop452 = first.Forces; //IsContext = False IsNew = False
+						OperandVar453 = prop452;
+						subContext444.WinnerForcesLost = (System.Single)(( ( (OperandVar451))) - ( ( (OperandVar453))));
 						
-						System.Single OperandVar220 = default(System.Single); //IsContext = False IsNew = False
-						OperandVar220 = pre_battle_second;
+						System.Single OperandVar454 = default(System.Single); //IsContext = False IsNew = False
+						OperandVar454 = pre_battle_second;
 						
-						System.Single OperandVar222 = default(System.Single); //IsContext = False IsNew = False
-						System.Single prop221 = second.Forces; //IsContext = False IsNew = False
-						OperandVar222 = prop221;
-						subContext210.LooserForcesLost = (System.Single)(( ( (OperandVar220))) - ( ( (OperandVar222))));
+						System.Single OperandVar456 = default(System.Single); //IsContext = False IsNew = False
+						System.Single prop455 = second.Forces; //IsContext = False IsNew = False
+						OperandVar456 = prop455;
+						subContext444.LooserForcesLost = (System.Single)(( ( (OperandVar454))) - ( ( (OperandVar456))));
 					}
 				}
 			}
 			
-			System.Single OperandVar224 = default(System.Single); //IsContext = False IsNew = False
-			System.Single prop223 = first.Forces; //IsContext = False IsNew = False
-			OperandVar224 = prop223;
+			System.Single OperandVar458 = default(System.Single); //IsContext = False IsNew = False
+			System.Single prop457 = first.Forces; //IsContext = False IsNew = False
+			OperandVar458 = prop457;
 			
-			System.Single OperandVar226 = default(System.Single); //IsContext = False IsNew = False
-			System.Single prop225 = second.Forces; //IsContext = False IsNew = False
-			OperandVar226 = prop225;
-			if(( ( (OperandVar224))) < ( ( (OperandVar226))))
+			System.Single OperandVar460 = default(System.Single); //IsContext = False IsNew = False
+			System.Single prop459 = second.Forces; //IsContext = False IsNew = False
+			OperandVar460 = prop459;
+			if(( ( (OperandVar458))) < ( ( (OperandVar460))))
 			{
 				
 				{
 					//ContextStatement Blackboards.ruler_role first ContextSwitchInterpreter
 					if(first != null)
 					{
-						System.Single OperandVar228 = default(System.Single); //IsContext = False IsNew = False
-						System.Single prop227 = first.Forces; //IsContext = False IsNew = False
-						OperandVar228 = prop227;
+						System.Single OperandVar462 = default(System.Single); //IsContext = False IsNew = False
+						System.Single prop461 = first.Forces; //IsContext = False IsNew = False
+						OperandVar462 = prop461;
 						
-						System.Single OperandVar229 = default(System.Single); //IsContext = False IsNew = False
-						OperandVar229 = intensity_multiplier;
-						first.Forces = (System.Single)(( (OperandVar228)) / ( (2f)) / ( (OperandVar229)));
+						System.Single OperandVar463 = default(System.Single); //IsContext = False IsNew = False
+						OperandVar463 = intensity_multiplier;
+						first.Forces = (System.Single)(( (OperandVar462)) / ( (2f)) / ( (OperandVar463)));
 					}
 				}
 				
@@ -1283,75 +2639,75 @@ namespace generators {
 					//ContextStatement Blackboards.ruler_role second ContextSwitchInterpreter
 					if(second != null)
 					{
-						System.Single OperandVar231 = default(System.Single); //IsContext = False IsNew = False
-						System.Single prop230 = second.Forces; //IsContext = False IsNew = False
-						OperandVar231 = prop230;
-						System.Single OperandVar232 = default(System.Single); //IsContext = False IsNew = False
-						OperandVar232 = intensity_multiplier;
-						second.Forces = (System.Single)(( (OperandVar231)) / ( (OperandVar232)));
+						System.Single OperandVar465 = default(System.Single); //IsContext = False IsNew = False
+						System.Single prop464 = second.Forces; //IsContext = False IsNew = False
+						OperandVar465 = prop464;
+						System.Single OperandVar466 = default(System.Single); //IsContext = False IsNew = False
+						OperandVar466 = intensity_multiplier;
+						second.Forces = (System.Single)(( (OperandVar465)) / ( (OperandVar466)));
 					}
 				}
 				
 				{
-					Blackboards.battle_event subContext233 = (Blackboards.battle_event)root.GetComponent(typeof(Blackboards.battle_event)); //IsContext = True IsNew = False
-					//ContextStatement Blackboards.battle_event subContext233 ContextSwitchInterpreter
-					if(subContext233 != null)
+					Blackboards.battle_event subContext467 = (Blackboards.battle_event)root.GetComponent(typeof(Blackboards.battle_event)); //IsContext = True IsNew = False
+					//ContextStatement Blackboards.battle_event subContext467 ContextSwitchInterpreter
+					if(subContext467 != null)
 					{
-						UnityEngine.GameObject OperandVar236 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
-						Blackboards.ruler_role OperandVar234 = default(Blackboards.ruler_role); //IsContext = False IsNew = False
-						OperandVar234 = second;
-						UnityEngine.GameObject prop235 = External.Gameobject( (OperandVar234)); //IsContext = False IsNew = False
-						if(prop235 != null)
+						UnityEngine.GameObject OperandVar470 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
+						Blackboards.ruler_role OperandVar468 = default(Blackboards.ruler_role); //IsContext = False IsNew = False
+						OperandVar468 = second;
+						UnityEngine.GameObject prop469 = External.Gameobject( (OperandVar468)); //IsContext = False IsNew = False
+						if(prop469 != null)
 						{
-							OperandVar236 = prop235;
+							OperandVar470 = prop469;
 						}
-						subContext233.Won = (UnityEngine.GameObject)( (OperandVar236));
-						UnityEngine.GameObject OperandVar239 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
-						Blackboards.ruler_role OperandVar237 = default(Blackboards.ruler_role); //IsContext = False IsNew = False
-						OperandVar237 = first;
-						UnityEngine.GameObject prop238 = External.Gameobject( (OperandVar237)); //IsContext = False IsNew = False
-						if(prop238 != null)
+						subContext467.Won = (UnityEngine.GameObject)( (OperandVar470));
+						UnityEngine.GameObject OperandVar473 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
+						Blackboards.ruler_role OperandVar471 = default(Blackboards.ruler_role); //IsContext = False IsNew = False
+						OperandVar471 = first;
+						UnityEngine.GameObject prop472 = External.Gameobject( (OperandVar471)); //IsContext = False IsNew = False
+						if(prop472 != null)
 						{
-							OperandVar239 = prop238;
+							OperandVar473 = prop472;
 						}
-						subContext233.Lost = (UnityEngine.GameObject)( (OperandVar239));
+						subContext467.Lost = (UnityEngine.GameObject)( (OperandVar473));
 						
-						System.Single OperandVar240 = default(System.Single); //IsContext = False IsNew = False
-						OperandVar240 = pre_battle_first;
+						System.Single OperandVar474 = default(System.Single); //IsContext = False IsNew = False
+						OperandVar474 = pre_battle_first;
 						
-						System.Single OperandVar242 = default(System.Single); //IsContext = False IsNew = False
-						System.Single prop241 = first.Forces; //IsContext = False IsNew = False
-						OperandVar242 = prop241;
-						subContext233.LooserForcesLost = (System.Single)(( ( (OperandVar240))) - ( ( (OperandVar242))));
+						System.Single OperandVar476 = default(System.Single); //IsContext = False IsNew = False
+						System.Single prop475 = first.Forces; //IsContext = False IsNew = False
+						OperandVar476 = prop475;
+						subContext467.LooserForcesLost = (System.Single)(( ( (OperandVar474))) - ( ( (OperandVar476))));
 						
-						System.Single OperandVar243 = default(System.Single); //IsContext = False IsNew = False
-						OperandVar243 = pre_battle_second;
+						System.Single OperandVar477 = default(System.Single); //IsContext = False IsNew = False
+						OperandVar477 = pre_battle_second;
 						
-						System.Single OperandVar245 = default(System.Single); //IsContext = False IsNew = False
-						System.Single prop244 = second.Forces; //IsContext = False IsNew = False
-						OperandVar245 = prop244;
-						subContext233.WinnerForcesLost = (System.Single)(( ( (OperandVar243))) - ( ( (OperandVar245))));
+						System.Single OperandVar479 = default(System.Single); //IsContext = False IsNew = False
+						System.Single prop478 = second.Forces; //IsContext = False IsNew = False
+						OperandVar479 = prop478;
+						subContext467.WinnerForcesLost = (System.Single)(( ( (OperandVar477))) - ( ( (OperandVar479))));
 					}
 				}
 			}
 			
-			System.Single OperandVar247 = default(System.Single); //IsContext = False IsNew = False
-			System.Single prop246 = first.Forces; //IsContext = False IsNew = False
-			OperandVar247 = prop246;
+			System.Single OperandVar481 = default(System.Single); //IsContext = False IsNew = False
+			System.Single prop480 = first.Forces; //IsContext = False IsNew = False
+			OperandVar481 = prop480;
 			
-			System.Single OperandVar249 = default(System.Single); //IsContext = False IsNew = False
-			System.Single prop248 = second.Forces; //IsContext = False IsNew = False
-			OperandVar249 = prop248;
-			if(( ( (OperandVar247))) == ( ( (OperandVar249))))
+			System.Single OperandVar483 = default(System.Single); //IsContext = False IsNew = False
+			System.Single prop482 = second.Forces; //IsContext = False IsNew = False
+			OperandVar483 = prop482;
+			if(( ( (OperandVar481))) == ( ( (OperandVar483))))
 			{
 				
 				{
-					Blackboards.battle_event subContext250 = (Blackboards.battle_event)root.GetComponent(typeof(Blackboards.battle_event)); //IsContext = True IsNew = False
-					//ContextStatement Blackboards.battle_event subContext250 ContextSwitchInterpreter
-					if(subContext250 != null)
+					Blackboards.battle_event subContext484 = (Blackboards.battle_event)root.GetComponent(typeof(Blackboards.battle_event)); //IsContext = True IsNew = False
+					//ContextStatement Blackboards.battle_event subContext484 ContextSwitchInterpreter
+					if(subContext484 != null)
 					{
 						
-						subContext250.Tie = (System.Boolean)( (true));
+						subContext484.Tie = (System.Boolean)( (true));
 					}
 				}
 			}
@@ -1370,63 +2726,63 @@ namespace generators {
 			//ContextStatement External External ContextSwitchInterpreter
 			System.Boolean applicable = false; //IsContext = False IsNew = False
 			
-			System.Boolean OperandVar266 = default(System.Boolean); //IsContext = False IsNew = False
-			Actor StoredVariable251 = ((Actor)root.GetComponent(typeof(Actor))); //IsContext = False IsNew = False
-			if(StoredVariable251 != null)
+			System.Boolean OperandVar500 = default(System.Boolean); //IsContext = False IsNew = False
+			Actor StoredVariable485 = ((Actor)root.GetComponent(typeof(Actor))); //IsContext = False IsNew = False
+			if(StoredVariable485 != null)
 			{
-				Blackboards.builder StoredVariable252 = ((Blackboards.builder)StoredVariable251.GetComponent(typeof(Blackboards.builder))); //IsContext = False IsNew = False
-				if(StoredVariable252 != null)
+				Blackboards.builder StoredVariable486 = ((Blackboards.builder)StoredVariable485.GetComponent(typeof(Blackboards.builder))); //IsContext = False IsNew = False
+				if(StoredVariable486 != null)
 				{
-					Blackboards.worker StoredVariable253 = ((Blackboards.worker)StoredVariable252.GetComponent(typeof(Blackboards.worker))); //IsContext = False IsNew = False
-					if(StoredVariable253 != null)
+					Blackboards.worker StoredVariable487 = ((Blackboards.worker)StoredVariable486.GetComponent(typeof(Blackboards.worker))); //IsContext = False IsNew = False
+					if(StoredVariable487 != null)
 					{
-						System.Boolean ifResult254; //IsContext = False IsNew = False
+						System.Boolean ifResult488; //IsContext = False IsNew = False
 						
-						System.Boolean OperandVar256 = default(System.Boolean); //IsContext = False IsNew = False
-						if(StoredVariable251 != null)
+						System.Boolean OperandVar490 = default(System.Boolean); //IsContext = False IsNew = False
+						if(StoredVariable485 != null)
 						{
-							System.Boolean prop255 = StoredVariable251.IsActive; //IsContext = False IsNew = False
-							OperandVar256 = prop255;
+							System.Boolean prop489 = StoredVariable485.IsActive; //IsContext = False IsNew = False
+							OperandVar490 = prop489;
 						}
 						
-						System.Boolean OperandVar265 = default(System.Boolean); //IsContext = False IsNew = False
-						UnityEngine.GameObject prop257 = StoredVariable253.WorksFor; //IsContext = False IsNew = False
-						if(prop257 != null)
+						System.Boolean OperandVar499 = default(System.Boolean); //IsContext = False IsNew = False
+						UnityEngine.GameObject prop491 = StoredVariable487.WorksFor; //IsContext = False IsNew = False
+						if(prop491 != null)
 						{
-							Blackboards.ruler_role StoredVariable258 = ((Blackboards.ruler_role)prop257.GetComponent(typeof(Blackboards.ruler_role))); //IsContext = False IsNew = False
-							if(StoredVariable258 != null)
+							Blackboards.ruler_role StoredVariable492 = ((Blackboards.ruler_role)prop491.GetComponent(typeof(Blackboards.ruler_role))); //IsContext = False IsNew = False
+							if(StoredVariable492 != null)
 							{
-								System.Boolean ifResult259; //IsContext = False IsNew = False
+								System.Boolean ifResult493; //IsContext = False IsNew = False
 								
-								Blackboards.ruler_role OperandVar260 = default(Blackboards.ruler_role); //IsContext = False IsNew = False
-								OperandVar260 = StoredVariable258;
+								Blackboards.ruler_role OperandVar494 = default(Blackboards.ruler_role); //IsContext = False IsNew = False
+								OperandVar494 = StoredVariable492;
 								
-								System.Boolean OperandVar264 = default(System.Boolean); //IsContext = False IsNew = False
-								UnityEngine.GameObject prop261 = StoredVariable258.Wunderwaffe; //IsContext = False IsNew = False
-								if(prop261 != null)
+								System.Boolean OperandVar498 = default(System.Boolean); //IsContext = False IsNew = False
+								UnityEngine.GameObject prop495 = StoredVariable492.Wunderwaffe; //IsContext = False IsNew = False
+								if(prop495 != null)
 								{
-									Blackboards.buildable StoredVariable262 = ((Blackboards.buildable)prop261.GetComponent(typeof(Blackboards.buildable))); //IsContext = False IsNew = False
-									if(StoredVariable262 != null)
+									Blackboards.buildable StoredVariable496 = ((Blackboards.buildable)prop495.GetComponent(typeof(Blackboards.buildable))); //IsContext = False IsNew = False
+									if(StoredVariable496 != null)
 									{
-										System.Boolean prop263 = StoredVariable262.Finished; //IsContext = False IsNew = False
-										OperandVar264 = prop263;
+										System.Boolean prop497 = StoredVariable496.Finished; //IsContext = False IsNew = False
+										OperandVar498 = prop497;
 									}
 								}
-								if(ifResult259 = ( ( (OperandVar260))) && ( (!(OperandVar264))))
+								if(ifResult493 = ( ( (OperandVar494))) && ( (!(OperandVar498))))
 								{
-									OperandVar265 = ifResult259;
+									OperandVar499 = ifResult493;
 								}
 							}
 						}
-						if(ifResult254 = ( ( (OperandVar256))) && ( ( (OperandVar265))))
+						if(ifResult488 = ( ( (OperandVar490))) && ( ( (OperandVar499))))
 						{
 							applicable = true;
-							OperandVar266 = applicable;
+							OperandVar500 = applicable;
 						}
 					}
 				}
 			}
-			return (System.Boolean) (OperandVar266);
+			return (System.Boolean) (OperandVar500);
 		}
         }
         
@@ -1450,74 +2806,73 @@ namespace generators {
 			
 			//ContextStatement External External ContextSwitchInterpreter
 			
-			UnityEngine.GameObject act = new UnityEngine.GameObject("act"); //IsContext = False IsNew = False
+			UnityEngine.GameObject build_wunderwaffe = new UnityEngine.GameObject("build_wunderwaffe"); //IsContext = False IsNew = False
 			
 			{
-				UnityEngine.GameObject act267 = act; //IsContext = True IsNew = False
-				Blackboards.notify_event AddContext268 = (Blackboards.notify_event)act.AddComponent(typeof(Blackboards.notify_event)); //IsContext = True IsNew = True
+				UnityEngine.GameObject build_wunderwaffe501 = build_wunderwaffe; //IsContext = True IsNew = False
+				Blackboards.notify_event AddContext502 = (Blackboards.notify_event)build_wunderwaffe.AddComponent(typeof(Blackboards.notify_event)); //IsContext = True IsNew = True
 				
 				{
-					//ContextStatement Blackboards.notify_event AddContext268 ContextSwitchInterpreter
-					if(AddContext268 != null)
+					//ContextStatement Blackboards.notify_event AddContext502 ContextSwitchInterpreter
+					if(AddContext502 != null)
 					{
-						UnityEngine.GameObject OperandVar269 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
-						OperandVar269 = root;
-						AddContext268.Who = (UnityEngine.GameObject)( (OperandVar269));
+						UnityEngine.GameObject OperandVar503 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
+						OperandVar503 = root;
+						AddContext502.Who = (UnityEngine.GameObject)( (OperandVar503));
 						
-						AddContext268.Data = (System.String)( ("build_wunderwaffe"));
+						AddContext502.Data = (System.String)( ("build_wunderwaffe"));
 					}
 				}
 			}
-			UnityEngine.Object.FindObjectOfType<Generators>().Generate(act);
 			
 			{
-				Blackboards.worker subContext270 = (Blackboards.worker)root.GetComponent(typeof(Blackboards.worker)); //IsContext = True IsNew = False
-				//ContextStatement Blackboards.worker subContext270 ContextSwitchInterpreter
-				if(subContext270 != null)
+				Blackboards.worker subContext504 = (Blackboards.worker)root.GetComponent(typeof(Blackboards.worker)); //IsContext = True IsNew = False
+				//ContextStatement Blackboards.worker subContext504 ContextSwitchInterpreter
+				if(subContext504 != null)
 				{
 					
 					{
-						UnityEngine.GameObject subContext271 = subContext270.WorksFor; //IsContext = True IsNew = False
-						//ContextStatement UnityEngine.GameObject subContext271 ContextPropertySwitchInterpreter
-						if(subContext271 != null)
+						UnityEngine.GameObject subContext505 = subContext504.WorksFor; //IsContext = True IsNew = False
+						//ContextStatement UnityEngine.GameObject subContext505 ContextPropertySwitchInterpreter
+						if(subContext505 != null)
 						{
 							
 							{
-								Blackboards.ruler_role subContext272 = (Blackboards.ruler_role)subContext271.GetComponent(typeof(Blackboards.ruler_role)); //IsContext = True IsNew = False
-								//ContextStatement Blackboards.ruler_role subContext272 ContextSwitchInterpreter
-								if(subContext272 != null)
+								Blackboards.ruler_role subContext506 = (Blackboards.ruler_role)subContext505.GetComponent(typeof(Blackboards.ruler_role)); //IsContext = True IsNew = False
+								//ContextStatement Blackboards.ruler_role subContext506 ContextSwitchInterpreter
+								if(subContext506 != null)
 								{
 									
 									{
-										UnityEngine.GameObject subContext273 = subContext272.Wunderwaffe; //IsContext = True IsNew = False
-										//ContextStatement UnityEngine.GameObject subContext273 ContextPropertySwitchInterpreter
-										if(subContext273 != null)
+										UnityEngine.GameObject subContext507 = subContext506.Wunderwaffe; //IsContext = True IsNew = False
+										//ContextStatement UnityEngine.GameObject subContext507 ContextPropertySwitchInterpreter
+										if(subContext507 != null)
 										{
 											
 											{
-												Blackboards.buildable subContext274 = (Blackboards.buildable)subContext273.GetComponent(typeof(Blackboards.buildable)); //IsContext = True IsNew = False
-												//ContextStatement Blackboards.buildable subContext274 ContextSwitchInterpreter
-												if(subContext274 != null)
+												Blackboards.buildable subContext508 = (Blackboards.buildable)subContext507.GetComponent(typeof(Blackboards.buildable)); //IsContext = True IsNew = False
+												//ContextStatement Blackboards.buildable subContext508 ContextSwitchInterpreter
+												if(subContext508 != null)
 												{
 													
-													System.Single OperandVar276 = default(System.Single); //IsContext = False IsNew = False
-													System.Single prop275 = subContext274.CurrentInvestment; //IsContext = False IsNew = False
-													OperandVar276 = prop275;
+													System.Single OperandVar510 = default(System.Single); //IsContext = False IsNew = False
+													System.Single prop509 = subContext508.CurrentInvestment; //IsContext = False IsNew = False
+													OperandVar510 = prop509;
 													
 													
-													subContext274.CurrentInvestment = (System.Single)(( ( (OperandVar276))) + ( ( (5f))));
+													subContext508.CurrentInvestment = (System.Single)(( ( (OperandVar510))) + ( ( (5f))));
 													
-													System.Single OperandVar278 = default(System.Single); //IsContext = False IsNew = False
-													System.Single prop277 = subContext274.CurrentInvestment; //IsContext = False IsNew = False
-													OperandVar278 = prop277;
+													System.Single OperandVar512 = default(System.Single); //IsContext = False IsNew = False
+													System.Single prop511 = subContext508.CurrentInvestment; //IsContext = False IsNew = False
+													OperandVar512 = prop511;
 													
-													System.Single OperandVar280 = default(System.Single); //IsContext = False IsNew = False
-													System.Single prop279 = subContext274.Cost; //IsContext = False IsNew = False
-													OperandVar280 = prop279;
-													if(( ( (OperandVar278))) >= ( ( (OperandVar280))))
+													System.Single OperandVar514 = default(System.Single); //IsContext = False IsNew = False
+													System.Single prop513 = subContext508.Cost; //IsContext = False IsNew = False
+													OperandVar514 = prop513;
+													if(( ( (OperandVar512))) >= ( ( (OperandVar514))))
 													{
 														
-														subContext274.Finished = (System.Boolean)( (true));
+														subContext508.Finished = (System.Boolean)( (true));
 													}
 												}
 											}
@@ -1544,92 +2899,92 @@ namespace generators {
 			//ContextStatement External External ContextSwitchInterpreter
 			System.Boolean applicable = false; //IsContext = False IsNew = False
 			
-			System.Boolean OperandVar304 = default(System.Boolean); //IsContext = False IsNew = False
-			Actor StoredVariable281 = ((Actor)root.GetComponent(typeof(Actor))); //IsContext = False IsNew = False
-			if(StoredVariable281 != null)
+			System.Boolean OperandVar538 = default(System.Boolean); //IsContext = False IsNew = False
+			Actor StoredVariable515 = ((Actor)root.GetComponent(typeof(Actor))); //IsContext = False IsNew = False
+			if(StoredVariable515 != null)
 			{
-				Blackboards.ruler_role StoredVariable282 = ((Blackboards.ruler_role)StoredVariable281.GetComponent(typeof(Blackboards.ruler_role))); //IsContext = False IsNew = False
-				if(StoredVariable282 != null)
+				Blackboards.ruler_role StoredVariable516 = ((Blackboards.ruler_role)StoredVariable515.GetComponent(typeof(Blackboards.ruler_role))); //IsContext = False IsNew = False
+				if(StoredVariable516 != null)
 				{
-					Blackboards.foe_role StoredVariable283 = ((Blackboards.foe_role)StoredVariable282.GetComponent(typeof(Blackboards.foe_role))); //IsContext = False IsNew = False
-					if(StoredVariable283 != null)
+					Blackboards.foe_role StoredVariable517 = ((Blackboards.foe_role)StoredVariable516.GetComponent(typeof(Blackboards.foe_role))); //IsContext = False IsNew = False
+					if(StoredVariable517 != null)
 					{
-						System.Boolean ifResult284; //IsContext = False IsNew = False
+						System.Boolean ifResult518; //IsContext = False IsNew = False
 						
-						System.Boolean OperandVar286 = default(System.Boolean); //IsContext = False IsNew = False
-						if(StoredVariable281 != null)
+						System.Boolean OperandVar520 = default(System.Boolean); //IsContext = False IsNew = False
+						if(StoredVariable515 != null)
 						{
-							System.Boolean prop285 = StoredVariable281.IsActive; //IsContext = False IsNew = False
-							OperandVar286 = prop285;
+							System.Boolean prop519 = StoredVariable515.IsActive; //IsContext = False IsNew = False
+							OperandVar520 = prop519;
 						}
 						
-						System.Boolean OperandVar292 = default(System.Boolean); //IsContext = False IsNew = False
-						System.Collections.Generic.List<UnityEngine.GameObject> OperandVar288 = default(System.Collections.Generic.List<UnityEngine.GameObject>); //IsContext = False IsNew = False
-						if(StoredVariable282 != null)
+						System.Boolean OperandVar526 = default(System.Boolean); //IsContext = False IsNew = False
+						System.Collections.Generic.List<UnityEngine.GameObject> OperandVar522 = default(System.Collections.Generic.List<UnityEngine.GameObject>); //IsContext = False IsNew = False
+						if(StoredVariable516 != null)
 						{
-							System.Collections.Generic.List<UnityEngine.GameObject> prop287 = StoredVariable282.AtWarWith; //IsContext = False IsNew = False
-							if(prop287 != null)
+							System.Collections.Generic.List<UnityEngine.GameObject> prop521 = StoredVariable516.AtWarWith; //IsContext = False IsNew = False
+							if(prop521 != null)
 							{
-								OperandVar288 = prop287;
+								OperandVar522 = prop521;
 							}
 						}
-						UnityEngine.GameObject OperandVar290 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
-						UnityEngine.GameObject prop289 = StoredVariable283.Enemy; //IsContext = False IsNew = False
-						if(prop289 != null)
+						UnityEngine.GameObject OperandVar524 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
+						UnityEngine.GameObject prop523 = StoredVariable517.Enemy; //IsContext = False IsNew = False
+						if(prop523 != null)
 						{
-							OperandVar290 = prop289;
+							OperandVar524 = prop523;
 						}
-						System.Boolean prop291 = External.Contains( (OperandVar288), (OperandVar290)); //IsContext = False IsNew = False
-						OperandVar292 = prop291;
+						System.Boolean prop525 = External.Contains( (OperandVar522), (OperandVar524)); //IsContext = False IsNew = False
+						OperandVar526 = prop525;
 						
-						System.Boolean OperandVar295 = default(System.Boolean); //IsContext = False IsNew = False
-						UnityEngine.GameObject prop293 = StoredVariable283.Enemy; //IsContext = False IsNew = False
-						if(prop293 != null)
+						System.Boolean OperandVar529 = default(System.Boolean); //IsContext = False IsNew = False
+						UnityEngine.GameObject prop527 = StoredVariable517.Enemy; //IsContext = False IsNew = False
+						if(prop527 != null)
 						{
-							Blackboards.ruler_role StoredVariable294 = ((Blackboards.ruler_role)prop293.GetComponent(typeof(Blackboards.ruler_role))); //IsContext = False IsNew = False
-							if(StoredVariable294 != null)
+							Blackboards.ruler_role StoredVariable528 = ((Blackboards.ruler_role)prop527.GetComponent(typeof(Blackboards.ruler_role))); //IsContext = False IsNew = False
+							if(StoredVariable528 != null)
 							{
 								applicable = true;
-								OperandVar295 = applicable;
+								OperandVar529 = applicable;
 							}
 						}
 						
-						System.Boolean OperandVar299 = default(System.Boolean); //IsContext = False IsNew = False
-						UnityEngine.GameObject OperandVar297 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
-						if(StoredVariable282 != null)
+						System.Boolean OperandVar533 = default(System.Boolean); //IsContext = False IsNew = False
+						UnityEngine.GameObject OperandVar531 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
+						if(StoredVariable516 != null)
 						{
-							UnityEngine.GameObject prop296 = StoredVariable282.Wunderwaffe; //IsContext = False IsNew = False
-							if(prop296 != null)
+							UnityEngine.GameObject prop530 = StoredVariable516.Wunderwaffe; //IsContext = False IsNew = False
+							if(prop530 != null)
 							{
-								OperandVar297 = prop296;
+								OperandVar531 = prop530;
 							}
 						}
-						System.Boolean prop298 = External.Has( (OperandVar297)); //IsContext = False IsNew = False
-						OperandVar299 = prop298;
+						System.Boolean prop532 = External.Has( (OperandVar531)); //IsContext = False IsNew = False
+						OperandVar533 = prop532;
 						
-						System.Boolean OperandVar303 = default(System.Boolean); //IsContext = False IsNew = False
-						if(StoredVariable282 != null)
+						System.Boolean OperandVar537 = default(System.Boolean); //IsContext = False IsNew = False
+						if(StoredVariable516 != null)
 						{
-							UnityEngine.GameObject prop300 = StoredVariable282.Wunderwaffe; //IsContext = False IsNew = False
-							if(prop300 != null)
+							UnityEngine.GameObject prop534 = StoredVariable516.Wunderwaffe; //IsContext = False IsNew = False
+							if(prop534 != null)
 							{
-								Blackboards.buildable StoredVariable301 = ((Blackboards.buildable)prop300.GetComponent(typeof(Blackboards.buildable))); //IsContext = False IsNew = False
-								if(StoredVariable301 != null)
+								Blackboards.buildable StoredVariable535 = ((Blackboards.buildable)prop534.GetComponent(typeof(Blackboards.buildable))); //IsContext = False IsNew = False
+								if(StoredVariable535 != null)
 								{
-									System.Boolean prop302 = StoredVariable301.Finished; //IsContext = False IsNew = False
-									OperandVar303 = prop302;
+									System.Boolean prop536 = StoredVariable535.Finished; //IsContext = False IsNew = False
+									OperandVar537 = prop536;
 								}
 							}
 						}
-						if(ifResult284 = ( ( (OperandVar286))) && ( ( (OperandVar292))) && ( ( (OperandVar295))) && ( ( (OperandVar299))) && ( ( (OperandVar303))))
+						if(ifResult518 = ( ( (OperandVar520))) && ( ( (OperandVar526))) && ( ( (OperandVar529))) && ( ( (OperandVar533))) && ( ( (OperandVar537))))
 						{
 							applicable = true;
-							OperandVar304 = applicable;
+							OperandVar538 = applicable;
 						}
 					}
 				}
 			}
-			return (System.Boolean) (OperandVar304);
+			return (System.Boolean) (OperandVar538);
 		}
         }
         
@@ -1641,15 +2996,15 @@ namespace generators {
 			//ContextStatement External External ContextSwitchInterpreter
 			System.Single ut = 0; //IsContext = False IsNew = False
 			
-			System.Single OperandVar307 = default(System.Single); //IsContext = False IsNew = False
-			Blackboards.foe_role StoredVariable305 = ((Blackboards.foe_role)root.GetComponent(typeof(Blackboards.foe_role))); //IsContext = False IsNew = False
-			if(StoredVariable305 != null)
+			System.Single OperandVar541 = default(System.Single); //IsContext = False IsNew = False
+			Blackboards.foe_role StoredVariable539 = ((Blackboards.foe_role)root.GetComponent(typeof(Blackboards.foe_role))); //IsContext = False IsNew = False
+			if(StoredVariable539 != null)
 			{
-				System.Single prop306 = StoredVariable305.ThreatLevel; //IsContext = False IsNew = False
-				OperandVar307 = prop306;
+				System.Single prop540 = StoredVariable539.ThreatLevel; //IsContext = False IsNew = False
+				OperandVar541 = prop540;
 			}
 			
-			return (System.Single)( (OperandVar307)) * ( (0.5f));
+			return (System.Single)( (OperandVar541)) * ( (0.5f));
 		}
         }
         
@@ -1660,52 +3015,51 @@ namespace generators {
 			
 			//ContextStatement External External ContextSwitchInterpreter
 			
-			UnityEngine.GameObject act = new UnityEngine.GameObject("act"); //IsContext = False IsNew = False
+			UnityEngine.GameObject test_wunderwaffe = new UnityEngine.GameObject("test_wunderwaffe"); //IsContext = False IsNew = False
 			
 			{
-				UnityEngine.GameObject act308 = act; //IsContext = True IsNew = False
-				Blackboards.notify_event AddContext309 = (Blackboards.notify_event)act.AddComponent(typeof(Blackboards.notify_event)); //IsContext = True IsNew = True
+				UnityEngine.GameObject test_wunderwaffe542 = test_wunderwaffe; //IsContext = True IsNew = False
+				Blackboards.notify_event AddContext543 = (Blackboards.notify_event)test_wunderwaffe.AddComponent(typeof(Blackboards.notify_event)); //IsContext = True IsNew = True
 				
 				{
-					//ContextStatement Blackboards.notify_event AddContext309 ContextSwitchInterpreter
-					if(AddContext309 != null)
+					//ContextStatement Blackboards.notify_event AddContext543 ContextSwitchInterpreter
+					if(AddContext543 != null)
 					{
-						UnityEngine.GameObject OperandVar310 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
-						OperandVar310 = root;
-						AddContext309.Who = (UnityEngine.GameObject)( (OperandVar310));
+						UnityEngine.GameObject OperandVar544 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
+						OperandVar544 = root;
+						AddContext543.Who = (UnityEngine.GameObject)( (OperandVar544));
 						
-						AddContext309.Data = (System.String)( ("test_wunderwaffe"));
+						AddContext543.Data = (System.String)( ("test_wunderwaffe"));
 					}
 				}
 			}
-			UnityEngine.Object.FindObjectOfType<Generators>().Generate(act);
 			
 			{
-				Blackboards.foe_role subContext311 = (Blackboards.foe_role)root.GetComponent(typeof(Blackboards.foe_role)); //IsContext = True IsNew = False
-				//ContextStatement Blackboards.foe_role subContext311 ContextSwitchInterpreter
-				if(subContext311 != null)
+				Blackboards.foe_role subContext545 = (Blackboards.foe_role)root.GetComponent(typeof(Blackboards.foe_role)); //IsContext = True IsNew = False
+				//ContextStatement Blackboards.foe_role subContext545 ContextSwitchInterpreter
+				if(subContext545 != null)
 				{
 					
 					{
-						UnityEngine.GameObject subContext312 = subContext311.Enemy; //IsContext = True IsNew = False
-						//ContextStatement UnityEngine.GameObject subContext312 ContextPropertySwitchInterpreter
-						if(subContext312 != null)
+						UnityEngine.GameObject subContext546 = subContext545.Enemy; //IsContext = True IsNew = False
+						//ContextStatement UnityEngine.GameObject subContext546 ContextPropertySwitchInterpreter
+						if(subContext546 != null)
 						{
 							
 							{
-								Blackboards.ruler_role subContext313 = (Blackboards.ruler_role)subContext312.GetComponent(typeof(Blackboards.ruler_role)); //IsContext = True IsNew = False
-								//ContextStatement Blackboards.ruler_role subContext313 ContextSwitchInterpreter
-								if(subContext313 != null)
+								Blackboards.ruler_role subContext547 = (Blackboards.ruler_role)subContext546.GetComponent(typeof(Blackboards.ruler_role)); //IsContext = True IsNew = False
+								//ContextStatement Blackboards.ruler_role subContext547 ContextSwitchInterpreter
+								if(subContext547 != null)
 								{
 									
-									System.Single OperandVar315 = default(System.Single); //IsContext = False IsNew = False
-									System.Single prop314 = subContext313.Forces; //IsContext = False IsNew = False
-									OperandVar315 = prop314;
+									System.Single OperandVar549 = default(System.Single); //IsContext = False IsNew = False
+									System.Single prop548 = subContext547.Forces; //IsContext = False IsNew = False
+									OperandVar549 = prop548;
 									
 									
-									subContext313.Forces = (System.Single)(( ( (OperandVar315))) - ( ( (10f))));
+									subContext547.Forces = (System.Single)(( ( (OperandVar549))) - ( ( (10f))));
 									
-									subContext313.People = (System.Single)( (0f));
+									subContext547.People = (System.Single)( (0f));
 								}
 							}
 						}
@@ -1727,27 +3081,27 @@ namespace generators {
 			//ContextStatement External External ContextSwitchInterpreter
 			System.Boolean applicable = false; //IsContext = False IsNew = False
 			
-			System.Boolean OperandVar320 = default(System.Boolean); //IsContext = False IsNew = False
-			Space StoredVariable316 = ((Space)root.GetComponent(typeof(Space))); //IsContext = False IsNew = False
-			if(StoredVariable316 != null)
+			System.Boolean OperandVar554 = default(System.Boolean); //IsContext = False IsNew = False
+			Space StoredVariable550 = ((Space)root.GetComponent(typeof(Space))); //IsContext = False IsNew = False
+			if(StoredVariable550 != null)
 			{
-				System.Boolean ifResult317; //IsContext = False IsNew = False
+				System.Boolean ifResult551; //IsContext = False IsNew = False
 				
-				System.Collections.Generic.List<Place> OperandVar319 = default(System.Collections.Generic.List<Place>); //IsContext = False IsNew = False
-				System.Collections.Generic.List<Place> prop318 = StoredVariable316.Places; //IsContext = False IsNew = False
-				if(prop318 != null)
+				System.Collections.Generic.List<Place> OperandVar553 = default(System.Collections.Generic.List<Place>); //IsContext = False IsNew = False
+				System.Collections.Generic.List<Place> prop552 = StoredVariable550.Places; //IsContext = False IsNew = False
+				if(prop552 != null)
 				{
-					OperandVar319 = prop318;
+					OperandVar553 = prop552;
 				}
 				
 				
-				if(ifResult317 = ( ( (OperandVar319 != null ? OperandVar319.Count : 0))) == ( ( (0f))))
+				if(ifResult551 = ( ( (OperandVar553 != null ? OperandVar553.Count : 0))) == ( ( (0f))))
 				{
 					applicable = true;
-					OperandVar320 = applicable;
+					OperandVar554 = applicable;
 				}
 			}
-			return (System.Boolean) (OperandVar320);
+			return (System.Boolean) (OperandVar554);
 		}
         }
         
@@ -1773,106 +3127,106 @@ namespace generators {
 			
 			
 			{
-				Space subContext321 = (Space)root.GetComponent(typeof(Space)); //IsContext = True IsNew = False
-				//ContextStatement Space subContext321 ContextSwitchInterpreter
-				if(subContext321 != null)
+				Space subContext555 = (Space)root.GetComponent(typeof(Space)); //IsContext = True IsNew = False
+				//ContextStatement Space subContext555 ContextSwitchInterpreter
+				if(subContext555 != null)
 				{
 					
-					subContext321.Size = (System.Int32)( (5f));
-					System.Single OperandVar323 = default(System.Single); //IsContext = False IsNew = False
+					subContext555.Size = (System.Int32)( (5f));
+					System.Single OperandVar557 = default(System.Single); //IsContext = False IsNew = False
 					
 					
-					System.Single prop322 = External.Random( (1f), (4f)); //IsContext = False IsNew = False
-					OperandVar323 = prop322;
-					for (int i = 0; i <  (OperandVar323); i++)
+					System.Single prop556 = External.Random( (1f), (4f)); //IsContext = False IsNew = False
+					OperandVar557 = prop556;
+					for (int i = 0; i <  (OperandVar557); i++)
 					{
 						UnityEngine.GameObject loc = new UnityEngine.GameObject("loc"); //IsContext = False IsNew = False
 						
 						{
-							UnityEngine.GameObject loc324 = loc; //IsContext = True IsNew = False
-							Entity AddContext325 = (Entity)loc.AddComponent(typeof(Entity)); //IsContext = True IsNew = True
+							UnityEngine.GameObject loc558 = loc; //IsContext = True IsNew = False
+							Entity AddContext559 = (Entity)loc.AddComponent(typeof(Entity)); //IsContext = True IsNew = True
 							
 							{
-								//ContextStatement Entity AddContext325 ContextSwitchInterpreter
-								if(AddContext325 != null)
+								//ContextStatement Entity AddContext559 ContextSwitchInterpreter
+								if(AddContext559 != null)
 								{
-									UnityEngine.Vector3 OperandVar335 = default(UnityEngine.Vector3); //IsContext = False IsNew = False
-									System.Single OperandVar329 = default(System.Single); //IsContext = False IsNew = False
+									UnityEngine.Vector3 OperandVar569 = default(UnityEngine.Vector3); //IsContext = False IsNew = False
+									System.Single OperandVar563 = default(System.Single); //IsContext = False IsNew = False
 									
-									System.Int32 OperandVar327 = default(System.Int32); //IsContext = False IsNew = False
-									System.Int32 prop326 = External.MapX(); //IsContext = False IsNew = False
-									OperandVar327 = prop326;
-									System.Single prop328 = External.Random( (0f), (OperandVar327)); //IsContext = False IsNew = False
-									OperandVar329 = prop328;
-									System.Single OperandVar333 = default(System.Single); //IsContext = False IsNew = False
+									System.Int32 OperandVar561 = default(System.Int32); //IsContext = False IsNew = False
+									System.Int32 prop560 = External.MapX(); //IsContext = False IsNew = False
+									OperandVar561 = prop560;
+									System.Single prop562 = External.Random( (0f), (OperandVar561)); //IsContext = False IsNew = False
+									OperandVar563 = prop562;
+									System.Single OperandVar567 = default(System.Single); //IsContext = False IsNew = False
 									
-									System.Int32 OperandVar331 = default(System.Int32); //IsContext = False IsNew = False
-									System.Int32 prop330 = External.MapX(); //IsContext = False IsNew = False
-									OperandVar331 = prop330;
-									System.Single prop332 = External.Random( (0f), (OperandVar331)); //IsContext = False IsNew = False
-									OperandVar333 = prop332;
-									UnityEngine.Vector3 prop334 = External.Vec( (OperandVar329), (OperandVar333)); //IsContext = False IsNew = False
-									OperandVar335 = prop334;
-									AddContext325.Position = (UnityEngine.Vector3)( (OperandVar335));
+									System.Int32 OperandVar565 = default(System.Int32); //IsContext = False IsNew = False
+									System.Int32 prop564 = External.MapX(); //IsContext = False IsNew = False
+									OperandVar565 = prop564;
+									System.Single prop566 = External.Random( (0f), (OperandVar565)); //IsContext = False IsNew = False
+									OperandVar567 = prop566;
+									UnityEngine.Vector3 prop568 = External.Vec( (OperandVar563), (OperandVar567)); //IsContext = False IsNew = False
+									OperandVar569 = prop568;
+									AddContext559.Position = (UnityEngine.Vector3)( (OperandVar569));
 								}
 							}
-							Place AddContext336 = (Place)loc.AddComponent(typeof(Place)); //IsContext = True IsNew = True
+							Place AddContext570 = (Place)loc.AddComponent(typeof(Place)); //IsContext = True IsNew = True
 							
 							{
-								//ContextStatement Place AddContext336 ContextSwitchInterpreter
-								if(AddContext336 != null)
+								//ContextStatement Place AddContext570 ContextSwitchInterpreter
+								if(AddContext570 != null)
 								{
-									System.Single OperandVar338 = default(System.Single); //IsContext = False IsNew = False
+									System.Single OperandVar572 = default(System.Single); //IsContext = False IsNew = False
 									
 									
-									System.Single prop337 = External.Random( (1f), (3f)); //IsContext = False IsNew = False
-									OperandVar338 = prop337;
-									AddContext336.Size = (System.Int32)( (OperandVar338));
+									System.Single prop571 = External.Random( (1f), (3f)); //IsContext = False IsNew = False
+									OperandVar572 = prop571;
+									AddContext570.Size = (System.Int32)( (OperandVar572));
 								}
 							}
-							Markers AddContext339 = (Markers)loc.AddComponent(typeof(Markers)); //IsContext = True IsNew = True
+							Markers AddContext573 = (Markers)loc.AddComponent(typeof(Markers)); //IsContext = True IsNew = True
 							
 							{
-								//ContextStatement Markers AddContext339 ContextSwitchInterpreter
-								if(AddContext339 != null)
+								//ContextStatement Markers AddContext573 ContextSwitchInterpreter
+								if(AddContext573 != null)
 								{
-									System.String OperandVar340 = default(System.String); //IsContext = False IsNew = False
-									OperandVar340 = "history_place";
-									AddContext339.SetMarker(( (OperandVar340)).ToString());
+									System.String OperandVar574 = default(System.String); //IsContext = False IsNew = False
+									OperandVar574 = "history_place";
+									AddContext573.SetMarker(( (OperandVar574)).ToString());
 								}
 							}
-							Named AddContext341 = (Named)loc.AddComponent(typeof(Named)); //IsContext = True IsNew = True
+							Named AddContext575 = (Named)loc.AddComponent(typeof(Named)); //IsContext = True IsNew = True
 							
 							{
-								//ContextStatement Named AddContext341 ContextSwitchInterpreter
-								if(AddContext341 != null)
+								//ContextStatement Named AddContext575 ContextSwitchInterpreter
+								if(AddContext575 != null)
 								{
 									
 									
 									
-									AddContext341.Set(( ("prefix")).ToString(),(System.Single)( (0f)),( ("Location of: ")).ToString());
+									AddContext575.Set(( ("prefix")).ToString(),(System.Single)( (0f)),( ("Location of: ")).ToString());
 									
 									
-									System.String OperandVar344 = default(System.String); //IsContext = False IsNew = False
-									System.String OperandVar342 = default(System.String); //IsContext = False IsNew = False
-									OperandVar342 = "human_name";
-									System.String prop343 = External.RandomName( (OperandVar342)); //IsContext = False IsNew = False
-									if(prop343 != null)
+									System.String OperandVar578 = default(System.String); //IsContext = False IsNew = False
+									System.String OperandVar576 = default(System.String); //IsContext = False IsNew = False
+									OperandVar576 = "human_name";
+									System.String prop577 = External.RandomName( (OperandVar576)); //IsContext = False IsNew = False
+									if(prop577 != null)
 									{
-										OperandVar344 = prop343;
+										OperandVar578 = prop577;
 									}
-									AddContext341.Set(( ("main_name")).ToString(),(System.Single)( (1f)),( (OperandVar344)).ToString());
+									AddContext575.Set(( ("main_name")).ToString(),(System.Single)( (1f)),( (OperandVar578)).ToString());
 								}
 							}
 						}
-						UnityEngine.Object.FindObjectOfType<Generators>().Generate(loc);
-						Place OperandVar346 = default(Place); //IsContext = False IsNew = False
-						Place StoredVariable345 = ((Place)loc.GetComponent(typeof(Place))); //IsContext = False IsNew = False
-						if(StoredVariable345 != null)
+						UnityEngine.Object.FindObjectOfType<Generators>().Generate(loc, 0.1f);
+						Place OperandVar580 = default(Place); //IsContext = False IsNew = False
+						Place StoredVariable579 = ((Place)loc.GetComponent(typeof(Place))); //IsContext = False IsNew = False
+						if(StoredVariable579 != null)
 						{
-							OperandVar346 = StoredVariable345;
+							OperandVar580 = StoredVariable579;
 						}
-						subContext321.Attach((Place)( (OperandVar346)));
+						subContext555.Attach((Place)( (OperandVar580)));
 					}
 				}
 			}
@@ -1891,51 +3245,51 @@ namespace generators {
 			//ContextStatement External External ContextSwitchInterpreter
 			System.Boolean applicable = false; //IsContext = False IsNew = False
 			
-			System.Boolean OperandVar360 = default(System.Boolean); //IsContext = False IsNew = False
-			UiObject StoredVariable347 = ((UiObject)root.GetComponent(typeof(UiObject))); //IsContext = False IsNew = False
-			if(StoredVariable347 != null)
+			System.Boolean OperandVar594 = default(System.Boolean); //IsContext = False IsNew = False
+			UiObject StoredVariable581 = ((UiObject)root.GetComponent(typeof(UiObject))); //IsContext = False IsNew = False
+			if(StoredVariable581 != null)
 			{
-				Markers StoredVariable348 = ((Markers)StoredVariable347.GetComponent(typeof(Markers))); //IsContext = False IsNew = False
-				if(StoredVariable348 != null)
+				Markers StoredVariable582 = ((Markers)StoredVariable581.GetComponent(typeof(Markers))); //IsContext = False IsNew = False
+				if(StoredVariable582 != null)
 				{
-					System.Boolean ifResult349; //IsContext = False IsNew = False
+					System.Boolean ifResult583; //IsContext = False IsNew = False
 					
-					System.Boolean OperandVar356 = default(System.Boolean); //IsContext = False IsNew = False
-					if(StoredVariable347 != null)
+					System.Boolean OperandVar590 = default(System.Boolean); //IsContext = False IsNew = False
+					if(StoredVariable581 != null)
 					{
-						UnityEngine.GameObject prop350 = StoredVariable347.ShowedObject; //IsContext = False IsNew = False
-						if(prop350 != null)
+						UnityEngine.GameObject prop584 = StoredVariable581.ShowedObject; //IsContext = False IsNew = False
+						if(prop584 != null)
 						{
-							System.Boolean ifResult351; //IsContext = False IsNew = False
-							System.Boolean OperandVar355 = default(System.Boolean); //IsContext = False IsNew = False
-							Named OperandVar353 = default(Named); //IsContext = False IsNew = False
-							Named StoredVariable352 = ((Named)prop350.GetComponent(typeof(Named))); //IsContext = False IsNew = False
-							if(StoredVariable352 != null)
+							System.Boolean ifResult585; //IsContext = False IsNew = False
+							System.Boolean OperandVar589 = default(System.Boolean); //IsContext = False IsNew = False
+							Named OperandVar587 = default(Named); //IsContext = False IsNew = False
+							Named StoredVariable586 = ((Named)prop584.GetComponent(typeof(Named))); //IsContext = False IsNew = False
+							if(StoredVariable586 != null)
 							{
-								OperandVar353 = StoredVariable352;
+								OperandVar587 = StoredVariable586;
 							}
-							System.Boolean prop354 = External.Has( (OperandVar353)); //IsContext = False IsNew = False
-							OperandVar355 = prop354;
-							if(ifResult351 =  (OperandVar355))
+							System.Boolean prop588 = External.Has( (OperandVar587)); //IsContext = False IsNew = False
+							OperandVar589 = prop588;
+							if(ifResult585 =  (OperandVar589))
 							{
-								OperandVar356 = ifResult351;
+								OperandVar590 = ifResult585;
 							}
 						}
 					}
 					
-					System.Boolean OperandVar359 = default(System.Boolean); //IsContext = False IsNew = False
-					System.String OperandVar357 = default(System.String); //IsContext = False IsNew = False
-					OperandVar357 = "named_ui_marker";
-					System.Boolean prop358 = StoredVariable348.HasMarker( (OperandVar357)); //IsContext = False IsNew = False
-					OperandVar359 = prop358;
-					if(ifResult349 = ( ( (OperandVar356))) && ( (!(OperandVar359))))
+					System.Boolean OperandVar593 = default(System.Boolean); //IsContext = False IsNew = False
+					System.String OperandVar591 = default(System.String); //IsContext = False IsNew = False
+					OperandVar591 = "named_ui_marker";
+					System.Boolean prop592 = StoredVariable582.HasMarker( (OperandVar591)); //IsContext = False IsNew = False
+					OperandVar593 = prop592;
+					if(ifResult583 = ( ( (OperandVar590))) && ( (!(OperandVar593))))
 					{
 						applicable = true;
-						OperandVar360 = applicable;
+						OperandVar594 = applicable;
 					}
 				}
 			}
-			return (System.Boolean) (OperandVar360);
+			return (System.Boolean) (OperandVar594);
 		}
         }
         
@@ -1961,77 +3315,77 @@ namespace generators {
 			
 			
 			{
-				Markers subContext361 = (Markers)root.GetComponent(typeof(Markers)); //IsContext = True IsNew = False
-				//ContextStatement Markers subContext361 ContextSwitchInterpreter
-				if(subContext361 != null)
+				Markers subContext595 = (Markers)root.GetComponent(typeof(Markers)); //IsContext = True IsNew = False
+				//ContextStatement Markers subContext595 ContextSwitchInterpreter
+				if(subContext595 != null)
 				{
-					System.String OperandVar362 = default(System.String); //IsContext = False IsNew = False
-					OperandVar362 = "named_ui_marker";
-					subContext361.SetUiMarker(( (OperandVar362)).ToString());
+					System.String OperandVar596 = default(System.String); //IsContext = False IsNew = False
+					OperandVar596 = "named_ui_marker";
+					subContext595.SetUiMarker(( (OperandVar596)).ToString());
 				}
 			}
 			
 			{
-				UiObject subContext363 = (UiObject)root.GetComponent(typeof(UiObject)); //IsContext = True IsNew = False
-				//ContextStatement UiObject subContext363 ContextSwitchInterpreter
-				if(subContext363 != null)
+				UiObject subContext597 = (UiObject)root.GetComponent(typeof(UiObject)); //IsContext = True IsNew = False
+				//ContextStatement UiObject subContext597 ContextSwitchInterpreter
+				if(subContext597 != null)
 				{
-					Named OperandVar366 = default(Named); //IsContext = False IsNew = False
-					UnityEngine.GameObject prop364 = subContext363.ShowedObject; //IsContext = False IsNew = False
-					if(prop364 != null)
+					Named OperandVar600 = default(Named); //IsContext = False IsNew = False
+					UnityEngine.GameObject prop598 = subContext597.ShowedObject; //IsContext = False IsNew = False
+					if(prop598 != null)
 					{
-						Named StoredVariable365 = ((Named)prop364.GetComponent(typeof(Named))); //IsContext = False IsNew = False
-						if(StoredVariable365 != null)
+						Named StoredVariable599 = ((Named)prop598.GetComponent(typeof(Named))); //IsContext = False IsNew = False
+						if(StoredVariable599 != null)
 						{
-							OperandVar366 = StoredVariable365;
+							OperandVar600 = StoredVariable599;
 						}
 					}
-					Named showed_named =  (OperandVar366); //IsContext = False IsNew = False
-					TextField ContextVar367 = root.AddComponent<TextField>();; //IsContext = False IsNew = True
+					Named showed_named =  (OperandVar600); //IsContext = False IsNew = False
+					TextField ContextVar601 = root.AddComponent<TextField>();; //IsContext = False IsNew = True
 					
 					{
-						//ContextStatement TextField ContextVar367 ContextSwitchInterpreter
-						if(ContextVar367 != null)
+						//ContextStatement TextField ContextVar601 ContextSwitchInterpreter
+						if(ContextVar601 != null)
 						{
-							System.String OperandVar369 = default(System.String); //IsContext = False IsNew = False
-							System.String prop368 = showed_named.FullName; //IsContext = False IsNew = False
-							if(prop368 != null)
+							System.String OperandVar603 = default(System.String); //IsContext = False IsNew = False
+							System.String prop602 = showed_named.FullName; //IsContext = False IsNew = False
+							if(prop602 != null)
 							{
-								OperandVar369 = prop368;
+								OperandVar603 = prop602;
 							}
-							ContextVar367.Show(( (OperandVar369)).ToString());
+							ContextVar601.Show(( (OperandVar603)).ToString());
 							
 							{
 								//ContextStatement Named showed_named ContextSwitchInterpreter
 								if(showed_named != null)
 								{
-									VoidDelegate Lambda370 = () => 
+									VoidDelegate Lambda604 = () => 
 									{
-										System.String OperandVar372 = default(System.String); //IsContext = False IsNew = False
-										System.String prop371 = showed_named.FullName; //IsContext = False IsNew = False
-										if(prop371 != null)
+										System.String OperandVar606 = default(System.String); //IsContext = False IsNew = False
+										System.String prop605 = showed_named.FullName; //IsContext = False IsNew = False
+										if(prop605 != null)
 										{
-											OperandVar372 = prop371;
+											OperandVar606 = prop605;
 										}
-										ContextVar367.Show(( (OperandVar372)).ToString());
+										ContextVar601.Show(( (OperandVar606)).ToString());
 									};
-									showed_named.OnUpdate(Lambda370);
+									showed_named.OnUpdate(Lambda604);
 								}
 							}
 							
 							{
-								UnityEngine.UI.LayoutElement subContext373 = ContextVar367.Layout; //IsContext = True IsNew = False
-								//ContextStatement UnityEngine.UI.LayoutElement subContext373 ContextPropertySwitchInterpreter
-								if(subContext373 != null)
+								UnityEngine.UI.LayoutElement subContext607 = ContextVar601.Layout; //IsContext = True IsNew = False
+								//ContextStatement UnityEngine.UI.LayoutElement subContext607 ContextPropertySwitchInterpreter
+								if(subContext607 != null)
 								{
 									
-									subContext373.minHeight = (System.Single)( (20f));
+									subContext607.minHeight = (System.Single)( (20f));
 								}
 							}
 						}
 					}
-					Entity EntVar374 = (Entity)root.GetComponent(typeof(Entity));; //IsContext = False IsNew = False
-					if(EntVar374 != null) EntVar374.ComponentAdded();
+					Entity EntVar608 = (Entity)root.GetComponent(typeof(Entity));; //IsContext = False IsNew = False
+					if(EntVar608 != null) EntVar608.ComponentAdded();
 				}
 			}
 		}
@@ -2049,38 +3403,38 @@ namespace generators {
 			//ContextStatement External External ContextSwitchInterpreter
 			System.Boolean applicable = false; //IsContext = False IsNew = False
 			
-			System.Boolean OperandVar383 = default(System.Boolean); //IsContext = False IsNew = False
-			Markers StoredVariable375 = ((Markers)root.GetComponent(typeof(Markers))); //IsContext = False IsNew = False
-			if(StoredVariable375 != null)
+			System.Boolean OperandVar617 = default(System.Boolean); //IsContext = False IsNew = False
+			Markers StoredVariable609 = ((Markers)root.GetComponent(typeof(Markers))); //IsContext = False IsNew = False
+			if(StoredVariable609 != null)
 			{
-				Place StoredVariable376 = ((Place)StoredVariable375.GetComponent(typeof(Place))); //IsContext = False IsNew = False
-				if(StoredVariable376 != null)
+				Place StoredVariable610 = ((Place)StoredVariable609.GetComponent(typeof(Place))); //IsContext = False IsNew = False
+				if(StoredVariable610 != null)
 				{
-					System.Boolean ifResult377; //IsContext = False IsNew = False
+					System.Boolean ifResult611; //IsContext = False IsNew = False
 					
 					
-					System.Collections.Generic.List<Agent> OperandVar379 = default(System.Collections.Generic.List<Agent>); //IsContext = False IsNew = False
-					System.Collections.Generic.List<Agent> prop378 = StoredVariable376.Agents; //IsContext = False IsNew = False
-					if(prop378 != null)
+					System.Collections.Generic.List<Agent> OperandVar613 = default(System.Collections.Generic.List<Agent>); //IsContext = False IsNew = False
+					System.Collections.Generic.List<Agent> prop612 = StoredVariable610.Agents; //IsContext = False IsNew = False
+					if(prop612 != null)
 					{
-						OperandVar379 = prop378;
+						OperandVar613 = prop612;
 					}
 					
 					
 					
-					System.Boolean OperandVar382 = default(System.Boolean); //IsContext = False IsNew = False
-					System.String OperandVar380 = default(System.String); //IsContext = False IsNew = False
-					OperandVar380 = "agents_pool";
-					System.Boolean prop381 = StoredVariable375.HasMarker( (OperandVar380)); //IsContext = False IsNew = False
-					OperandVar382 = prop381;
-					if(ifResult377 = ( (( ( (OperandVar379 != null ? OperandVar379.Count : 0))) == ( ( (0f))))) && ( ( (OperandVar382))))
+					System.Boolean OperandVar616 = default(System.Boolean); //IsContext = False IsNew = False
+					System.String OperandVar614 = default(System.String); //IsContext = False IsNew = False
+					OperandVar614 = "agents_pool";
+					System.Boolean prop615 = StoredVariable609.HasMarker( (OperandVar614)); //IsContext = False IsNew = False
+					OperandVar616 = prop615;
+					if(ifResult611 = ( (( ( (OperandVar613 != null ? OperandVar613.Count : 0))) == ( ( (0f))))) && ( ( (OperandVar616))))
 					{
 						applicable = true;
-						OperandVar383 = applicable;
+						OperandVar617 = applicable;
 					}
 				}
 			}
-			return (System.Boolean) (OperandVar383);
+			return (System.Boolean) (OperandVar617);
 		}
         }
         
@@ -2106,71 +3460,71 @@ namespace generators {
 			
 			
 			{
-				Place subContext384 = (Place)root.GetComponent(typeof(Place)); //IsContext = True IsNew = False
-				//ContextStatement Place subContext384 ContextSwitchInterpreter
-				if(subContext384 != null)
+				Place subContext618 = (Place)root.GetComponent(typeof(Place)); //IsContext = True IsNew = False
+				//ContextStatement Place subContext618 ContextSwitchInterpreter
+				if(subContext618 != null)
 				{
 					
-					subContext384.Size = (System.Int32)( (5f));
-					System.Single OperandVar386 = default(System.Single); //IsContext = False IsNew = False
+					subContext618.Size = (System.Int32)( (5f));
+					System.Single OperandVar620 = default(System.Single); //IsContext = False IsNew = False
 					
 					
-					System.Single prop385 = External.Random( (1f), (4f)); //IsContext = False IsNew = False
-					OperandVar386 = prop385;
-					for (int i = 0; i <  (OperandVar386); i++)
+					System.Single prop619 = External.Random( (1f), (4f)); //IsContext = False IsNew = False
+					OperandVar620 = prop619;
+					for (int i = 0; i <  (OperandVar620); i++)
 					{
 						UnityEngine.GameObject ag = new UnityEngine.GameObject("ag"); //IsContext = False IsNew = False
 						
 						{
-							UnityEngine.GameObject ag387 = ag; //IsContext = True IsNew = False
-							Entity AddContext388 = (Entity)ag.AddComponent(typeof(Entity)); //IsContext = True IsNew = True
-							Agent AddContext389 = (Agent)ag.AddComponent(typeof(Agent)); //IsContext = True IsNew = True
-							Blackboards.human AddContext390 = (Blackboards.human)ag.AddComponent(typeof(Blackboards.human)); //IsContext = True IsNew = True
+							UnityEngine.GameObject ag621 = ag; //IsContext = True IsNew = False
+							Entity AddContext622 = (Entity)ag.AddComponent(typeof(Entity)); //IsContext = True IsNew = True
+							Agent AddContext623 = (Agent)ag.AddComponent(typeof(Agent)); //IsContext = True IsNew = True
+							Blackboards.human AddContext624 = (Blackboards.human)ag.AddComponent(typeof(Blackboards.human)); //IsContext = True IsNew = True
 							
 							{
-								//ContextStatement Blackboards.human AddContext390 ContextSwitchInterpreter
-								if(AddContext390 != null)
+								//ContextStatement Blackboards.human AddContext624 ContextSwitchInterpreter
+								if(AddContext624 != null)
 								{
-									System.Single OperandVar392 = default(System.Single); //IsContext = False IsNew = False
+									System.Single OperandVar626 = default(System.Single); //IsContext = False IsNew = False
 									
 									
-									System.Single prop391 = External.Random( (20f), (45f)); //IsContext = False IsNew = False
-									OperandVar392 = prop391;
-									AddContext390.Age = (System.Int32)( (OperandVar392));
+									System.Single prop625 = External.Random( (20f), (45f)); //IsContext = False IsNew = False
+									OperandVar626 = prop625;
+									AddContext624.Age = (System.Int32)( (OperandVar626));
 								}
 							}
-							Named AddContext393 = (Named)ag.AddComponent(typeof(Named)); //IsContext = True IsNew = True
+							Named AddContext627 = (Named)ag.AddComponent(typeof(Named)); //IsContext = True IsNew = True
 							
 							{
-								//ContextStatement Named AddContext393 ContextSwitchInterpreter
-								if(AddContext393 != null)
+								//ContextStatement Named AddContext627 ContextSwitchInterpreter
+								if(AddContext627 != null)
 								{
 									
 									
 									
-									AddContext393.Set(( ("prefix")).ToString(),(System.Single)( (0f)),( ("Agent: ")).ToString());
+									AddContext627.Set(( ("prefix")).ToString(),(System.Single)( (0f)),( ("Agent: ")).ToString());
 									
 									
-									System.String OperandVar396 = default(System.String); //IsContext = False IsNew = False
-									System.String OperandVar394 = default(System.String); //IsContext = False IsNew = False
-									OperandVar394 = "human_name";
-									System.String prop395 = External.RandomName( (OperandVar394)); //IsContext = False IsNew = False
-									if(prop395 != null)
+									System.String OperandVar630 = default(System.String); //IsContext = False IsNew = False
+									System.String OperandVar628 = default(System.String); //IsContext = False IsNew = False
+									OperandVar628 = "human_name";
+									System.String prop629 = External.RandomName( (OperandVar628)); //IsContext = False IsNew = False
+									if(prop629 != null)
 									{
-										OperandVar396 = prop395;
+										OperandVar630 = prop629;
 									}
-									AddContext393.Set(( ("main_name")).ToString(),(System.Single)( (1f)),( (OperandVar396)).ToString());
+									AddContext627.Set(( ("main_name")).ToString(),(System.Single)( (1f)),( (OperandVar630)).ToString());
 								}
 							}
 						}
-						UnityEngine.Object.FindObjectOfType<Generators>().Generate(ag);
-						Agent OperandVar398 = default(Agent); //IsContext = False IsNew = False
-						Agent StoredVariable397 = ((Agent)ag.GetComponent(typeof(Agent))); //IsContext = False IsNew = False
-						if(StoredVariable397 != null)
+						UnityEngine.Object.FindObjectOfType<Generators>().Generate(ag, 0.1f);
+						Agent OperandVar632 = default(Agent); //IsContext = False IsNew = False
+						Agent StoredVariable631 = ((Agent)ag.GetComponent(typeof(Agent))); //IsContext = False IsNew = False
+						if(StoredVariable631 != null)
 						{
-							OperandVar398 = StoredVariable397;
+							OperandVar632 = StoredVariable631;
 						}
-						subContext384.Attach((Agent)( (OperandVar398)));
+						subContext618.Attach((Agent)( (OperandVar632)));
 					}
 				}
 			}
@@ -2189,27 +3543,27 @@ namespace generators {
 			//ContextStatement External External ContextSwitchInterpreter
 			System.Boolean applicable = false; //IsContext = False IsNew = False
 			
-			System.Boolean OperandVar405 = default(System.Boolean); //IsContext = False IsNew = False
-			Place StoredVariable399 = ((Place)root.GetComponent(typeof(Place))); //IsContext = False IsNew = False
-			if(StoredVariable399 != null)
+			System.Boolean OperandVar639 = default(System.Boolean); //IsContext = False IsNew = False
+			Place StoredVariable633 = ((Place)root.GetComponent(typeof(Place))); //IsContext = False IsNew = False
+			if(StoredVariable633 != null)
 			{
-				System.Boolean ifResult400; //IsContext = False IsNew = False
-				System.Boolean OperandVar404 = default(System.Boolean); //IsContext = False IsNew = False
-				Blackboards.event_marker OperandVar402 = default(Blackboards.event_marker); //IsContext = False IsNew = False
-				Blackboards.event_marker StoredVariable401 = ((Blackboards.event_marker)StoredVariable399.GetComponent(typeof(Blackboards.event_marker))); //IsContext = False IsNew = False
-				if(StoredVariable401 != null)
+				System.Boolean ifResult634; //IsContext = False IsNew = False
+				System.Boolean OperandVar638 = default(System.Boolean); //IsContext = False IsNew = False
+				Blackboards.event_marker OperandVar636 = default(Blackboards.event_marker); //IsContext = False IsNew = False
+				Blackboards.event_marker StoredVariable635 = ((Blackboards.event_marker)StoredVariable633.GetComponent(typeof(Blackboards.event_marker))); //IsContext = False IsNew = False
+				if(StoredVariable635 != null)
 				{
-					OperandVar402 = StoredVariable401;
+					OperandVar636 = StoredVariable635;
 				}
-				System.Boolean prop403 = External.Has( (OperandVar402)); //IsContext = False IsNew = False
-				OperandVar404 = prop403;
-				if(ifResult400 = !(OperandVar404))
+				System.Boolean prop637 = External.Has( (OperandVar636)); //IsContext = False IsNew = False
+				OperandVar638 = prop637;
+				if(ifResult634 = !(OperandVar638))
 				{
 					applicable = true;
-					OperandVar405 = applicable;
+					OperandVar639 = applicable;
 				}
 			}
-			return (System.Boolean) (OperandVar405);
+			return (System.Boolean) (OperandVar639);
 		}
         }
         
@@ -2234,8 +3588,8 @@ namespace generators {
 			//ContextStatement External External ContextSwitchInterpreter
 			
 			root.AddComponent<Blackboards.event_marker>();
-			Entity EntVar406 = (Entity)root.GetComponent(typeof(Entity));; //IsContext = False IsNew = False
-			if(EntVar406 != null) EntVar406.ComponentAdded();
+			Entity EntVar640 = (Entity)root.GetComponent(typeof(Entity));; //IsContext = False IsNew = False
+			if(EntVar640 != null) EntVar640.ComponentAdded();
 		}
         }
     }
@@ -2251,27 +3605,27 @@ namespace generators {
 			//ContextStatement External External ContextSwitchInterpreter
 			System.Boolean applicable = false; //IsContext = False IsNew = False
 			
-			System.Boolean OperandVar413 = default(System.Boolean); //IsContext = False IsNew = False
-			Agent StoredVariable407 = ((Agent)root.GetComponent(typeof(Agent))); //IsContext = False IsNew = False
-			if(StoredVariable407 != null)
+			System.Boolean OperandVar647 = default(System.Boolean); //IsContext = False IsNew = False
+			Agent StoredVariable641 = ((Agent)root.GetComponent(typeof(Agent))); //IsContext = False IsNew = False
+			if(StoredVariable641 != null)
 			{
-				System.Boolean ifResult408; //IsContext = False IsNew = False
-				System.Boolean OperandVar412 = default(System.Boolean); //IsContext = False IsNew = False
-				Blackboards.personality OperandVar410 = default(Blackboards.personality); //IsContext = False IsNew = False
-				Blackboards.personality StoredVariable409 = ((Blackboards.personality)StoredVariable407.GetComponent(typeof(Blackboards.personality))); //IsContext = False IsNew = False
-				if(StoredVariable409 != null)
+				System.Boolean ifResult642; //IsContext = False IsNew = False
+				System.Boolean OperandVar646 = default(System.Boolean); //IsContext = False IsNew = False
+				Blackboards.personality OperandVar644 = default(Blackboards.personality); //IsContext = False IsNew = False
+				Blackboards.personality StoredVariable643 = ((Blackboards.personality)StoredVariable641.GetComponent(typeof(Blackboards.personality))); //IsContext = False IsNew = False
+				if(StoredVariable643 != null)
 				{
-					OperandVar410 = StoredVariable409;
+					OperandVar644 = StoredVariable643;
 				}
-				System.Boolean prop411 = External.Has( (OperandVar410)); //IsContext = False IsNew = False
-				OperandVar412 = prop411;
-				if(ifResult408 = !(OperandVar412))
+				System.Boolean prop645 = External.Has( (OperandVar644)); //IsContext = False IsNew = False
+				OperandVar646 = prop645;
+				if(ifResult642 = !(OperandVar646))
 				{
 					applicable = true;
-					OperandVar413 = applicable;
+					OperandVar647 = applicable;
 				}
 			}
-			return (System.Boolean) (OperandVar413);
+			return (System.Boolean) (OperandVar647);
 		}
         }
         
@@ -2296,8 +3650,8 @@ namespace generators {
 			//ContextStatement External External ContextSwitchInterpreter
 			
 			root.AddComponent<Blackboards.personality>();
-			Entity EntVar414 = (Entity)root.GetComponent(typeof(Entity));; //IsContext = False IsNew = False
-			if(EntVar414 != null) EntVar414.ComponentAdded();
+			Entity EntVar648 = (Entity)root.GetComponent(typeof(Entity));; //IsContext = False IsNew = False
+			if(EntVar648 != null) EntVar648.ComponentAdded();
 		}
         }
     }
@@ -2313,27 +3667,27 @@ namespace generators {
 			//ContextStatement External External ContextSwitchInterpreter
 			System.Boolean applicable = false; //IsContext = False IsNew = False
 			
-			System.Boolean OperandVar421 = default(System.Boolean); //IsContext = False IsNew = False
-			Blackboards.human StoredVariable415 = ((Blackboards.human)root.GetComponent(typeof(Blackboards.human))); //IsContext = False IsNew = False
-			if(StoredVariable415 != null)
+			System.Boolean OperandVar655 = default(System.Boolean); //IsContext = False IsNew = False
+			Blackboards.human StoredVariable649 = ((Blackboards.human)root.GetComponent(typeof(Blackboards.human))); //IsContext = False IsNew = False
+			if(StoredVariable649 != null)
 			{
-				System.Boolean ifResult416; //IsContext = False IsNew = False
-				System.Boolean OperandVar420 = default(System.Boolean); //IsContext = False IsNew = False
-				Blackboards.aged_generation OperandVar418 = default(Blackboards.aged_generation); //IsContext = False IsNew = False
-				Blackboards.aged_generation StoredVariable417 = ((Blackboards.aged_generation)StoredVariable415.GetComponent(typeof(Blackboards.aged_generation))); //IsContext = False IsNew = False
-				if(StoredVariable417 != null)
+				System.Boolean ifResult650; //IsContext = False IsNew = False
+				System.Boolean OperandVar654 = default(System.Boolean); //IsContext = False IsNew = False
+				Blackboards.aged_generation OperandVar652 = default(Blackboards.aged_generation); //IsContext = False IsNew = False
+				Blackboards.aged_generation StoredVariable651 = ((Blackboards.aged_generation)StoredVariable649.GetComponent(typeof(Blackboards.aged_generation))); //IsContext = False IsNew = False
+				if(StoredVariable651 != null)
 				{
-					OperandVar418 = StoredVariable417;
+					OperandVar652 = StoredVariable651;
 				}
-				System.Boolean prop419 = External.Has( (OperandVar418)); //IsContext = False IsNew = False
-				OperandVar420 = prop419;
-				if(ifResult416 = !(OperandVar420))
+				System.Boolean prop653 = External.Has( (OperandVar652)); //IsContext = False IsNew = False
+				OperandVar654 = prop653;
+				if(ifResult650 = !(OperandVar654))
 				{
 					applicable = true;
-					OperandVar421 = applicable;
+					OperandVar655 = applicable;
 				}
 			}
-			return (System.Boolean) (OperandVar421);
+			return (System.Boolean) (OperandVar655);
 		}
         }
         
@@ -2358,306 +3712,8 @@ namespace generators {
 			//ContextStatement External External ContextSwitchInterpreter
 			
 			root.AddComponent<Blackboards.aged_generation>();
-			Entity EntVar422 = (Entity)root.GetComponent(typeof(Entity));; //IsContext = False IsNew = False
-			if(EntVar422 != null) EntVar422.ComponentAdded();
-		}
-        }
-    }
-    
-    [EventActionAttribute(ShouldHaveMaxUtility=false, Category="basic", OncePerObject=false, OncePerTurn=false)]
-    public class historical_persons : EventAction {
-        
-        public override bool Filter() {
-
-		{
-			var root = this.root;
-			
-			//ContextStatement External External ContextSwitchInterpreter
-			System.Boolean applicable = false; //IsContext = False IsNew = False
-			
-			System.Boolean OperandVar432 = default(System.Boolean); //IsContext = False IsNew = False
-			Markers StoredVariable423 = ((Markers)root.GetComponent(typeof(Markers))); //IsContext = False IsNew = False
-			if(StoredVariable423 != null)
-			{
-				Lore StoredVariable424 = ((Lore)StoredVariable423.GetComponent(typeof(Lore))); //IsContext = False IsNew = False
-				if(StoredVariable424 != null)
-				{
-					Place StoredVariable425 = ((Place)StoredVariable424.GetComponent(typeof(Place))); //IsContext = False IsNew = False
-					if(StoredVariable425 != null)
-					{
-						System.Boolean ifResult426; //IsContext = False IsNew = False
-						
-						
-						System.Collections.Generic.List<Agent> OperandVar428 = default(System.Collections.Generic.List<Agent>); //IsContext = False IsNew = False
-						System.Collections.Generic.List<Agent> prop427 = StoredVariable425.Agents; //IsContext = False IsNew = False
-						if(prop427 != null)
-						{
-							OperandVar428 = prop427;
-						}
-						
-						
-						
-						System.Boolean OperandVar431 = default(System.Boolean); //IsContext = False IsNew = False
-						System.String OperandVar429 = default(System.String); //IsContext = False IsNew = False
-						OperandVar429 = "lore_pool";
-						System.Boolean prop430 = StoredVariable423.HasMarker( (OperandVar429)); //IsContext = False IsNew = False
-						OperandVar431 = prop430;
-						if(ifResult426 = ( (( ( (OperandVar428 != null ? OperandVar428.Count : 0))) == ( ( (0f))))) && ( ( (OperandVar431))))
-						{
-							applicable = true;
-							OperandVar432 = applicable;
-						}
-					}
-				}
-			}
-			return (System.Boolean) (OperandVar432);
-		}
-        }
-        
-        public override float Utility() {
-
-		{
-			var root = this.root;
-			
-			//ContextStatement External External ContextSwitchInterpreter
-			System.Single ut = 0; //IsContext = False IsNew = False
-			
-			
-			return (System.Single) (1f);
-		}
-        }
-        
-        public override void Action() {
-
-		{
-			var root = this.root;
-			
-			//ContextStatement External External ContextSwitchInterpreter
-			
-			
-			{
-				Place subContext433 = (Place)root.GetComponent(typeof(Place)); //IsContext = True IsNew = False
-				//ContextStatement Place subContext433 ContextSwitchInterpreter
-				if(subContext433 != null)
-				{
-					
-					subContext433.Size = (System.Int32)( (10f));
-					System.Single OperandVar435 = default(System.Single); //IsContext = False IsNew = False
-					
-					
-					System.Single prop434 = External.Random( (4f), (10f)); //IsContext = False IsNew = False
-					OperandVar435 = prop434;
-					for (int i = 0; i <  (OperandVar435); i++)
-					{
-						UnityEngine.GameObject old_ag = new UnityEngine.GameObject("old_ag"); //IsContext = False IsNew = False
-						
-						{
-							UnityEngine.GameObject old_ag436 = old_ag; //IsContext = True IsNew = False
-							Entity AddContext437 = (Entity)old_ag.AddComponent(typeof(Entity)); //IsContext = True IsNew = True
-							Agent AddContext438 = (Agent)old_ag.AddComponent(typeof(Agent)); //IsContext = True IsNew = True
-							Blackboards.historical_person AddContext439 = (Blackboards.historical_person)old_ag.AddComponent(typeof(Blackboards.historical_person)); //IsContext = True IsNew = True
-							Blackboards.human AddContext440 = (Blackboards.human)old_ag.AddComponent(typeof(Blackboards.human)); //IsContext = True IsNew = True
-							
-							{
-								//ContextStatement Blackboards.human AddContext440 ContextSwitchInterpreter
-								if(AddContext440 != null)
-								{
-									System.Single OperandVar442 = default(System.Single); //IsContext = False IsNew = False
-									
-									
-									System.Single prop441 = External.Random( (30f), (45f)); //IsContext = False IsNew = False
-									OperandVar442 = prop441;
-									AddContext440.Age = (System.Int32)( (OperandVar442));
-								}
-							}
-							Named AddContext443 = (Named)old_ag.AddComponent(typeof(Named)); //IsContext = True IsNew = True
-							
-							{
-								//ContextStatement Named AddContext443 ContextSwitchInterpreter
-								if(AddContext443 != null)
-								{
-									
-									
-									
-									AddContext443.Set(( ("prefix")).ToString(),(System.Single)( (0f)),( ("Historical person: ")).ToString());
-									
-									
-									System.String OperandVar446 = default(System.String); //IsContext = False IsNew = False
-									System.String OperandVar444 = default(System.String); //IsContext = False IsNew = False
-									OperandVar444 = "human_name";
-									System.String prop445 = External.RandomName( (OperandVar444)); //IsContext = False IsNew = False
-									if(prop445 != null)
-									{
-										OperandVar446 = prop445;
-									}
-									AddContext443.Set(( ("main_name")).ToString(),(System.Single)( (1f)),( (OperandVar446)).ToString());
-								}
-							}
-						}
-						UnityEngine.Object.FindObjectOfType<Generators>().Generate(old_ag);
-						Agent OperandVar448 = default(Agent); //IsContext = False IsNew = False
-						Agent StoredVariable447 = ((Agent)old_ag.GetComponent(typeof(Agent))); //IsContext = False IsNew = False
-						if(StoredVariable447 != null)
-						{
-							OperandVar448 = StoredVariable447;
-						}
-						subContext433.Attach((Agent)( (OperandVar448)));
-					}
-				}
-			}
-		}
-        }
-    }
-    
-    [EventActionAttribute(ShouldHaveMaxUtility=false, Category="basic", OncePerObject=false, OncePerTurn=false)]
-    public class location_log : EventAction {
-        
-        public override bool Filter() {
-
-		{
-			var root = this.root;
-			
-			//ContextStatement External External ContextSwitchInterpreter
-			System.Boolean applicable = false; //IsContext = False IsNew = False
-			
-			System.Boolean OperandVar454 = default(System.Boolean); //IsContext = False IsNew = False
-			Place StoredVariable449 = ((Place)root.GetComponent(typeof(Place))); //IsContext = False IsNew = False
-			if(StoredVariable449 != null)
-			{
-				Named StoredVariable450 = ((Named)StoredVariable449.GetComponent(typeof(Named))); //IsContext = False IsNew = False
-				if(StoredVariable450 != null)
-				{
-					System.Boolean ifResult451; //IsContext = False IsNew = False
-					
-					System.Boolean OperandVar453 = default(System.Boolean); //IsContext = False IsNew = False
-					if(StoredVariable449 != null)
-					{
-						System.Boolean prop452 = StoredVariable449.Act; //IsContext = False IsNew = False
-						OperandVar453 = prop452;
-					}
-					
-					
-					if(ifResult451 = ( ( (OperandVar453))) == ( ( (true))))
-					{
-						applicable = true;
-						OperandVar454 = applicable;
-					}
-				}
-			}
-			return (System.Boolean) (OperandVar454);
-		}
-        }
-        
-        public override float Utility() {
-
-		{
-			var root = this.root;
-			
-			//ContextStatement External External ContextSwitchInterpreter
-			System.Single ut = 0; //IsContext = False IsNew = False
-			
-			
-			return (System.Single) (0.3f);
-		}
-        }
-        
-        public override void Action() {
-
-		{
-			var root = this.root;
-			
-			//ContextStatement External External ContextSwitchInterpreter
-			
-			System.String OperandVar458 = default(System.String); //IsContext = False IsNew = False
-			Named StoredVariable455 = ((Named)root.GetComponent(typeof(Named))); //IsContext = False IsNew = False
-			if(StoredVariable455 != null)
-			{
-				System.String OperandVar456 = default(System.String); //IsContext = False IsNew = False
-				OperandVar456 = "main_name";
-				System.String prop457 = StoredVariable455.Get( (OperandVar456)); //IsContext = False IsNew = False
-				if(prop457 != null)
-				{
-					OperandVar458 = prop457;
-				}
-			}
-			External.Log((System.Object)( (OperandVar458)));
-		}
-        }
-    }
-    
-    [EventActionAttribute(ShouldHaveMaxUtility=false, Category="basic", OncePerObject=false, OncePerTurn=false)]
-    public class destroy_self : EventAction {
-        
-        public override bool Filter() {
-
-		{
-			var root = this.root;
-			
-			//ContextStatement External External ContextSwitchInterpreter
-			System.Boolean applicable = false; //IsContext = False IsNew = False
-			
-			System.Boolean OperandVar466 = default(System.Boolean); //IsContext = False IsNew = False
-			Entity StoredVariable459 = ((Entity)root.GetComponent(typeof(Entity))); //IsContext = False IsNew = False
-			if(StoredVariable459 != null)
-			{
-				Agent StoredVariable460 = ((Agent)StoredVariable459.GetComponent(typeof(Agent))); //IsContext = False IsNew = False
-				if(StoredVariable460 != null)
-				{
-					System.Boolean ifResult461; //IsContext = False IsNew = False
-					
-					
-					System.Boolean OperandVar463 = default(System.Boolean); //IsContext = False IsNew = False
-					System.Boolean prop462 = StoredVariable460.Act; //IsContext = False IsNew = False
-					OperandVar463 = prop462;
-					
-					
-					
-					System.Boolean OperandVar465 = default(System.Boolean); //IsContext = False IsNew = False
-					if(StoredVariable459 != null)
-					{
-						System.Boolean prop464 = StoredVariable459.Dead; //IsContext = False IsNew = False
-						OperandVar465 = prop464;
-					}
-					if(ifResult461 = ( (( ( (OperandVar463))) == ( ( (true))))) && ( (!(OperandVar465))))
-					{
-						applicable = true;
-						OperandVar466 = applicable;
-					}
-				}
-			}
-			return (System.Boolean) (OperandVar466);
-		}
-        }
-        
-        public override float Utility() {
-
-		{
-			var root = this.root;
-			
-			//ContextStatement External External ContextSwitchInterpreter
-			System.Single ut = 0; //IsContext = False IsNew = False
-			
-			
-			return (System.Single) (0.01f);
-		}
-        }
-        
-        public override void Action() {
-
-		{
-			var root = this.root;
-			
-			//ContextStatement External External ContextSwitchInterpreter
-			
-			
-			
-			
-			UnityEngine.GameObject OperandVar467 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
-			OperandVar467 = root;
-			External.Log((System.Object)(( ( ("Destroying self "))) + ( ( (OperandVar467)))));
-			UnityEngine.GameObject OperandVar468 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
-			OperandVar468 = root;
-			External.Destroy((UnityEngine.Object)( (OperandVar468)));
+			Entity EntVar656 = (Entity)root.GetComponent(typeof(Entity));; //IsContext = False IsNew = False
+			if(EntVar656 != null) EntVar656.ComponentAdded();
 		}
         }
     }
@@ -2673,34 +3729,34 @@ namespace generators {
 			//ContextStatement External External ContextSwitchInterpreter
 			System.Boolean applicable = false; //IsContext = False IsNew = False
 			
-			System.Boolean OperandVar478 = default(System.Boolean); //IsContext = False IsNew = False
-			Place StoredVariable469 = ((Place)root.GetComponent(typeof(Place))); //IsContext = False IsNew = False
-			if(StoredVariable469 != null)
+			System.Boolean OperandVar666 = default(System.Boolean); //IsContext = False IsNew = False
+			Place StoredVariable657 = ((Place)root.GetComponent(typeof(Place))); //IsContext = False IsNew = False
+			if(StoredVariable657 != null)
 			{
-				Markers StoredVariable470 = ((Markers)StoredVariable469.GetComponent(typeof(Markers))); //IsContext = False IsNew = False
-				if(StoredVariable470 != null)
+				Markers StoredVariable658 = ((Markers)StoredVariable657.GetComponent(typeof(Markers))); //IsContext = False IsNew = False
+				if(StoredVariable658 != null)
 				{
-					System.Boolean ifResult471; //IsContext = False IsNew = False
+					System.Boolean ifResult659; //IsContext = False IsNew = False
 					
-					System.Boolean OperandVar474 = default(System.Boolean); //IsContext = False IsNew = False
-					System.String OperandVar472 = default(System.String); //IsContext = False IsNew = False
-					OperandVar472 = "map_anchored";
-					System.Boolean prop473 = StoredVariable470.HasMarker( (OperandVar472)); //IsContext = False IsNew = False
-					OperandVar474 = prop473;
+					System.Boolean OperandVar662 = default(System.Boolean); //IsContext = False IsNew = False
+					System.String OperandVar660 = default(System.String); //IsContext = False IsNew = False
+					OperandVar660 = "map_anchored";
+					System.Boolean prop661 = StoredVariable658.HasMarker( (OperandVar660)); //IsContext = False IsNew = False
+					OperandVar662 = prop661;
 					
-					System.Boolean OperandVar477 = default(System.Boolean); //IsContext = False IsNew = False
-					System.String OperandVar475 = default(System.String); //IsContext = False IsNew = False
-					OperandVar475 = "history_place";
-					System.Boolean prop476 = StoredVariable470.HasMarker( (OperandVar475)); //IsContext = False IsNew = False
-					OperandVar477 = prop476;
-					if(ifResult471 = ( (!(OperandVar474))) && ( ( (OperandVar477))))
+					System.Boolean OperandVar665 = default(System.Boolean); //IsContext = False IsNew = False
+					System.String OperandVar663 = default(System.String); //IsContext = False IsNew = False
+					OperandVar663 = "history_place";
+					System.Boolean prop664 = StoredVariable658.HasMarker( (OperandVar663)); //IsContext = False IsNew = False
+					OperandVar665 = prop664;
+					if(ifResult659 = ( (!(OperandVar662))) && ( ( (OperandVar665))))
 					{
 						applicable = true;
-						OperandVar478 = applicable;
+						OperandVar666 = applicable;
 					}
 				}
 			}
-			return (System.Boolean) (OperandVar478);
+			return (System.Boolean) (OperandVar666);
 		}
         }
         
@@ -2726,18 +3782,18 @@ namespace generators {
 			
 			
 			{
-				Markers subContext479 = (Markers)root.GetComponent(typeof(Markers)); //IsContext = True IsNew = False
-				//ContextStatement Markers subContext479 ContextSwitchInterpreter
-				if(subContext479 != null)
+				Markers subContext667 = (Markers)root.GetComponent(typeof(Markers)); //IsContext = True IsNew = False
+				//ContextStatement Markers subContext667 ContextSwitchInterpreter
+				if(subContext667 != null)
 				{
-					System.String OperandVar480 = default(System.String); //IsContext = False IsNew = False
-					OperandVar480 = "map_anchored";
-					subContext479.SetUiMarker(( (OperandVar480)).ToString());
+					System.String OperandVar668 = default(System.String); //IsContext = False IsNew = False
+					OperandVar668 = "map_anchored";
+					subContext667.SetUiMarker(( (OperandVar668)).ToString());
 				}
 			}
-			UnityEngine.GameObject OperandVar481 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
-			OperandVar481 = root;
-			External.MapEnlist((UnityEngine.GameObject)( (OperandVar481)));
+			UnityEngine.GameObject OperandVar669 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
+			OperandVar669 = root;
+			External.MapEnlist((UnityEngine.GameObject)( (OperandVar669)));
 		}
         }
     }
@@ -2753,27 +3809,27 @@ namespace generators {
 			//ContextStatement External External ContextSwitchInterpreter
 			System.Boolean applicable = false; //IsContext = False IsNew = False
 			
-			System.Boolean OperandVar488 = default(System.Boolean); //IsContext = False IsNew = False
-			Encounter StoredVariable482 = ((Encounter)root.GetComponent(typeof(Encounter))); //IsContext = False IsNew = False
-			if(StoredVariable482 != null)
+			System.Boolean OperandVar676 = default(System.Boolean); //IsContext = False IsNew = False
+			Encounter StoredVariable670 = ((Encounter)root.GetComponent(typeof(Encounter))); //IsContext = False IsNew = False
+			if(StoredVariable670 != null)
 			{
-				Markers StoredVariable483 = ((Markers)StoredVariable482.GetComponent(typeof(Markers))); //IsContext = False IsNew = False
-				if(StoredVariable483 != null)
+				Markers StoredVariable671 = ((Markers)StoredVariable670.GetComponent(typeof(Markers))); //IsContext = False IsNew = False
+				if(StoredVariable671 != null)
 				{
-					System.Boolean ifResult484; //IsContext = False IsNew = False
-					System.Boolean OperandVar487 = default(System.Boolean); //IsContext = False IsNew = False
-					System.String OperandVar485 = default(System.String); //IsContext = False IsNew = False
-					OperandVar485 = "encounter_ui_enlist";
-					System.Boolean prop486 = StoredVariable483.HasMarker( (OperandVar485)); //IsContext = False IsNew = False
-					OperandVar487 = prop486;
-					if(ifResult484 = !(OperandVar487))
+					System.Boolean ifResult672; //IsContext = False IsNew = False
+					System.Boolean OperandVar675 = default(System.Boolean); //IsContext = False IsNew = False
+					System.String OperandVar673 = default(System.String); //IsContext = False IsNew = False
+					OperandVar673 = "encounter_ui_enlist";
+					System.Boolean prop674 = StoredVariable671.HasMarker( (OperandVar673)); //IsContext = False IsNew = False
+					OperandVar675 = prop674;
+					if(ifResult672 = !(OperandVar675))
 					{
 						applicable = true;
-						OperandVar488 = applicable;
+						OperandVar676 = applicable;
 					}
 				}
 			}
-			return (System.Boolean) (OperandVar488);
+			return (System.Boolean) (OperandVar676);
 		}
         }
         
@@ -2799,18 +3855,18 @@ namespace generators {
 			
 			
 			{
-				Markers subContext489 = (Markers)root.GetComponent(typeof(Markers)); //IsContext = True IsNew = False
-				//ContextStatement Markers subContext489 ContextSwitchInterpreter
-				if(subContext489 != null)
+				Markers subContext677 = (Markers)root.GetComponent(typeof(Markers)); //IsContext = True IsNew = False
+				//ContextStatement Markers subContext677 ContextSwitchInterpreter
+				if(subContext677 != null)
 				{
-					System.String OperandVar490 = default(System.String); //IsContext = False IsNew = False
-					OperandVar490 = "encounter_ui_enlist";
-					subContext489.SetUiMarker(( (OperandVar490)).ToString());
+					System.String OperandVar678 = default(System.String); //IsContext = False IsNew = False
+					OperandVar678 = "encounter_ui_enlist";
+					subContext677.SetUiMarker(( (OperandVar678)).ToString());
 				}
 			}
-			UnityEngine.GameObject OperandVar491 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
-			OperandVar491 = root;
-			External.EnlistEncounter((UnityEngine.GameObject)( (OperandVar491)));
+			UnityEngine.GameObject OperandVar679 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
+			OperandVar679 = root;
+			External.EnlistEncounter((UnityEngine.GameObject)( (OperandVar679)));
 		}
         }
     }
@@ -2826,31 +3882,31 @@ namespace generators {
 			//ContextStatement External External ContextSwitchInterpreter
 			System.Boolean applicable = false; //IsContext = False IsNew = False
 			
-			System.Boolean OperandVar497 = default(System.Boolean); //IsContext = False IsNew = False
-			Place StoredVariable492 = ((Place)root.GetComponent(typeof(Place))); //IsContext = False IsNew = False
-			if(StoredVariable492 != null)
+			System.Boolean OperandVar685 = default(System.Boolean); //IsContext = False IsNew = False
+			Place StoredVariable680 = ((Place)root.GetComponent(typeof(Place))); //IsContext = False IsNew = False
+			if(StoredVariable680 != null)
 			{
-				Named StoredVariable493 = ((Named)StoredVariable492.GetComponent(typeof(Named))); //IsContext = False IsNew = False
-				if(StoredVariable493 != null)
+				Named StoredVariable681 = ((Named)StoredVariable680.GetComponent(typeof(Named))); //IsContext = False IsNew = False
+				if(StoredVariable681 != null)
 				{
-					System.Boolean ifResult494; //IsContext = False IsNew = False
+					System.Boolean ifResult682; //IsContext = False IsNew = False
 					
-					System.Boolean OperandVar496 = default(System.Boolean); //IsContext = False IsNew = False
-					if(StoredVariable492 != null)
+					System.Boolean OperandVar684 = default(System.Boolean); //IsContext = False IsNew = False
+					if(StoredVariable680 != null)
 					{
-						System.Boolean prop495 = StoredVariable492.Act; //IsContext = False IsNew = False
-						OperandVar496 = prop495;
+						System.Boolean prop683 = StoredVariable680.Act; //IsContext = False IsNew = False
+						OperandVar684 = prop683;
 					}
 					
 					
-					if(ifResult494 = ( ( (OperandVar496))) == ( ( (true))))
+					if(ifResult682 = ( ( (OperandVar684))) == ( ( (true))))
 					{
 						applicable = true;
-						OperandVar497 = applicable;
+						OperandVar685 = applicable;
 					}
 				}
 			}
-			return (System.Boolean) (OperandVar497);
+			return (System.Boolean) (OperandVar685);
 		}
         }
         
@@ -2877,35 +3933,35 @@ namespace generators {
 			UnityEngine.GameObject enc = new UnityEngine.GameObject("enc"); //IsContext = False IsNew = False
 			
 			{
-				UnityEngine.GameObject enc498 = enc; //IsContext = True IsNew = False
-				Encounter AddContext499 = (Encounter)enc.AddComponent(typeof(Encounter)); //IsContext = True IsNew = True
+				UnityEngine.GameObject enc686 = enc; //IsContext = True IsNew = False
+				Encounter AddContext687 = (Encounter)enc.AddComponent(typeof(Encounter)); //IsContext = True IsNew = True
 				
 				{
-					//ContextStatement Encounter AddContext499 ContextSwitchInterpreter
-					if(AddContext499 != null)
+					//ContextStatement Encounter AddContext687 ContextSwitchInterpreter
+					if(AddContext687 != null)
 					{
-						UnityEngine.GameObject OperandVar500 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
-						OperandVar500 = root;
-						AddContext499.Context = (UnityEngine.GameObject)( (OperandVar500));
+						UnityEngine.GameObject OperandVar688 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
+						OperandVar688 = root;
+						AddContext687.Context = (UnityEngine.GameObject)( (OperandVar688));
 					}
 				}
-				Markers AddContext501 = (Markers)enc.AddComponent(typeof(Markers)); //IsContext = True IsNew = True
-				Entity AddContext502 = (Entity)enc.AddComponent(typeof(Entity)); //IsContext = True IsNew = True
-				Named AddContext503 = (Named)enc.AddComponent(typeof(Named)); //IsContext = True IsNew = True
+				Markers AddContext689 = (Markers)enc.AddComponent(typeof(Markers)); //IsContext = True IsNew = True
+				Entity AddContext690 = (Entity)enc.AddComponent(typeof(Entity)); //IsContext = True IsNew = True
+				Named AddContext691 = (Named)enc.AddComponent(typeof(Named)); //IsContext = True IsNew = True
 				
 				{
-					//ContextStatement Named AddContext503 ContextSwitchInterpreter
-					if(AddContext503 != null)
+					//ContextStatement Named AddContext691 ContextSwitchInterpreter
+					if(AddContext691 != null)
 					{
-						System.String OperandVar504 = default(System.String); //IsContext = False IsNew = False
-						OperandVar504 = "main_name";
+						System.String OperandVar692 = default(System.String); //IsContext = False IsNew = False
+						OperandVar692 = "main_name";
 						
 						
-						AddContext503.Set(( (OperandVar504)).ToString(),(System.Single)( (0f)),( ("Basic encounter")).ToString());
+						AddContext691.Set(( (OperandVar692)).ToString(),(System.Single)( (0f)),( ("Basic encounter")).ToString());
 					}
 				}
 			}
-			UnityEngine.Object.FindObjectOfType<Generators>().Generate(enc);
+			UnityEngine.Object.FindObjectOfType<Generators>().Generate(enc, 0.1f);
 		}
         }
     }
@@ -2921,51 +3977,51 @@ namespace generators {
 			//ContextStatement External External ContextSwitchInterpreter
 			System.Boolean applicable = false; //IsContext = False IsNew = False
 			
-			System.Boolean OperandVar518 = default(System.Boolean); //IsContext = False IsNew = False
-			UiObject StoredVariable505 = ((UiObject)root.GetComponent(typeof(UiObject))); //IsContext = False IsNew = False
-			if(StoredVariable505 != null)
+			System.Boolean OperandVar706 = default(System.Boolean); //IsContext = False IsNew = False
+			UiObject StoredVariable693 = ((UiObject)root.GetComponent(typeof(UiObject))); //IsContext = False IsNew = False
+			if(StoredVariable693 != null)
 			{
-				Markers StoredVariable506 = ((Markers)StoredVariable505.GetComponent(typeof(Markers))); //IsContext = False IsNew = False
-				if(StoredVariable506 != null)
+				Markers StoredVariable694 = ((Markers)StoredVariable693.GetComponent(typeof(Markers))); //IsContext = False IsNew = False
+				if(StoredVariable694 != null)
 				{
-					System.Boolean ifResult507; //IsContext = False IsNew = False
+					System.Boolean ifResult695; //IsContext = False IsNew = False
 					
-					System.Boolean OperandVar514 = default(System.Boolean); //IsContext = False IsNew = False
-					if(StoredVariable505 != null)
+					System.Boolean OperandVar702 = default(System.Boolean); //IsContext = False IsNew = False
+					if(StoredVariable693 != null)
 					{
-						UnityEngine.GameObject prop508 = StoredVariable505.ShowedObject; //IsContext = False IsNew = False
-						if(prop508 != null)
+						UnityEngine.GameObject prop696 = StoredVariable693.ShowedObject; //IsContext = False IsNew = False
+						if(prop696 != null)
 						{
-							System.Boolean ifResult509; //IsContext = False IsNew = False
-							System.Boolean OperandVar513 = default(System.Boolean); //IsContext = False IsNew = False
-							Place OperandVar511 = default(Place); //IsContext = False IsNew = False
-							Place StoredVariable510 = ((Place)prop508.GetComponent(typeof(Place))); //IsContext = False IsNew = False
-							if(StoredVariable510 != null)
+							System.Boolean ifResult697; //IsContext = False IsNew = False
+							System.Boolean OperandVar701 = default(System.Boolean); //IsContext = False IsNew = False
+							Place OperandVar699 = default(Place); //IsContext = False IsNew = False
+							Place StoredVariable698 = ((Place)prop696.GetComponent(typeof(Place))); //IsContext = False IsNew = False
+							if(StoredVariable698 != null)
 							{
-								OperandVar511 = StoredVariable510;
+								OperandVar699 = StoredVariable698;
 							}
-							System.Boolean prop512 = External.Has( (OperandVar511)); //IsContext = False IsNew = False
-							OperandVar513 = prop512;
-							if(ifResult509 =  (OperandVar513))
+							System.Boolean prop700 = External.Has( (OperandVar699)); //IsContext = False IsNew = False
+							OperandVar701 = prop700;
+							if(ifResult697 =  (OperandVar701))
 							{
-								OperandVar514 = ifResult509;
+								OperandVar702 = ifResult697;
 							}
 						}
 					}
 					
-					System.Boolean OperandVar517 = default(System.Boolean); //IsContext = False IsNew = False
-					System.String OperandVar515 = default(System.String); //IsContext = False IsNew = False
-					OperandVar515 = "place_ui_cards_list";
-					System.Boolean prop516 = StoredVariable506.HasMarker( (OperandVar515)); //IsContext = False IsNew = False
-					OperandVar517 = prop516;
-					if(ifResult507 = ( ( (OperandVar514))) && ( (!(OperandVar517))))
+					System.Boolean OperandVar705 = default(System.Boolean); //IsContext = False IsNew = False
+					System.String OperandVar703 = default(System.String); //IsContext = False IsNew = False
+					OperandVar703 = "place_ui_cards_list";
+					System.Boolean prop704 = StoredVariable694.HasMarker( (OperandVar703)); //IsContext = False IsNew = False
+					OperandVar705 = prop704;
+					if(ifResult695 = ( ( (OperandVar702))) && ( (!(OperandVar705))))
 					{
 						applicable = true;
-						OperandVar518 = applicable;
+						OperandVar706 = applicable;
 					}
 				}
 			}
-			return (System.Boolean) (OperandVar518);
+			return (System.Boolean) (OperandVar706);
 		}
         }
         
@@ -2991,65 +4047,65 @@ namespace generators {
 			
 			
 			{
-				Markers subContext519 = (Markers)root.GetComponent(typeof(Markers)); //IsContext = True IsNew = False
-				//ContextStatement Markers subContext519 ContextSwitchInterpreter
-				if(subContext519 != null)
+				Markers subContext707 = (Markers)root.GetComponent(typeof(Markers)); //IsContext = True IsNew = False
+				//ContextStatement Markers subContext707 ContextSwitchInterpreter
+				if(subContext707 != null)
 				{
-					System.String OperandVar520 = default(System.String); //IsContext = False IsNew = False
-					OperandVar520 = "place_ui_cards_list";
-					subContext519.SetUiMarker(( (OperandVar520)).ToString());
+					System.String OperandVar708 = default(System.String); //IsContext = False IsNew = False
+					OperandVar708 = "place_ui_cards_list";
+					subContext707.SetUiMarker(( (OperandVar708)).ToString());
 				}
 			}
-			Place OperandVar524 = default(Place); //IsContext = False IsNew = False
-			UiObject StoredVariable521 = ((UiObject)root.GetComponent(typeof(UiObject))); //IsContext = False IsNew = False
-			if(StoredVariable521 != null)
+			Place OperandVar712 = default(Place); //IsContext = False IsNew = False
+			UiObject StoredVariable709 = ((UiObject)root.GetComponent(typeof(UiObject))); //IsContext = False IsNew = False
+			if(StoredVariable709 != null)
 			{
-				UnityEngine.GameObject prop522 = StoredVariable521.ShowedObject; //IsContext = False IsNew = False
-				if(prop522 != null)
+				UnityEngine.GameObject prop710 = StoredVariable709.ShowedObject; //IsContext = False IsNew = False
+				if(prop710 != null)
 				{
-					Place StoredVariable523 = ((Place)prop522.GetComponent(typeof(Place))); //IsContext = False IsNew = False
-					if(StoredVariable523 != null)
+					Place StoredVariable711 = ((Place)prop710.GetComponent(typeof(Place))); //IsContext = False IsNew = False
+					if(StoredVariable711 != null)
 					{
-						OperandVar524 = StoredVariable523;
+						OperandVar712 = StoredVariable711;
 					}
 				}
 			}
-			Place pl =  (OperandVar524); //IsContext = False IsNew = False
-			System.String OperandVar525 = default(System.String); //IsContext = False IsNew = False
-			OperandVar525 = "place_cards";
+			Place pl =  (OperandVar712); //IsContext = False IsNew = False
+			System.String OperandVar713 = default(System.String); //IsContext = False IsNew = False
+			OperandVar713 = "place_cards";
 			
 			{
-				UnityEngine.GameObject FuncCtx526 = External.SpawnPrefab(( (OperandVar525)).ToString());; //IsContext = True IsNew = False
-				//ContextStatement UnityEngine.GameObject FuncCtx526 ContextPropertySwitchInterpreter
-				if(FuncCtx526 != null)
+				UnityEngine.GameObject FuncCtx714 = External.SpawnPrefab(( (OperandVar713)).ToString());; //IsContext = True IsNew = False
+				//ContextStatement UnityEngine.GameObject FuncCtx714 ContextPropertySwitchInterpreter
+				if(FuncCtx714 != null)
 				{
 					
 					{
-						AgentsUI subContext527 = (AgentsUI)FuncCtx526.GetComponent(typeof(AgentsUI)); //IsContext = True IsNew = False
-						//ContextStatement AgentsUI subContext527 ContextSwitchInterpreter
-						if(subContext527 != null)
+						AgentsUI subContext715 = (AgentsUI)FuncCtx714.GetComponent(typeof(AgentsUI)); //IsContext = True IsNew = False
+						//ContextStatement AgentsUI subContext715 ContextSwitchInterpreter
+						if(subContext715 != null)
 						{
-							Place OperandVar528 = default(Place); //IsContext = False IsNew = False
-							OperandVar528 = pl;
-							subContext527.TargetPlace = (Place)( (OperandVar528));
+							Place OperandVar716 = default(Place); //IsContext = False IsNew = False
+							OperandVar716 = pl;
+							subContext715.TargetPlace = (Place)( (OperandVar716));
 						}
 					}
 					
 					{
-						CardsHolderAgentsAdapter subContext529 = (CardsHolderAgentsAdapter)FuncCtx526.GetComponent(typeof(CardsHolderAgentsAdapter)); //IsContext = True IsNew = False
-						//ContextStatement CardsHolderAgentsAdapter subContext529 ContextSwitchInterpreter
-						if(subContext529 != null)
+						CardsHolderAgentsAdapter subContext717 = (CardsHolderAgentsAdapter)FuncCtx714.GetComponent(typeof(CardsHolderAgentsAdapter)); //IsContext = True IsNew = False
+						//ContextStatement CardsHolderAgentsAdapter subContext717 ContextSwitchInterpreter
+						if(subContext717 != null)
 						{
-							Place OperandVar530 = default(Place); //IsContext = False IsNew = False
-							OperandVar530 = pl;
-							subContext529.TargetPlace = (Place)( (OperandVar530));
+							Place OperandVar718 = default(Place); //IsContext = False IsNew = False
+							OperandVar718 = pl;
+							subContext717.TargetPlace = (Place)( (OperandVar718));
 						}
 					}
-					UnityEngine.GameObject OperandVar531 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
-					OperandVar531 = FuncCtx526;
-					UnityEngine.GameObject OperandVar532 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
-					OperandVar532 = root;
-					External.SetParent((UnityEngine.GameObject)( (OperandVar531)),(UnityEngine.GameObject)( (OperandVar532)));
+					UnityEngine.GameObject OperandVar719 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
+					OperandVar719 = FuncCtx714;
+					UnityEngine.GameObject OperandVar720 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
+					OperandVar720 = root;
+					External.SetParent((UnityEngine.GameObject)( (OperandVar719)),(UnityEngine.GameObject)( (OperandVar720)));
 				}
 			}
 		}
@@ -3067,29 +4123,29 @@ namespace generators {
 			//ContextStatement External External ContextSwitchInterpreter
 			System.Boolean applicable = false; //IsContext = False IsNew = False
 			
-			System.Boolean OperandVar538 = default(System.Boolean); //IsContext = False IsNew = False
-			UiObject StoredVariable533 = ((UiObject)root.GetComponent(typeof(UiObject))); //IsContext = False IsNew = False
-			if(StoredVariable533 != null)
+			System.Boolean OperandVar726 = default(System.Boolean); //IsContext = False IsNew = False
+			UiObject StoredVariable721 = ((UiObject)root.GetComponent(typeof(UiObject))); //IsContext = False IsNew = False
+			if(StoredVariable721 != null)
 			{
-				System.Boolean ifResult534; //IsContext = False IsNew = False
-				System.Boolean OperandVar537 = default(System.Boolean); //IsContext = False IsNew = False
-				UnityEngine.GameObject prop535 = StoredVariable533.ShowedObject; //IsContext = False IsNew = False
-				if(prop535 != null)
+				System.Boolean ifResult722; //IsContext = False IsNew = False
+				System.Boolean OperandVar725 = default(System.Boolean); //IsContext = False IsNew = False
+				UnityEngine.GameObject prop723 = StoredVariable721.ShowedObject; //IsContext = False IsNew = False
+				if(prop723 != null)
 				{
-					Place StoredVariable536 = ((Place)prop535.GetComponent(typeof(Place))); //IsContext = False IsNew = False
-					if(StoredVariable536 != null)
+					Place StoredVariable724 = ((Place)prop723.GetComponent(typeof(Place))); //IsContext = False IsNew = False
+					if(StoredVariable724 != null)
 					{
 						applicable = true;
-						OperandVar537 = applicable;
+						OperandVar725 = applicable;
 					}
 				}
-				if(ifResult534 =  (OperandVar537))
+				if(ifResult722 =  (OperandVar725))
 				{
 					applicable = true;
-					OperandVar538 = applicable;
+					OperandVar726 = applicable;
 				}
 			}
-			return (System.Boolean) (OperandVar538);
+			return (System.Boolean) (OperandVar726);
 		}
         }
         
@@ -3113,44 +4169,44 @@ namespace generators {
 			
 			//ContextStatement External External ContextSwitchInterpreter
 			
-			TextField ContextVar539 = root.AddComponent<TextField>();; //IsContext = False IsNew = True
+			TextField ContextVar727 = root.AddComponent<TextField>();; //IsContext = False IsNew = True
 			
 			{
-				//ContextStatement TextField ContextVar539 ContextSwitchInterpreter
-				if(ContextVar539 != null)
+				//ContextStatement TextField ContextVar727 ContextSwitchInterpreter
+				if(ContextVar727 != null)
 				{
 					
-					ContextVar539.Label = (System.String)( ("size"));
-					System.Int32 OperandVar544 = default(System.Int32); //IsContext = False IsNew = False
-					UiObject StoredVariable540 = ((UiObject)ContextVar539.GetComponent(typeof(UiObject))); //IsContext = False IsNew = False
-					if(StoredVariable540 != null)
+					ContextVar727.Label = (System.String)( ("size"));
+					System.Int32 OperandVar732 = default(System.Int32); //IsContext = False IsNew = False
+					UiObject StoredVariable728 = ((UiObject)ContextVar727.GetComponent(typeof(UiObject))); //IsContext = False IsNew = False
+					if(StoredVariable728 != null)
 					{
-						UnityEngine.GameObject prop541 = StoredVariable540.ShowedObject; //IsContext = False IsNew = False
-						if(prop541 != null)
+						UnityEngine.GameObject prop729 = StoredVariable728.ShowedObject; //IsContext = False IsNew = False
+						if(prop729 != null)
 						{
-							Place StoredVariable542 = ((Place)prop541.GetComponent(typeof(Place))); //IsContext = False IsNew = False
-							if(StoredVariable542 != null)
+							Place StoredVariable730 = ((Place)prop729.GetComponent(typeof(Place))); //IsContext = False IsNew = False
+							if(StoredVariable730 != null)
 							{
-								System.Int32 prop543 = StoredVariable542.Size; //IsContext = False IsNew = False
-								OperandVar544 = prop543;
+								System.Int32 prop731 = StoredVariable730.Size; //IsContext = False IsNew = False
+								OperandVar732 = prop731;
 							}
 						}
 					}
-					ContextVar539.Show(( (OperandVar544)).ToString());
+					ContextVar727.Show(( (OperandVar732)).ToString());
 					
 					{
-						UnityEngine.UI.LayoutElement subContext545 = ContextVar539.Layout; //IsContext = True IsNew = False
-						//ContextStatement UnityEngine.UI.LayoutElement subContext545 ContextPropertySwitchInterpreter
-						if(subContext545 != null)
+						UnityEngine.UI.LayoutElement subContext733 = ContextVar727.Layout; //IsContext = True IsNew = False
+						//ContextStatement UnityEngine.UI.LayoutElement subContext733 ContextPropertySwitchInterpreter
+						if(subContext733 != null)
 						{
 							
-							subContext545.minHeight = (System.Single)( (20f));
+							subContext733.minHeight = (System.Single)( (20f));
 						}
 					}
 				}
 			}
-			Entity EntVar546 = (Entity)root.GetComponent(typeof(Entity));; //IsContext = False IsNew = False
-			if(EntVar546 != null) EntVar546.ComponentAdded();
+			Entity EntVar734 = (Entity)root.GetComponent(typeof(Entity));; //IsContext = False IsNew = False
+			if(EntVar734 != null) EntVar734.ComponentAdded();
 		}
         }
     }

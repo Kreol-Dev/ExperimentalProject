@@ -514,10 +514,15 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 					if (prop == null && components.ContainsKey (scope [i] as string))
 					{
 						var type = components [scope [i] as string];
+                        string storedFromName = null;
+                        if (hasSign)
+                            storedFromName =  exprBuilder.ToString(1, exprBuilder.Length - 1);
+                        else
+                            storedFromName = exprBuilder.ToString();
                         if (ScriptEngine.AnalyzeDebug)
                             Debug.LogWarning ("Component found " + type);
-                        //var storedVar = curBlock.FindStatement<DeclareVariableStatement> (v => v.Type == type);
-                        DeclareVariableStatement storedVar = null;
+                        var storedVar = curBlock.FindStatement<DeclareVariableStatement> (v => v.Type == type && v.storedOf != null && storedFromName == v.storedOf);
+                        
 						contextType = type;
 						if (storedVar == null)
 						{
@@ -528,7 +533,9 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 							curBlock.Statements.Add (storedVar);//block.FindStatement<DeclareVariableStatement> (v => !v.IsContext && v.Type == type);
 							storedVar.Name = "StoredVariable" + DeclareVariableStatement.VariableId++;
 							storedVar.Type = type;
-							exprBuilder.Append (String.Format ("GetComponent(typeof({0})))", type));
+
+                            storedVar.storedOf = hasSign ? exprBuilder.ToString(1, exprBuilder.Length) : exprBuilder.ToString(0, exprBuilder.Length);
+                            exprBuilder.Append (String.Format ("GetComponent(typeof({0})))", type));
 							exprBuilder.Insert (0, String.Format ("(({0})", type));
 							if (hasSign)
 							{
