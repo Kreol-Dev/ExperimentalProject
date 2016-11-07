@@ -683,7 +683,7 @@ public class ContextPropertySwitchInterpreter : ContextPropertyInterpreter
 		contextBlock = isNotNull.TrueBlock;
 		foreach (var entry in (op.Context as Context).Entries)
 		{
-            Debug.LogFormat("Interpreting {0} as part of {1} context", (entry as Operator).Identifier, op.Identifier);
+            //Debug.LogFormat("Interpreting {0} as part of {1} context", (entry as Operator).Identifier, op.Identifier);
 			var subOp = entry as Operator;
 			if (subOp == null)
 				continue;
@@ -693,7 +693,7 @@ public class ContextPropertySwitchInterpreter : ContextPropertyInterpreter
 			if (!functions.TryGetValue (subOp.Identifier as string, out opInter))
 			if (!properties.TryGetValue (subOp.Identifier as string, out opInter))
 			{
-				Debug.LogFormat ("Can't interpret context operator {1} in {0}", block.Method.Name, subOp.Identifier);
+				//Debug.LogFormat ("Can't interpret context operator {1} in {0}", block.Method.Name, subOp.Identifier);
 				continue;
 			}
 			opInter.Interpret (subOp, contextBlock);

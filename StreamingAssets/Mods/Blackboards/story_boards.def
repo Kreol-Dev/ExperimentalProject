@@ -1,15 +1,16 @@
 foe_role = 
 {
 	enemy = gameobject
-	threat_level = float
+	threat_level(0, 1000) = float
 }
 
 ruler_role = 
 {
 	at_war_with = list(gameobject)
-	forces = float
+	forces(0, 1000) = float
 	wunderwaffe = gameobject
-	people = float
+	people(0, 1) = float
+	current_campaign = gameobject
 }
 war_declaration = yes
 targeted_event = 
@@ -29,13 +30,9 @@ worker =
 {
 	works_for = gameobject
 }
-battle_event = 
+campaign_event = 
 {
-	won = gameobject
-	lost = gameobject
-	tie = bool
-	winner_forces_lost = float
-	looser_forces_lost = float
+	forces_involved = float
 }
 
 notify_event = 

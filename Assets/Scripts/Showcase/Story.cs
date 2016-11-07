@@ -18,9 +18,18 @@ public class Story : MonoBehaviour
 		return IntensityCurve.Evaluate ((float)CurrentStep / (float)StepsCount);
 	}
 
+    public List<GameObject> AllActors()
+    {
+        return actors;
+    }
+
+    public int CurrentDate()
+    {
+        return CurrentStep;
+    }
     void Awake()
     {
-        FindObjectOfType<BasicLoader>().EFunctions.Add(new BasicLoader.ExternalFunctions(this, "Intensity"));
+        FindObjectOfType<BasicLoader>().EFunctions.Add(new BasicLoader.ExternalFunctions(this, "Intensity", "AllActors", "CurrentDate"));
     }
     bool generating = false;
     void Start()
@@ -37,6 +46,11 @@ public class Story : MonoBehaviour
         }
     }
     
+
+    public void ReactionToEvent(GameObject eventObject)
+    {
+
+    }
     
     IEnumerator GenerationCoroutine()
     {
@@ -69,6 +83,7 @@ public class Story : MonoBehaviour
                     a.IsActive = false;
                     gens.Generate(actor, 0.1f);
                     a.IsActive = true;
+                    //if(actor.GetComponent<Actor>().CurrentAction == null)
                     gens.GenerateMostUseful(actor, 0.1f);
                     index++;
                 } 

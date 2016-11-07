@@ -11,5 +11,7 @@ public class Actor : MonoBehaviour
             Story = FindObjectOfType<Story>();
         Story.Actors.Add(this.gameObject);
     }
+
+    //public GameObject CurrentAction { get; set; }
         
 }

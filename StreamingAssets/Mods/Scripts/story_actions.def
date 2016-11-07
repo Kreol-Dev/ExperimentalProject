@@ -146,7 +146,8 @@ start_a_war =
 gather_reinforcements = 
 {
 	scope = actor.foe_role.ruler_role.fit(is_active)
-	utility = ruler_role.people - 0.3
+	utility = (ruler_role.current_campaign.campaign_event.forces_involved / 
+		foe_role.enemy.ruler_role.current_campaign.campaign_event.forces_involved) - 1 + (ruler_role.people - 0.5)
 	action = 
 	{
 		spawn(gather_reinforcements) = 
@@ -215,13 +216,13 @@ genius_found =
 	}
 }
 
-commence_battle = 
+lead_campaign = 
 {
-	scope = actor.ruler_role.foe_role.fit(is_active and contains(at_war_with, enemy) and enemy.ruler_role.true)
+	scope = actor.ruler_role.foe_role.fit(is_active and contains(at_war_with, enemy) and enemy.ruler_role.true and not has(current_campaign))
 	utility = 1.0 / foe_role.threat_level
 	action = 
 	{
-		generate(battle_event) = 
+		generate(campaign) = 
 		{
 			event = {
 				context = root
@@ -230,61 +231,32 @@ commence_battle =
 			{
 				target = root.foe_role.enemy
 			}
-			battle_event = yes
+			campaign_event = {
+				forces_involved = root.ruler_role.forces 
+			}
+			markers = yes
 		}
+		ruler_role.forces = 0
+		ruler_role.current_campaign = campaign
 	}
 }
 
-battle_calculation = 
+end_campaign = 
 {
-	once_per_object = yes
-	utility = 1
-	scope = event.battle_event.targeted_event.fit(event.context.ruler_role.true and targeted_event.target.ruler_role.true)
-	action = 
-	{	
 
-		intensity_multiplier = 1 + intensity * 4
-		first = event.context.ruler_role
-		second = targeted_event.target.ruler_role
-		pre_battle_first = first.forces
-		pre_battle_second = second.forces
-		if(first.forces > second.forces) = 
+	scope = actor.ruler_role.foe_role.fit(is_active and contains(at_war_with, enemy) and enemy.ruler_role.true and has(current_campaign))
+	utility = 1.0 - ruler_role.current_campaign.campaign_event.forces_involved
+	action = 
+	{
+		return_forces = 0
+		current_campaign.campaign_event = 
 		{
-			second = 
-			{
-				forces = forces / 2 / intensity_multiplier
-			}
-			first = 
-			{
-				forces = forces / intensity_multiplier
-			}
-			battle_event = 
-			{
-				won = gameobject(first)
-				lost = gameobject(second)
-				winner_forces_lost = pre_battle_first - first.forces
-				looser_forces_lost = pre_battle_second - second.forces
-			}
+			return_forces = forces_involved
+			forces_involved = 0
 		}
-		if(first.forces < second.forces) = 
-		{
-			first = 
-			{
-				forces = forces / 2 / intensity_multiplier
-			}
-			second = 
-			{
-				forces = forces / intensity_multiplier
-			}
-			battle_event = 
-			{
-				won = gameobject(second)
-				lost = gameobject(first)
-				looser_forces_lost = pre_battle_first - first.forces
-				winner_forces_lost = pre_battle_second - second.forces
-			}
-		}
-		if(first.forces = second.forces).battle_event.tie = yes
+		
+		ruler_role.forces = forces + return_forces
+		current_campaign = nothing
 	}
 }
 

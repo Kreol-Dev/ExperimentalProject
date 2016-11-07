@@ -10,31 +10,35 @@ personality =
 
 attributes = 
 {
-	charisma = int
-	intellect = int
-	military = int
-	mental = int
-	health = int
+	charisma(0, 10) = int
+	intellect(0, 10) = int
+	military(0, 10) = int
+	mental(0, 10) = int
+	health(0, 10) = int
 }
 
 location = 
 {
-	urban = float
-	fantasy = float
-	civilized = float
-	populated = float
-	exotic = float
-	evil = float
+	urban(0, 1) = float
+	fantasy(0, 1) = float
+	civilized(0, 1) = float
+	populated(0, 1) = float
+	exotic(0, 1) = float
+	evil(0, 1) = float
 }
 
 climate = 
 {
-	moisture = float
-	temperature = float
-	height = float
+	moisture(0, 1) = float
+	temperature(0, 1) = float
+	height(0, 1) = float
 	water = float
 }
 
+battle_update_counter =
+{
+	updated_last = int
+}
 skills = yes
 
 

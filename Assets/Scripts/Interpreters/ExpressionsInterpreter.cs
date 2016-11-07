@@ -160,6 +160,8 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 		StringBuilder builder = new StringBuilder ();
 		builder.Length = 0;
 		Expr res;
+        if (expression.Operands.Length == 0)
+            Debug.Log("fuck " + expression.ToString());
 		if (expression.Operands.Length == 1)
 		{
 			//ProcessOperand (expression.Operands [0], builder);

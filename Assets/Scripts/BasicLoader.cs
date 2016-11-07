@@ -61,7 +61,10 @@ public class BasicLoader : MonoBehaviour
 	{
 		Debug.Log (log);
 	}
-
+    public GameObject Nothing()
+    {
+        return null;
+    }
 	void Awake ()
 	{
 		var loader = FindObjectOfType<SavingLoading> ();
@@ -156,7 +159,7 @@ public class BasicLoader : MonoBehaviour
 		ExternalFunctions.Load ();
 		foreach (var eFunctions in EFunctions)
 			ExternalFunctions.AddProvider (eFunctions.Provider, eFunctions.Functions);
-		ExternalFunctions.AddProvider (this, "Random", "Dsix", "SetParent", "AbstractCamp", "Clamp", "Gameobject", "Contains" ,"SpawnPrefab","Has", "Vec", "GetWorld", "GetEventsController", "SelectFrom", "Log", "String", "GetPlayer", "Destroy", "NoOne");
+		ExternalFunctions.AddProvider (this, "Random", "Dsix", "SetParent", "AbstractCamp", "Clamp", "Nothing", "Gameobject", "Contains" ,"SpawnPrefab","Has", "Vec", "GetWorld", "GetEventsController", "SelectFrom", "Log", "String", "GetPlayer", "Destroy", "NoOne");
 		foreach (var fileInfo in dirInfo.GetFiles ("*", SearchOption.AllDirectories))
 		{
 			if (fileInfo.LastWriteTimeUtc > lastWriteTime)

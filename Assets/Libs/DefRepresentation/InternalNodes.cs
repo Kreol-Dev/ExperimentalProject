@@ -31,11 +31,12 @@ namespace InternalDSL
 				Operators.Add (new Operator (n.GetChildAt (i)));
 				Progress.CurProgress++;
 			}
+            Show();
 		}
 
 		public void Show ()
 		{
-			if (ScriptEngine.ParseDebug)
+			//if (ScriptEngine.ParseDebug)
 				for (int i = 0; i < Operators.Count; i++)
 					Debug.Log (Operators [i]);
 		}
@@ -89,6 +90,7 @@ namespace InternalDSL
 
 	public class ExprAtom
 	{
+        static int ID = 0;
 		public enum UnaryOp
 		{
 			Not,
@@ -107,11 +109,14 @@ namespace InternalDSL
 			{
 				firstChild = exprNode.GetChildAt (1);
 				Op = firstChild.Id == (int)DefConstants.NOT ? UnaryOp.Not : UnaryOp.Inverse;
-				if (firstChild.Id == (int)DefConstants.OPEN_PARENT)
-					firstChild = exprNode.GetChildAt (2);
-			} 
+                if (firstChild.Id == (int)DefConstants.OPEN_PARENT)
+                    firstChild = exprNode.GetChildAt(2);
+            }
+            else if (firstChild.Id == (int)DefConstants.OPEN_PARENT)
+                firstChild = exprNode.GetChildAt(1);
 
-			if (firstChild.Id == (int)DefConstants.EXPRESSION)
+
+            if (firstChild.Id == (int)DefConstants.EXPRESSION)
 			{
 				Content = new Expression (firstChild);
 			} else if (firstChild.Id == (int)DefConstants.SCOPE)
@@ -122,10 +127,14 @@ namespace InternalDSL
 				Content = Atom.FromNode (firstChild);
 			} else
 			{
-				if (ScriptEngine.ParseDebug)
-					Debug.Log (exprNode);
-				Content = new Expression (exprNode, false);
-			}
+				//if (ScriptEngine.ParseDebug)
+					//Debug.LogFormat ("{0} Expr node        {1}", ID, exprNode);
+                   // Debug.LogFormat ("{0} First child node {1}", ID++, firstChild);
+                if (firstChild.Id == (int)DefConstants.FACTOR)
+				    Content = new Expression (firstChild, false);
+                else
+                   Content = new Expression(exprNode, false);
+            }
 		}
 
 		public override string ToString ()
