@@ -46,3 +46,17 @@ aged =
 	age = int
 	cur_age = int
 }
+
+homeland = 
+{
+	of = gameobject
+}
+
+took_place = 
+{
+	at = gameobject
+}
+
+myth = {
+	about = gameobject
+}

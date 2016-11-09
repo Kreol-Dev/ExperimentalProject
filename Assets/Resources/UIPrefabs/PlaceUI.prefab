@@ -21,14 +21,14 @@ GameObject:
   - 224: {fileID: 224000013670942240}
   - 222: {fileID: 222000010824246750}
   - 114: {fileID: 114000012668976410}
-  - 114: {fileID: 114000012473558834}
-  - 114: {fileID: 114000010396887998}
   - 114: {fileID: 114000011661015118}
   - 225: {fileID: 225000011938246080}
   - 114: {fileID: 114000011005011678}
   - 114: {fileID: 114000013751833280}
   - 114: {fileID: 114000013209643814}
   - 114: {fileID: 114000012597828350}
+  - 114: {fileID: 114000012932961090}
+  - 114: {fileID: 114000010922234954}
   m_Layer: 5
   m_Name: PlaceUI
   m_TagString: Untagged
@@ -36,7 +36,7 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &114000010396887998
+--- !u!114 &114000010922234954
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -44,18 +44,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1000012449405812}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1297475563, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Script: {fileID: 11500000, guid: b1110b2f54b065b488841bcd43cfdaad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Padding:
-    m_Left: 5
-    m_Right: 5
-    m_Top: 5
-    m_Bottom: 5
-  m_ChildAlignment: 0
-  m_Spacing: 5
-  m_ChildForceExpandWidth: 1
-  m_ChildForceExpandHeight: 1
 --- !u!114 &114000011005011678
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -87,20 +78,6 @@ MonoBehaviour:
   m_PreferredHeight: -1
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
---- !u!114 &114000012473558834
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000012449405812}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f054844511590004b913aee7dee096ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Movable: 0
-  ReturnToParent: {fileID: 0}
-  currentHolder: {fileID: 0}
 --- !u!114 &114000012597828350
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -113,6 +90,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   showedObject: {fileID: 0}
+  ShoudFit: 1
 --- !u!114 &114000012668976410
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -125,7 +103,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -140,6 +118,26 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114000012932961090
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012449405812}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -405508275, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 5
+    m_Right: 5
+    m_Top: 5
+    m_Bottom: 5
+  m_ChildAlignment: 0
+  m_Spacing: 5
+  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandHeight: 1
 --- !u!114 &114000013209643814
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -164,7 +162,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TargetContainer: {fileID: 0}
-  CardUI: {fileID: 0}
+  CardUI: {fileID: 1000012299323770, guid: 3c6940832d6bc6e4b850901719ed696b, type: 2}
 --- !u!222 &222000010824246750
 CanvasRenderer:
   m_ObjectHideFlags: 1
@@ -185,10 +183,10 @@ RectTransform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0}
+  m_AnchoredPosition: {x: 1.5000153, y: 57.899994}
+  m_SizeDelta: {x: -813, y: 129}
+  m_Pivot: {x: 0.5, y: 0}
 --- !u!225 &225000011938246080
 CanvasGroup:
   m_ObjectHideFlags: 1

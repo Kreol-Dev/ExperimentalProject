@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Linq;
+using System;
 
 public class AgentsUI : CardsUI<Place>
 {
@@ -27,5 +28,15 @@ public class AgentsUI : CardsUI<Place>
 	{
 		targetContainer.Detached += del;
 	}
+
+    public override void UnSubscribeToAttachementEvent(Place targetContainer, GODelegate del)
+    {
+        targetContainer.Attached -= del;
+    }
+
+    public override void UnSubscribeToDetachmentEvent(Place targetContainer, GODelegate del)
+    {
+        targetContainer.Detached -= del;
+    }
 }
 

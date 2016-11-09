@@ -5,16 +5,15 @@ using System;
 
 public class SelectableMarker : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IPointerUpHandler
 {
-    static SelectionManager selectionManager;
-    static SelectableMarker previousSelection;
+    SelectionManager selectionManager;
     public event VoidDelegate Selected;
     public event VoidDelegate Deselected;
     public UiObject uiObject;
-
+    public string TargetManager;
     void Awake()
     {
         if (selectionManager == null)
-            selectionManager = FindObjectOfType<SelectionManager>();
+            selectionManager = GameObject.Find(TargetManager).GetComponent<SelectionManager>();
     }
     public void NotifyAboutDeselection()
     {
@@ -26,11 +25,11 @@ public class SelectableMarker : MonoBehaviour, IPointerClickHandler, IPointerDow
         Debug.Log("click!");
         if (eventData.button != PointerEventData.InputButton.Left)
             return;
-        if(previousSelection != this)
+        if(selectionManager.LastSelection != this)
         {
-            if(previousSelection != null)
-                previousSelection.NotifyAboutDeselection();
-            previousSelection = this;
+            if(selectionManager.LastSelection != null)
+                selectionManager.LastSelection.NotifyAboutDeselection();
+            selectionManager.LastSelection = this;
             if (Selected != null)
                 Selected();
             selectionManager.Select(uiObject.ShowedObject);

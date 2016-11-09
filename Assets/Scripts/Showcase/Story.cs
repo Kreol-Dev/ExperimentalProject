@@ -63,7 +63,7 @@ public class Story : MonoBehaviour
             //Debug.Log("Step number: " + CurrentStep);
             while (CurrentStep < StepsCount && actors.Count > 0 && Time.realtimeSinceStartup - Time.time - startTime < 5f)
             {
-                while(actors.Count > 0)
+                while (actors.Count > 0)
                 {
                     if (index >= actors.Count)
                     {
@@ -73,7 +73,7 @@ public class Story : MonoBehaviour
                         break;
                     }
                     GameObject actor = actors[index];
-                    if(actor == null || !actor.activeInHierarchy)
+                    if (actor == null || !actor.activeInHierarchy)
                     {
                         actors.RemoveAt(index);
                         break;
@@ -86,11 +86,16 @@ public class Story : MonoBehaviour
                     //if(actor.GetComponent<Actor>().CurrentAction == null)
                     gens.GenerateMostUseful(actor, 0.1f);
                     index++;
-                } 
+                }
             }
             yield return null;
+
         }
+
+        gameObject.AddComponent<Mythos>();
+        gens.Generate(gameObject);
     }
+    
     
 
     

@@ -15,12 +15,16 @@ public class UiObject : MonoBehaviour
 		set
 		{
 			showedObject = value;
-			var ent = showedObject.GetComponent<Entity> ();
-			if (ent != null)
-			{
-				ent.Destoryed += OnGODestoryed;
-				ent.ComponentAddedEvent += EntComponentAdded;
-			}
+            if (value != null)
+            {
+                var ent = showedObject.GetComponent<Entity>();
+                if (ent != null)
+                {
+                    ent.Destoryed += OnGODestoryed;
+                    ent.ComponentAddedEvent += EntComponentAdded;
+                }
+            }
+			
 		}
 	}
 

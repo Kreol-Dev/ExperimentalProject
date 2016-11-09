@@ -5,15 +5,31 @@ using System.Collections.Generic;
 public class Space : MonoBehaviour
 {
 	public List<Place> Places { get; internal set; }
-
 	public int size;
+    public bool SceneSpace = false;
+    static Dictionary<string, Space> hardcodedSpaces = new Dictionary<string, Space>();
 
 	public int Size { get { return size; } set { size = value; } }
 
+    public static Space GetSpace(string name)
+    {
+        Space space = null;
+        hardcodedSpaces.TryGetValue(name, out space);
+        return space;
+    }
+    static bool provided = false;
 	void Awake ()
 	{
+        if(!provided)
+        {
+            FindObjectOfType<BasicLoader>().EFunctions.Add(new BasicLoader.ExternalFunctions(this, "GetSpace"));
+            provided = true;
+        }
+        if (SceneSpace)
+            hardcodedSpaces.Add(NameTranslator.ScriptNameFromCSharp(gameObject.name), this);
 		Places = new List<Place> ();
 	}
+
 
 	public delegate void PlaceDelegate (Place place);
 

@@ -27,28 +27,37 @@ public class Entity : MonoBehaviour
     static ObjectPool<List<Transform>> pool = new ObjectPool<List<Transform>>();
     public void ClearSiblings()
     {
+        var thisTransform = transform;
         var list = pool.Get();
         list.Clear();
-        var childrenCount = transform.childCount;
-        for ( int i = 0; i < childrenCount; i++)
+        for ( int i = 0; i < transform.childCount; i++)
         {
             var child = transform.GetChild(i);
             child.GetComponentsInChildren<Transform>(list);
-            foreach (var t in list)
+            foreach (var subchild in list)
             {
-                t.DetachChildren();
+                if (!subchild.GetComponent<NonSerializable>())
+                {
+                    if (subchild.parent == thisTransform)
+                        i--;
+                    subchild.SetParent(null);
+                }
             }
             foreach (var t in list)
             {
-                var e = t.GetComponent<Entity>();
-                if (e == null)
-                    Destroy(t.gameObject);
-                else
-                    e.Destroy();
+                if(t.parent == null)
+                {
+                    var e = t.GetComponent<Entity>();
+                    if (e == null)
+                        Destroy(t.gameObject);
+                    else
+                        e.Destroy();
+                }
+                
             }
             list.Clear();
         }
-        transform.DetachChildren();
+        
         pool.Return(list);
     }
 	public event GODelegate Destoryed;

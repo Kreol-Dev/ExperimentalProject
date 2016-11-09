@@ -20,7 +20,9 @@ public class Event : MonoBehaviour
     [SerializeField]
     int startDate;
     public int StartDate { get { return startDate; } }
-	public GameObject Context { get; set; }
+    [SerializeField]
+    GameObject context;
+	public GameObject Context { get { return context; } set { context = value; } }
     public bool ShouldBeDestroyed { get; set; }
 	static Generators gens;
     static Story story;
@@ -32,9 +34,9 @@ public class Event : MonoBehaviour
 	{
 		if (gens == null)
 			gens = FindObjectOfType<Generators> ();
-        if (story == null)
-            story = FindObjectOfType<Story>();
-        startDate = story.CurrentDate();
+        //if (story == null)
+        //    story = FindObjectOfType<Story>();
+        //startDate = story.CurrentDate();
         gens.Generate (gameObject);
         if(ShouldBeDestroyed)
 		    Destroy (gameObject);

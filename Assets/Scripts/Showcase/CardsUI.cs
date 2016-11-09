@@ -10,19 +10,42 @@ public abstract class CardsUI<T> : MonoBehaviour
 	Dictionary<GameObject, GameObject> cardsByCreation = new Dictionary<GameObject, GameObject> ();
 	Generators gens;
 	Transform temporaryCardsHolder;
+    protected bool MovableCards = true;
 
-	protected virtual void Init ()
+    bool eDestory = false;
+    protected virtual void Init ()
 	{
-		
-	}
+        var e = GetComponent<Entity>();
+        if (e != null)
+        {
+            eDestory = true;
+            e.Destoryed += go =>
+            {
+                UnSubscribeToAttachementEvent(TargetContainer, OnPlaceAttached);
+                UnSubscribeToDetachmentEvent(TargetContainer, OnPlaceDetached);
+            };
+        }
+    }
 
+    void OnDestroy()
+    {
+        if(!eDestory)
+        {
+            Debug.Log("Clean up");
+            UnSubscribeToAttachementEvent(TargetContainer, OnPlaceAttached);
+            UnSubscribeToDetachmentEvent(TargetContainer, OnPlaceDetached);
+        }
+    }
 	public abstract List<GameObject> GetContainer (T targetContainer);
 
 	public abstract void SubscribeToAttachementEvent (T targetContainer, GODelegate del);
 
 	public abstract void SubscribeToDetachmentEvent (T targetContainer, GODelegate del);
+    public abstract void UnSubscribeToAttachementEvent(T targetContainer, GODelegate del);
 
-	void Start ()
+    public abstract void UnSubscribeToDetachmentEvent(T targetContainer, GODelegate del);
+
+    void Start ()
 	{
 
 		Init ();
@@ -70,13 +93,14 @@ public abstract class CardsUI<T> : MonoBehaviour
 			uiByPlace.Add (go, placeUIGO);
 			cardsByCreation.Add (go, placeUIGO);
 			go.GetComponent<Entity> ().Destoryed += OnEntityDestroyed;
+            placeUIGO.GetComponent<Card>().Movable = MovableCards;
 		} else
 		{
 
 			Debug.LogFormat ("UI:{0} OnPlaceAttached - FoundOld {1}", this, go);
 			uiByPlace.Add (go, found);
             gens.Generate(found);
-            found.transform.SetParent(gameObject.transform);
+            found.transform.SetParent(gameObject.transform); 
 		}
 
 	}
@@ -97,6 +121,8 @@ public abstract class CardsUI<T> : MonoBehaviour
         }
 		uiByPlace.Remove (go);
 	}
+
+   
 
 
     static WaitForSeconds clearTime = new WaitForSeconds(120);

@@ -26,8 +26,6 @@ public class TextField : MonoBehaviour
 	{
 		if (Holder == null)
 			Holder = Resources.Load<FontHolder> ("ArialFontHolder");
-		if (gameObject.GetComponent<VerticalLayoutGroup> () == null)
-			gameObject.AddComponent<VerticalLayoutGroup> ().childForceExpandHeight = false;
 		GameObject textSubObject = new GameObject ("text");
 		textSubObject.transform.SetParent (this.transform);
 		text = textSubObject.AddComponent<Text> ();
@@ -40,5 +38,11 @@ public class TextField : MonoBehaviour
 		lastText = txt;
 		text.text = Label + txt;
 	}
+
+    void Update()
+    {
+        if (text == null)
+            Destroy(this);
+    }
 }
 

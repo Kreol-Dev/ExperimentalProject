@@ -1,0 +1,27 @@
+country_cities = 
+{
+	scope = markers.fit(has_marker(country_node))
+	utility = 1
+	once_per_object = yes
+	action = 
+	{
+
+		repeat(random(4,10)) = 
+		{
+			generate(city) = 
+			{
+				entity = {
+					position = vec(random(10, 90), random(10, 90))
+				}
+				place = {
+					size = 100
+				}
+				people = yes
+				named = {
+					set(main_name, 0) = random_name(country_name)
+				}
+
+			}
+		}
+	}
+}

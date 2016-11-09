@@ -1,48 +1,17 @@
-locations_filler =
-{
-	scope = space.fit(places = 0)
-	utility = 1
-	action = 
-	{
-		space = 
-		{
-			size = 5
-			repeat(random(1,4)) = 
-			{
-				generate(loc) = 
-				{
-					entity = 
-					{
-						position = vec(random(0, map_x), random(0, map_x))
-					}
-					place = 
-					{
-						size = random(1, 3)
-					}
-					markers =
-					{
-						set_marker = history_place
-					}
-					named = 
-					{
-						set("prefix", 0) = "Location of: "
-						set("main_name", 1) = random_name(human_name)
-					}
-				}
-				attach = loc.place
-			}
-		}
-	}
-}
-
 named_ui = 
 {
 	scope = ui_object.markers.fit(showed_object.fit(has(named)) and not has_marker(named_ui_marker))
 	utility = 1 
 	action = 
 	{
+		ctx = root
+		bars_manager = 
+		{
+			p_ctx = get_left_bar
+			p_ctx.if(has(ui_object)).ctx = p_ctx
+		}
 		markers.set_ui_marker = named_ui_marker
-		ui_object = 
+		ctx.ui_object = 
 		{
 			showed_named = showed_object.named
 			create(text_field) = {
@@ -51,6 +20,7 @@ named_ui =
 					show = showed_named.full_name
 				}
 				layout.min_height = 20
+				layout.min_width = 100
 			}
 		}
 	}
@@ -109,11 +79,11 @@ aged_generation_add = {
 
 map_anchored = 
 {
-	scope = place.markers.fit(not has_marker(map_anchored) and has_marker(history_place))
+	once_per_object = yes
+	scope = place
 	utility = 1
 	action = {
-		markers.set_ui_marker = map_anchored
-		map_enlist = root
+		map_enlist_detailed = root
 	}
 }
 
@@ -156,13 +126,20 @@ place_ui_cards_list =
 	utility = 1
 	action = 
 	{
+		ctx = root
+		bars_manager = 
+		{
+			p_ctx = get_bottom_bar
+			p_ctx.if(has(ui_object)).ctx = p_ctx
+		}
 		markers.set_ui_marker = place_ui_cards_list
 		pl = ui_object.showed_object.place
+		
 		spawn_prefab(place_cards) = 
 		{
 			agents_u_i.target_place = pl
 			cards_holder_agents_adapter.target_place = pl
-			set_parent(this) = root
+			set_parent(this) = ctx
 		}
 	}
 }
@@ -175,11 +152,19 @@ place_ui_size =
 	utility = 1
 	action = 
 	{
-		create(text_field) = 
+		ctx = root
+		bars_manager = 
+		{
+			p_ctx = get_left_bar
+			p_ctx.if(has(ui_object)).ctx = p_ctx
+		}
+		ctx.create(text_field) = 
 		{
 			label = "size"
-			show = ui_object.showed_object.place.size
+			show = root.ui_object.showed_object.place.size
 			layout.min_height = 20
+			layout.min_width = 100
 		}
 	}
 }
+

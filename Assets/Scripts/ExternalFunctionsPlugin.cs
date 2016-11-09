@@ -74,7 +74,7 @@ public class ExternalFunctionsPlugin : ScriptEnginePlugin
 			foreach (var member in provider.Members)
 			{
 				CurProgress++;
-				var methodInfo = providerType.GetMethod (member);
+				var methodInfo = providerType.GetMethod (member, BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static);
 				if (methodInfo != null)
 				{
 					CodeMemberMethod method = new CodeMemberMethod ();
@@ -85,8 +85,15 @@ public class ExternalFunctionsPlugin : ScriptEnginePlugin
 					builder.Length = 0;
 					if (methodInfo.ReturnType != null && methodInfo.ReturnType != typeof(void))
 						builder.Append ("return ");
-					builder.Append (providerName).Append ('.').Append (member).Append ('(');
-					foreach (var arg in args)
+                    if(methodInfo.IsStatic)
+                    {
+                        builder.Append(methodInfo.DeclaringType).Append('.');
+                        provider.Instance = null;
+                    }
+                    else
+                        builder.Append(providerName).Append('.');
+                    builder.Append(member).Append('(');
+                    foreach (var arg in args)
 					{
 						builder.Append (arg.Name).Append (',');
 						method.Parameters.Add (new CodeParameterDeclarationExpression (arg.ParameterType, arg.Name));
