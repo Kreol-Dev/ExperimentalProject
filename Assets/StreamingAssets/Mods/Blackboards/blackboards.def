@@ -1,0 +1,118 @@
+personality =
+{
+	brave(0, 1) = float
+	rational(0, 1) = float
+	optimistic(0, 1) = float
+	cruel(0, 1) = float
+	ambitious(0, 1) = float
+	reckless(0, 1) = float
+}
+
+attributes = 
+{
+	charisma(0, 10) = int
+	intellect(0, 10) = int
+	military(0, 10) = int
+	mental(0, 10) = int
+	health(0, 10) = int
+}
+
+location = 
+{
+	urban(0, 1) = float
+	fantasy(0, 1) = float
+	civilized(0, 1) = float
+	populated(0, 1) = float
+	exotic(0, 1) = float
+	evil(0, 1) = float
+}
+
+climate = 
+{
+	moisture(0, 1) = float
+	temperature(0, 1) = float
+	height(0, 1) = float
+	water = float
+}
+
+battle_update_counter =
+{
+	updated_last = int
+}
+skills = yes
+
+
+event_marker = {
+	cur_event = gameobject
+}
+
+human = {
+	age = int
+}
+
+place_ui_data =
+{
+	last_size = int
+}
+
+aged_generation = {
+	cur_age = int
+}
+
+historical_person = yes
+send_team_event = yes
+
+story_node = yes
+conflict_node = yes
+conflict_resolution_node = 
+{
+	conflict = gameobject
+}
+result_node = 
+{
+	resolution = gameobject
+}
+solution_node =
+{
+	cause = gameobject
+}
+crisis_node = 
+{
+	solution = gameobject
+	cause = gameobject
+}
+faction_node = 
+{
+	conflict = gameobject
+}
+
+goal_node = yes
+call_the_old_ones = 
+{
+	old_one = string
+}
+old_one_name(old_one_names) = 
+{
+	name = string
+}
+
+kingdom_node = yes
+
+heroes_node = 
+{
+	heroes = list(gameobject)
+}
+hero_node = yes
+state_node =
+{
+	head = gameobject
+	past_heads = list(gameobject)
+}
+head_of_state_node = 
+{
+	state = gameobject
+	previous = gameobject
+}
+location_node = yes
+myth_source_node = yes
+person_node = yes

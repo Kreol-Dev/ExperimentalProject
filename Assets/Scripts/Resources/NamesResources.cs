@@ -12,9 +12,11 @@ public class NamesResources : MonoBehaviour
 	void Awake ()
 	{
 
-		var nameFiles = Directory.GetFiles ("StreamingAssets/Mods/names");
+		var nameFiles = Directory.GetFiles ((Application.isEditor ? "Assets/" : "ExperimentalProject_Data/") + "StreamingAssets/Mods/names");
 		foreach (var nameFile in nameFiles)
 		{
+            if (nameFile.EndsWith(".meta"))
+                continue;
 			var lines = File.ReadAllLines (nameFile);
 
 			var typeLine = lines [0];

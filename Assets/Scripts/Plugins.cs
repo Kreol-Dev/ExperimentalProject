@@ -129,7 +129,7 @@ public class ScriptCompiler : ScriptEnginePlugin
 		string sourceCode = string.Concat (csharpSources.ToArray ());
 
 		//UnityEngine.GameObject.Find ("SourceCode").GetComponent<Text> ().text = sourceCode;
-		System.IO.File.WriteAllText ("StreamingAssets/Code/SourceCode.cs", sourceCode);
+		System.IO.File.WriteAllText ((BasicLoader.IsInEditor ? "Assets/" : "ExperimentalProject_Data/") + "StreamingAssets/Code/SourceCode.cs", sourceCode);
 		onAssemblyCompiled (loader.Load (csharpSources.ToArray (), "Content"));
 	}
 }

@@ -1,0 +1,6 @@
+war_attack_stage = yes
+war_action = yes
+war_event_react = 
+{
+	current = gameobject
+}

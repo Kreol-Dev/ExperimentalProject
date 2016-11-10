@@ -1,0 +1,5 @@
+temp_agents = 
+{
+	scope = story
+	utility = 0
+}

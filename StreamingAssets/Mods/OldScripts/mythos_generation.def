@@ -1,6 +1,0 @@
-myths_about_places = 
-{
-	scope = story.mythos
-	utility = 1
-	once_per_object = yes
-}

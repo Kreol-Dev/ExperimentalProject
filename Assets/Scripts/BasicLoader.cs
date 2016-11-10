@@ -17,7 +17,7 @@ using System.Threading;
 public delegate void VoidDelegate ();
 public class BasicLoader : MonoBehaviour
 {
-
+    public static bool IsInEditor;
 	// Use this for initialization
 	ScriptEngine engine = new ScriptEngine ();
 
@@ -67,7 +67,8 @@ public class BasicLoader : MonoBehaviour
     }
 	void Awake ()
 	{
-		var loader = FindObjectOfType<SavingLoading> ();
+        IsInEditor = Application.isEditor;
+        var loader = FindObjectOfType<SavingLoading> ();
 		Loaded += () => loader.IsLoading = false;
 	}
 
@@ -149,7 +150,7 @@ public class BasicLoader : MonoBehaviour
 
 		List<Assembly> addons = new List<Assembly> ();
 		Engine.Init (addons);
-		var dirInfo = new DirectoryInfo ("StreamingAssets/Mods");
+		var dirInfo = new DirectoryInfo ((Application.isEditor? "Assets/" : "ExperimentalProject_Data/") + "StreamingAssets/Mods");
 		DateTime lastWriteTime = DateTime.MinValue;
 		var ExternalFunctions = Engine.GetPlugin<ExternalFunctionsPlugin> ();
 		var bars = FindObjectOfType<ProgressBarSet> ();
@@ -195,11 +196,11 @@ public class BasicLoader : MonoBehaviour
 			Debug.Log ("Loading dlls");
 			yield return null;
 			//Load dlls
-			var asm = Assembly.LoadFile ("StreamingAssets/DLLs/ExternalCode.dll");
+			var asm = Assembly.LoadFile ((Application.isEditor ? "Assets/" : "ExperimentalProject_Data/") + "StreamingAssets/DLLs/ExternalCode.dll");
 			ExternalFunctions.OnCompiled (asm);
-			asm = Assembly.LoadFile ("StreamingAssets/DLLs/BlackboardsData.dll");
+			asm = Assembly.LoadFile ((Application.isEditor ? "Assets/" : "ExperimentalProject_Data/") + "StreamingAssets/DLLs/BlackboardsData.dll");
 			Engine.AddAssembly (asm);
-			asm = Assembly.LoadFile ("StreamingAssets/DLLs/Content.dll");
+			asm = Assembly.LoadFile ((Application.isEditor ? "Assets/" : "ExperimentalProject_Data/") + "StreamingAssets/DLLs/Content.dll");
 			Engine.AddAssembly (asm);
 
 			yield return null;
@@ -233,7 +234,7 @@ public class BasicLoader : MonoBehaviour
 		};
 		loader.MaxProgressResolved += x => eaBar.MaxValue = x;
         Script genScript = new Script ("generators", loader, Engine);
-        var scriptFiles = Directory.GetFiles("StreamingAssets/Mods/Scripts");
+        var scriptFiles = Directory.GetFiles((BasicLoader.IsInEditor ? "Assets/" : "ExperimentalProject_Data/") + "StreamingAssets/Mods/Scripts", "*.def");
         genScript.Progress.CurProgressUpdated += x => genBar.CurValue = x;
         int filesLoaded = 0;
 		genScript.Progress.CurProgressUpdated += x => {
@@ -245,8 +246,8 @@ public class BasicLoader : MonoBehaviour
 		genScript.Progress.MaxProgressResolved += x => genBar.MaxValue = x;
         foreach (var file in scriptFiles)
         {
-            genScript.LoadFile(file);
-            filesLoaded++;
+                genScript.LoadFile(file);
+                filesLoaded++;
         }
 
 
@@ -258,7 +259,7 @@ public class BasicLoader : MonoBehaviour
 		bbloader.AddType (typeof(string), "string");
 		bbloader.AddType (typeof(bool), "bool");
 		Script blackboardsScript = new Script ("blackboards", bbloader, Engine);
-        scriptFiles = Directory.GetFiles("StreamingAssets/Mods/Blackboards");
+        scriptFiles = Directory.GetFiles((BasicLoader.IsInEditor ? "Assets/" : "ExperimentalProject_Data/") + "StreamingAssets/Mods/Blackboards", "*.def");
         foreach (var file in scriptFiles)
             blackboardsScript.LoadFile(file);
         if (ScriptEngine.AnalyzeDebug)

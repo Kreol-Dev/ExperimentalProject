@@ -1,0 +1,79 @@
+brave_war_act = 
+{
+	scope = actor.ruler_role.personality.fit(is_active and has(current_campaign))
+	utility = personality.brave
+	action = {
+		generate(brave_war_act) = {
+			event = {
+				context = root
+			}
+		}
+	}
+}
+
+rational_war_act = 
+{
+	scope = actor.ruler_role.personality.fit(is_active and has(current_campaign))
+	utility = personality.rational
+	action = {
+		generate(rational_war_act) = {
+			event = {
+				context = root
+			}
+		}
+	}
+}
+
+optimistic_war_act = 
+{
+	scope = actor.ruler_role.personality.fit(is_active and has(current_campaign))
+	utility = personality.optimistic
+	action = {
+		generate(optimistic_war_act) = {
+			event = {
+				context = root
+			}
+		}
+	}
+}
+
+cruel_war_act = 
+{
+	scope = actor.ruler_role.personality.fit(is_active and has(current_campaign))
+	utility = personality.cruel
+	action = {
+		generate(cruel_war_act) = {
+			event = {
+				context = root
+			}
+		}
+	}
+}
+
+ambitious_war_act = 
+{
+	scope = actor.ruler_role.personality.fit(is_active and has(current_campaign))
+	utility = personality.ambitious
+	action = {
+		generate(ambitious_war_act) = {
+			event = {
+				context = root
+			}
+		}
+	}
+}
+
+reckless_war_act =
+{
+	scope = actor.ruler_role.personality.fit(is_active and has(current_campaign))
+	utility = personality.reckless
+	action = {
+		generate(reckless_war_act) = {
+			event = {
+				context = root
+			}
+		}
+	}
+}
+
+

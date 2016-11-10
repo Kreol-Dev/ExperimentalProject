@@ -198,10 +198,13 @@ namespace CSharpCompiler
 				tr.StopTotal ();
 				tr.ShowStats ();
 				return true;
-			}
-
-			var output_file = "StreamingAssets/DLLs/" + settings.OutputFile;
-			string output_file_name;
+            }
+            string output_file;
+            if (BasicLoader.IsInEditor)
+                output_file = "Assets/StreamingAssets/DLLs/" + settings.OutputFile;
+            else
+                output_file = "ExperimentalProject_Data/StreamingAssets/DLLs/" + settings.OutputFile;
+            string output_file_name;
 			/* if (output_file == null)
             {
                 var source_file = settings.FirstSourceFile;

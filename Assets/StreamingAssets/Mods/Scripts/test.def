@@ -1,0 +1,170 @@
+named_ui = 
+{
+	scope = ui_object.markers.fit(showed_object.fit(has(named)) and not has_marker(named_ui_marker))
+	utility = 1 
+	action = 
+	{
+		ctx = root
+		bars_manager = 
+		{
+			p_ctx = get_left_bar
+			p_ctx.if(has(ui_object)).ctx = p_ctx
+		}
+		markers.set_ui_marker = named_ui_marker
+		ctx.ui_object = 
+		{
+			showed_named = showed_object.named
+			create(text_field) = {
+				show = showed_named.full_name
+				showed_named.on_update = {
+					show = showed_named.full_name
+				}
+				layout.min_height = 20
+				layout.min_width = 100
+			}
+		}
+	}
+}
+
+
+agents_pool_filler = {
+	scope = markers.place.fit(agents = 0 and has_marker(agents_pool))
+	utility = 1
+	action = {
+		place = {
+			size = 5
+			repeat(random(1,4)) = {
+				generate(ag) = {
+					entity = yes
+					agent = yes
+					human = {
+						age = random(20, 45)
+					}
+					named = {
+						set("prefix", 0) = "Agent: "
+						set("main_name", 1) = random_name(human_name)
+					}
+				}
+
+				attach = ag.agent
+			}
+		}
+	}
+}
+
+location_event = {
+	scope = place.fit(not has(event_marker))
+	utility = 1
+	action = {
+		create = event_marker
+	}
+}
+agent_personality = {
+	scope = agent.fit(not has(personality))
+	utility = 1
+	action = {
+		create = personality
+	}
+}
+
+aged_generation_add = {
+	scope = human.fit(not has(aged_generation))
+	utility = 1
+	action = {
+		create = aged_generation
+	}
+}
+
+
+
+map_anchored = 
+{
+	once_per_object = yes
+	scope = place
+	utility = 1
+	action = {
+		map_enlist_detailed = root
+	}
+}
+
+encounter_ui_enlist = 
+{
+	scope = encounter.markers.fit(not has_marker(encounter_ui_enlist))
+	utility = 1
+	action = 
+	{
+		markers.set_ui_marker = encounter_ui_enlist
+		enlist_encounter = root
+	}
+}
+
+location_test_encounter = 
+{
+	scope = place.named.fit(act = yes)
+	utility = 0.4
+	action  = 
+	{
+		generate(enc) = 
+		{
+			encounter = 
+			{
+				context = root
+			}
+			markers = yes
+			entity = yes
+			named = 
+			{
+				set(main_name, 0) = "Basic encounter"
+			}
+		}
+	}
+}
+
+place_ui_cards_list = 
+{
+	scope = ui_object.markers.fit(showed_object.fit(has(place)) and not has_marker (place_ui_cards_list))
+	utility = 1
+	action = 
+	{
+		ctx = root
+		bars_manager = 
+		{
+			p_ctx = get_bottom_bar
+			p_ctx.if(has(ui_object)).ctx = p_ctx
+		}
+		markers.set_ui_marker = place_ui_cards_list
+		pl = ui_object.showed_object.place
+		
+		spawn_prefab(place_cards) = 
+		{
+			agents_u_i.target_place = pl
+			cards_holder_agents_adapter.target_place = pl
+			set_parent(this) = ctx
+		}
+	}
+}
+
+place_ui_size = 
+{
+	once_per_object = yes
+	category = ui
+	scope = ui_object.fit(showed_object.place.true)
+	utility = 1
+	action = 
+	{
+		ctx = root
+		bars_manager = 
+		{
+			p_ctx = get_left_bar
+			p_ctx.if(has(ui_object)).ctx = p_ctx
+		}
+		ctx.create(text_field) = 
+		{
+			label = "size"
+			show = root.ui_object.showed_object.place.size
+			layout.min_height = 20
+			layout.min_width = 100
+		}
+	}
+}
+
