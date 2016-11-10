@@ -16,10 +16,6 @@ static class ItchDeploy
 
             var i = pathToPlayer.LastIndexOf('/');
             pathToPlayer = pathToPlayer.Substring(0, i+ 1);
-
-            var dirs = Directory.GetDirectories(pathToPlayer, "*", SearchOption.AllDirectories);
-            foreach (var d in dirs)
-                UnityEngine.Debug.LogWarning(d);
             File.Delete("/butler_creds");
             File.Delete("/butler.exe");
             
