@@ -16,24 +16,26 @@ static class ItchDeploy
 
             var i = pathToPlayer.LastIndexOf('/');
             pathToPlayer = pathToPlayer.Substring(0, i+ 1);
-            File.Delete("/butler_creds");
-            File.Delete("/butler.exe");
-            
-            File.Move(pathToPlayer + "ExperimentalProject_Data/StreamingAssets/butler_creds", "/butler_creds");
-            File.Move(pathToPlayer + "ExperimentalProject_Data/StreamingAssets/butler.exe", "/butler.exe");
+
+            var pathToEditor = pathToPlayer.Substring(0, pathToPlayer.LastIndexOf('/') +1);
+
+            File.Delete(pathToEditor + "butler_creds");
+            File.Delete(pathToEditor + "butler.exe");
+            File.Move(pathToPlayer + "ExperimentalProject_Data/StreamingAssets/butler_creds", pathToEditor + "butler_creds");
+            File.Move(pathToPlayer + "ExperimentalProject_Data/StreamingAssets/butler.exe", pathToEditor + "butler.exe");
       
             string args = String.Format(" -i {0} push {1} {2}:{3}",
-            "/butler_creds",
-            "ExperimentalProject.zip",
+            pathToEditor + "butler_creds",
+            pathToEditor + "ExperimentalProject.zip",
             AccountName,
             ChannelName                                
             );
             ZipFile file = new ZipFile();
             file.AddDirectory(pathToPlayer);
-            file.Save("ExperimentalProject.zip");
+            file.Save(pathToEditor + "ExperimentalProject.zip");
 
             System.Diagnostics.Process uploadProc = new System.Diagnostics.Process();
-            uploadProc.StartInfo.FileName = "/butler.exe";
+            uploadProc.StartInfo.FileName = pathToEditor + "butler.exe";
             uploadProc.StartInfo.Arguments = args;
             uploadProc.StartInfo.CreateNoWindow = false;
             uploadProc.StartInfo.UseShellExecute = false;
