@@ -19,7 +19,7 @@ static class ItchDeploy
             File.Delete("/butler_creds");
             File.Delete("/butler.exe");
             
-            File.Move(pathToPlayer + "ExperimentalProject_Data/butler_creds", "/butler_creds");
+            File.Move(pathToPlayer + "ExperimentalProject_Data/StreamingAssets/butler_creds", "/butler_creds");
             File.Move(pathToPlayer + "ExperimentalProject_Data/StreamingAssets/butler.exe", "/butler.exe");
       
             string args = String.Format(" -i {0} push {1} {2}:{3}",
