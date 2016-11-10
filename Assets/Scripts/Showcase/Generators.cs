@@ -9,63 +9,50 @@ public class Generators : MonoBehaviour
 
 	List<EventAction> actions = new List<EventAction> ();
     Dictionary<string, List<EventAction>> actionsByCategory = new Dictionary<string, List<EventAction>>();
-    Dictionary<GameObject, HashSet<EventAction>> oncePerObjectMarkers = new Dictionary<GameObject, HashSet<EventAction>>();
-	public bool Loaded = false;
+
+    Dictionary<string, List<EventAction>> interactionsByCategory = new Dictionary<string, List<EventAction>>();
+    public bool Loaded = false;
 
 	void Awake ()
 	{
 		loader = FindObjectOfType<BasicLoader> ();
 		loader.Loaded += OnLoad;
-        StartCoroutine(ClearUpCoroutine());
 	}
 
     static WaitForSeconds clearUpWait = new WaitForSeconds(100);
     List<GameObject> keys = new List<GameObject>();
-    IEnumerator ClearUpCoroutine()
-    {
-        yield return clearUpWait;
-        while(true)
-        {
-            keys.Clear();
-            foreach (var key in oncePerObjectMarkers.Keys)
-                keys.Add(key);
-            foreach (var key in keys)
-            {
-                if (oncePerObjectMarkers[key] == null)
-                    oncePerObjectMarkers.Remove(key);
-            }
-
-            keys.Clear();
-            yield return clearUpWait;
-        }
-    }
 
 	void OnLoad ()
 	{
 		var eventTypes = loader.Engine.FindTypesCastableTo<EventAction> ();
 		foreach (var type in eventTypes)
         {
-            var ea = Activator.CreateInstance(type) as EventAction;
-            actions.Add(ea);
-            var eaa = type.GetCustomAttributes(typeof(EventActionAttribute), false)[0] as EventActionAttribute;
-            ea.Meta = eaa;
+            var action = Activator.CreateInstance(type) as EventAction;
+            actions.Add(action);
+            var actionMeta = type.GetCustomAttributes(typeof(EventActionAttribute), false)[0] as EventActionAttribute;
+            action.Meta = actionMeta;
             List<EventAction> catList = null;
-            if(!actionsByCategory.TryGetValue(ea.Meta.Category, out catList))
+            var cats = actionsByCategory;
+            if(action.Meta.IsInteraction)
+                cats = interactionsByCategory;
+            if (!cats.TryGetValue(action.Meta.Category, out catList))
             {
                 catList = new List<EventAction>();
-                actionsByCategory.Add(ea.Meta.Category, catList);
+                cats.Add(action.Meta.Category, catList);
             }
-            catList.Add(ea);
+            catList.Add(action);
         }
 
 		weights = new ActionWeight[actions.Count];
 		Loaded = true;
 	}
-    List<EventAction> maximizeActions = new List<EventAction>();
     ObjectPool<HashSet<EventAction>> eaPool = new ObjectPool<HashSet<EventAction>>();
+    ObjectPool<List<EventAction>> eaListPool = new ObjectPool<List<EventAction>>();
 	public void Generate (GameObject go, float fuzzy = 0f)
 	{
         var performedActions = eaPool.Get();
+        var maximizeActions = eaListPool.Get();
+        maximizeActions.Clear();
         performedActions.Clear();
 		bool oneMoreRun = true;
         int iterations = 0;
@@ -110,9 +97,62 @@ public class Generators : MonoBehaviour
                     }
                 }
             }
+            eaListPool.Return(maximizeActions);
             eaPool.Return(performedActions);
 		}
+        var inter = go.GetComponent<Interactable>();
+        if (inter != null)
+            GetInteractions(inter);
 	}
+
+    ObjectPool<Dictionary<Type, EventAction>> dictPool = new ObjectPool<Dictionary<Type, EventAction>>();
+    public void GetInteractions(Interactable inter)
+    {
+        var interactionsByType = dictPool.Get();
+        interactionsByType.Clear();
+        bool oneMoreRun = true;
+        int iterations = 0;
+        foreach (var i in inter.Options)
+        {
+            var t = i.GetType();
+            interactionsByType.Add(t, i);
+
+            
+        }
+        inter.Options.Clear();
+
+        while (oneMoreRun)
+        {
+            if (Application.isEditor)
+                if (iterations++ > 50)
+                    break;
+            oneMoreRun = false;
+            foreach (var category in interactionsByCategory.Values)
+            {
+                foreach (var action in category)
+                {
+                    
+                    var cachedRoot = action.Root;
+                    action.Root = inter.gameObject;
+                    if (action.Filter())
+                    {
+                        var ta = action.GetType();
+                        EventAction interaction = null;
+                        if (!interactionsByType.TryGetValue(ta, out interaction))
+                        {
+                            interaction = Activator.CreateInstance(action.GetType()) as EventAction;
+                            interactionsByType.Add(ta, interaction);
+                        }
+                        inter.Options.Add(interaction);
+
+                    }
+                    
+                }
+            }
+        }
+
+        dictPool.Return(interactionsByType);
+    }
     void NotifyOfAct(GameObject go, EventAction action)
     {
         if(action.Meta.OncePerObject)

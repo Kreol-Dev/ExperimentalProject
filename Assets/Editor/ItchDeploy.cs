@@ -37,7 +37,6 @@ static class ItchDeploy
             System.Diagnostics.Process uploadProc = new System.Diagnostics.Process();
             uploadProc.StartInfo.FileName = pathToEditor + "butler";
             uploadProc.StartInfo.Arguments = args;
-            uploadProc.StartInfo.CreateNoWindow = false;
             uploadProc.StartInfo.UseShellExecute = false;
             uploadProc.Start();
 

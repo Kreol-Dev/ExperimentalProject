@@ -36,7 +36,7 @@ public class EventActionAttribute : Attribute
 {
     public string Category { get; set; }
     public bool ShouldHaveMaxUtility { get; set; }
-    
+    public bool IsInteraction { get; set; }
     public bool OncePerObject { get; set; }
     public bool OncePerTurn { get; set; }
 }
@@ -87,16 +87,29 @@ public class EventActionsLoader : ScriptInterpreter
             CodeAttributeArgument catArg = new CodeAttributeArgument("Category", new CodeSnippetExpression("\"basic\""));
             CodeAttributeArgument onceArg = new CodeAttributeArgument("OncePerObject", new CodeSnippetExpression("false"));
             CodeAttributeArgument oncePerTurnArg = new CodeAttributeArgument("OncePerTurn", new CodeSnippetExpression("false"));
+            CodeAttributeArgument interactionArg = new CodeAttributeArgument("IsInteraction", new CodeSnippetExpression("false"));
+            CodeAttributeArgument tooltipArg = new CodeAttributeArgument("IsInteraction", new CodeSnippetExpression(""));
             attr.Arguments.Add(maxArg);
             attr.Arguments.Add(catArg);
             attr.Arguments.Add(onceArg);
             attr.Arguments.Add(oncePerTurnArg);
+            attr.Arguments.Add(interactionArg);
+            attr.Arguments.Add(tooltipArg);
             for (int j = 0; j < ctx.Entries.Count; j++)
 			{
 				var op = ctx.Entries [j] as Operator;
 				if (op == null)
 					continue;
-                if (op.Identifier as string == "only_max_utility")
+                if (op.Identifier as string == "tooltip")
+                {
+                    interactionArg.Value = new CodeSnippetExpression((op.Context as InternalDSL.Expression).Operands[0].ToString());
+
+                } else if (op.Identifier as string == "is_interaction")
+                {
+                    interactionArg.Value = new CodeSnippetExpression("true");
+
+                }
+                else if (op.Identifier as string == "only_max_utility")
                 {
                     maxArg.Value = new CodeSnippetExpression((op.Context as InternalDSL.Expression).Operands[0].ToString());
                     
