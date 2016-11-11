@@ -168,3 +168,53 @@ place_ui_size =
 	}
 }
 
+interactables_ui = 
+{
+	once_per_object = yes
+	scope = ui_object.fit(showed_object.fit(has(interactables)))
+	utility = 1
+	action = 
+	{
+		ctx = root
+		bars_manager = 
+		{
+			p_ctx = get_top_bar
+			p_ctx.if(has(ui_object)).ctx = p_ctx
+		}
+		inter = ui_object.showed_object.interactables
+		
+		spawn_prefab(interactables_ui) = 
+		{
+			interactables_u_i.target_interactables = inter
+			set_parent(this) = ctx
+		}
+	}
+}
+
+interactable_ui =
+{
+	once_per_object = yes
+	scope = ui_object.fit(showed_object.fit(has(interactable)))
+	utility = 1
+	action = 
+	{
+		ctx = root
+		bars_manager = 
+		{
+			p_ctx = get_right_bar
+			p_ctx.if(has(ui_object)).ctx = p_ctx
+		}
+	}
+}
+
+
+interaction_log_name = 
+{
+	is_interaction = yes
+	scope = interactable.named
+	utility = 1
+	action = 
+	{
+		log = named.full_name
+	}
+}

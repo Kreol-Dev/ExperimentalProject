@@ -20,6 +20,8 @@ country_cities =
 				named = {
 					set(main_name, 0) = random_name(country_name)
 				}
+				interactables = yes
+				interactable = yes
 
 			}
 		}

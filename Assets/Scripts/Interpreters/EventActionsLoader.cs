@@ -39,6 +39,8 @@ public class EventActionAttribute : Attribute
     public bool IsInteraction { get; set; }
     public bool OncePerObject { get; set; }
     public bool OncePerTurn { get; set; }
+
+    public string Tooltip { get; set; }
 }
 
 public class EventActionsLoader : ScriptInterpreter
@@ -88,7 +90,7 @@ public class EventActionsLoader : ScriptInterpreter
             CodeAttributeArgument onceArg = new CodeAttributeArgument("OncePerObject", new CodeSnippetExpression("false"));
             CodeAttributeArgument oncePerTurnArg = new CodeAttributeArgument("OncePerTurn", new CodeSnippetExpression("false"));
             CodeAttributeArgument interactionArg = new CodeAttributeArgument("IsInteraction", new CodeSnippetExpression("false"));
-            CodeAttributeArgument tooltipArg = new CodeAttributeArgument("IsInteraction", new CodeSnippetExpression(""));
+            CodeAttributeArgument tooltipArg = new CodeAttributeArgument("Tooltip", new CodeSnippetExpression("\"\""));
             attr.Arguments.Add(maxArg);
             attr.Arguments.Add(catArg);
             attr.Arguments.Add(onceArg);
