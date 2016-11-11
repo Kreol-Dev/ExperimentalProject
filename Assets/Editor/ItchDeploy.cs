@@ -23,6 +23,8 @@ static class ItchDeploy
             File.Delete(pathToEditor + "butler");
             File.Move(pathToPlayer + "ExperimentalProject_Data/StreamingAssets/butler_creds", pathToEditor + "butler_creds");
             File.Move(pathToPlayer + "ExperimentalProject_Data/StreamingAssets/butler", pathToEditor + "butler");
+            
+
       
             string args = String.Format(" -i {0} push {1} {2}:{3}",
             pathToEditor + "butler_creds",
@@ -37,20 +39,14 @@ static class ItchDeploy
             System.Diagnostics.Process uploadProc = new System.Diagnostics.Process();
             uploadProc.StartInfo.FileName = pathToEditor + "butler";
             uploadProc.StartInfo.Arguments = args;
-            uploadProc.StartInfo.UseShellExecute = false;
+            uploadProc.StartInfo.UseShellExecute = true;
             uploadProc.Start();
 
             uploadProc.WaitForExit();
         }
-        catch (System.ComponentModel.Win32Exception e)
+        catch (Exception e)
         {
-            UnityEngine.Debug.LogWarning(e.Message);
-            UnityEngine.Debug.LogWarning(e.ErrorCode.ToString());
-            UnityEngine.Debug.LogWarning(e.NativeErrorCode.ToString());
-            UnityEngine.Debug.LogWarning(e.StackTrace);
-            UnityEngine.Debug.LogWarning(e.Source);
-            Exception be = e.GetBaseException();
-            UnityEngine.Debug.LogWarning(be.Message);
+           UnityEngine.Debug.Log(e);
         }
     }
 
