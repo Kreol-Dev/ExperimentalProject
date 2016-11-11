@@ -42,9 +42,15 @@ static class ItchDeploy
 
             uploadProc.WaitForExit();
         }
-        catch (Exception e)
+        catch (System.ComponentModel.Win32Exception e)
         {
-            UnityEngine.Debug.LogWarning(e);
+            UnityEngine.Debug.LogWarning(e.Message);
+            UnityEngine.Debug.LogWarning(e.ErrorCode.ToString());
+            UnityEngine.Debug.LogWarning(e.NativeErrorCode.ToString());
+            UnityEngine.Debug.LogWarning(e.StackTrace);
+            UnityEngine.Debug.LogWarning(e.Source);
+            Exception be = e.GetBaseException();
+            UnityEngine.Debug.LogWarning(be.Message);
         }
     }
 
