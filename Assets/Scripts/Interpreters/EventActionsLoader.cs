@@ -104,7 +104,7 @@ public class EventActionsLoader : ScriptInterpreter
 					continue;
                 if (op.Identifier as string == "tooltip")
                 {
-                    interactionArg.Value = new CodeSnippetExpression((op.Context as InternalDSL.Expression).Operands[0].ToString());
+                    tooltipArg.Value = new CodeSnippetExpression((op.Context as InternalDSL.Expression).Operands[0].ToString());
 
                 } else if (op.Identifier as string == "is_interaction")
                 {
