@@ -1535,11 +1535,12 @@ namespace generators {
 			//ContextStatement External External ContextSwitchInterpreter
 			System.Boolean applicable = false; //IsContext = False IsNew = False
 			
-			System.Boolean OperandVar249 = default(System.Boolean); //IsContext = False IsNew = False
+			System.Boolean OperandVar252 = default(System.Boolean); //IsContext = False IsNew = False
 			UiObject StoredVariable240 = ((UiObject)root.GetComponent(typeof(UiObject))); //IsContext = False IsNew = False
 			if(StoredVariable240 != null)
 			{
 				System.Boolean ifResult241; //IsContext = False IsNew = False
+				
 				System.Boolean OperandVar248 = default(System.Boolean); //IsContext = False IsNew = False
 				UnityEngine.GameObject prop242 = StoredVariable240.ShowedObject; //IsContext = False IsNew = False
 				if(prop242 != null)
@@ -1559,13 +1560,19 @@ namespace generators {
 						OperandVar248 = ifResult243;
 					}
 				}
-				if(ifResult241 =  (OperandVar248))
+				
+				System.Boolean OperandVar251 = default(System.Boolean); //IsContext = False IsNew = False
+				System.String OperandVar249 = default(System.String); //IsContext = False IsNew = False
+				OperandVar249 = "selection_marker";
+				System.Boolean prop250 = External.Has( (OperandVar249)); //IsContext = False IsNew = False
+				OperandVar251 = prop250;
+				if(ifResult241 = ( ( (OperandVar248))) && ( (!(OperandVar251))))
 				{
 					applicable = true;
-					OperandVar249 = applicable;
+					OperandVar252 = applicable;
 				}
 			}
-			return (System.Boolean) (OperandVar249);
+			return (System.Boolean) (OperandVar252);
 		}
         }
         
@@ -1589,42 +1596,42 @@ namespace generators {
 			
 			//ContextStatement External External ContextSwitchInterpreter
 			
-			UnityEngine.GameObject OperandVar250 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
-			OperandVar250 = root;
-			UnityEngine.GameObject ctx =  (OperandVar250); //IsContext = False IsNew = False
+			UnityEngine.GameObject OperandVar253 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
+			OperandVar253 = root;
+			UnityEngine.GameObject ctx =  (OperandVar253); //IsContext = False IsNew = False
 			
 			{
-				BarsManager subContext251 = (BarsManager)root.GetComponent(typeof(BarsManager)); //IsContext = True IsNew = False
-				//ContextStatement BarsManager subContext251 ContextSwitchInterpreter
-				if(subContext251 != null)
+				BarsManager subContext254 = (BarsManager)root.GetComponent(typeof(BarsManager)); //IsContext = True IsNew = False
+				//ContextStatement BarsManager subContext254 ContextSwitchInterpreter
+				if(subContext254 != null)
 				{
-					UnityEngine.GameObject OperandVar253 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
-					UnityEngine.GameObject prop252 = subContext251.GetRightBar(); //IsContext = False IsNew = False
-					if(prop252 != null)
+					UnityEngine.GameObject OperandVar256 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
+					UnityEngine.GameObject prop255 = subContext254.GetRightBar(); //IsContext = False IsNew = False
+					if(prop255 != null)
 					{
-						OperandVar253 = prop252;
+						OperandVar256 = prop255;
 					}
-					UnityEngine.GameObject p_ctx =  (OperandVar253); //IsContext = False IsNew = False
+					UnityEngine.GameObject p_ctx =  (OperandVar256); //IsContext = False IsNew = False
 					
 					{
-						UnityEngine.GameObject subContext254 = p_ctx; //IsContext = True IsNew = False
-						//ContextStatement UnityEngine.GameObject subContext254 ContextPropertySwitchInterpreter
-						if(subContext254 != null)
+						UnityEngine.GameObject subContext257 = p_ctx; //IsContext = True IsNew = False
+						//ContextStatement UnityEngine.GameObject subContext257 ContextPropertySwitchInterpreter
+						if(subContext257 != null)
 						{
-							System.Boolean OperandVar258 = default(System.Boolean); //IsContext = False IsNew = False
-							UiObject OperandVar256 = default(UiObject); //IsContext = False IsNew = False
-							UiObject StoredVariable255 = ((UiObject)subContext254.GetComponent(typeof(UiObject))); //IsContext = False IsNew = False
-							if(StoredVariable255 != null)
+							System.Boolean OperandVar261 = default(System.Boolean); //IsContext = False IsNew = False
+							UiObject OperandVar259 = default(UiObject); //IsContext = False IsNew = False
+							UiObject StoredVariable258 = ((UiObject)subContext257.GetComponent(typeof(UiObject))); //IsContext = False IsNew = False
+							if(StoredVariable258 != null)
 							{
-								OperandVar256 = StoredVariable255;
+								OperandVar259 = StoredVariable258;
 							}
-							System.Boolean prop257 = External.Has( (OperandVar256)); //IsContext = False IsNew = False
-							OperandVar258 = prop257;
-							if( (OperandVar258))
+							System.Boolean prop260 = External.Has( (OperandVar259)); //IsContext = False IsNew = False
+							OperandVar261 = prop260;
+							if( (OperandVar261))
 							{
-								UnityEngine.GameObject OperandVar259 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
-								OperandVar259 = p_ctx;
-								ctx =  (OperandVar259);
+								UnityEngine.GameObject OperandVar262 = default(UnityEngine.GameObject); //IsContext = False IsNew = False
+								OperandVar262 = p_ctx;
+								ctx =  (OperandVar262);
 							}
 						}
 					}
@@ -1634,7 +1641,7 @@ namespace generators {
         }
     }
     
-    [EventActionAttribute(ShouldHaveMaxUtility=false, Category="basic", OncePerObject=false, OncePerTurn=false, IsInteraction=true, Tooltip="")]
+    [EventActionAttribute(ShouldHaveMaxUtility=false, Category="basic", OncePerObject=false, OncePerTurn=false, IsInteraction=true, Tooltip=("show this interactable object name to Debug console"))]
     public class interaction_log_name : EventAction {
         
         public override bool Filter() {
@@ -1645,18 +1652,18 @@ namespace generators {
 			//ContextStatement External External ContextSwitchInterpreter
 			System.Boolean applicable = false; //IsContext = False IsNew = False
 			
-			System.Boolean OperandVar262 = default(System.Boolean); //IsContext = False IsNew = False
-			Interactable StoredVariable260 = ((Interactable)root.GetComponent(typeof(Interactable))); //IsContext = False IsNew = False
-			if(StoredVariable260 != null)
+			System.Boolean OperandVar265 = default(System.Boolean); //IsContext = False IsNew = False
+			Interactable StoredVariable263 = ((Interactable)root.GetComponent(typeof(Interactable))); //IsContext = False IsNew = False
+			if(StoredVariable263 != null)
 			{
-				Named StoredVariable261 = ((Named)StoredVariable260.GetComponent(typeof(Named))); //IsContext = False IsNew = False
-				if(StoredVariable261 != null)
+				Named StoredVariable264 = ((Named)StoredVariable263.GetComponent(typeof(Named))); //IsContext = False IsNew = False
+				if(StoredVariable264 != null)
 				{
 					applicable = true;
-					OperandVar262 = applicable;
+					OperandVar265 = applicable;
 				}
 			}
-			return (System.Boolean) (OperandVar262);
+			return (System.Boolean) (OperandVar265);
 		}
         }
         
@@ -1680,17 +1687,17 @@ namespace generators {
 			
 			//ContextStatement External External ContextSwitchInterpreter
 			
-			System.String OperandVar265 = default(System.String); //IsContext = False IsNew = False
-			Named StoredVariable263 = ((Named)root.GetComponent(typeof(Named))); //IsContext = False IsNew = False
-			if(StoredVariable263 != null)
+			System.String OperandVar268 = default(System.String); //IsContext = False IsNew = False
+			Named StoredVariable266 = ((Named)root.GetComponent(typeof(Named))); //IsContext = False IsNew = False
+			if(StoredVariable266 != null)
 			{
-				System.String prop264 = StoredVariable263.FullName; //IsContext = False IsNew = False
-				if(prop264 != null)
+				System.String prop267 = StoredVariable266.FullName; //IsContext = False IsNew = False
+				if(prop267 != null)
 				{
-					OperandVar265 = prop264;
+					OperandVar268 = prop267;
 				}
 			}
-			External.Log((System.Object)( (OperandVar265)));
+			External.Log((System.Object)( (OperandVar268)));
 		}
         }
     }

@@ -24,6 +24,11 @@ public class InteractionButton : MonoBehaviour
             id = nextId++;
         count++;
     }
+
+    void Start()
+    {
+        GetComponent<HoverTooltip>().Text = EventAction.Meta.Tooltip;
+    }
     void OnEnable()
     {
         

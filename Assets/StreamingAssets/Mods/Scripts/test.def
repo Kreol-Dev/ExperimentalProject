@@ -194,7 +194,7 @@ interactables_ui =
 interactable_ui =
 {
 	once_per_object = yes
-	scope = ui_object.fit(showed_object.fit(has(interactable)))
+	scope = ui_object.fit(showed_object.fit(has(interactable)) and not has(selection_marker))
 	utility = 1
 	action = 
 	{
@@ -204,6 +204,7 @@ interactable_ui =
 			p_ctx = get_right_bar
 			p_ctx.if(has(ui_object)).ctx = p_ctx
 		}
+		
 	}
 }
 
@@ -211,6 +212,7 @@ interactable_ui =
 interaction_log_name = 
 {
 	is_interaction = yes
+	tooltip = "show this interactable object name to Debug console"
 	scope = interactable.named
 	utility = 1
 	action = 

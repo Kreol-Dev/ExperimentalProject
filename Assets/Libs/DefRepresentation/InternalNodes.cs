@@ -36,7 +36,7 @@ namespace InternalDSL
 
 		public void Show ()
 		{
-			//if (ScriptEngine.ParseDebug)
+			if (ScriptEngine.ParseDebug)
 				for (int i = 0; i < Operators.Count; i++)
 					Debug.Log (Operators [i]);
 		}
