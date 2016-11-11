@@ -113,7 +113,9 @@ public class ExternalFunctionsPlugin : ScriptEnginePlugin
 						prop.Name = member;
 						prop.Type = new CodeTypeReference (propInfo.PropertyType);
 						prop.GetStatements.Add (new CodeSnippetStatement (String.Format ("return {0}.{1};", providerName, member)));
-						decl.Members.Add (prop);
+                        if(propInfo.CanWrite && propInfo.GetSetMethod() != null && propInfo.GetSetMethod().IsPublic)
+                        prop.SetStatements.Add(new CodeSnippetStatement(String.Format(" {0}.{1} = value;", providerName, member)));
+                        decl.Members.Add (prop);
 					} else
 					{
 						Debug.LogFormat ("No such member {0} in {1}", member, providerType);

@@ -25,14 +25,17 @@ public class InteractionButton : MonoBehaviour
         count++;
     }
 
-    void Start()
-    {
-        GetComponent<HoverTooltip>().Text = EventAction.Meta.Tooltip;
-    }
     void OnEnable()
     {
-        
+        GetComponent<HoverTooltip>().Text = EventAction.Meta.Tooltip;
+        Button.GetComponentInChildren<Text>().text = EventAction.GetType().Name;
+        Button.onClick.AddListener( OnClick);
         StartCoroutine(UpdateCoroutine());
+    }
+    
+    void OnClick()
+    {
+        EventAction.Action();
     }
 
     IEnumerator UpdateCoroutine()
@@ -53,7 +56,8 @@ public class InteractionButton : MonoBehaviour
 
     private void UpdateActionState()
     {
-        if(EventAction.Filter())
+        //Debug.Log(EventAction.Root);
+        if(EventAction.Utility() > 0)
         {
             Button.enabled = true;
         }

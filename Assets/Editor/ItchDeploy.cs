@@ -11,7 +11,7 @@ static class ItchDeploy
     static string ChannelName = "windows";
     public static void OnProjectBuilt(string pathToPlayer)
     {
-        try
+        /*try
         {
 
             var i = pathToPlayer.LastIndexOf('/');
@@ -49,7 +49,7 @@ static class ItchDeploy
         {
             UnityEngine.Debug.LogWarning(e);
             UnityEngine.Debug.LogError("Native error code: " + e.NativeErrorCode);
-        }
+        }*/
     }
 
         

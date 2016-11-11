@@ -31,7 +31,7 @@ public class SavingLoading : MonoBehaviour
 		var allObjects = FindObjectsOfType<GameObject> ();
 		foreach (var obj in allObjects)
 		{
-			obj.AddComponent<NonSerializable> ();
+			obj.AddComponent<Stationary> ();
 
 		}
 		serializers.Add (typeof(GameObject), new GameobjectSerializer ());
@@ -102,7 +102,7 @@ public class SavingLoading : MonoBehaviour
 
 		savedObjects.Clear ();
 		var allObjects = from obj in FindObjectsOfType<GameObject> ()
-		                 where obj.GetComponent<NonSerializable> () == null && obj.GetComponentInParent<NonSerializable> () == null
+		                 where obj.GetComponent<Stationary> () == null && obj.GetComponentInParent<Stationary> () == null
 		                 select obj as Object;
 		savedObjects.AddRange (allObjects);
 		foreach (var obj in savedObjects)
@@ -160,11 +160,11 @@ public class SavingLoading : MonoBehaviour
 			return "null";
 		if (obj is GameObject)
 		{
-			if ((obj as GameObject).GetComponent<NonSerializable> () != null)
+			if ((obj as GameObject).GetComponent<Stationary> () != null)
 				return (obj as GameObject).name;
 		} else if (obj is MonoBehaviour)
 		{
-			if ((obj as MonoBehaviour).GetComponent<NonSerializable> () != null)
+			if ((obj as MonoBehaviour).GetComponent<Stationary> () != null)
 				return (obj as MonoBehaviour).name;
 		}
 		if (objectToRef.ContainsKey (obj))
@@ -497,10 +497,6 @@ public class GameobjectSerializer : ISerializer
 }
 
 
-public class NonSerializable : MonoBehaviour
-{
-	
-}
 
 
 public class ObjectRefConverter : JsonConverter

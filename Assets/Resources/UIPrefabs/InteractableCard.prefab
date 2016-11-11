@@ -25,10 +25,9 @@ GameObject:
   - 114: {fileID: 114000011934825542}
   - 114: {fileID: 114000010977326662}
   - 225: {fileID: 225000013131213658}
-  - 114: {fileID: 114000012011600358}
   - 114: {fileID: 114000011865658142}
   - 114: {fileID: 114000011835359362}
-  - 114: {fileID: 114000011699880172}
+  - 114: {fileID: 114000011524504892}
   m_Layer: 5
   m_Name: InteractableCard
   m_TagString: Untagged
@@ -54,7 +53,7 @@ MonoBehaviour:
   m_PreferredHeight: -1
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
---- !u!114 &114000011699880172
+--- !u!114 &114000011524504892
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -62,11 +61,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1000010383726436}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8503c5fab4b1084e8f17a7bbcbca733, type: 3}
+  m_Script: {fileID: 11500000, guid: f628b073a6a4ce24497c087f282565e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Markers:
-  - 
+  showedObject: {fileID: 0}
+  ShoudFit: 0
 --- !u!114 &114000011835359362
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -111,19 +110,6 @@ MonoBehaviour:
   m_Spacing: 5
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
---- !u!114 &114000012011600358
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000010383726436}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f628b073a6a4ce24497c087f282565e4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  showedObject: {fileID: 0}
-  ShoudFit: 1
 --- !u!114 &114000012706053604
 MonoBehaviour:
   m_ObjectHideFlags: 1

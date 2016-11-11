@@ -141,9 +141,10 @@ public class Generators : MonoBehaviour
                         if (!interactionsByType.TryGetValue(ta, out interaction))
                         {
                             interaction = Activator.CreateInstance(action.GetType()) as EventAction;
+                            interaction.Meta = action.Meta;
                             interactionsByType.Add(ta, interaction);
                         }
-                        inter.Options.Add(interaction);
+                        inter.AddOption(interaction);
 
                     }
                     

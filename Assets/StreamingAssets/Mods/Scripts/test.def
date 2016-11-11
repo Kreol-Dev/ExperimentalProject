@@ -171,6 +171,7 @@ place_ui_size =
 interactables_ui = 
 {
 	once_per_object = yes
+	category = ui
 	scope = ui_object.fit(showed_object.fit(has(interactables)))
 	utility = 1
 	action = 
@@ -194,17 +195,23 @@ interactables_ui =
 interactable_ui =
 {
 	once_per_object = yes
-	scope = ui_object.fit(showed_object.fit(has(interactable)) and not has(selection_marker))
+	category = ui
+	scope = ui_object.fit(showed_object.fit(has(interactable)) and not has(selectable_marker))
 	utility = 1
 	action = 
 	{
+		log = "interactable UI"
 		ctx = root
 		bars_manager = 
 		{
 			p_ctx = get_right_bar
 			p_ctx.if(has(ui_object)).ctx = p_ctx
 		}
-		
+		ctx.spawn_prefab(interactions_ui) =
+		{
+			interactable_u_i.target_interactable = root.ui_object.showed_object.interactable
+			set_parent(this) = ctx
+		}
 	}
 }
 

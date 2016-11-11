@@ -1213,10 +1213,10 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 4
+  m_ChildAlignment: 1
   m_Spacing: 10
   m_ChildForceExpandWidth: 0
-  m_ChildForceExpandHeight: 0
+  m_ChildForceExpandHeight: 1
 --- !u!114 &676822843
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2340,7 +2340,7 @@ MonoBehaviour:
   m_Script: {fileID: 1741964061, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_HorizontalFit: 1
+  m_HorizontalFit: 2
   m_VerticalFit: 0
 --- !u!1 &1176181267
 GameObject:
@@ -2865,7 +2865,7 @@ Prefab:
     - target: {fileID: 224000013040137380, guid: 54e03384ca537f94eb935dc62f7d58cf,
         type: 2}
       propertyPath: m_RootOrder
-      value: 12
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 224000013040137380, guid: 54e03384ca537f94eb935dc62f7d58cf,
         type: 2}
@@ -3688,7 +3688,7 @@ MonoBehaviour:
   m_Script: {fileID: 1741964061, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_HorizontalFit: 1
+  m_HorizontalFit: 2
   m_VerticalFit: 0
 --- !u!1 &1968087817
 GameObject:
@@ -3899,7 +3899,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_HorizontalFit: 0
-  m_VerticalFit: 1
+  m_VerticalFit: 2
 --- !u!1 &2045361619
 GameObject:
   m_ObjectHideFlags: 0
@@ -4075,7 +4075,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_HorizontalFit: 0
-  m_VerticalFit: 1
+  m_VerticalFit: 2
 --- !u!1 &2071148362
 GameObject:
   m_ObjectHideFlags: 0
@@ -4189,6 +4189,7 @@ GameObject:
   - 114: {fileID: 2112614734}
   - 114: {fileID: 2112614735}
   - 114: {fileID: 2112614736}
+  - 114: {fileID: 2112614737}
   m_Layer: 5
   m_Name: DetailsUI
   m_TagString: Untagged
@@ -4279,6 +4280,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 28bcf74a81d49c6498ddab6bff385932, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2112614737
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2112614730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32b99ca5c80d9904d8dfc926d46174e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &2131043896

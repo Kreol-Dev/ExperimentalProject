@@ -6,7 +6,7 @@ using System.Text;
 class ObjectPool<T> where T : new()
 {
     Stack<T> pool = new Stack<T>();
-
+    public bool HasFreeObjects {  get { return pool.Count > 0; } }
     public T Get()
     {
         if (pool.Count > 0)

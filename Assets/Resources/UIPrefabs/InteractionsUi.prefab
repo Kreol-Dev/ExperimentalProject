@@ -41,7 +41,6 @@ GameObject:
   - 114: {fileID: 114000014135223108}
   - 222: {fileID: 222000011887393924}
   - 114: {fileID: 114000011171887534}
-  - 114: {fileID: 114000011269559664}
   m_Layer: 0
   m_Name: InteractionsUi
   m_TagString: Untagged
@@ -76,19 +75,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114000011269559664
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000012029136230}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1741964061, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_HorizontalFit: 2
-  m_VerticalFit: 2
 --- !u!114 &114000011884854670
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -113,7 +99,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b18ccb6289a51654f83a6b899d01adb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TargetInteractable: {fileID: 0}
+  InteractionButtonProto: {fileID: 1000011142847112, guid: 07d2ad15cd4ad874e822d4bf537f6647,
+    type: 2}
 --- !u!114 &114000013060575786
 MonoBehaviour:
   m_ObjectHideFlags: 1

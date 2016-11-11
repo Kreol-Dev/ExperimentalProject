@@ -122,7 +122,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TargetContainer: {fileID: 0}
-  CardUI: {fileID: 0}
+  CardUI: {fileID: 1000010383726436, guid: 663798ec2ffb534459bbd66bd8e52ef1, type: 2}
 --- !u!222 &222000011851069176
 CanvasRenderer:
   m_ObjectHideFlags: 1

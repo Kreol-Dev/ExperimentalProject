@@ -36,7 +36,7 @@ public class Entity : MonoBehaviour
             child.GetComponentsInChildren<Transform>(list);
             foreach (var subchild in list)
             {
-                if (!subchild.GetComponent<NonSerializable>())
+                if (!subchild.GetComponent<Stationary>())
                 {
                     if (subchild.parent == thisTransform)
                         i--;
