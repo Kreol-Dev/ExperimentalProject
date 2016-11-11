@@ -22,7 +22,7 @@ static class ItchDeploy
             File.Delete(pathToEditor + "butler_creds");
             File.Delete(pathToEditor + "butler.app");
             File.Move(pathToPlayer + "ExperimentalProject_Data/StreamingAssets/butler_creds", pathToEditor + "butler_creds");
-            File.Move(pathToPlayer + "ExperimentalProject_Data/StreamingAssets/butler", pathToEditor + "butler.app");
+            File.Move(pathToPlayer + "ExperimentalProject_Data/StreamingAssets/butler.app", pathToEditor + "butler.app");
             
 
       
@@ -45,9 +45,10 @@ static class ItchDeploy
 
             uploadProc.WaitForExit();
         }
-        catch (Exception e)
+        catch (System.ComponentModel.Win32Exception e)
         {
-           UnityEngine.Debug.Log(e);
+            UnityEngine.Debug.LogWarning(e);
+            UnityEngine.Debug.LogError("Native error code: " + e.NativeErrorCode);
         }
     }
 
