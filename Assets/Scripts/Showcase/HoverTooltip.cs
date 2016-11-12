@@ -94,7 +94,7 @@ public class HoverTooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     {
         if(hoverCoroutine != null)
         StopCoroutine(hoverCoroutine);
-
+        if(HoverPanel != null)
         HoverPanel.gameObject.SetActive(false);
         wasOutside = true;
     }
