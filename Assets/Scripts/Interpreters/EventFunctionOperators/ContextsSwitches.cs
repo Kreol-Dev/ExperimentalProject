@@ -96,7 +96,7 @@ public class ContextSwitchInterpreter : FunctionOperatorInterpreter
 		FunctionBlock contextBlock = new FunctionBlock (block, block.Method, block.Type);
 		block.Statements.Add (contextBlock);
 		DeclareVariableStatement addVar = block.FindStatement<DeclareVariableStatement> (v => v.Name == op.Identifier as string);
-		bool setContext = false;
+        bool setContext = false;
 		if (addVar != null && !addVar.IsContext)
 			setContext = addVar.IsContext = true;
 		if (addVar == null)
@@ -127,8 +127,9 @@ public class ContextSwitchInterpreter : FunctionOperatorInterpreter
 		IfStatement isNotNull = new IfStatement ();
 		isNotNull.CheckExpression = String.Format ("{0} != null", declareVar.Name);
 		isNotNull.TrueBlock = new FunctionBlock (contextBlock);
-		contextBlock.Statements.Add (isNotNull);
+        contextBlock.Statements.Add(isNotNull);
 		contextBlock = isNotNull.TrueBlock;
+        contextBlock.Statements.Add(new DeclareVariableStatement() { Name = declareVar.Name, IsArg = true, IsContext = true, Type = declareVar.Type});
 		foreach (var entry in (op.Context as Context).Entries)
 		{
 			var subOp = entry as Operator;
@@ -496,7 +497,7 @@ public class ContextPropertyInterpreter : FunctionOperatorInterpreter
 
 			statement.RepeatBlock.Statements.Add (listVar);
 			var inter = switches.GetInterByType (listT);
-            Debug.Log(inter);
+            //Debug.Log(inter);
 			inter.Interpret (op, repeatBlock);
 		}
 		interpret = true;
@@ -516,7 +517,7 @@ public class ContextPropertyInterpreter : FunctionOperatorInterpreter
 		
 		if (type.IsGenericType && type.GetGenericTypeDefinition () == typeof(List<>))
 		{
-            Debug.Log("List " + propName);
+            //Debug.Log("List " + propName);
 			listT = type.GetGenericArguments () [0];
 			engine.GetPlugin<ContextSwitchesPlugin> ().AddInterToType (type, this);
 		}

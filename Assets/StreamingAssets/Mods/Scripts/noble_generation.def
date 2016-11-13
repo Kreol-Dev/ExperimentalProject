@@ -195,3 +195,23 @@ noble_is_priest =
 		}
 	}
 }
+
+
+travel = 
+{
+	once_per_turn = yes
+	scope = actor.noble.interactables_marker.fit(is_active)
+	utility = noble.influence - 0.8
+	action = 
+	{
+		interactables_marker.detach = root
+		another_city = random_from(all_actors, has(city) and has(interactables) and not(this = root))
+		if(has(another_city)) = {
+			noble.where.interactables.detach = root
+			another_city.interactables.attach = root
+			noble.where = another_city
+
+		}
+	}
+
+}

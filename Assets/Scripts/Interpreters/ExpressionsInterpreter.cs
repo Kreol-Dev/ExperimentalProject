@@ -114,7 +114,7 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 
 	public Expr InterpretClosure (Expression expression, FunctionBlock block, Type closureType)
 	{
-		Debug.LogFormat ("Interpret {0} as closure", expression);
+		//Debug.LogFormat ("Interpret {0} as closure", expression);
 		StringBuilder closureBuilder = new StringBuilder ();
 		var methodInfo = closureType.GetMethod ("Invoke");
 		var args = methodInfo.GetParameters ();

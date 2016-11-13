@@ -34,6 +34,7 @@ public class CacheInterpreter : FunctionOperatorInterpreter
 				field.UserData.Add ("type", exprValue.Type);
 				block.Type.Members.Add (field);
 				block.Statements.Add (String.Format ("{0} = {1};", varName, exprValue.ExprString));
+                block.Statements.Add(new DeclareVariableStatement() {Name = varName, IsArg = true, Type = exprValue.Type });
 				//var varDecl = block.FindStatement<DeclareVariableStatement> (v => v.Name == varName);
 			} else
 			{
@@ -49,7 +50,8 @@ public class CacheInterpreter : FunctionOperatorInterpreter
 				cachedVar.IsArg = true;
 				block.Statements.Add (cachedVar);
 				block.Statements.Add (String.Format ("{0} = {1};", varName, exprValue.ExprString));
-				var inter = ctxs.GetInterByType (exprValue.Type);
+                block.Statements.Add(new DeclareVariableStatement() { Name = varName, IsArg = true, Type = exprValue.Type });
+                var inter = ctxs.GetInterByType (exprValue.Type);
 				inter.Interpret (op, block);
 
 			}

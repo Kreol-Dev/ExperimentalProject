@@ -32,6 +32,8 @@ public class UiObject : MonoBehaviour
                     ent.Destoryed += OnGODestoryed;
                     ent.ComponentAddedEvent += EntComponentAdded;
                 }
+                else
+                    Debug.LogErrorFormat("{0} has no Entity component", showedObject);
                 var gr = GetComponent<Graphic>();
                 if (gr != null)
                     gr.color = firstColor;
@@ -59,6 +61,19 @@ public class UiObject : MonoBehaviour
 		}
 	}
     
+    void OnDestroy()
+    {
+        if(showedObject != null)
+        {
+            var ent = showedObject.GetComponent<Entity>();
+            if (ent != null)
+            {
+                ent.Destoryed -= OnGODestoryed;
+                ent.ComponentAddedEvent -= EntComponentAdded;
+            }
+        }
+        
+    }
 	void EntComponentAdded ()
 	{
 		Debug.LogFormat ("Regenerating ui for {0}", ShowedObject);
@@ -71,10 +86,19 @@ public class UiObject : MonoBehaviour
 	{
         if (go != showedObject)
             return;
-        showedObject = null;
+        var ent = showedObject.GetComponent<Entity>();
+        if (ent != null)
+        {
+            ent.Destoryed -= OnGODestoryed;
+            ent.ComponentAddedEvent -= EntComponentAdded;
+        }
         if (this != null)
+        {
+            ShowedObject = null;
             Destroy(gameObject);
-	}
+        }
+        
+    }
 
 	LayoutElement layout;
 

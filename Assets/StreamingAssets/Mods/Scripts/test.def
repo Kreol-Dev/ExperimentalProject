@@ -27,30 +27,6 @@ named_ui =
 }
 
 
-agents_pool_filler = {
-	scope = markers.place.fit(agents = 0 and has_marker(agents_pool))
-	utility = 1
-	action = {
-		place = {
-			size = 5
-			repeat(random(1,4)) = {
-				generate(ag) = {
-					entity = yes
-					agent = yes
-					human = {
-						age = random(20, 45)
-					}
-					named = {
-						set("prefix", 0) = "Agent: "
-						set("main_name", 1) = random_name(human_name)
-					}
-				}
-
-				attach = ag.agent
-			}
-		}
-	}
-}
 
 location_event = {
 	scope = place.fit(not has(event_marker))
@@ -83,27 +59,7 @@ encounter_ui_enlist =
 	}
 }
 
-location_test_encounter = 
-{
-	scope = place.named.fit(act = yes)
-	utility = 0
-	action  = 
-	{
-		generate(enc) = 
-		{
-			encounter = 
-			{
-				context = root
-			}
-			markers = yes
-			entity = yes
-			named = 
-			{
-				set(main_name, 0) = "Basic encounter"
-			}
-		}
-	}
-}
+
 
 place_ui_cards_list = 
 {
@@ -201,17 +157,6 @@ interactable_ui =
 }
 
 
-interaction_log_name = 
-{
-	is_interaction = yes
-	tooltip = "show this interactable object name to Debug console"
-	scope = interactable.named
-	utility = 1
-	action = 
-	{
-		log = named.full_name
-	}
-}
 
 
 inquisitor_basic_resources =
@@ -241,8 +186,14 @@ on_check_lose= {
 			lose = they_fired_you
 			markers.set_marker = lost
 		}
+		not_everyone_is_a_cultist = any(all_actors, has(noble) and not has(cultist))
+		if(not not_everyone_is_a_cultist) = {
+			lose = everyone_is_a_cultist
+			markers.set_marker = lost
+		}
 	}
 }
+
 
 lose_encounter_explain = 
 {
@@ -271,5 +222,30 @@ notify_encounter_explain =
 	utility = 1
 	action = {
 		encounter_ui.description = encounter_ui.showed_object.notify_event.of_what
+	}
+}
+
+turn_gold = 
+{
+	once_per_turn = yes
+	scope = inquisitor_resources
+	utility = 1
+	action = 
+	{
+		all_actors.noble = {
+			gold = gold + noble.loyalty * 3
+		}
+	}
+}
+
+on_check_win = 
+{
+	scope = markers.fit(has_marker(check_win))
+	once_per_object = yes
+	utility = 1
+	action = 
+	{
+		any_cultists_left = any(all_actors, has(cultist))
+		if(not any_cultists_left).markers.set_marker(won)
 	}
 }

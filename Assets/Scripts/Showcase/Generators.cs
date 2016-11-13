@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 using System.Linq;
+using System.Text;
+
 public class Generators : MonoBehaviour
 {
 	BasicLoader loader;
@@ -49,10 +51,24 @@ public class Generators : MonoBehaviour
 		weights = new ActionWeight[actions.Count];
 		Loaded = true;
 	}
+    const bool DebugGeneration = false;
+    ObjectPool<StringBuilder> debugBuilders = new ObjectPool<StringBuilder>();
     ObjectPool<HashSet<EventAction>> eaPool = new ObjectPool<HashSet<EventAction>>();
     ObjectPool<List<EventAction>> eaListPool = new ObjectPool<List<EventAction>>();
 	public void Generate (GameObject go, float fuzzy = 0f)
 	{
+        
+        var debugBuilder = debugBuilders.Get();
+        if (DebugGeneration)
+        {
+            debugBuilder.Length = 0;
+            debugBuilder.AppendLine(go.name);
+            var n = go.GetComponent<Named>();
+            if (n != null)
+                debugBuilder.AppendLine(n.FullName);
+        }
+            
+
         var performedActions = eaPool.Get();
         var maximizeActions = eaListPool.Get();
         maximizeActions.Clear();
@@ -61,37 +77,66 @@ public class Generators : MonoBehaviour
         int iterations = 0;
         while (oneMoreRun)
 		{
+            if (DebugGeneration)
+                debugBuilder.AppendLine("=================================================================");
             if (Application.isEditor)
                 if (iterations++ > 50)
                     break;
             oneMoreRun = false;
-            foreach (var category in actionsByCategory.Values)
+            foreach (var categoryPair in actionsByCategory)
             {
+                var category = categoryPair.Value;
+                if (DebugGeneration)
+                    debugBuilder.Append(" ").AppendLine(categoryPair.Key);
                 maximizeActions.Clear();
                 foreach ( var action in category)
                 {
+
+                    if (DebugGeneration)
+                        debugBuilder.Append("  ").Append(action.GetType().Name).Append(" = ");
                     if (ActedThisWayAndShouldNoMore(go, action) || (action.Meta.OncePerTurn && performedActions.Contains(action)))
+                    {
+                        debugBuilder.AppendLine("NO");
                         continue;
+                    }
                     if (!action.Meta.ShouldHaveMaxUtility)
                     {
                         var cachedRoot = action.Root;
                         action.Root = go;
                         if (action.Filter())
+                        {
                             if (oneMoreRun |= (action.Utility() > 0))
                             {
-                                if(action.Meta.OncePerTurn)
+                                if (action.Meta.OncePerTurn)
                                     performedActions.Add(action);
                                 action.Action();
+                                if (DebugGeneration)
+                                    debugBuilder.AppendLine("YES");
                                 NotifyOfAct(go, action);
                             }
+                            else
+                            if (DebugGeneration)
+                                debugBuilder.AppendLine("NO");
+                        }
+                        else
+                        if (DebugGeneration)
+                            debugBuilder.AppendLine("NO");
                         action.Root = cachedRoot;
                     }
                     else
-                        maximizeActions.Add(action);                    
+                    {
+                        maximizeActions.Add(action);
+                        if (DebugGeneration)
+                            debugBuilder.AppendLine("ONLY_MAX");
+                    }
                 }
+                if (DebugGeneration)
+                    debugBuilder.Append("  CHOSEN_MAX = ");
                 if (maximizeActions.Count > 0)
                 {
                     var act = GenerateMostUseful(go, fuzzy, maximizeActions, performedActions);
+                    if (DebugGeneration)
+                        debugBuilder.AppendLine(act == null ? "NOTHING" : act.GetType().Name);
                     if (act != null)
                     {
                         if (act.Meta.OncePerTurn)
@@ -102,12 +147,24 @@ public class Generators : MonoBehaviour
             }
             eaListPool.Return(maximizeActions);
             eaPool.Return(performedActions);
-		}
+        }
+        if (DebugGeneration)
+            debugBuilder.AppendLine("INTERACTIONS:");
         var inter = go.GetComponent<Interactable>();
         if (inter != null)
+        {
             GetInteractions(inter);
-	}
+            if (DebugGeneration)
+                foreach (var i in inter.Options)
+                debugBuilder.Append(" ").AppendLine(i.GetType().Name);
+        }
 
+        if (DebugGeneration)
+            Debug.Log(debugBuilder.ToString());
+        debugBuilders.Return(debugBuilder);
+
+    }
+    
     ObjectPool<Dictionary<Type, EventAction>> dictPool = new ObjectPool<Dictionary<Type, EventAction>>();
     public void GetInteractions(Interactable inter)
     {
@@ -122,8 +179,9 @@ public class Generators : MonoBehaviour
 
             
         }
-        inter.Options.Clear();
 
+        while (inter.Options.Count > 0)
+            inter.RemoveOption(inter.Options[0]);
         while (oneMoreRun)
         {
             if (Application.isEditor)

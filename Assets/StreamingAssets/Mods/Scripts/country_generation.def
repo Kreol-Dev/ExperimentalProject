@@ -27,6 +27,7 @@ country_cities =
 					size = random(3, 6)
 					of = root
 				}
+				actor = yes
 
 			}
 		}

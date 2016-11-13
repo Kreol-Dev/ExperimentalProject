@@ -68,9 +68,14 @@ public class BasicLoader : MonoBehaviour
         return GameObject.Instantiate(prefab);
 
     }
+
+    public void Regenerate(GameObject go)
+    {
+        FindObjectOfType<Generators>().Generate(go, 0.1f);
+    }
 	public void Log (object log)
 	{
-		Debug.Log (log);
+		//Debug.Log (log);
 	}
     public GameObject Nothing()
     {
@@ -100,7 +105,19 @@ public class BasicLoader : MonoBehaviour
 		return null;
 	}
 
-	public void Destroy (UnityEngine.Object obj)
+    List<GameObject> randomFromCache = new List<GameObject>();
+    public GameObject RandomFrom(List<GameObject> list, SelectionDelegate checker)
+    {
+        randomFromCache.Clear();
+        for (int i = 0; i < list.Count; i++)
+            if (checker(list[i]))
+                randomFromCache.Add(list[i]);
+        if (randomFromCache.Count == 0)
+            return null;
+        return randomFromCache[random.Next(0, randomFromCache.Count)];
+    }
+
+    public void Destroy (UnityEngine.Object obj)
 	{
 		if (obj is GameObject)
 		{
@@ -134,7 +151,7 @@ public class BasicLoader : MonoBehaviour
 	{
 		return !(ReferenceEquals (obj, null) || obj.Equals (null));
 	}
-
+  
     public bool Contains(IList collection, object obj)
     {
         return collection.Contains(obj);
@@ -171,7 +188,7 @@ public class BasicLoader : MonoBehaviour
 		ExternalFunctions.Load ();
 		foreach (var eFunctions in EFunctions)
 			ExternalFunctions.AddProvider (eFunctions.Provider, eFunctions.Functions);
-		ExternalFunctions.AddProvider (this, "Random", "Dsix", "SetParent", "Any", "AbstractCamp", "Clamp", "Nothing", "Gameobject", "Contains" ,"SpawnPrefab","Has", "Vec", "GetWorld", "GetEventsController", "SelectFrom", "Log", "String", "GetPlayer", "Destroy", "NoOne");
+		ExternalFunctions.AddProvider (this, "Random", "Regenerate", "SetParent", "RandomFrom", "Any", "AbstractCamp", "Clamp", "Nothing", "Gameobject", "Contains" ,"SpawnPrefab","Has", "Vec", "GetWorld", "GetEventsController", "SelectFrom", "Log", "String", "GetPlayer", "Destroy", "NoOne");
 		foreach (var fileInfo in dirInfo.GetFiles ("*", SearchOption.AllDirectories))
 		{
 			if (fileInfo.LastWriteTimeUtc > lastWriteTime)
@@ -348,7 +365,7 @@ public class BasicLoader : MonoBehaviour
 			var types = Engine.FindTypesCastableTo<EventAction> ();
 			foreach (var type in types)
 			{
-				Debug.Log (type);
+				//Debug.Log (type);
 			}
 			if (Loaded != null)
 				Loaded ();

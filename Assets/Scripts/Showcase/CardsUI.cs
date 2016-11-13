@@ -68,7 +68,7 @@ public abstract class CardsUI<T> : MonoBehaviour
 
 		GameObject found = null;
 		cards.Clear ();
-		Debug.LogFormat ("Try to attach {0} to {1}", go, this);
+		//Debug.LogFormat ("Try to attach {0} to {1}", go, this);
 		GetComponentsInChildren<Card> (cards);
 		for (int i = 0; i < cards.Count; i++)
 			if (cards [i].ShowedObject == go)
@@ -84,7 +84,7 @@ public abstract class CardsUI<T> : MonoBehaviour
 		}
 		if (found == null)
 		{
-			Debug.LogFormat ("UI:{0} OnPlaceAttached - CreateNew {1}", this, go);
+			//Debug.LogFormat ("UI:{0} OnPlaceAttached - CreateNew {1}", this, go);
 			var placeUIGO = GameObject.Instantiate (CardUI);
             
 			placeUIGO.transform.SetParent (gameObject.transform);

@@ -18,6 +18,7 @@ class ObjectPool<T> where T : new()
 
     public void Return(T obj)
     {
+        if(obj != null)
         pool.Push(obj);
     }
 }

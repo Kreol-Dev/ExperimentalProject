@@ -66,7 +66,7 @@ public class Story : MonoBehaviour
             gens.Generate(actor, 0.1f);
             a.IsActive = true;
             //if(actor.GetComponent<Actor>().CurrentAction == null)
-            gens.GenerateMostUseful(actor, 0.1f);
+            gens.GenerateRandomByWeight(actor, 0.1f);
             yield return null;
         }
         onFinishTurn();

@@ -12,7 +12,7 @@ cult_generation =
 			if(current_noble >= noble_per_cultist) = {
 				current_noble = 0
 				log = "cultist = " + this
-				create(cultist).power = (knowledge + occult) / 2
+				create = cultist
 			}
 			current_noble = current_noble + 1
 		}
@@ -29,6 +29,17 @@ noble_is_a_cultist =
 	}
 }
 
+cultist_power = 
+{
+	once_per_turn = yes
+	scope = actor.noble.cultist.fit(not is_active)
+	utility = 1
+	action = 
+	{
+		cultist.noble.power = (knowledge + occult) / 2
+	}
+}
+
 cultist_perform_ritual = 
 {
 	scope = actor.cultist.fit(is_active)
@@ -40,17 +51,132 @@ cultist_perform_ritual =
 			event = {
 				context = root
 			}
+			ritual = yes
 		}
 	}
 }
 
 cultist_try_convert_other = 
 {
-	scope = actor.cultist.fit(is_active)
-	utility = 1
+	scope = actor.cultist.noble.fit(is_active)
+	utility = {
+		cache(other_non_cultist) = random_from(noble.where.interactables.every, not has(cultist))
+		if(has(other_non_cultist)).ut = noble.influence
+	}
 	action = 
 	{
 		generate(convert_other) = 
+		{
+			event = {
+				context = root
+			}
+			targeted_event = 
+			{
+				target = other_non_cultist
+			}
+			conversion_attempt = yes
+		}
+	}
+}
+
+on_convesion_attempt = 
+{
+	once_per_object = yes
+	scope = event.conversion_attempt.targeted_event
+	utility = 1
+	action = 
+	{
+		converter = event.context.noble
+		converted = targeted_event.target.noble
+
+		if(converter.influence > converted.sanity) = 
+		{
+			targeted_event.target.create = cultist
+			event.create = noble_converted
+		}
+		if(converter.influence < converted.sanity).event.create = noble_not_converted
+
+		targeted_event.target.
+		noble.if( not has(cultist) and (loyalty + sanity) / 2 > personality.brave).
+		notify = "He tried to persuade me to join a cult " + converter.named.full_name
+	}
+}
+ritual_steps = 
+{
+	scope = event.ritual.fit(step<3)
+	utility = 1
+	action = 
+	{
+		ritual.step = step + 1
+	}
+}
+on_ritual = 
+{
+	once_per_object = yes
+	scope = event.ritual.fit(step = 3 and not interrupted)
+	utility = 1
+	action = 
+	{
+		event.context.cultist = {
+			if(power > 0.25).noble.occult = occult + 0.1
+			if(power > 0.5) = 
+			{
+				noble.influence = influence + 0.1		
+				sanity = sanity - 1
+			}
+			if(power > 0.9).noble.where.interactables.noble.sanity = sanity - 0.1
+		}
+		
+
+	}
+}
+
+ritual_interrupted = 
+{
+	once_per_object = yes
+	scope = event.interrupt_ritual_attempt.fit(has(context))
+	utility = 1
+	action = 
+	{
+		cult_won = (event.context.attributes.intellect + event.context.attributes.mental) * 0.05 < interrupt_ritual_attempt.target_ritual.event.context.cultist.power
+		if(cult_won) =
+		{
+			destroy = event.context
+			regenerate = interrupt_ritual_attempt.target_ritual
+			notify = event.context.named.full_name + " has been killed during the attempt to interrupt the ritual"
+		}
+		if(not cult_won).interrupt_ritual_attempt.target_ritual.event = 
+		{
+			destroy = context
+			notify = "sucessfully interrupted the ritual and killed the cultist " + context.named.full_name
+		}
+	}
+}
+
+ritual_watched = 
+{
+	once_per_object = yes
+	scope = event.watch_for_the_ritual.fit(has(context))
+	utility = 1
+	action = 
+	{
+		if((event.context.attributes.intellect + event.context.attributes.mental) * 0.05 > interrupt_ritual_attempt.target_ritual.event.context.cultist.power) =
+		{
+			notify = "The cultist is no less then the " + watch_for_the_ritual.target_ritual.event.context.named.full_name
+		}
+		watch_for_the_ritual.regenerate = target_ritual
+	}
+}
+
+gain_knowledge = 
+{
+	once_per_turn = yes
+	scope = actor.noble.cultist.fit(is_active)
+	utility = 1 - noble.knowledge
+	action = 
+	{
+		noble.knowledge = knowledge + 0.05
+		generate(learn) = 
 		{
 			event = {
 				context = root

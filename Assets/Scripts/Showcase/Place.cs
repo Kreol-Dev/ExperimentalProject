@@ -10,7 +10,8 @@ public class Place : MonoBehaviour
 
 	Generators generators;
 
-	public int Size { get; set; }
+    public int size = 5;
+	public int Size { get { return size; } set { size = value; } }
 
 	public bool ShouldAct = true;
 

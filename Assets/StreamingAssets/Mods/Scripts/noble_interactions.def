@@ -18,4 +18,55 @@ burn =
 }
 
 
+bribe = 
+{
+	is_interaction = yes
+	tooltip = "bribes are the best way to get loyalty!"
+	scope = noble
+	utility = {
+		if(influence > noble.influence and gold > noble.influence * 10).ut = 1
+	}
+	action = 
+	{
+		if(not has(cultist)).noble.loyalty = loyalty + 0.15
+		gold = gold - noble.influence * 10
+	}
+}
 
+hire_agent = 
+{
+	is_interaction = yes
+	tooltip = "the best of the best!"
+	scope = city.place
+	utility = {
+		if(gold > 100).ut = 1
+	}
+	action = 
+	{
+		gold = gold - 100
+		generate(ag) = {
+			entity = yes
+			agent = yes
+			human = {
+				age = random(20, 45)
+			}
+			focused_ritual = yes
+			named = {
+				set("prefix", 0) = "Agent: "
+				set("main_name", 1) = random_name(human_name)
+			}
+		}
+
+		place.attach = ag.agent
+	}
+}
+
+agent_clear_ritual = 
+{
+	scope = actor.focused_ritual.fit(has(focus) and not is_active)
+	utility = 1
+	action = 
+	{
+		focused_ritual.focus = nothing
+	}
+}

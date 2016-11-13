@@ -11,9 +11,11 @@ public class Encounter : MonoBehaviour
 
 	public event GODelegate NewReaction;
 
-	public void Reaction (GameObject reactProto)
+	public void Option (GameObject reactProto)
 	{
 		reactProtos.Add (reactProto);
+        reactProto.transform.SetParent(transform);
+        reactProto.SetActive(false);
 		if (NewReaction != null)
 			NewReaction (reactProto);
 	}

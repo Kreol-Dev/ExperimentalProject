@@ -57,7 +57,7 @@ public class InteractableUI : MonoBehaviour
         pool.Return(interButton);
     }
 
-    public void BeforeDestroy()
+    void OnDestroy()
     {
         inter.OptionAdded -= OnInteractionAdded;
         inter.OptionRemoved -= OnInteractionRemoved;
@@ -65,7 +65,6 @@ public class InteractableUI : MonoBehaviour
         foreach(var ui in eaToUi.Values)
         {
             ui.transform.SetParent(null);
-            pool.Return(ui);
             ui.SetActive(false);
         }
         eaToUi.Clear();

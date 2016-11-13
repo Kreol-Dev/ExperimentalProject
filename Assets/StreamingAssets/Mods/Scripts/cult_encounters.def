@@ -1,5 +1,100 @@
-temp_enc= 
+on_ritual_performed = 
 {
-	scope = story
-	utility = 0
+	scope = event.ritual.fit(context.noble.where.place.agents > 0)
+	utility = 1
+	once_per_object = yes
+	action = 
+	{
+		ritual.interrupted = yes
+		generate(interruption_encounter) = 
+		{
+			entity = yes
+			encounter = yes
+			markers = yes
+			named = {
+				set(main_name, 0) = "Ritual spotted!"
+			}
+			interrupt_event = 
+			{
+				target_ritual = root
+			}
+		}
+	}
 }
+
+option_interrupt_ritual = 
+{
+	once_per_object = yes
+	scope = encounter.interrupt_event
+	utility = 1
+	action = 
+	{
+		log = "interrupt option"
+		interrupt_event.target_ritual.event.context.noble.where.place.agents = 
+		{ 
+			go = gameobject(this) 
+			go.focused_ritual.if(not has(focus)) = 
+			{
+				ag = gameobject(this)
+				spawn(interrupt_proto) =
+				{
+					entity = yes
+					event = {
+						context = ag 
+					}
+					interrupt_ritual_attempt = 
+					{
+						target_ritual = root.interrupt_event.target_ritual
+					}
+					named = {
+						set(main_name, 0) = "try to interrupt! "
+						set(who, 1) = ag.named.get(main_name)
+					}
+				}
+				focus = root.interrupt_event.target_ritual
+				root.encounter.option = interrupt_proto
+			}
+		}
+	}
+}
+
+option_watch_for_the_ritual =
+{
+	once_per_object = yes
+	scope = encounter.interrupt_event
+	utility = 1
+	action = 
+	{
+		log = "watch option"
+		interrupt_event.target_ritual.event.context.noble.where.place.agents = 
+		{ 
+			go = gameobject(this) 
+
+			go.focused_ritual.if(not has(focus)) = 
+			{
+				ag = gameobject(this)
+				spawn(watch_proto) =
+				{
+					entity = yes
+					event = {
+						context = ag 
+					}
+					watch_for_the_ritual = 
+					{
+						target_ritual = root.interrupt_event.target_ritual
+						
+					}
+					named = 
+					{
+						set(main_name, 0) = "try to watch! "
+						set(who, 1) = ag.named.get(main_name)
+					}
+				}
+				focus = root.interrupt_event.target_ritual
+				root.encounter.option = watch_proto
+			}
+		}
+	}
+}
+
+
