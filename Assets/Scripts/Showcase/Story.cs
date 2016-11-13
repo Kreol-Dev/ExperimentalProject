@@ -18,11 +18,8 @@ public class Story : MonoBehaviour
 		return IntensityCurve.Evaluate ((float)CurrentStep / (float)StepsCount);
 	}
 
-    public List<GameObject> AllActors()
-    {
-        return actors;
-    }
 
+    public List<GameObject> AllActors { get { return actors; } }
     public int CurrentDate()
     {
         return CurrentStep;

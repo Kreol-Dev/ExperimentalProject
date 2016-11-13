@@ -20,12 +20,22 @@ public class Interactables : MonoBehaviour
         if (marker == null)
             marker = go.AddComponent<InteractablesMarker>();
         marker.AttachedTo = this;
+        var e = go.GetComponent<Entity>();
+        if(e != null)
+        e.Destoryed += OnEntityDestroyed;
         if (GOAttached != null)
             GOAttached(go);
     }
 
+    void OnEntityDestroyed(GameObject go)
+    {
+        Detach(go);
+    }
     public void Detach(GameObject go)
     {
+        var e = go.GetComponent<Entity>();
+        if (e != null)
+            e.Destoryed -= OnEntityDestroyed;
         Every.Remove(go);
         if (GODetached != null)
             GODetached(go);

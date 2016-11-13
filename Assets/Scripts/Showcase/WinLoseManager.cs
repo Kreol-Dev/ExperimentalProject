@@ -26,6 +26,17 @@ public class WinLoseManager : MonoBehaviour
         FindObjectOfType<Generators>().Generate(e);
     }
 
+    public void Notify(string ofWhat)
+    {
+        var e = new GameObject("notification");
+        e.AddComponent<NotifyEvent>().OfWhat = ofWhat;
+        e.AddComponent<Encounter>();
+        e.AddComponent<Markers>();
+        e.AddComponent<Entity>();
+        e.AddComponent<Named>().Set("main_name", 0, "You've got mail!");
+        FindObjectOfType<Generators>().Generate(e);
+    }
+
     void Awake()
     {
         FindObjectOfType<BasicLoader>().EFunctions.Add(new BasicLoader.ExternalFunctions(this, "Win", "Lose"));
@@ -41,4 +52,9 @@ public class WinEvent : MonoBehaviour
 public class LostEvent : MonoBehaviour
 {
     public string Why { get; set; }
+}
+
+public class NotifyEvent : MonoBehaviour
+{
+    public string OfWhat { get; set; }
 }

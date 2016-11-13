@@ -27,6 +27,8 @@ public class SelectionManager : MonoBehaviour
     
     public void Select(GameObject go)
     {
+        if(go != null)
+        go.GetComponent<Entity>().Destoryed += g => Select(null);
         ui.ShowedObject = go;
         ui.GetComponent<Entity>().ClearSiblings();
         ui.GetComponent<Markers>().ClearUIMarkers();

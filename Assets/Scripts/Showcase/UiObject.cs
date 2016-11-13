@@ -14,6 +14,15 @@ public class UiObject : MonoBehaviour
 		get { return showedObject; }
 		set
 		{
+            if(showedObject != null)
+            {
+                var ent = showedObject.GetComponent<Entity>();
+                if (ent != null)
+                {
+                    ent.Destoryed -= OnGODestoryed;
+                    ent.ComponentAddedEvent -= EntComponentAdded;
+                }
+            }
 			showedObject = value;
             if (value != null)
             {
@@ -60,9 +69,11 @@ public class UiObject : MonoBehaviour
 
 	void OnGODestoryed (GameObject go)
 	{
-		showedObject = null;
-        if(this!=null)
-		Destroy (gameObject);
+        if (go != showedObject)
+            return;
+        showedObject = null;
+        if (this != null)
+            Destroy(gameObject);
 	}
 
 	LayoutElement layout;

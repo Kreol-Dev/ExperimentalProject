@@ -45,6 +45,17 @@ public class BasicLoader : MonoBehaviour
     {
         return Mathf.Clamp(value, min, max);
     }
+
+    public delegate bool BoolDelegate(GameObject go);
+    public bool Any(List<GameObject> gos, BoolDelegate check)
+    {
+        for ( int i = 0; i < gos.Count; i++)
+        {
+            if (check(gos[i]))
+                return true;
+        }
+        return false;
+    }
     public GameObject SpawnPrefab(string name)
     {
         GameObject prefab = null;
@@ -160,7 +171,7 @@ public class BasicLoader : MonoBehaviour
 		ExternalFunctions.Load ();
 		foreach (var eFunctions in EFunctions)
 			ExternalFunctions.AddProvider (eFunctions.Provider, eFunctions.Functions);
-		ExternalFunctions.AddProvider (this, "Random", "Dsix", "SetParent", "AbstractCamp", "Clamp", "Nothing", "Gameobject", "Contains" ,"SpawnPrefab","Has", "Vec", "GetWorld", "GetEventsController", "SelectFrom", "Log", "String", "GetPlayer", "Destroy", "NoOne");
+		ExternalFunctions.AddProvider (this, "Random", "Dsix", "SetParent", "Any", "AbstractCamp", "Clamp", "Nothing", "Gameobject", "Contains" ,"SpawnPrefab","Has", "Vec", "GetWorld", "GetEventsController", "SelectFrom", "Log", "String", "GetPlayer", "Destroy", "NoOne");
 		foreach (var fileInfo in dirInfo.GetFiles ("*", SearchOption.AllDirectories))
 		{
 			if (fileInfo.LastWriteTimeUtc > lastWriteTime)

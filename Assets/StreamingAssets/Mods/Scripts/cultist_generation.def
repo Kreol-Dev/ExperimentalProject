@@ -1,5 +1,60 @@
-temp_cultist = 
+cult_generation = 
 {
-	scope = story
-	utility = 0
+	scope = markers.fit(has_marker(cult_node) and any(all_actors, has(noble)))
+	utility = 1
+	once_per_object = yes
+	action = 
+	{
+		log = "generating cult"
+		noble_per_cultist = 4
+		current_noble = 0
+		all_actors.noble = {
+			if(current_noble >= noble_per_cultist) = {
+				current_noble = 0
+				log = "cultist = " + this
+				create(cultist).power = (knowledge + occult) / 2
+			}
+			current_noble = current_noble + 1
+		}
+	}
+}
+
+noble_is_a_cultist =
+{
+	scope = actor.noble.fit(not generated and current_date > 0 and not has(cultist) and any(where.interactables.every, has(cultist)))
+	utility = 1
+	once_per_object = yes
+	action = {
+		if(random(0, 5) > 2).create = cultist
+	}
+}
+
+cultist_perform_ritual = 
+{
+	scope = actor.cultist.fit(is_active)
+	utility = cultist.power
+	action = 
+	{
+		generate(cast_ritual) = 
+		{
+			event = {
+				context = root
+			}
+		}
+	}
+}
+
+cultist_try_convert_other = 
+{
+	scope = actor.cultist.fit(is_active)
+	utility = 1
+	action = 
+	{
+		generate(convert_other) = 
+		{
+			event = {
+				context = root
+			}
+		}
+	}
 }

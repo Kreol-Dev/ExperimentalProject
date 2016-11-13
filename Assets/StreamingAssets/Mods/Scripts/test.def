@@ -86,7 +86,7 @@ encounter_ui_enlist =
 location_test_encounter = 
 {
 	scope = place.named.fit(act = yes)
-	utility = 0.4
+	utility = 0
 	action  = 
 	{
 		generate(enc) = 
@@ -222,7 +222,7 @@ inquisitor_basic_resources =
 	action =
 	{
 		gold = 100
-		influence = 100
+		influence = 50
 		sanity = 100
 	}
 }
@@ -261,5 +261,15 @@ win_encounter_explain =
 	utility = 1
 	action = {
 		encounter_ui.description = encounter_ui.showed_object.win_event.why
+	}
+}
+
+notify_encounter_explain = 
+{
+	scope = encounter_ui.showed_object.notify_event
+	once_per_object = yes
+	utility = 1
+	action = {
+		encounter_ui.description = encounter_ui.showed_object.notify_event.of_what
 	}
 }

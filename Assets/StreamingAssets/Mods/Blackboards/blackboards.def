@@ -130,6 +130,7 @@ noble = {
 	knowledge(0,1) = float
 	occult(0,1) = float
 	of = gameobject
+	where = gameobject
 }
 
 cultist = {
@@ -148,3 +149,4 @@ aged ={
 	age = int
 	cur_age = int
 }
+

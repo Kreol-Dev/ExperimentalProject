@@ -64,7 +64,6 @@ public class Entity : MonoBehaviour
 
 	IEnumerator DeathCoroutine ()
 	{
-		yield return null;
 		Debug.Log ("Death " + gameObject, gameObject);
 		Event<EntityDeathEvent>.Invoke (gameObject);
 		if (Destoryed != null)

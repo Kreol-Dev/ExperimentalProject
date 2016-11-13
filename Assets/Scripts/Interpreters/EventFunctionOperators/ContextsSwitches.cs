@@ -20,7 +20,15 @@ public class ContextSwitchesPlugin : ScriptEnginePlugin
 	{
 		if (!intersByType.ContainsKey (type))
 			intersByType.Add (type, inter);
-	}
+        if(type == typeof(GameObject) && inter.GetType() == typeof(ContextSwitchInterpreter))
+        {
+            if (!intersByType.ContainsKey(type))
+                intersByType.Add(type, inter);
+            else
+                intersByType[type] = inter;
+        }
+            
+    }
 
 	public FunctionOperatorInterpreter GetInterByType (Type type)
 	{
@@ -94,7 +102,7 @@ public class ContextSwitchInterpreter : FunctionOperatorInterpreter
 		if (addVar == null)
 			addVar = block.FindStatement<DeclareVariableStatement> (v => v.IsContext && v.Type == contextType);
 		//TODO: probably will fail
-		DeclareVariableStatement contextVar = block.FindStatement<DeclareVariableStatement> (v => v.IsContext && v.Type == typeof(GameObject) && v != addVar);
+		DeclareVariableStatement contextVar = contextType == typeof(GameObject)? addVar : block.FindStatement<DeclareVariableStatement> (v => v.IsContext && v.Type == typeof(GameObject) && v != addVar);
 		DeclareVariableStatement declareVar = null;
 		if (addVar == null)
 		{
@@ -340,7 +348,8 @@ public class ContextFunctionCallInterpreter : FunctionOperatorInterpreter
 		} else
 		{
 			//Func doesn't return a context, while maybe allows for either lambda as value or context addition
-			var lastArg = argsDef [argsDef.Length - 1];
+			var lastArg = argsDef.Length > 0 ? argsDef [argsDef.Length - 1] : null;
+            if(lastArg != null)
 			if (typeof(Delegate).IsAssignableFrom (lastArg.ParameterType))
 			{
 
@@ -487,6 +496,7 @@ public class ContextPropertyInterpreter : FunctionOperatorInterpreter
 
 			statement.RepeatBlock.Statements.Add (listVar);
 			var inter = switches.GetInterByType (listT);
+            Debug.Log(inter);
 			inter.Interpret (op, repeatBlock);
 		}
 		interpret = true;
@@ -506,7 +516,7 @@ public class ContextPropertyInterpreter : FunctionOperatorInterpreter
 		
 		if (type.IsGenericType && type.GetGenericTypeDefinition () == typeof(List<>))
 		{
-
+            Debug.Log("List " + propName);
 			listT = type.GetGenericArguments () [0];
 			engine.GetPlugin<ContextSwitchesPlugin> ().AddInterToType (type, this);
 		}

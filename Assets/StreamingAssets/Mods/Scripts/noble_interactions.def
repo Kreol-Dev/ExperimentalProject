@@ -3,7 +3,7 @@ burn =
 	is_interaction = yes
 	tooltip = "burn this heretic"
 	scope = noble
-	utility = influence * 0.01 - noble.influence 
+	utility = influence * 0.01 - noble.influence
 	action = 
 	{
 		is_cultist = no
@@ -16,3 +16,6 @@ burn =
 		destroy = noble
 	}
 }
+
+
+

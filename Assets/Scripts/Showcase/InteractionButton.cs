@@ -35,6 +35,7 @@ public class InteractionButton : MonoBehaviour
     
     void OnClick()
     {
+        if(EventAction.Utility() > 0)
         EventAction.Action();
     }
 
@@ -56,8 +57,8 @@ public class InteractionButton : MonoBehaviour
 
     private void UpdateActionState()
     {
-        //Debug.Log(EventAction.Root);
-        if(EventAction.Utility() > 0)
+        var ut = EventAction.Utility();
+        if (ut > 0)
         {
             Button.enabled = true;
         }

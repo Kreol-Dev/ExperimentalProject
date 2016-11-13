@@ -130,6 +130,9 @@ namespace InternalDSL
 				//if (ScriptEngine.ParseDebug)
 					//Debug.LogFormat ("{0} Expr node        {1}", ID, exprNode);
                    // Debug.LogFormat ("{0} First child node {1}", ID++, firstChild);
+                if (exprNode.Id == (int)DefConstants.MUL_TERM)
+                    Content = new Expression(exprNode, false);
+                   else
                 if (firstChild.Id == (int)DefConstants.FACTOR)
 				    Content = new Expression (firstChild, false);
                 else
@@ -146,19 +149,19 @@ namespace InternalDSL
 				{
 					if (Op == UnaryOp.None)
 						return "true";
-					else if (Op == UnaryOp.Inverse)
+					else if (Op == UnaryOp.Not)
 						return "false";
 				} else
 				{
 					if (Op == UnaryOp.None)
 						return "false";
-					else if (Op == UnaryOp.Inverse)
+					else if (Op == UnaryOp.Not)
 						return "true";
 				}
 			}
 			if (Op == UnaryOp.None)
 				return string.Format ("({0})", Content);
-			else if (Op == UnaryOp.Inverse)
+			else if (Op == UnaryOp.Not)
 				return string.Format ("(!{0})", Content);
 			else
 				return string.Format ("(-{0}", Content);
