@@ -28,13 +28,16 @@ public class Generators : MonoBehaviour
 		foreach (var type in eventTypes)
         {
             var action = Activator.CreateInstance(type) as EventAction;
-            actions.Add(action);
+            
             var actionMeta = type.GetCustomAttributes(typeof(EventActionAttribute), false)[0] as EventActionAttribute;
             action.Meta = actionMeta;
             List<EventAction> catList = null;
             var cats = actionsByCategory;
             if(action.Meta.IsInteraction)
                 cats = interactionsByCategory;
+            else
+
+                actions.Add(action);
             if (!cats.TryGetValue(action.Meta.Category, out catList))
             {
                 catList = new List<EventAction>();

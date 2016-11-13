@@ -6,6 +6,7 @@ common_noble =
 	{
 		generate(noble_obj) = 
 		{
+			actor = yes
 			entity = yes
 			markers = yes
 			personality = yes

@@ -530,7 +530,7 @@ RectTransform:
   m_Father: {fileID: 1985653145}
   m_RootOrder: 0
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
@@ -879,7 +879,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 669760589}
-  m_RootOrder: 4
+  m_RootOrder: 3
 --- !u!114 &410038291
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1051,7 +1051,7 @@ MonoBehaviour:
   m_Script: {fileID: 1741964061, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_HorizontalFit: 0
+  m_HorizontalFit: 2
   m_VerticalFit: 2
 --- !u!114 &508559889
 MonoBehaviour:
@@ -1341,12 +1341,12 @@ RectTransform:
   - {fileID: 790372305}
   - {fileID: 1968087818}
   - {fileID: 778366749}
-  - {fileID: 1694788105}
   - {fileID: 410038290}
   - {fileID: 1032923519}
   - {fileID: 891458687}
   - {fileID: 2112614731}
   - {fileID: 1428299072}
+  - {fileID: 1694788105}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_AnchorMin: {x: 0, y: 0}
@@ -1826,7 +1826,7 @@ Prefab:
     - target: {fileID: 224000013670942240, guid: d4291cd84e5bb9741a0f163da492446b,
         type: 2}
       propertyPath: m_RootOrder
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 224000013670942240, guid: d4291cd84e5bb9741a0f163da492446b,
         type: 2}
@@ -2216,7 +2216,7 @@ RectTransform:
   - {fileID: 2071148363}
   - {fileID: 1585629474}
   m_Father: {fileID: 669760589}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
@@ -2301,8 +2301,8 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 224: {fileID: 1065370845}
-  - 114: {fileID: 1065370846}
   - 114: {fileID: 1065370847}
+  - 114: {fileID: 1065370846}
   m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
@@ -2336,18 +2336,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 1065370844}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1297475563, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Script: {fileID: -405508275, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 0
-    m_Right: 0
-    m_Top: 0
-    m_Bottom: 0
-  m_ChildAlignment: 4
-  m_Spacing: 10
-  m_ChildForceExpandWidth: 0
-  m_ChildForceExpandHeight: 0
+    m_Left: 5
+    m_Right: 5
+    m_Top: 5
+    m_Bottom: 5
+  m_ChildAlignment: 0
+  m_Spacing: 5
+  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandHeight: 1
 --- !u!114 &1065370847
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3123,7 +3123,7 @@ Prefab:
     - target: {fileID: 224000013040137380, guid: 54e03384ca537f94eb935dc62f7d58cf,
         type: 2}
       propertyPath: m_RootOrder
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 224000013040137380, guid: 54e03384ca537f94eb935dc62f7d58cf,
         type: 2}
@@ -3576,7 +3576,7 @@ RectTransform:
   m_Children:
   - {fileID: 472716166}
   m_Father: {fileID: 669760589}
-  m_RootOrder: 3
+  m_RootOrder: 8
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
@@ -3941,6 +3941,7 @@ GameObject:
   - 222: {fileID: 1985653147}
   - 114: {fileID: 1985653146}
   - 114: {fileID: 1985653150}
+  - 114: {fileID: 1985653149}
   m_Layer: 5
   m_Name: TopBar
   m_TagString: Untagged
@@ -4031,6 +4032,26 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.ScrollRect+ScrollRectEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &1985653149
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1985653144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1297475563, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 0
+  m_Spacing: 0
+  m_ChildForceExpandWidth: 0
+  m_ChildForceExpandHeight: 0
 --- !u!114 &1985653150
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4095,8 +4116,8 @@ GameObject:
   - 114: {fileID: 2057934067}
   - 222: {fileID: 2057934066}
   - 114: {fileID: 2057934065}
-  - 114: {fileID: 2057934068}
   - 114: {fileID: 2057934069}
+  - 114: {fileID: 2057934068}
   m_Layer: 5
   m_Name: BottomBar
   m_TagString: Untagged
@@ -4195,15 +4216,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 2057934063}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -405508275, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Script: {fileID: 1297475563, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
     m_Left: 0
     m_Right: 0
-    m_Top: 25
+    m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 7
+  m_ChildAlignment: 0
   m_Spacing: 0
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
@@ -4358,7 +4379,7 @@ RectTransform:
   - {fileID: 2057934064}
   - {fileID: 198278724}
   m_Father: {fileID: 669760589}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: -22.5}
@@ -4446,8 +4467,8 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 224: {fileID: 2131043897}
-  - 114: {fileID: 2131043898}
   - 114: {fileID: 2131043899}
+  - 114: {fileID: 2131043898}
   m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
@@ -4481,16 +4502,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 2131043896}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -405508275, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Script: {fileID: 1297475563, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
     m_Left: 0
     m_Right: 0
-    m_Top: 0
+    m_Top: 25
     m_Bottom: 0
-  m_ChildAlignment: 4
-  m_Spacing: 10
+  m_ChildAlignment: 0
+  m_Spacing: 5
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
 --- !u!114 &2131043899

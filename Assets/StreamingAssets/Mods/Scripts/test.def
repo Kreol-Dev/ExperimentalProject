@@ -223,7 +223,7 @@ inquisitor_basic_resources =
 	{
 		gold = 100
 		influence = 100
-		sanity = 0
+		sanity = 100
 	}
 }
 
