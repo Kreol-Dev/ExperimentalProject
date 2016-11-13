@@ -30,6 +30,7 @@ public class TextField : MonoBehaviour
 		textSubObject.transform.SetParent (this.transform);
 		text = textSubObject.AddComponent<Text> ();
 		text.font = Holder.Font;
+        text.color = Color.white;
 		Layout = textSubObject.AddComponent<LayoutElement> ();
 	}
 

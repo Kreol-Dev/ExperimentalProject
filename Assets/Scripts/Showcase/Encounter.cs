@@ -18,5 +18,11 @@ public class Encounter : MonoBehaviour
 			NewReaction (reactProto);
 	}
 
+    void Awake()
+    {
+        var e = GetComponent<Event>();
+        if(e != null)
+            e.ShouldBeDestroyed = false;
+    }
 }
 

@@ -6,9 +6,10 @@ country_cities =
 	action = 
 	{
 
+		create = country
 		repeat(random(4,10)) = 
 		{
-			generate(city) = 
+			generate(city_obj) = 
 			{
 				entity = {
 					position = vec(random(10, 90), random(10, 90))
@@ -22,6 +23,10 @@ country_cities =
 				}
 				interactables = yes
 				interactable = yes
+				city ={
+					size = random(3, 6)
+					of = root
+				}
 
 			}
 		}

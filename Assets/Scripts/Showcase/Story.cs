@@ -36,64 +36,43 @@ public class Story : MonoBehaviour
     {
         generating = false;
         gens = FindObjectOfType<Generators>();
+        FindObjectOfType<NextTurn>().NewTurnListener(NewTurn);
     }
-    void Update()
-    {
-        if(gens.Loaded && !generating)
-        {
-            generating = true;
-            StartCoroutine(GenerationCoroutine());
-        }
-    }
-    
+   
 
     public void ReactionToEvent(GameObject eventObject)
     {
 
     }
-    
+
+    VoidDelegate onFinishTurn;
+    public void NewTurn(VoidDelegate onFinishTurn)
+    {
+        this.onFinishTurn = onFinishTurn;
+        StartCoroutine(GenerationCoroutine());
+    }
     IEnumerator GenerationCoroutine()
     {
-        yield return null;
-        Debug.Log("Started generation");
-        int index = 0;
-        while(CurrentStep < StepsCount)
+        CurrentStep++;
+        for ( int i = 0; i < actors.Count; i++)
         {
-            float startTime = Time.realtimeSinceStartup - Time.time;//time since this iteration started
-            //Debug.Log("Step number: " + CurrentStep);
-            while (CurrentStep < StepsCount && actors.Count > 0 && Time.realtimeSinceStartup - Time.time - startTime < 5f)
+            GameObject actor = actors[i];
+            if (actor == null || !actor.activeInHierarchy)
             {
-                while (actors.Count > 0)
-                {
-                    if (index >= actors.Count)
-                    {
-                        //Debug.Log(actors.Count);
-                        CurrentStep++;
-                        index = 0;
-                        break;
-                    }
-                    GameObject actor = actors[index];
-                    if (actor == null || !actor.activeInHierarchy)
-                    {
-                        actors.RemoveAt(index);
-                        break;
-                    }
-                    //Debug.Log(index, this);
-                    var a = actor.GetComponent<Actor>();
-                    a.IsActive = false;
-                    gens.Generate(actor, 0.1f);
-                    a.IsActive = true;
-                    //if(actor.GetComponent<Actor>().CurrentAction == null)
-                    gens.GenerateMostUseful(actor, 0.1f);
-                    index++;
-                }
+                actors.RemoveAt(i);
+                i--;
+                break;
             }
+            //Debug.Log(index, this);
+            var a = actor.GetComponent<Actor>();
+            a.IsActive = false;
+            gens.Generate(actor, 0.1f);
+            a.IsActive = true;
+            //if(actor.GetComponent<Actor>().CurrentAction == null)
+            gens.GenerateMostUseful(actor, 0.1f);
             yield return null;
-
         }
-
-        gameObject.AddComponent<Mythos>();
-        gens.Generate(gameObject);
+        onFinishTurn();
     }
     
     

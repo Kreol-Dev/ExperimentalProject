@@ -59,21 +59,6 @@ location_event = {
 		create = event_marker
 	}
 }
-agent_personality = {
-	scope = agent.fit(not has(personality))
-	utility = 1
-	action = {
-		create = personality
-	}
-}
-
-aged_generation_add = {
-	scope = human.fit(not has(aged_generation))
-	utility = 1
-	action = {
-		create = aged_generation
-	}
-}
 
 
 
@@ -225,5 +210,56 @@ interaction_log_name =
 	action = 
 	{
 		log = named.full_name
+	}
+}
+
+
+inquisitor_basic_resources =
+{
+	scope = inquisitor_resources
+	utility = 1
+	once_per_object = yes
+	action =
+	{
+		gold = 100
+		influence = 100
+		sanity = 0
+	}
+}
+
+on_check_lose= {
+	once_per_turn = yes
+	utility = 1
+	scope = inquisitor_resources.markers.fit(current_date > 0 and not has_marker(lost))
+	action = {
+		if(sanity = 0)= {
+			lose = you_in_the_cult_now
+			markers.set_marker = lost
+		}
+
+		if(influence = 0) = {
+			lose = they_fired_you
+			markers.set_marker = lost
+		}
+	}
+}
+
+lose_encounter_explain = 
+{
+	scope = encounter_ui.showed_object.lost_event
+	once_per_object = yes
+	utility = 1
+	action = {
+		encounter_ui.description = encounter_ui.showed_object.lost_event.why
+	}
+}
+
+win_encounter_explain = 
+{
+	scope = encounter_ui.showed_object.win_event
+	once_per_object = yes
+	utility = 1
+	action = {
+		encounter_ui.description = encounter_ui.showed_object.win_event.why
 	}
 }

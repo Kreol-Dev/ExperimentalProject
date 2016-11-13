@@ -39,7 +39,7 @@ public class EventActionAttribute : Attribute
     public bool IsInteraction { get; set; }
     public bool OncePerObject { get; set; }
     public bool OncePerTurn { get; set; }
-
+    public bool OnceInCategory { get; set; }
     public string Tooltip { get; set; }
 }
 
@@ -91,12 +91,14 @@ public class EventActionsLoader : ScriptInterpreter
             CodeAttributeArgument oncePerTurnArg = new CodeAttributeArgument("OncePerTurn", new CodeSnippetExpression("false"));
             CodeAttributeArgument interactionArg = new CodeAttributeArgument("IsInteraction", new CodeSnippetExpression("false"));
             CodeAttributeArgument tooltipArg = new CodeAttributeArgument("Tooltip", new CodeSnippetExpression("\"\""));
+            CodeAttributeArgument onceInCategory = new CodeAttributeArgument("OnceInCategory", new CodeSnippetExpression("false"));
             attr.Arguments.Add(maxArg);
             attr.Arguments.Add(catArg);
             attr.Arguments.Add(onceArg);
             attr.Arguments.Add(oncePerTurnArg);
             attr.Arguments.Add(interactionArg);
             attr.Arguments.Add(tooltipArg);
+            attr.Arguments.Add(onceInCategory);
             for (int j = 0; j < ctx.Entries.Count; j++)
 			{
 				var op = ctx.Entries [j] as Operator;
@@ -109,6 +111,11 @@ public class EventActionsLoader : ScriptInterpreter
                 } else if (op.Identifier as string == "is_interaction")
                 {
                     interactionArg.Value = new CodeSnippetExpression("true");
+
+                }
+                else if (op.Identifier as string == "once_per_category")
+                {
+                    onceInCategory.Value = new CodeSnippetExpression("true");
 
                 }
                 else if (op.Identifier as string == "only_max_utility")
@@ -226,18 +233,20 @@ public class EventActionsLoader : ScriptInterpreter
 		var args = baseMethod.GetParameters ();
 		FunctionBlock block = new FunctionBlock (null, method, codeType);
 		block.Statements.Add ("var root = this.root;");
-		//block.Statements.Add ("UnityEngine.Debug.Log(root.ToString() + IfStatement.AntiMergeValue++);");
-		var externVar = new DeclareVariableStatement () {
-			Name = "External",
-			IsArg = true,
-			Type = Engine.GetType ("External")
-		};
-		block.Statements.Add (externVar);
-		block.Statements.Add (new ContextStatement () {
-			ContextVar = externVar,
-			InterpretInContext = Engine.GetPlugin<ExternalFunctionsPlugin> ().Ctx.InterpretInContext
-		});
-		foreach (var initStmt in initStatements)
+        //block.Statements.Add ("UnityEngine.Debug.Log(root.ToString() + IfStatement.AntiMergeValue++);");
+        var externVar = new DeclareVariableStatement()
+        {
+            Name = "External",
+            IsArg = true,
+            Type = Engine.GetType("External")
+        };
+        block.Statements.Add(externVar);
+        block.Statements.Add(new ContextStatement()
+        {
+            ContextVar = externVar,
+            InterpretInContext = Engine.GetPlugin<ExternalFunctionsPlugin>().Ctx.InterpretInContext
+        });
+        foreach (var initStmt in initStatements)
 			block.Statements.Add (initStmt);
 		//bool hasRoot = false;
 		foreach (var arg in args)
@@ -257,7 +266,9 @@ public class EventActionsLoader : ScriptInterpreter
 		rootVar.IsArg = true;
 
 		block.Statements.Add (rootVar);
-		foreach (var member in codeType.Members)
+
+        
+        foreach (var member in codeType.Members)
 		{
 			var field = member as CodeMemberField;
 			if (field != null)

@@ -482,7 +482,7 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 
 								exprBuilder.Append (otherContext.Name).Append ('.');
 								contextType = otherContext.Type;
-								if (contextType.IsClass)
+								if (contextType.IsClass && !prop.GetGetMethod().IsStatic)
 								{
 									IfStatement ifSt = new IfStatement ();
 									ifSt.CheckExpression = String.Format ("{0} != null", otherContext.Name);
@@ -499,7 +499,7 @@ public class ExpressionInterpreter : ScriptEnginePlugin
 							exprBuilder.Length = hasSign ? 1 : 0;
 							exprBuilder.Append (customVar.Name).Append ('.');
 							contextType = customVar.Type;
-							if (contextType.IsClass)
+							if (contextType.IsClass && !prop.GetGetMethod().IsStatic)
 							{
 								IfStatement ifSt = new IfStatement ();
 								ifSt.CheckExpression = String.Format ("{0} != null", customVar.Name);

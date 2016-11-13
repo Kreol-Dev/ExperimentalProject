@@ -9,7 +9,7 @@ public class UiObject : MonoBehaviour
 	GameObject showedObject;
 	static Generators gens;
 	public bool ShoudFit = true;
-
+    Color firstColor;
 	public GameObject ShowedObject {
 		get { return showedObject; }
 		set
@@ -23,11 +23,33 @@ public class UiObject : MonoBehaviour
                     ent.Destoryed += OnGODestoryed;
                     ent.ComponentAddedEvent += EntComponentAdded;
                 }
+                var gr = GetComponent<Graphic>();
+                if (gr != null)
+                    gr.color = firstColor;
+                var cg = GetComponent<CanvasGroup>();
+                if (cg != null)
+                {
+                    cg.interactable = true;
+                    cg.blocksRaycasts = true;
+                }
+            }
+            else
+            {
+                var gr = GetComponent<Graphic>();
+                if (gr != null)
+                    gr.color = Color.clear;
+                var cg = GetComponent<CanvasGroup>();
+                if(cg != null)
+                {
+                    cg.interactable = false;
+                    cg.blocksRaycasts = false;
+                }
+                
             }
 			
 		}
 	}
-
+    
 	void EntComponentAdded ()
 	{
 		Debug.LogFormat ("Regenerating ui for {0}", ShowedObject);
@@ -57,9 +79,15 @@ public class UiObject : MonoBehaviour
 
 
 	void Awake ()
-	{
-		
-		if (GetComponent<Markers> () == null)
+    {
+        var g = GetComponent<Graphic>();
+        if (g != null)
+            firstColor = g.color;
+        //Reset
+        if (showedObject == null)
+            ShowedObject = null;
+
+        if (GetComponent<Markers> () == null)
 			gameObject.AddComponent<Markers> ();
 	}
 

@@ -5,6 +5,7 @@ using System;
 
 public class SelectableMarker : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IPointerUpHandler
 {
+    [SerializeField]
     SelectionManager selectionManager;
     public event VoidDelegate Selected;
     public event VoidDelegate Deselected;

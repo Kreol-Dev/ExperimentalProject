@@ -18,7 +18,7 @@ public class ReactionButton : MonoBehaviour
 	{
         if(Proto != null)
 		    gens.Generate (Proto);
-        GetComponentInParent<EncounterUI>().Reacted();
+        GetComponentInParent<EncounterUi>().Reacted();
 	}
 }
 

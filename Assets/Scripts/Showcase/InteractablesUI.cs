@@ -5,6 +5,11 @@ using System.Collections.Generic;
 
 public class InteractablesUI : CardsUI<Interactables>
 {
+    protected override void Init()
+    {
+        base.Init();
+        MovableCards = false;
+    }
     public Interactables TargetInteractables {  get { return TargetContainer;  }  set { TargetContainer = value; } }
     public override List<GameObject> GetContainer(Interactables targetContainer)
     {

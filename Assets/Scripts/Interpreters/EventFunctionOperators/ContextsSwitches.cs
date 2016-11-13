@@ -450,7 +450,7 @@ public class ContextPropertyInterpreter : FunctionOperatorInterpreter
 
         if (ScriptEngine.AnalyzeDebug)
             Debug.Log (block);
-		var sCtx = block.FindStatement<ContextStatement> (v => v.InterpretInContext (op, block) != null && v.ContextVar.IsContext);
+		var sCtx = block.FindStatement<ContextStatement> (v => v.InterpretInContext (op, block) != null && v.ContextVar.IsContext || v.ContextVar.IsArg);
 		var context = sCtx != null ? sCtx.ContextVar : null;
         if (ScriptEngine.AnalyzeDebug)
             Debug.LogFormat ("FOUND COUNTEXT {0} for {1}", context, op.Identifier);
@@ -703,7 +703,7 @@ public class ContextPropertySwitchInterpreter : ContextPropertyInterpreter
 
 	public FunctionOperatorInterpreter InterpretInContext (Operator op, FunctionBlock block)
 	{
-		Debug.Log ("interpret in context");
+		//Debug.Log ("interpret in context");
 		FunctionOperatorInterpreter opInter = null;
 		if (!contextSwitches.TryGetValue (op.Identifier as string, out opInter))
 		if (!functions.TryGetValue (op.Identifier as string, out opInter))

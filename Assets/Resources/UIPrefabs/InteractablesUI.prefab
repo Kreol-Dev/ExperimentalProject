@@ -20,11 +20,11 @@ GameObject:
   m_Component:
   - 224: {fileID: 224000013195450370}
   - 222: {fileID: 222000011851069176}
-  - 114: {fileID: 114000012773986186}
   - 114: {fileID: 114000010156846786}
   - 114: {fileID: 114000010662924098}
   - 114: {fileID: 114000010617300010}
   - 114: {fileID: 114000013470831230}
+  - 114: {fileID: 114000010152833710}
   m_Layer: 5
   m_Name: InteractablesUI
   m_TagString: Untagged
@@ -32,6 +32,26 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &114000010152833710
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000011736259214}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -405508275, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 5
+    m_Right: 5
+    m_Top: 5
+    m_Bottom: 5
+  m_ChildAlignment: 4
+  m_Spacing: 5
+  m_ChildForceExpandWidth: 0
+  m_ChildForceExpandHeight: 0
 --- !u!114 &114000010156846786
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -65,7 +85,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000011736259214}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 1741964061, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
@@ -90,26 +110,6 @@ MonoBehaviour:
   m_PreferredHeight: -326
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
---- !u!114 &114000012773986186
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000011736259214}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1297475563, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Padding:
-    m_Left: 5
-    m_Right: 5
-    m_Top: 15
-    m_Bottom: 15
-  m_ChildAlignment: 0
-  m_Spacing: 5
-  m_ChildForceExpandWidth: 1
-  m_ChildForceExpandHeight: 1
 --- !u!114 &114000013470831230
 MonoBehaviour:
   m_ObjectHideFlags: 1

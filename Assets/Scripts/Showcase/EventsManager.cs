@@ -15,8 +15,8 @@ public class EventsManager : MonoBehaviour
     public void EnlistEncounter(GameObject encounterGO)
     {
         var uiInstance = GameObject.Instantiate(EncounterUIProto);
-        var uiCmp = uiInstance.GetComponent<EncounterUI>();
-        uiCmp.Encounter = encounterGO.GetComponent<Encounter>();
+        var uiCmp = uiInstance.GetComponent<EncounterUi>();
+        uiCmp.ShowedObject = encounterGO;
         uiInstance.transform.SetParent(transform, false);
         
     }

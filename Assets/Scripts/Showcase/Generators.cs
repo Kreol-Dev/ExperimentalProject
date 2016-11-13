@@ -156,26 +156,27 @@ public class Generators : MonoBehaviour
     }
     void NotifyOfAct(GameObject go, EventAction action)
     {
-        if(action.Meta.OncePerObject)
+        if(action.Meta.OncePerObject || action.Meta.OnceInCategory)
         {
 
             Markers markers = go.GetComponent<Markers>();
             if (markers == null)
                 markers = go.AddComponent<Markers>();
             if (action.Meta.Category == "ui")
-                markers.SetUiMarker(action.GetType().Name);
+                markers.SetUiMarker(action.Meta.OnceInCategory ? action.Meta.Category : action.GetType().Name);
             else
-                markers.SetMarker(action.GetType().Name);
+                markers.SetMarker(action.Meta.OnceInCategory? action.Meta.Category : action.GetType().Name);
 
         }
+        
     }
     private bool ActedThisWayAndShouldNoMore(GameObject go, EventAction action)
     {
-        if(action.Meta.OncePerObject)
+        if(action.Meta.OncePerObject || action.Meta.OnceInCategory)
         {
             Markers markers = go.GetComponent<Markers>();
             if (markers != null)
-                return markers.HasMarker(action.GetType().Name);
+                return markers.HasMarker(action.Meta.OnceInCategory ? action.Meta.Category : action.GetType().Name);
         }
         
         return false;

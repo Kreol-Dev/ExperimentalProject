@@ -26,6 +26,7 @@ GameObject:
   - 114: {fileID: 114000011084096488}
   - 114: {fileID: 114000011589322584}
   - 225: {fileID: 225000011088698360}
+  - 114: {fileID: 114000013290678854}
   m_Layer: 5
   m_Name: EncounterPanel
   m_TagString: Untagged
@@ -255,7 +256,7 @@ MonoBehaviour:
   m_ChildAlignment: 0
   m_Spacing: 0
   m_ChildForceExpandWidth: 1
-  m_ChildForceExpandHeight: 1
+  m_ChildForceExpandHeight: 0
 --- !u!114 &114000012214052196
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -362,6 +363,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 0
   m_VerticalFit: 2
+--- !u!114 &114000013290678854
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000010140479150}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28bcf74a81d49c6498ddab6bff385932, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114000013311345876
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -415,7 +427,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000010818582572}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 1741964061, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 

@@ -5,7 +5,7 @@ using System;
 using System.Text;
 using System.Collections.Generic;
 
-public class EncounterUI : MonoBehaviour
+public class EncounterUi : MonoBehaviour
 {
 
     static GameObject ReactionPrefab;
@@ -16,7 +16,7 @@ public class EncounterUI : MonoBehaviour
 	public Text DescriptionText;
     public UiObject AdditionalData;
     Encounter encounter;
-	public Encounter Encounter { get { return encounter; } set { encounter = value; AdditionalData.ShowedObject = encounter.gameObject; } }
+	public GameObject ShowedObject { get { return encounter.gameObject; } set { encounter = value.GetComponent<Encounter>(); AdditionalData.ShowedObject = value; } }
 
     static StringBuilder builder = new StringBuilder();
     List<string> descs = new List<string>();
@@ -29,7 +29,7 @@ public class EncounterUI : MonoBehaviour
     public string Name {  get { return NameText.text;  } set { NameText.text = value; } }
     internal void Reacted()
     {
-        Encounter.GetComponent<Entity>().Destroy();
+        ShowedObject.GetComponent<Entity>().Destroy();
         
         Destroy(gameObject);
     }
@@ -43,8 +43,8 @@ public class EncounterUI : MonoBehaviour
 		if (gens == null)
 			gens = FindObjectOfType<Generators> ();
 		gens.Generate (gameObject);
-		Encounter.NewReaction += Encounter_NewReaction;
-		foreach (var reaction in Encounter.reactProtos)
+		encounter.NewReaction += Encounter_NewReaction;
+		foreach (var reaction in encounter.reactProtos)
 			Encounter_NewReaction (reaction);       
         if(AdditionalData.transform.childCount == 0)
         {

@@ -116,3 +116,35 @@ head_of_state_node =
 location_node = yes
 myth_source_node = yes
 person_node = yes
+
+city = 
+{
+	size = int
+	of = gameobject
+}
+
+noble = {
+	loyalty(0,1) = float
+	sanity(0,1) = float
+	influence(0,1) = float
+	knowledge(0,1) = float
+	occult(0,1) = float
+	of = gameobject
+}
+
+cultist = {
+	power(0,1) = float
+}
+
+cult = {
+	artifacts = list(string)
+}
+
+country = {
+	emperor = gameobject
+}
+
+aged ={
+	age = int
+	cur_age = int
+}

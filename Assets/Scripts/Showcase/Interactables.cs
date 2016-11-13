@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class Interactables : MonoBehaviour
 {
     public List<GameObject> Every { get; set; }
+    public int Count { get { return Every.Count; } }
     public event GODelegate GOAttached;
     public event GODelegate GODetached;
     void Awake()
@@ -35,7 +36,7 @@ public class Interactables : MonoBehaviour
 public class InteractablesMarker : MonoBehaviour
 {
     public Interactables AttachedTo { get; set; }
-
+    public GameObject Attached { get { return AttachedTo.gameObject; } }
     void Start()
     {
         if (AttachedTo != null && !AttachedTo.Every.Contains(gameObject))

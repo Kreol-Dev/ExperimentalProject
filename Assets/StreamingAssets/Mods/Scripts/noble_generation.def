@@ -1,5 +1,195 @@
-temp_nobles = 
+common_noble = 
 {
-	scope = story
-	utility = 0
+	scope = interactables.city.fit(count < size)
+	utility = 1
+	action = 
+	{
+		generate(noble_obj) = 
+		{
+			entity = yes
+			markers = yes
+			personality = yes
+			interactable = yes
+			noble = {
+				of = root.city.of
+			}
+			named = 
+			{
+				set(main_name, 0) = random_name(human_name)
+			}
+		}
+		interactables.attach = noble_obj
+	}
+}
+
+noble_is_emperor = 
+{
+	category = noble_decomposition
+	only_max_utility = yes
+	scope = noble.named.fit(of.country and of.country.fit(not has(emperor)))
+	utility = 10
+	once_per_category = yes
+	action = {
+		named.set(postfix, 1) = ", the Emperor"
+		noble = {
+			loyalty = random(0.5, 1)
+			sanity = random(0.4, 1)
+			influence = random(0.8, 1)
+			knowledge = random(0, 1)
+			occult = random(0.1, 0.3)
+		}
+		noble.of.country.emperor = root
+	}
+}
+
+noble_is_inquisitor = 
+{
+	category = noble_decomposition
+	only_max_utility = yes
+	scope = noble.named
+	utility = 1
+	once_per_category = yes
+	action = {
+		named.set(postfix, 1) = ", an inquisitor"
+		noble = {
+			loyalty = random(0.5, 1)
+			sanity = random(0.4, 1)
+			influence = random(0.8, 1)
+			knowledge = random(0, 1)
+			occult = random(0.1, 0.3)
+		}
+	}
+}
+
+noble_is_trader = 
+{
+	category = noble_decomposition
+	only_max_utility = yes
+	scope = noble.named
+	utility = 1
+	once_per_category = yes
+	action = {
+		named.set(postfix, 1) = ", a trader"
+		noble = {
+			loyalty = random(0, 0.3)
+			sanity = random(0.6, 1)
+			influence = random(0.1, 0.3)
+			knowledge = random(0.4, 0.5)
+			occult = random(0.1, 0.3)
+		}
+	}
+}
+
+noble_is_aristocrat = 
+{
+	category = noble_decomposition
+	only_max_utility = yes
+	scope = noble.named
+	utility = 1
+	once_per_category = yes
+	action = {
+		named.set(postfix, 1) = ", an aristocrat"
+		noble = {
+			loyalty = random(0.5, 0.6)
+			sanity = random(0.1, 1)
+			influence = random(0.3, 0.6)
+			knowledge = random(0, 1)
+			occult = random(0.1, 1)
+		}
+	}
+}
+
+noble_is_governor = 
+{
+	category = noble_decomposition
+	only_max_utility = yes
+	scope = noble.named
+	utility = 1
+	once_per_category = yes
+	action = {
+		named.set(postfix, 1) = ", a governor"
+		noble = {
+			loyalty = random(0.2, 0.6)
+			sanity = random(0.6, 1)
+			influence = random(0.6, 0.8)
+			knowledge = random(0, 0.5)
+			occult = random(0.0, 0.1)
+		}
+	}
+}
+
+noble_is_general = 
+{
+	category = noble_decomposition
+	only_max_utility = yes
+	scope = noble.named
+	utility = 1
+	once_per_category = yes
+	action = {
+		named.set(postfix, 1) = ", a general"
+		noble = {
+			loyalty = random(0.7, 1)
+			sanity = random(0.7, 1)
+			influence = random(0.3, 0.4)
+			knowledge = random(0, 0.2)
+			occult = random(0, 0.1)
+		}
+	}
+}
+
+noble_is_alchemist = 
+{
+	category = noble_decomposition
+	only_max_utility = yes
+	scope = noble.named
+	utility = 1
+	once_per_category = yes
+	action = {
+		named.set(postfix, 1) = ", an alchemist"
+		noble = {
+			loyalty = random(0, 0.2)
+			sanity = random(0, 1)
+			influence = random(0, 0.1)
+			knowledge = random(0.3, 1)
+			occult = random(0.3, 0.6)
+		}
+	}
+}
+
+noble_is_mage = 
+{
+	category = noble_decomposition
+	only_max_utility = yes
+	scope = noble.named
+	utility = 1
+	once_per_category = yes
+	action = {
+		named.set(postfix, 1) = ", a mage"
+		noble = {
+			loyalty = random(0, 0.2)
+			sanity = random(0, 0.3)
+			influence = random(0, 0.5)
+			knowledge = random(0.5, 1)
+			occult = random(0.3, 0.6)
+		}
+	}
+}
+
+noble_is_priest = 
+{
+	category = noble_decomposition
+	only_max_utility = yes
+	scope = noble.named
+	utility = 1
+	once_per_category = yes
+	action = {
+		named.set(postfix, 1) = ", a priest"
+		noble = {
+			loyalty = random(0.9, 1)
+			sanity = random(0.6, 1)
+			influence = random(0.6, 0.8)
+			knowledge = random(0.5, 1)
+			occult = random(0, 0)
+		}
+	}
 }

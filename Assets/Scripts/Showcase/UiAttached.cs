@@ -5,7 +5,7 @@ public class UiAttached : MonoBehaviour {
 
     public RectTransform AttachedTo;
     Vector3 startPos;
-
+    public bool OnTop = true;
     void Start()
     {
         startPos = transform.position;
@@ -14,10 +14,15 @@ public class UiAttached : MonoBehaviour {
     {
         if (AttachedTo.gameObject.activeInHierarchy)
         {
-            var t = transform;
-            var v = transform.position;
-            v.y = AttachedTo.sizeDelta.y;
-            transform.position = v;
+            var t = GetComponent<RectTransform>();
+            var v = t.position;
+            
+            if(OnTop)
+                v.y = AttachedTo.sizeDelta.y + AttachedTo.position.y;
+            else
+                v.y = AttachedTo.position.y - AttachedTo.sizeDelta.y;
+
+            t.position = v;
         }
         else
             transform.position = startPos;
