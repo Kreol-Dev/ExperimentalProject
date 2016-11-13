@@ -7,7 +7,7 @@ public class NextTurn : MonoBehaviour
 
 	public void StartNewTurn (VoidDelegate turnFinished)
 	{
-		Debug.Log ("New turn");
+		//Debug.Log ("New turn");
 		this.turnFinished = turnFinished;
 		turnProcessed = 0;
 		if (NewTurn != null)
@@ -22,7 +22,7 @@ public class NextTurn : MonoBehaviour
 		if (turnProcessed == listenersCount)
 		{
 			turnFinished ();
-			Debug.Log ("Turn finished");
+			//Debug.Log ("Turn finished");
 		}
 	}
 
